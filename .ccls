@@ -1,0 +1,5 @@
+clang
+%compile_commands.json
+-mf16c
+-Isrc/
+-Ibuild-dir/src

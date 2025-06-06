@@ -1,0 +1,146 @@
+cmake_minimum_required(VERSION 3.15)
+cmake_policy(SET CMP0048 NEW)
+
+PROJECT(LowPrecisionFortran VERSION 0.0.1 LANGUAGES C Fortran)
+
+# Add addtional CMAKE Paths.
+LIST(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+
+# Enforce Out of Source Builds
+INCLUDE(OutOfSource)
+
+# Compile Options
+OPTION(LPF_DEBUG "Enable Debug Symbol generation" OFF)
+
+# Enable Testing
+IF(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+    OPTION(LPF_TESTING "Build the LPF example programs and tests" ON)
+    IF (LPF_TESTING)
+        INCLUDE(CTest)
+        ENABLE_TESTING()
+    ENDIF()
+ELSE()
+    SET(LPF_TESTING OFF)
+ENDIF()
+
+# Enable PIC code by default
+SET(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+SET(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
+SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+# Output directories
+IF(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+   SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
+   SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
+   SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
+ENDIF()
+
+# Configure the Build
+SET(Fortran_MODULE_NAME lpf)
+INCLUDE(FortranCompilerSettings)
+INCLUDE(CCompilerSettings)
+INCLUDE(GNUInstallDirs)
+INCLUDE(FortranModuleDir)
+
+IF (NOT DEFINED BUILD_SHARED_LIBS)
+    SET(BUILD_SHARED_LIBS ON )
+ENDIF()
+
+# Set a default build type if none was specified
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  message(STATUS "Setting build type to 'Release' as none was specified.")
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+  # Set the possible values of build type for cmake-gui
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo" "Coverage")
+endif()
+
+# Select the Proper Build Type.
+IF ( LPF_DEBUG STREQUAL ON OR CMAKE_BUILD_TYPE STREQUAL "Debug"  )
+	SET (CMAKE_BUILD_TYPE "Debug")
+    SET (LPF_DEBUG ON)
+	ADD_DEFINITIONS(-DDEBUG)
+ENDIF()
+
+IF(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+    ADD_C_COMPILER_FLAG_REQUIRED(CMAKE_C_FLAGS "-mf16c")
+ELSEIF(CMAKE_C_COMPILER_ID STREQUAL "Clang" )
+    IF(CMAKE_C_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC")
+        # clang-cl
+    ELSEIF(CMAKE_C_COMPILER_FRONTEND_VARIANT STREQUAL "GNU")
+        # clang
+    ENDIF()
+    MESSAGE(FATAL_ERROR "Compiler ${CMAKE_C_COMPILER_ID} not supported.")
+ELSEIF(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+    # MSVC
+    MESSAGE(FATAL_ERROR "Compiler ${CMAKE_C_COMPILER_ID} not supported.")
+ELSEIF(CMAKE_C_COMPILER_ID STREQUAL "Intel")
+    # Intel
+    MESSAGE(FATAL_ERROR "Compiler ${CMAKE_C_COMPILER_ID} not supported.")
+ELSEIF (CMAKE_C_COMPILER_ID STREQUAL "IntelLLVM")
+    # Intel New Style
+    MESSAGE(FATAL_ERROR "Compiler ${CMAKE_C_COMPILER_ID} not supported.")
+ELSEIF(CMAKE_C_COMPILER_ID STREQUAL "NVHPC")
+    # Nvidia HPC SDK (nvc)
+    MESSAGE(FATAL_ERROR "Compiler ${CMAKE_C_COMPILER_ID} not supported.")
+ELSEIF(CMAKE_C_COMPILER_ID STREQUAL "XL")
+    # IBM XLC
+    MESSAGE(FATAL_ERROR "Compiler ${CMAKE_C_COMPILER_ID} not supported.")
+ELSEIF(CMAKE_C_COMPILER_ID STREQUAL "TinyCC")
+    # Tiny CC
+    MESSAGE(FATAL_ERROR "Compiler ${CMAKE_C_COMPILER_ID} not supported.")
+ELSE ()
+    MESSAGE(FATAL_ERROR "Compiler ${CMAKE_C_COMPILER_ID} not supported.")
+ENDIF()
+
+INCLUDE(libm)
+
+# Fortran Interface
+# Not Required by now since we are using iso_c
+# include(FortranCInterface)
+# FortranCInterface_VERIFY()
+# FortranCInterface_HEADER(${PROJECT_BINARY_DIR}/src/hpblas_mangle.h MACRO_NAMESPACE "HPBLAS_")
+
+ADD_SUBDIRECTORY(src)
+ADD_SUBDIRECTORY(examples)
+#IF (LPF_TESTING)
+#    ADD_SUBDIRECTORY(test)
+#ENDIF()
+
+INCLUDE(CMakePackageConfigHelpers)
+WRITE_BASIC_PACKAGE_VERSION_FILE(
+    LPFConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY AnyNewerVersion
+ )
+INSTALL(EXPORT lpf_targets
+    FILE LPFTargets.cmake
+    NAMESPACE LPF::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/LPF
+)
+
+CONFIGURE_FILE(LPFConfig.cmake.in LPFConfig.cmake @ONLY)
+INSTALL(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/LPFConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/LPFConfigVersion.cmake"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/LPF}
+    )
+
+    CONFIGURE_FILE(lpf.pc.in lpf.pc @ONLY)
+INSTALL(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/lpf.pc"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+
+MESSAGE(STATUS "------------ Build Information --------------")
+MESSAGE(STATUS "VERSION: ${PROJECT_VERSION} ${FULL_VERSION}")
+MESSAGE(STATUS "CMAKE_Fortran_FLAGS:  ${CMAKE_Fortran_FLAGS}")
+MESSAGE(STATUS "CMAKE_Fortran_FLAGS_DEBUG:  ${CMAKE_Fortran_FLAGS_DEBUG}")
+MESSAGE(STATUS "CMAKE_Fortran_FLAGS_RELEASE:  ${CMAKE_Fortran_FLAGS_RELEASE}")
+MESSAGE(STATUS "CMAKE_C_FLAGS:  ${CMAKE_Fortran_FLAGS}")
+MESSAGE(STATUS "CMAKE_C_FLAGS_DEBUG:  ${CMAKE_Fortran_FLAGS_DEBUG}")
+MESSAGE(STATUS "CMAKE_C_FLAGS_RELEASE:  ${CMAKE_Fortran_FLAGS_RELEASE}")
+# MESSAGE(STATUS "BLAS Libraries: ${BLAS_LIBRARIES}")
+# MESSAGE(STATUS "LAPACK Libraries: ${LAPACK_LIBRARIES}")
+MESSAGE(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+MESSAGE(STATUS "BUILD_SHARED_LIBS: ${BUILD_SHARED_LIBS}")
+MESSAGE(STATUS "LPF_TESTING: ${LPF_TESTING}")
+MESSAGE(STATUS "---------------------------------------------")
