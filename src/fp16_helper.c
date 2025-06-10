@@ -23,13 +23,7 @@
 #include <stdint.h>
 #include <math.h>
 
-#define HIDDEN __attribute__((visibility("hidden")))
-
-typedef union {
-    _Float16 f16;
-    int16_t  i16;
-} fp16_handler_t;
-
+#include "fp16_helper.h"
 /*
  * Assignment and Constructors
  */
@@ -185,9 +179,6 @@ HIDDEN void __fp16_helper_pow_fp16_int(int16_t *out, int16_t a, int b)
     r->f16 = (_Float16) powf((float) _a.f16 ,(float) b);
 }
 
-/*
- * Functions
- */
 HIDDEN void __fp16_helper_abs(int16_t *out, int16_t in)
 {
     fp16_handler_t *r = (fp16_handler_t * ) out;
