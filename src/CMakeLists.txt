@@ -2,8 +2,10 @@ ADD_LIBRARY(lpf
     fp16.f08
     fp16_math_generic.f08
     fp16_math_one_arg.f08
+    fp16_math_two_args.f08
     fp16_helper.c
     fp16_math_one_arg.c
+    fp16_math_two_args.c
 )
 
 TARGET_LINK_LIBRARIES(lpf

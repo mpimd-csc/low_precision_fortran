@@ -34,6 +34,11 @@ MODULE FP16_SUPPORT
     PUBLIC :: sqrt
     PUBLIC :: tan
     PUBLIC :: tanh
+    PUBLIC :: atan2
+    PUBLIC :: bessel_jn
+    PUBLIC :: bessel_yn
+    PUBLIC :: hypot
+
 
     TYPE, BIND(C) :: FP16
         INTEGER(c_int16_t) :: value
@@ -240,6 +245,35 @@ MODULE FP16_SUPPORT
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function tanh_fp16
+    end interface
+
+    interface atan2
+        module function atan2_fp16(in1, in2) result(out)
+            type(FP16), intent(in) :: in1
+            type(FP16), intent(in) :: in2
+            type(FP16) :: out
+        end function atan2_fp16
+    end interface
+    interface bessel_jn
+        module function bessel_jn_fp16(in1, in2) result(out)
+            type(FP16), intent(in) :: in1
+            type(FP16), intent(in) :: in2
+            type(FP16) :: out
+        end function bessel_jn_fp16
+    end interface
+    interface bessel_yn
+        module function bessel_yn_fp16(in1, in2) result(out)
+            type(FP16), intent(in) :: in1
+            type(FP16), intent(in) :: in2
+            type(FP16) :: out
+        end function bessel_yn_fp16
+    end interface
+    interface hypot
+        module function hypot_fp16(in1, in2) result(out)
+            type(FP16), intent(in) :: in1
+            type(FP16), intent(in) :: in2
+            type(FP16) :: out
+        end function hypot_fp16
     end interface
 
 
