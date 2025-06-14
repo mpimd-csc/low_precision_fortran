@@ -3,9 +3,12 @@ ADD_LIBRARY(lpf
     fp16_math_generic.f08
     fp16_math_one_arg.f08
     fp16_math_two_args.f08
+    fp16_math_trig.f08
     fp16_helper.c
     fp16_math_one_arg.c
     fp16_math_two_args.c
+    fp16_math_generic.c
+    fp16_math_trig.c
 )
 
 TARGET_LINK_LIBRARIES(lpf
@@ -18,6 +21,7 @@ TARGET_INCLUDE_DIRECTORIES(lpf
         ${PROJECT_SOURCE_DIR}/src
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/fortran-modules>
         $<INSTALL_INTERFACE:include>
 )
 

@@ -179,14 +179,4 @@ HIDDEN void __fp16_helper_pow_fp16_int(int16_t *out, int16_t a, int b)
     r->f16 = (_Float16) powf((float) _a.f16 ,(float) b);
 }
 
-HIDDEN void __fp16_helper_abs(int16_t *out, int16_t in)
-{
-    fp16_handler_t *r = (fp16_handler_t * ) out;
-    fp16_handler_t _a = { .i16 = in};
-    if ( _a.f16 < 0 ) {
-        r->f16 = - _a.f16;
-    } else {
-        r->f16 =  _a.f16;
-    }
-}
 

@@ -1,13 +1,4 @@
-acosd
-asind
-atand
-cosd
-cotan
-cotand
-epsilon
 erfc_scaled
-exponent
-fraction
 huge
 maxexponent
 minexponent
@@ -16,10 +7,7 @@ modulo
 nearest
 nint,nearbyintf
 precision
-radix
 range
 scale
 sign
-sind
-tand
 tiny

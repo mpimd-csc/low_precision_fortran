@@ -38,7 +38,19 @@ MODULE FP16_SUPPORT
     PUBLIC :: bessel_jn
     PUBLIC :: bessel_yn
     PUBLIC :: hypot
-
+    PUBLIC :: radix
+    PUBLIC :: epsilon
+    PUBLIC :: exponent
+    PUBLIC :: fraction
+    PUBLIC :: cosd
+    PUBLIC :: sind
+    PUBLIC :: tand
+    PUBLIC :: cotan
+    PUBLIC :: cotand
+    PUBLIC :: acosd
+    PUBLIC :: asind
+    PUBLIC :: atand
+    PUBLIC :: atan2d
 
     TYPE, BIND(C) :: FP16
         INTEGER(c_int16_t) :: value
@@ -85,197 +97,291 @@ MODULE FP16_SUPPORT
 
     ! Math functions
     interface abs
-        module function abs_fp16(x) result(abs_val)
+        module elemental function abs_fp16(x) result(abs_val)
             type(FP16), intent(in) :: x
             type(FP16) :: abs_val
         end function abs_fp16
     end interface
+
+    interface epsilon
+        module elemental function epsilon_fp16(x) result(abs_val)
+            type(FP16), intent(in) :: x
+            type(FP16) :: abs_val
+        end function epsilon_fp16
+    end interface
+
+    interface radix
+        module elemental function radix_fp16(x) result(out)
+            type(FP16), intent(in) :: x
+            integer :: out
+        end function radix_fp16
+    end interface
+
+    interface exponent
+        module elemental function exponent_fp16(x) result(out)
+            type(FP16), intent(in) :: x
+            integer :: out
+        end function exponent_fp16
+    end interface
+
+    interface fraction
+        module elemental function fraction_fp16(x) result(out)
+            type(FP16), intent(in) :: x
+            type(FP16) :: out
+        end function fraction_fp16
+    end interface
+
+
+
     interface acos
-        module function acos_fp16(in) result(out)
+        module elemental function acos_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function acos_fp16
     end interface
     interface acosh
-        module function acosh_fp16(in) result(out)
+        module elemental function acosh_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function acosh_fp16
     end interface
     interface asin
-        module function asin_fp16(in) result(out)
+        module elemental function asin_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function asin_fp16
     end interface
     interface asinh
-        module function asinh_fp16(in) result(out)
+        module elemental function asinh_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function asinh_fp16
     end interface
     interface atan
-        module function atan_fp16(in) result(out)
+        module elemental function atan_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function atan_fp16
     end interface
     interface atanh
-        module function atanh_fp16(in) result(out)
+        module elemental function atanh_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function atanh_fp16
     end interface
     interface bessel_j0
-        module function bessel_j0_fp16(in) result(out)
+        module elemental function bessel_j0_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function bessel_j0_fp16
     end interface
     interface bessel_j1
-        module function bessel_j1_fp16(in) result(out)
+        module elemental function bessel_j1_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function bessel_j1_fp16
     end interface
     interface bessel_y0
-        module function bessel_y0_fp16(in) result(out)
+        module elemental function bessel_y0_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function bessel_y0_fp16
     end interface
     interface bessel_y1
-        module function bessel_y1_fp16(in) result(out)
+        module elemental function bessel_y1_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function bessel_y1_fp16
     end interface
     interface ceiling
-        module function ceiling_fp16(in) result(out)
+        module elemental function ceiling_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function ceiling_fp16
     end interface
     interface cos
-        module function cos_fp16(in) result(out)
+        module elemental function cos_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function cos_fp16
     end interface
     interface cosh
-        module function cosh_fp16(in) result(out)
+        module elemental function cosh_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function cosh_fp16
     end interface
     interface erf
-        module function erf_fp16(in) result(out)
+        module elemental function erf_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function erf_fp16
     end interface
     interface erfc
-        module function erfc_fp16(in) result(out)
+        module elemental function erfc_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function erfc_fp16
     end interface
     interface exp
-        module function exp_fp16(in) result(out)
+        module elemental function exp_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function exp_fp16
     end interface
     interface floor
-        module function floor_fp16(in) result(out)
+        module elemental function floor_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function floor_fp16
     end interface
     interface gamma
-        module function gamma_fp16(in) result(out)
+        module elemental function gamma_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function gamma_fp16
     end interface
     interface log
-        module function log_fp16(in) result(out)
+        module elemental function log_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function log_fp16
     end interface
     interface log10
-        module function log10_fp16(in) result(out)
+        module elemental function log10_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function log10_fp16
     end interface
     interface log_gamma
-        module function log_gamma_fp16(in) result(out)
+        module elemental function log_gamma_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function log_gamma_fp16
     end interface
     interface sin
-        module function sin_fp16(in) result(out)
+        module elemental function sin_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function sin_fp16
     end interface
     interface sinh
-        module function sinh_fp16(in) result(out)
+        module elemental function sinh_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function sinh_fp16
     end interface
     interface sqrt
-        module function sqrt_fp16(in) result(out)
+        module elemental function sqrt_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function sqrt_fp16
     end interface
     interface tan
-        module function tan_fp16(in) result(out)
+        module elemental function tan_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function tan_fp16
     end interface
     interface tanh
-        module function tanh_fp16(in) result(out)
+        module elemental function tanh_fp16(in) result(out)
             type(FP16), intent(in) :: in
             type(FP16) :: out
         end function tanh_fp16
     end interface
 
     interface atan2
-        module function atan2_fp16(in1, in2) result(out)
+        module elemental function atan2_fp16(in1, in2) result(out)
             type(FP16), intent(in) :: in1
             type(FP16), intent(in) :: in2
             type(FP16) :: out
         end function atan2_fp16
     end interface
     interface bessel_jn
-        module function bessel_jn_fp16(in1, in2) result(out)
+        module elemental function bessel_jn_fp16(in1, in2) result(out)
             type(FP16), intent(in) :: in1
             type(FP16), intent(in) :: in2
             type(FP16) :: out
         end function bessel_jn_fp16
     end interface
     interface bessel_yn
-        module function bessel_yn_fp16(in1, in2) result(out)
+        module elemental function bessel_yn_fp16(in1, in2) result(out)
             type(FP16), intent(in) :: in1
             type(FP16), intent(in) :: in2
             type(FP16) :: out
         end function bessel_yn_fp16
     end interface
     interface hypot
-        module function hypot_fp16(in1, in2) result(out)
+        module elemental function hypot_fp16(in1, in2) result(out)
             type(FP16), intent(in) :: in1
             type(FP16), intent(in) :: in2
             type(FP16) :: out
         end function hypot_fp16
     end interface
 
+    interface cosd
+        module elemental function cosd_fp16(x) result(ret_val)
+            type(FP16), intent(in) :: x
+            type(FP16) :: ret_val
+        end function cosd_fp16
+    end interface
+
+    interface sind
+        module elemental function sind_fp16(x) result(ret_val)
+            type(FP16), intent(in) :: x
+            type(FP16) :: ret_val
+        end function sind_fp16
+    end interface
+
+    interface tand
+        module elemental function tand_fp16(x) result(ret_val)
+            type(FP16), intent(in) :: x
+            type(FP16) :: ret_val
+        end function tand_fp16
+    end interface
+
+    interface cotan
+        module elemental function cotan_fp16(x) result(ret_val)
+            type(FP16), intent(in) :: x
+            type(FP16) :: ret_val
+        end function cotan_fp16
+    end interface
+
+    interface cotand
+        module elemental function cotand_fp16(x) result(ret_val)
+            type(FP16), intent(in) :: x
+            type(FP16) :: ret_val
+        end function cotand_fp16
+    end interface
+
+    interface acosd
+        module elemental function acosd_fp16(x) result(ret_val)
+            type(FP16), intent(in) :: x
+            type(FP16) :: ret_val
+        end function acosd_fp16
+    end interface
+
+    interface asind
+        module elemental function asind_fp16(x) result(ret_val)
+            type(FP16), intent(in) :: x
+            type(FP16) :: ret_val
+        end function asind_fp16
+    end interface
+
+    interface atand
+        module elemental function atand_fp16(x) result(ret_val)
+            type(FP16), intent(in) :: x
+            type(FP16) :: ret_val
+        end function atand_fp16
+    end interface
+
+    interface atan2d
+        module elemental function atan2d_fp16(x,y) result(ret_val)
+            type(FP16), intent(in) :: x
+            type(FP16), intent(in) :: y
+            type(FP16) :: ret_val
+        end function atan2d_fp16
+    end interface
 
     ! C Interfaces
     INTERFACE
@@ -364,19 +470,19 @@ MODULE FP16_SUPPORT
         end subroutine
 
         subroutine helper_power_fp16_fp16(out, a, b) bind(c, name = "__fp16_helper_pow_fp16_fp16")
-             use, intrinsic :: iso_c_binding
+            use, intrinsic :: iso_c_binding
             integer(c_int16_t), intent(out) :: out
             integer(c_int16_t), intent(in), value :: a
             integer(c_int16_t), intent(in), value :: b
         end subroutine
         subroutine helper_power_fp16_real(out, a, b) bind(c, name = "__fp16_helper_pow_fp16_real")
-             use, intrinsic :: iso_c_binding
+            use, intrinsic :: iso_c_binding
             integer(c_int16_t), intent(out) :: out
             integer(c_int16_t), intent(in), value :: a
             real(c_float), intent(in), value :: b
         end subroutine
         subroutine helper_power_fp16_int(out, a, b) bind(c, name = "__fp16_helper_pow_fp16_int")
-             use, intrinsic :: iso_c_binding
+            use, intrinsic :: iso_c_binding
             integer(c_int16_t), intent(out) :: out
             integer(c_int16_t), intent(in), value :: a
             integer(c_int), intent(in), value :: b

@@ -28,7 +28,7 @@ do
     CNAME=$(echo $line | cut -f2 -d, )
 
     cat >> ${OUTPUTF} <<EOF
-        subroutine helper_fp16_${FNAME}(out, in1, in2) bind(c, name="__fp16_helper_${FNAME}")
+        pure subroutine helper_fp16_${FNAME}(out, in1, in2) bind(c, name="__fp16_helper_${FNAME}")
             use, intrinsic :: iso_c_binding
             integer(c_int16_t), intent(out) :: out
             integer(c_int16_t), intent(in), value :: in1
@@ -48,7 +48,7 @@ do
     CNAME=$(echo $line | cut -f2 -d, )
 
     cat >> ${OUTPUTF} << EOF
-    module function ${FNAME}_fp16(in1, in2) result(out)
+    module elemental function ${FNAME}_fp16(in1, in2) result(out)
             type(FP16) :: out
             type(FP16), intent(in) :: in1
             type(FP16), intent(in) :: in2
@@ -58,7 +58,7 @@ do
 EOF
     cat << EOF
     interface ${FNAME}
-        module function ${FNAME}_fp16(in1, in2) result(out)
+        module elemental function ${FNAME}_fp16(in1, in2) result(out)
             type(FP16), intent(in) :: in1
             type(FP16), intent(in) :: in2
             type(FP16) :: out
