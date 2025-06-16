@@ -51,6 +51,19 @@ MODULE FP16_SUPPORT
     PUBLIC :: asind
     PUBLIC :: atand
     PUBLIC :: atan2d
+    PUBLIC :: erfc_scaled
+    PUBLIC :: huge
+    PUBLIC :: tiny
+    PUBLIC :: minexponent
+    PUBLIC :: maxexponent
+    PUBLIC :: mod
+    PUBLIC :: modulo
+    PUBLIC :: nearest
+    PUBLIC :: nint
+    PUBLIC :: precision
+    PUBLIC :: range
+    PUBLIC :: scale
+    PUBLIC :: sign
 
     TYPE, BIND(C) :: FP16
         INTEGER(c_int16_t) :: value
@@ -131,7 +144,102 @@ MODULE FP16_SUPPORT
         end function fraction_fp16
     end interface
 
+    interface erfc_scaled
+        module elemental function erfc_scaled_fp16(x) result(out)
+            type(FP16), intent(in) :: x
+            type(FP16) :: out
+        end function erfc_scaled_fp16
+    end interface
 
+    interface huge
+        module elemental function huge_fp16(x) result(out)
+            type(FP16), intent(in) :: x
+            type(FP16) :: out
+        end function huge_fp16
+    end interface
+
+    interface tiny
+        module elemental function tiny_fp16(x) result(out)
+            type(FP16), intent(in) :: x
+            type(FP16) :: out
+        end function tiny_fp16
+    end interface
+
+
+    interface minexponent
+        module elemental function minexponent_fp16(x) result(out)
+            type(FP16), intent(in) :: x
+            type(FP16) :: out
+        end function minexponent_fp16
+    end interface
+
+    interface maxexponent
+        module elemental function maxexponent_fp16(x) result(out)
+            type(FP16), intent(in) :: x
+            type(FP16) :: out
+        end function maxexponent_fp16
+    end interface
+
+    interface mod
+        module elemental function mod_fp16(x, y) result(out)
+            type(FP16), intent(in) :: x
+            type(FP16), intent(in) :: y
+            type(FP16) :: out
+        end function mod_fp16
+    end interface
+
+    interface modulo
+        module elemental function modulo_fp16(x, y) result(out)
+            type(FP16), intent(in) :: x
+            type(FP16), intent(in) :: y
+            type(FP16) :: out
+        end function modulo_fp16
+    end interface
+
+    interface nearest
+        module elemental function nearest_fp16(x, y) result(out)
+            type(FP16), intent(in) :: x
+            type(FP16), intent(in) :: y
+            type(FP16) :: out
+        end function nearest_fp16
+    end interface
+
+    interface nint
+        module elemental function nint_fp16(x) result(out)
+            type(FP16), intent(in) :: x
+            type(FP16) :: out
+        end function nint_fp16
+    end interface
+
+    interface precision
+        module elemental function precision_fp16(x) result(out)
+            type(FP16), intent(in) :: x
+            type(FP16) :: out
+        end function precision_fp16
+    end interface
+
+    interface range
+        module elemental function range_fp16(x) result(out)
+            type(FP16), intent(in) :: x
+            integer :: out
+        end function range_fp16
+    end interface
+
+    interface scale
+        module elemental function scale_fp16(x, s) result(out)
+            type(FP16), intent(in) :: x
+            integer, intent(in) :: s
+            type(FP16) :: out
+        end function scale_fp16
+    end interface
+
+    interface sign
+        module elemental function sign_fp16(x, y) result(out)
+            type(FP16), intent(in) :: x
+            type(FP16), intent(in) :: y
+            type(FP16) :: out
+        end function sign_fp16
+    end interface
 
     interface acos
         module elemental function acos_fp16(in) result(out)

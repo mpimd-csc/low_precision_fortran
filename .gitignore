@@ -1,3 +1,4 @@
 .ccls-cache
 build
 build-dir
+*.swp

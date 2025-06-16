@@ -31,6 +31,7 @@
 typedef union {
     _Float16 f16;
     int16_t  i16;
+    uint16_t u16;
 } fp16_handler_t;
 
 
