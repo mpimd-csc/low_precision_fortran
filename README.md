@@ -46,6 +46,13 @@ this would be from mpfr.
 * AXV512FP16 and emulation support at once
 * BFloat16 support
 
+### Issue / Missing Functionallity
+
+#### MAXLOC/MAXVAL/MINVAL/MINLOC
+The family of `maxloc`, `maxval`, `minval`, and `minloc` only support up to 4D
+arrays. The optional `MASK` argument in `maxval` and `minval` is not yet supported.
+The `maxloc` and `minloc` function does not support the `mask`, `kind`, and
+`back` argument, yet.
 
 ## Installation
 

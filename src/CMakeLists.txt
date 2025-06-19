@@ -4,6 +4,9 @@ ADD_LIBRARY(lpf
     fp16_math_one_arg.f08
     fp16_math_two_args.f08
     fp16_math_trig.f08
+    fp16_maxval.f08
+    fp16_maxloc.f08
+    fp16_minloc.f08
     fp16_helper.c
     fp16_math_one_arg.c
     fp16_math_two_args.c

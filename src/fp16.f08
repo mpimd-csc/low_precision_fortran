@@ -66,6 +66,7 @@ MODULE FP16_SUPPORT
     PUBLIC :: range
     PUBLIC :: scale
     PUBLIC :: sign
+    PUBLIC :: maxval
 
     TYPE, BIND(C) :: FP16
         INTEGER(c_int16_t) :: value
@@ -524,6 +525,178 @@ MODULE FP16_SUPPORT
             type(FP16) :: ret_val
         end function atan2d_fp16
     end interface
+
+    interface maxval
+        module pure function maxval_fp16_1d(array) result(max_value)
+            type(fp16), dimension(:), intent(in) :: array
+            type(fp16) :: max_value
+        end function
+        module pure function maxval_fp16_2d(array) result(max_value)
+            type(fp16), dimension(:,:), intent(in) :: array
+            type(fp16) :: max_value
+        end function
+        module pure function maxval_fp16_3d(array) result(max_value)
+            type(fp16), dimension(:,:,:), intent(in) :: array
+            type(fp16) :: max_value
+        end function
+        module pure function maxval_fp16_4d(array) result(max_value)
+            type(fp16), dimension(:,:,:,:), intent(in) :: array
+            type(fp16) :: max_value
+        end function
+        module pure function maxval_fp16_1d_dim(array, dim) result(max_value)
+            type(fp16), dimension(:), intent(in) :: array
+            integer, intent(in) :: dim
+            type(fp16) :: max_value
+        end function
+        module pure function maxval_fp16_2d_dim(array, dim) result(max_value)
+            type(fp16), dimension(:,:), intent(in) :: array
+            integer, intent(in) :: dim
+            type(fp16), dimension(size(array, merge(2, 1, dim == 1))) :: max_value
+        end function
+        module pure function maxval_fp16_3d_dim(array, dim) result(max_value)
+            type(fp16), dimension(:,:,:), intent(in) :: array
+            integer, intent(in) :: dim
+            type(fp16), dimension( size(array, merge(2, 1, dim == 1)), &
+                & size(array, merge(2, 3, dim == 3))) :: max_value
+        end function
+        module pure function maxval_fp16_4d_dim(array, dim) result(max_value)
+            type(fp16), dimension(:,:,:,:), intent(in) :: array
+            integer, intent(in) :: dim
+            type(fp16), dimension( size(array, merge(2, 1, dim == 1)), &
+                & size(array, merge(3, 2, dim < 3)), &
+                & size(array, merge(4, 3, dim == 4))) :: max_value
+        end function
+    end interface
+
+    interface minval
+        module pure function minval_fp16_1d(array) result(min_value)
+            type(fp16), dimension(:), intent(in) :: array
+            type(fp16) :: min_value
+        end function
+        module pure function minval_fp16_2d(array) result(min_value)
+            type(fp16), dimension(:,:), intent(in) :: array
+            type(fp16) :: min_value
+        end function
+        module pure function minval_fp16_3d(array) result(min_value)
+            type(fp16), dimension(:,:,:), intent(in) :: array
+            type(fp16) :: min_value
+        end function
+        module pure function minval_fp16_4d(array) result(min_value)
+            type(fp16), dimension(:,:,:,:), intent(in) :: array
+            type(fp16) :: min_value
+        end function
+        module pure function minval_fp16_1d_dim(array, dim) result(min_value)
+            type(fp16), dimension(:), intent(in) :: array
+            integer, intent(in) :: dim
+            type(fp16) :: min_value
+        end function
+        module pure function minval_fp16_2d_dim(array, dim) result(min_value)
+            type(fp16), dimension(:,:), intent(in) :: array
+            integer, intent(in) :: dim
+            type(fp16), dimension(size(array, merge(2, 1, dim == 1))) :: min_value
+        end function
+        module pure function minval_fp16_3d_dim(array, dim) result(min_value)
+            type(fp16), dimension(:,:,:), intent(in) :: array
+            integer, intent(in) :: dim
+            type(fp16), dimension( size(array, merge(2, 1, dim == 1)), &
+                & size(array, merge(2, 3, dim == 3))) :: min_value
+        end function
+        module pure function minval_fp16_4d_dim(array, dim) result(min_value)
+            type(fp16), dimension(:,:,:,:), intent(in) :: array
+            integer, intent(in) :: dim
+            type(fp16), dimension( size(array, merge(2, 1, dim == 1)), &
+                & size(array, merge(3, 2, dim < 3)), &
+                & size(array, merge(4, 3, dim == 4))) :: min_value
+        end function
+    end interface
+
+
+    interface maxloc
+        module pure function maxloc_fp16_1d(array) result(max_loc)
+            type(fp16), dimension(:), intent(in) :: array
+            integer :: max_loc
+        end function
+        module pure function maxloc_fp16_2d(array) result(max_loc)
+            type(fp16), dimension(:,:), intent(in) :: array
+            integer, dimension(2) :: max_loc
+        end function
+        module pure function maxloc_fp16_3d(array) result(max_loc)
+            type(fp16), dimension(:,:,:), intent(in) :: array
+            integer, dimension(3) :: max_loc
+        end function
+        module pure function maxloc_fp16_4d(array) result(max_loc)
+            type(fp16), dimension(:,:,:,:), intent(in) :: array
+            integer, dimension(4) :: max_loc
+        end function
+        module pure function maxloc_fp16_1d_dim(array, dim) result(max_loc)
+            type(fp16), dimension(:), intent(in) :: array
+            integer, intent(in) :: dim
+            integer :: max_loc
+        end function
+        module pure function maxloc_fp16_2d_dim(array, dim) result(max_loc)
+            type(fp16), dimension(:,:), intent(in) :: array
+            integer, intent(in) :: dim
+            integer, dimension(size(array, merge(2, 1, dim == 1))) :: max_loc
+        end function
+        module pure function maxloc_fp16_3d_dim(array, dim) result(max_loc)
+            type(fp16), dimension(:,:,:), intent(in) :: array
+            integer, intent(in) :: dim
+            integer, dimension( size(array, merge(2, 1, dim == 1)), &
+                & size(array, merge(2, 3, dim == 3))) :: max_loc
+        end function
+        module pure function maxloc_fp16_4d_dim(array, dim) result(max_loc)
+            type(fp16), dimension(:,:,:,:), intent(in) :: array
+            integer, intent(in) :: dim
+            integer, dimension( size(array, merge(2, 1, dim == 1)), &
+                & size(array, merge(3, 2, dim < 3)), &
+                & size(array, merge(4, 3, dim == 4))) :: max_loc
+        end function
+    end interface
+
+
+    interface minloc
+        module pure function minloc_fp16_1d(array) result(min_loc)
+            type(fp16), dimension(:), intent(in) :: array
+            integer :: min_loc
+        end function
+        module pure function minloc_fp16_2d(array) result(min_loc)
+            type(fp16), dimension(:,:), intent(in) :: array
+            integer, dimension(2) :: min_loc
+        end function
+        module pure function minloc_fp16_3d(array) result(min_loc)
+            type(fp16), dimension(:,:,:), intent(in) :: array
+            integer, dimension(3) :: min_loc
+        end function
+        module pure function minloc_fp16_4d(array) result(min_loc)
+            type(fp16), dimension(:,:,:,:), intent(in) :: array
+            integer, dimension(4) :: min_loc
+        end function
+        module pure function minloc_fp16_1d_dim(array, dim) result(min_loc)
+            type(fp16), dimension(:), intent(in) :: array
+            integer, intent(in) :: dim
+            integer :: min_loc
+        end function
+        module pure function minloc_fp16_2d_dim(array, dim) result(min_loc)
+            type(fp16), dimension(:,:), intent(in) :: array
+            integer, intent(in) :: dim
+            integer, dimension(size(array, merge(2, 1, dim == 1))) :: min_loc
+        end function
+        module pure function minloc_fp16_3d_dim(array, dim) result(min_loc)
+            type(fp16), dimension(:,:,:), intent(in) :: array
+            integer, intent(in) :: dim
+            integer, dimension( size(array, merge(2, 1, dim == 1)), &
+                & size(array, merge(2, 3, dim == 3))) :: min_loc
+        end function
+        module pure function minloc_fp16_4d_dim(array, dim) result(min_loc)
+            type(fp16), dimension(:,:,:,:), intent(in) :: array
+            integer, intent(in) :: dim
+            integer, dimension( size(array, merge(2, 1, dim == 1)), &
+                & size(array, merge(3, 2, dim < 3)), &
+                & size(array, merge(4, 3, dim == 4))) :: min_loc
+        end function
+    end interface
+
+
 
     ! C Interfaces
     INTERFACE
