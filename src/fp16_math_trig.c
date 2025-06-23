@@ -39,7 +39,7 @@ static float deg2rad(float x)
 /*
  * ACOSD
  */
-HIDDEN void __fp16_helper_acosd(int *out, int16_t in)
+HIDDEN void __fp16_helper_acosd(int16_t *out, int16_t in)
 {
     fp16_handler_t a = {.i16 = in};
     fp16_handler_t *r = (fp16_handler_t *) out;
@@ -51,7 +51,7 @@ HIDDEN void __fp16_helper_acosd(int *out, int16_t in)
 /*
  * ASIND
  */
-HIDDEN void __fp16_helper_asind(int *out, int16_t in)
+HIDDEN void __fp16_helper_asind(int16_t *out, int16_t in)
 {
     fp16_handler_t a = {.i16 = in};
     fp16_handler_t *r = (fp16_handler_t *) out;
@@ -63,7 +63,7 @@ HIDDEN void __fp16_helper_asind(int *out, int16_t in)
 /*
  * ATAND
  */
-HIDDEN void __fp16_helper_atand(int *out, int16_t in)
+HIDDEN void __fp16_helper_atand(int16_t *out, int16_t in)
 {
     fp16_handler_t a = {.i16 = in};
     fp16_handler_t *r = (fp16_handler_t *) out;
@@ -75,7 +75,7 @@ HIDDEN void __fp16_helper_atand(int *out, int16_t in)
 /*
  * ATAN2D
  */
-HIDDEN void __fp16_helper_atan2d(int *out, int16_t in1, int16_t in2)
+HIDDEN void __fp16_helper_atan2d(int16_t *out, int16_t in1, int16_t in2)
 {
     fp16_handler_t a = {.i16 = in1};
     fp16_handler_t b = {.i16 = in2};
@@ -85,18 +85,10 @@ HIDDEN void __fp16_helper_atan2d(int *out, int16_t in1, int16_t in2)
     r->f16 = rad2deg(x);
 }
 
-
-
-
-
-
-
-
-
 /*
  * COSD
  */
-HIDDEN void __fp16_helper_cosd(int *out, int16_t in)
+HIDDEN void __fp16_helper_cosd(int16_t *out, int16_t in)
 {
     fp16_handler_t a = {.i16 = in};
     fp16_handler_t *r = (fp16_handler_t *) out;
@@ -108,7 +100,7 @@ HIDDEN void __fp16_helper_cosd(int *out, int16_t in)
 /*
  * SIND
  */
-HIDDEN void __fp16_helper_sind(int *out, int16_t in)
+HIDDEN void __fp16_helper_sind(int16_t *out, int16_t in)
 {
     fp16_handler_t a = {.i16 = in};
     fp16_handler_t *r = (fp16_handler_t *) out;
@@ -120,7 +112,7 @@ HIDDEN void __fp16_helper_sind(int *out, int16_t in)
 /*
  * TAND
  */
-HIDDEN void __fp16_helper_tand(int *out, int16_t in)
+HIDDEN void __fp16_helper_tand(int16_t *out, int16_t in)
 {
     fp16_handler_t a = {.i16 = in};
     fp16_handler_t *r = (fp16_handler_t *) out;
@@ -132,7 +124,7 @@ HIDDEN void __fp16_helper_tand(int *out, int16_t in)
 /*
  * COTAN(X) is translated into -TAN(X+PI/2)
  */
-HIDDEN void __fp16_helper_cotan(int *out, int16_t in)
+HIDDEN void __fp16_helper_cotan(int16_t *out, int16_t in)
 {
     fp16_handler_t a = {.i16 = in};
     fp16_handler_t *r = (fp16_handler_t *) out;
@@ -144,7 +136,7 @@ HIDDEN void __fp16_helper_cotan(int *out, int16_t in)
 /*
  * COTAND(X) is translated into -TAND(X+90) for REAL argument.
  */
-HIDDEN void __fp16_helper_cotand(int *out, int16_t in)
+HIDDEN void __fp16_helper_cotand(int16_t *out, int16_t in)
 {
     fp16_handler_t a = {.i16 = in};
     fp16_handler_t *r = (fp16_handler_t *) out;

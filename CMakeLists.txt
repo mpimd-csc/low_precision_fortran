@@ -64,7 +64,9 @@ IF ( LPF_DEBUG STREQUAL ON OR CMAKE_BUILD_TYPE STREQUAL "Debug"  )
 ENDIF()
 
 IF(CMAKE_C_COMPILER_ID STREQUAL "GNU")
-    ADD_C_COMPILER_FLAG_REQUIRED(CMAKE_C_FLAGS "-mf16c")
+    IF (CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
+        ADD_C_COMPILER_FLAG_REQUIRED(CMAKE_C_FLAGS "-mf16c")
+    endif()
 ELSEIF(CMAKE_C_COMPILER_ID STREQUAL "Clang" )
     IF(CMAKE_C_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC")
         # clang-cl
@@ -96,6 +98,9 @@ ENDIF()
 
 INCLUDE(libm)
 INCLUDE(CheckMathFunctions)
+include(CheckIPOSupported)
+check_ipo_supported(RESULT LPF_USE_IPO)
+
 # Fortran Interface
 # Not Required by now since we are using iso_c
 # include(FortranCInterface)
