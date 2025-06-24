@@ -1,13 +1,14 @@
+SET(CMAKE_Fortran_STANDARD 08)
 ADD_LIBRARY(lpf
-    fp16.f08
-    fp16_math_generic.f08
-    fp16_math_one_arg.f08
-    fp16_math_two_args.f08
-    fp16_math_trig.f08
-    fp16_maxval.f08
-    fp16_maxloc.f08
-    fp16_minloc.f08
-    fp16_minval.f08
+    fp16.f90
+    fp16_math_generic.f90
+    fp16_math_one_arg.f90
+    fp16_math_two_args.f90
+    fp16_math_trig.f90
+    fp16_maxval.f90
+    fp16_maxloc.f90
+    fp16_minloc.f90
+    fp16_minval.f90
     fp16_helper.c
     fp16_math_one_arg.c
     fp16_math_two_args.c
@@ -26,7 +27,7 @@ TARGET_INCLUDE_DIRECTORIES(lpf
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/fortran-modules>
-        $<INSTALL_INTERFACE:include>
+        $<INSTALL_INTERFACE:include/lpf>
 )
 
 if(LPF_USE_IPO)
@@ -36,7 +37,7 @@ endif()
 SET_PROPERTY(TARGET lpf PROPERTY VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
 SET_PROPERTY(TARGET lpf PROPERTY SOVERSION ${PROJECT_VERSION_MAJOR})
 SET_TARGET_PROPERTIES(lpf PROPERTIES Fortran_MODULE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fortran-modules")
-INSTALL(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fortran-modules/" DESTINATION ${CMAKE_INSTALL_FULL_MODULEDIR})
+INSTALL(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fortran-modules/" DESTINATION ${CMAKE_INSTALL_FULL_MODULEDIR} )
 
 ADD_LIBRARY(LPF::LPF ALIAS lpf)
 

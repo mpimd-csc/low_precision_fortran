@@ -7,4 +7,5 @@ moduledir=@CMAKE_INSTALL_FULL_MODULEDIR@
 Name: lpf
 Description: The Low Precision Fortran library
 Version: @PROJECT_VERSION@
+CFlags: -I${moduledir}
 Libs: -L${libdir} -llpf

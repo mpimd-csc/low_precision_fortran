@@ -1,6 +1,6 @@
 SET (SRC
-    demo1.f03
-    demo_fraction.f03
+    demo1.f90
+    demo_fraction.f90
 )
 
 FOREACH( S IN LISTS SRC)

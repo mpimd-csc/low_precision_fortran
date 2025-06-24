@@ -27,4 +27,19 @@ linux:
       # - (cd build-dir; OMP_NUM_THREADS=1 ctest -V)
       # - cat build.log | grep -- \\[-W | sed 's/.*\[//; s/\]//' | sort | uniq -c | sort -nr
 
+linux-intel:
+  stage: build
+  image: gitlab.mpi-magdeburg.mpg.de/ci-images/intel-compiler/noble:${INTEL_VERSION}
+  needs: []
+  tags:
+    - haswell
+  parallel:
+    matrix:
+      - INTEL_VERSION: [ "2025.1" , "2024.2"]
+
+  script:
+    - CC=icx FC=ifx cmake -S . -B build-dir
+    - cmake --build build-dir 2>&1 | tee build.log
+    - cmake --build build-dir --target install
+    # - (cd build-dir; OMP_NUM_THREADS=1 ctest -V)
 
