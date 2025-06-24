@@ -7,6 +7,7 @@ ADD_LIBRARY(lpf
     fp16_maxval.f08
     fp16_maxloc.f08
     fp16_minloc.f08
+    fp16_minval.f08
     fp16_helper.c
     fp16_math_one_arg.c
     fp16_math_two_args.c

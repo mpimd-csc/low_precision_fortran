@@ -5,7 +5,7 @@ submodule (fp16_support) fp16_minval
 
 contains
     ! Overall min in 1D
-    pure function minval_fp16_1d(array) result(min_value)
+    module pure function minval_fp16_1d(array) result(min_value)
         type(fp16), dimension(:), intent(in) :: array
         type(fp16) :: min_value
         integer :: i
@@ -28,7 +28,7 @@ contains
     end function minval_fp16_1d
 
     ! Overall min in 2D
-    pure function minval_fp16_2d(array) result(min_value)
+    module pure function minval_fp16_2d(array) result(min_value)
         type(fp16), dimension(:,:), intent(in) :: array
         type(fp16) :: min_value
         integer :: i, j
@@ -45,7 +45,7 @@ contains
     end function minval_fp16_2d
 
     ! Overall min in 3D
-    pure function minval_fp16_3d(array) result(min_value)
+    module pure function minval_fp16_3d(array) result(min_value)
         type(fp16), dimension(:,:,:), intent(in) :: array
         type(fp16) :: min_value
         integer :: i, j, k
@@ -64,7 +64,7 @@ contains
     end function minval_fp16_3d
 
     ! Overall min in 4D
-    pure function minval_fp16_4d(array) result(min_value)
+    module pure function minval_fp16_4d(array) result(min_value)
         type(fp16), dimension(:,:,:,:), intent(in) :: array
         type(fp16) :: min_value
         integer :: i, j, k, l
@@ -86,7 +86,7 @@ contains
 
 
     ! Overall Max in 1D but with dim argument.
-    pure function minval_fp16_1d_dim(array, dim) result(min_value)
+    module pure function minval_fp16_1d_dim(array, dim) result(min_value)
         type(fp16), dimension(:), intent(in) :: array
         integer, intent(in) :: dim
         type(fp16) :: min_value
@@ -99,7 +99,7 @@ contains
     end function minval_fp16_1d_dim
 
     ! Max along dim in 2D
-    pure function minval_fp16_2d_dim(array, dim) result(min_value)
+    module pure function minval_fp16_2d_dim(array, dim) result(min_value)
         type(fp16), dimension(:,:), intent(in) :: array
         integer, intent(in) :: dim
         type(fp16), dimension(size(array, merge(2, 1, dim == 1))) :: min_value
@@ -132,7 +132,7 @@ contains
     end function minval_fp16_2d_dim
 
     ! Max along dim in 3D
-    pure function minval_fp16_3d_dim(array, dim) result(min_value)
+    module pure function minval_fp16_3d_dim(array, dim) result(min_value)
         type(fp16), dimension(:,:,:), intent(in) :: array
         integer, intent(in) :: dim
         !
@@ -190,7 +190,7 @@ contains
     end function minval_fp16_3d_dim
 
     ! Max along dim in 4D
-    pure function minval_fp16_4d_dim(array, dim) result(min_value)
+    module pure function minval_fp16_4d_dim(array, dim) result(min_value)
         type(fp16), dimension(:,:,:,:), intent(in) :: array
         integer, intent(in) :: dim
         !

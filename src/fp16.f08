@@ -67,6 +67,9 @@ MODULE FP16_SUPPORT
     PUBLIC :: scale
     PUBLIC :: sign
     PUBLIC :: maxval
+    PUBLIC :: maxloc
+    PUBLIC :: minval
+    PUBLIC :: minloc
 
     TYPE, BIND(C) :: FP16
         INTEGER(c_int16_t) :: value
@@ -1249,7 +1252,7 @@ CONTAINS
         character(*), intent(in) :: iotype
         integer, intent(in) :: v_list(:)
         integer, intent(out) :: iostat
-        character(*), intent(inout), optional :: iomsg
+        character(*), intent(inout) :: iomsg
         character(10) :: pfmt
 
         REAL(real32) :: x
@@ -1268,11 +1271,11 @@ CONTAINS
                 write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
             else
                 iostat = -1
-                if (present(iomsg)) iomsg = 'Too many options in DT setting'
+                iomsg = 'Too many options in DT setting'
             endif
         else
             iostat = -1
-            if (present(iomsg)) iomsg = 'Unsupported iotype'
+            iomsg = 'Unsupported iotype'
         end if
     end subroutine write_formatted
 

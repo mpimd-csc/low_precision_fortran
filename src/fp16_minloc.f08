@@ -5,9 +5,9 @@ submodule (fp16_support) fp16_minloc
 
 contains
     ! Overall max in 1D
-    pure function minloc_fp16_1d(array) result(min_loc)
+    module pure function minloc_fp16_1d(array) result(min_loc)
         type(fp16), dimension(:), intent(in) :: array
-        integer :: min_loc 
+        integer :: min_loc
 
         type(fp16):: min_value
         integer :: i
@@ -24,7 +24,7 @@ contains
     end function minloc_fp16_1d
 
     ! Overall max in 2D
-    pure function minloc_fp16_2d(array) result(min_loc)
+    module pure function minloc_fp16_2d(array) result(min_loc)
         type(fp16), dimension(:,:), intent(in) :: array
         integer, dimension(2) :: min_loc
 
@@ -38,7 +38,7 @@ contains
             do j = 1, size(array, 2)
                 if (array(i, j) .lt. min_value) then
                     min_value = array(i, j)
-                    min_loc(1) = i 
+                    min_loc(1) = i
                     min_loc(2) = j
                 end if
             end do
@@ -46,7 +46,7 @@ contains
     end function minloc_fp16_2d
 
     ! Overall max in 3D
-    pure function minloc_fp16_3d(array) result(min_loc)
+    module pure function minloc_fp16_3d(array) result(min_loc)
         type(fp16), dimension(:,:,:), intent(in) :: array
         integer, dimension(3) :: min_loc
         type(fp16) :: min_value
@@ -70,7 +70,7 @@ contains
     end function minloc_fp16_3d
 
     ! Overall max in 4D
-    pure function minloc_fp16_4d(array) result(min_loc)
+    module pure function minloc_fp16_4d(array) result(min_loc)
         type(fp16), dimension(:,:,:,:), intent(in) :: array
         integer, dimension(4) :: min_loc
         type(fp16) :: min_value
@@ -85,10 +85,10 @@ contains
                     do l = 1, size(array, 4)
                         if (array(i, j, k,l) .lt. min_value) then
                             min_value = array(i, j, k, l)
-                            min_loc(1) = i 
-                            min_loc(2) = j 
-                            min_loc(3) = k 
-                            min_loc(4) = l 
+                            min_loc(1) = i
+                            min_loc(2) = j
+                            min_loc(3) = k
+                            min_loc(4) = l
                         end if
                     end do
                 end do
@@ -98,7 +98,7 @@ contains
 
 
     ! Overall Max in 1D but with dim argument.
-    pure function minloc_fp16_1d_dim(array, dim) result(min_loc)
+    module pure function minloc_fp16_1d_dim(array, dim) result(min_loc)
         type(fp16), dimension(:), intent(in) :: array
         integer :: min_loc
         integer, intent(in) :: dim
@@ -111,7 +111,7 @@ contains
     end function minloc_fp16_1d_dim
 
     ! Max along dim in 2D
-    pure function minloc_fp16_2d_dim(array, dim) result(min_loc)
+    module pure function minloc_fp16_2d_dim(array, dim) result(min_loc)
         type(fp16), dimension(:,:), intent(in) :: array
         integer, intent(in) :: dim
         integer, dimension(size(array, merge(2, 1, dim == 1))) :: min_loc
@@ -130,7 +130,7 @@ contains
                 do i = 2, size(array, 1)
                     if (array(i, j) .lt. min_value(j)) then
                         min_value(j) = array(i, j)
-                        min_loc(j) = i 
+                        min_loc(j) = i
                     end if
                 end do
             end do
@@ -149,7 +149,7 @@ contains
     end function minloc_fp16_2d_dim
 
     ! Max along dim in 3D
-    pure function minloc_fp16_3d_dim(array, dim) result(min_loc)
+    module pure function minloc_fp16_3d_dim(array, dim) result(min_loc)
         type(fp16), dimension(:,:,:), intent(in) :: array
         integer, intent(in) :: dim
         !
@@ -187,7 +187,7 @@ contains
             do i = 1, size(array, 1)
                 do k = 1, size(array, 3)
                     min_value(i,k) = array(i, 1, k)
-                    min_loc(i,k) = 1 
+                    min_loc(i,k) = 1
                     do j = 2, size(array, 2)
                         if (array(i, j, k) .lt. min_value(i,k)) then
                             min_value(i,k) = array(i, j, k)
@@ -205,7 +205,7 @@ contains
                     do k = 2, size(array, 3)
                         if (array(i, j, k) .lt. min_value(i,j)) then
                             min_value(i,j) = array(i, j, k)
-                            min_loc(i,j) = k 
+                            min_loc(i,j) = k
                         end if
                     end do
                 end do
@@ -215,7 +215,7 @@ contains
     end function minloc_fp16_3d_dim
 
     ! Max along dim in 4D
-    pure function minloc_fp16_4d_dim(array, dim) result(min_loc)
+    module pure function minloc_fp16_4d_dim(array, dim) result(min_loc)
         type(fp16), dimension(:,:,:,:), intent(in) :: array
         integer, intent(in) :: dim
         !
@@ -296,7 +296,7 @@ contains
                         do l = 1, size(array, 4)
                             if (array(i, j, k, l) .lt. min_value(i,j, k)) then
                                 min_value(i,j,k) = array(i, j, k, l)
-                                min_loc(i, j, k) = l 
+                                min_loc(i, j, k) = l
                             end if
                         end do
                     end do

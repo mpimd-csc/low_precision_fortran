@@ -5,7 +5,7 @@ submodule (fp16_support) fp16_maxloc
 
 contains
     ! Overall max in 1D
-    pure function maxloc_fp16_1d(array) result(max_loc)
+    module pure function maxloc_fp16_1d(array) result(max_loc)
         type(fp16), dimension(:), intent(in) :: array
         integer :: max_loc
 
@@ -24,7 +24,7 @@ contains
     end function maxloc_fp16_1d
 
     ! Overall max in 2D
-    pure function maxloc_fp16_2d(array) result(max_loc)
+    module pure function maxloc_fp16_2d(array) result(max_loc)
         type(fp16), dimension(:,:), intent(in) :: array
         integer, dimension(2) :: max_loc
 
@@ -46,7 +46,7 @@ contains
     end function maxloc_fp16_2d
 
     ! Overall max in 3D
-    pure function maxloc_fp16_3d(array) result(max_loc)
+    module pure function maxloc_fp16_3d(array) result(max_loc)
         type(fp16), dimension(:,:,:), intent(in) :: array
         integer, dimension(3) :: max_loc
         type(fp16) :: max_value
@@ -70,7 +70,7 @@ contains
     end function maxloc_fp16_3d
 
     ! Overall max in 4D
-    pure function maxloc_fp16_4d(array) result(max_loc)
+    module pure function maxloc_fp16_4d(array) result(max_loc)
         type(fp16), dimension(:,:,:,:), intent(in) :: array
         integer, dimension(4) :: max_loc
         type(fp16) :: max_value
@@ -98,7 +98,7 @@ contains
 
 
     ! Overall Max in 1D but with dim argument.
-    pure function maxloc_fp16_1d_dim(array, dim) result(max_loc)
+    module pure function maxloc_fp16_1d_dim(array, dim) result(max_loc)
         type(fp16), dimension(:), intent(in) :: array
         integer :: max_loc
         integer, intent(in) :: dim
@@ -111,7 +111,7 @@ contains
     end function maxloc_fp16_1d_dim
 
     ! Max along dim in 2D
-    pure function maxloc_fp16_2d_dim(array, dim) result(max_loc)
+    module pure function maxloc_fp16_2d_dim(array, dim) result(max_loc)
         type(fp16), dimension(:,:), intent(in) :: array
         integer, intent(in) :: dim
         integer, dimension(size(array, merge(2, 1, dim == 1))) :: max_loc
@@ -149,7 +149,7 @@ contains
     end function maxloc_fp16_2d_dim
 
     ! Max along dim in 3D
-    pure function maxloc_fp16_3d_dim(array, dim) result(max_loc)
+    module pure function maxloc_fp16_3d_dim(array, dim) result(max_loc)
         type(fp16), dimension(:,:,:), intent(in) :: array
         integer, intent(in) :: dim
         !
@@ -215,7 +215,7 @@ contains
     end function maxloc_fp16_3d_dim
 
     ! Max along dim in 4D
-    pure function maxloc_fp16_4d_dim(array, dim) result(max_loc)
+    module pure function maxloc_fp16_4d_dim(array, dim) result(max_loc)
         type(fp16), dimension(:,:,:,:), intent(in) :: array
         integer, intent(in) :: dim
         !
