@@ -101,6 +101,22 @@ INCLUDE(CheckMathFunctions)
 include(CheckIPOSupported)
 check_ipo_supported(RESULT LPF_USE_IPO)
 
+
+# Check types
+include(CheckTypeSize)
+check_type_size("_Float16" FLOAT16 LANGUAGE C)
+if ( HAVE_FLOAT16 AND FLOAT16 EQUAL 2)
+    MESSAGE(STATUS "Found proper _Float16 datatype")
+else()
+    MESSAGE(FATAL_ERROR "_Float16 does not exists or is not two byte.")
+endif()
+
+check_type_size("__bf16" BFLOAT16 LANGUAGE C)
+if ( HAVE_BFLOAT16 AND BFLOAT16 EQUAL 2)
+    MESSAGE(STATUS "Found proper _bf16 datatype")
+else()
+    MESSAGE(FATAL_ERROR "__bf16 does not exists or is not two byte.")
+endif()
 # Fortran Interface
 # Not Required by now since we are using iso_c
 # include(FortranCInterface)
