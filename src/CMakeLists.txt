@@ -1,5 +1,5 @@
 SET(CMAKE_Fortran_STANDARD 08)
-ADD_LIBRARY(lpf
+SET(FP16_SRC
     fp16.f90
     fp16_math_generic.f90
     fp16_math_one_arg.f90
@@ -14,6 +14,28 @@ ADD_LIBRARY(lpf
     fp16_math_two_args.c
     fp16_math_generic.c
     fp16_math_trig.c
+)
+
+SET (BF16_SRC
+    bf16.f90
+    bf16_math_generic.f90
+    bf16_math_one_arg.f90
+    bf16_math_two_args.f90
+    bf16_math_trig.f90
+    bf16_maxval.f90
+    bf16_maxloc.f90
+    bf16_minloc.f90
+    bf16_minval.f90
+    bf16_helper.c
+    bf16_math_one_arg.c
+    bf16_math_two_args.c
+    bf16_math_generic.c
+    bf16_math_trig.c
+)
+
+ADD_LIBRARY(lpf
+    $<$<BOOL:${LPF_HAVE_FP16}>:${FP16_SRC}>
+    $<$<BOOL:${LPF_HAVE_BF16}>:${BF16_SRC}>
 )
 
 TARGET_LINK_LIBRARIES(lpf

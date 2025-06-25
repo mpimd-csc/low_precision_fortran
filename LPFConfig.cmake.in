@@ -5,4 +5,7 @@
 # find_dependency(LAPACK REQUIRED)
 
 # Add the targets file
+set(LPF_HAVE_FP16 @LPF_HAVE_FP16@)
+set(LPF_HAVE_BF16 @LPF_HAVE_BF16@)
+
 include("${CMAKE_CURRENT_LIST_DIR}/LPFTargets.cmake")

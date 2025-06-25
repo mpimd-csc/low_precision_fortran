@@ -18,111 +18,124 @@
 !  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
 
-submodule (fp16_support) fp16_maxval
+submodule (bf16_support) bf16_minloc
     use iso_c_binding
     use iso_fortran_env
     implicit none
 
 contains
     ! Overall max in 1D
-    module pure function maxval_fp16_1d(array) result(max_value)
-        type(fp16), dimension(:), intent(in) :: array
-        type(fp16) :: max_value
+    module pure function minloc_bf16_1d(array) result(min_loc)
+        type(bf16), dimension(:), intent(in) :: array
+        integer :: min_loc
+
+        type(bf16):: min_value
         integer :: i
-        type(fp16) :: hval;
 
-
-        if (size(array) .eq. 0) then
-            hval = fp16(1.0)
-            max_value = huge(hval)
-            return
-        end if
-
-        max_value = array(1)
+        min_value = array(1)
+        min_loc = 1
 
         do i = 2, size(array)
-            if (array(i) .gt. max_value) then
-                max_value = array(i)
+            if (array(i) .lt. min_value) then
+                min_value = array(i)
+                min_loc = i
             end if
         end do
-    end function maxval_fp16_1d
+    end function minloc_bf16_1d
 
     ! Overall max in 2D
-    module pure function maxval_fp16_2d(array) result(max_value)
-        type(fp16), dimension(:,:), intent(in) :: array
-        type(fp16) :: max_value
+    module pure function minloc_bf16_2d(array) result(min_loc)
+        type(bf16), dimension(:,:), intent(in) :: array
+        integer, dimension(2) :: min_loc
+
+        type(bf16) :: min_value
         integer :: i, j
 
-        max_value = array(1, 1)
+        min_value = array(1, 1)
+        min_loc = [ 1, 1 ]
 
         do i = 1, size(array, 1)
             do j = 1, size(array, 2)
-                if (array(i, j) .gt. max_value) then
-                    max_value = array(i, j)
+                if (array(i, j) .lt. min_value) then
+                    min_value = array(i, j)
+                    min_loc(1) = i
+                    min_loc(2) = j
                 end if
             end do
         end do
-    end function maxval_fp16_2d
+    end function minloc_bf16_2d
 
     ! Overall max in 3D
-    module pure function maxval_fp16_3d(array) result(max_value)
-        type(fp16), dimension(:,:,:), intent(in) :: array
-        type(fp16) :: max_value
+    module pure function minloc_bf16_3d(array) result(min_loc)
+        type(bf16), dimension(:,:,:), intent(in) :: array
+        integer, dimension(3) :: min_loc
+        type(bf16) :: min_value
         integer :: i, j, k
 
-        max_value = array(1, 1, 1)
+        min_value = array(1, 1, 1)
+        min_loc = [ 1, 1, 1]
 
         do i = 1, size(array, 1)
             do j = 1, size(array, 2)
                 do k = 1, size(array, 3)
-                    if (array(i, j, k) .gt. max_value) then
-                        max_value = array(i, j, k)
+                    if (array(i, j, k) .lt. min_value) then
+                        min_value = array(i, j, k)
+                        min_loc(1) = i
+                        min_loc(2) = j
+                        min_loc(3) = k
                     end if
                 end do
             end do
         end do
-    end function maxval_fp16_3d
+    end function minloc_bf16_3d
 
     ! Overall max in 4D
-    module pure function maxval_fp16_4d(array) result(max_value)
-        type(fp16), dimension(:,:,:,:), intent(in) :: array
-        type(fp16) :: max_value
+    module pure function minloc_bf16_4d(array) result(min_loc)
+        type(bf16), dimension(:,:,:,:), intent(in) :: array
+        integer, dimension(4) :: min_loc
+        type(bf16) :: min_value
         integer :: i, j, k, l
 
-        max_value = array(1, 1, 1,1)
+        min_value = array(1, 1, 1,1)
+        min_loc = [1,1,1,1]
 
         do i = 1, size(array, 1)
             do j = 1, size(array, 2)
                 do k = 1, size(array, 3)
                     do l = 1, size(array, 4)
-                        if (array(i, j, k,l) .gt. max_value) then
-                            max_value = array(i, j, k, l)
+                        if (array(i, j, k,l) .lt. min_value) then
+                            min_value = array(i, j, k, l)
+                            min_loc(1) = i
+                            min_loc(2) = j
+                            min_loc(3) = k
+                            min_loc(4) = l
                         end if
                     end do
                 end do
             end do
         end do
-    end function maxval_fp16_4d
+    end function minloc_bf16_4d
 
 
     ! Overall Max in 1D but with dim argument.
-    module pure function maxval_fp16_1d_dim(array, dim) result(max_value)
-        type(fp16), dimension(:), intent(in) :: array
+    module pure function minloc_bf16_1d_dim(array, dim) result(min_loc)
+        type(bf16), dimension(:), intent(in) :: array
+        integer :: min_loc
         integer, intent(in) :: dim
-        type(fp16) :: max_value
 
         if (dim .ne. 1) then
             error stop 'Invalid dimension for 1D array'
         end if
 
-        max_value = maxval_fp16_1d(array)
-    end function maxval_fp16_1d_dim
+        min_loc = minloc_bf16_1d(array)
+    end function minloc_bf16_1d_dim
 
     ! Max along dim in 2D
-    module pure function maxval_fp16_2d_dim(array, dim) result(max_value)
-        type(fp16), dimension(:,:), intent(in) :: array
+    module pure function minloc_bf16_2d_dim(array, dim) result(min_loc)
+        type(bf16), dimension(:,:), intent(in) :: array
         integer, intent(in) :: dim
-        type(fp16), dimension(size(array, merge(2, 1, dim == 1))) :: max_value
+        integer, dimension(size(array, merge(2, 1, dim == 1))) :: min_loc
+        type(bf16), dimension(size(array, merge(2, 1, dim == 1))) :: min_value
         integer :: i, j
 
         if (dim < 1 .or. dim > 2) then
@@ -132,28 +145,32 @@ contains
         ! Initialisierung mit den Elementen des Arrays
         if (dim == 1) then
             do j = 1, size(array, 2)
-                max_value(j) = array(1, j)
+                min_value(j) = array(1, j)
+                min_loc(j) = 1
                 do i = 2, size(array, 1)
-                    if (array(i, j) .gt. max_value(j)) then
-                        max_value(j) = array(i, j)
+                    if (array(i, j) .lt. min_value(j)) then
+                        min_value(j) = array(i, j)
+                        min_loc(j) = i
                     end if
                 end do
             end do
         else
             do i = 1, size(array, 1)
-                max_value(i) = array(i,1)
+                min_value(i) = array(i,1)
+                min_loc(i) = 1
                 do j = 2, size(array, 2)
-                    if (array(i, j) .gt. max_value(i)) then
-                        max_value(i) = array(i, j)
+                    if (array(i, j) .lt. min_value(i)) then
+                        min_value(i) = array(i, j)
+                        min_loc(i) = j
                     end if
                 end do
             end do
         end if
-    end function maxval_fp16_2d_dim
+    end function minloc_bf16_2d_dim
 
     ! Max along dim in 3D
-    module pure function maxval_fp16_3d_dim(array, dim) result(max_value)
-        type(fp16), dimension(:,:,:), intent(in) :: array
+    module pure function minloc_bf16_3d_dim(array, dim) result(min_loc)
+        type(bf16), dimension(:,:,:), intent(in) :: array
         integer, intent(in) :: dim
         !
         ! The input is a m x n x k array.
@@ -161,8 +178,10 @@ contains
         ! if dim == 2, the output is m x k, we need dimension 1 and 3
         ! if dim == 3, the output is m x n, we need dimension 1 and 2
         !
-        type(fp16), dimension( size(array, merge(2, 1, dim == 1)), &
-            & size(array, merge(2, 3, dim == 3))) :: max_value
+        integer, dimension( size(array, merge(2, 1, dim == 1)), &
+            & size(array, merge(2, 3, dim == 3))) :: min_loc
+        type(bf16), dimension( size(array, merge(2, 1, dim == 1)), &
+            & size(array, merge(2, 3, dim == 3))) :: min_value
         integer :: i, j, k
 
         if (dim < 1 .or. dim > 3) then
@@ -173,10 +192,12 @@ contains
             ! dim == 1, for each (j,k) iterate over i
             do j = 1, size(array, 2)
                 do k = 1, size(array, 3)
-                    max_value(j,k) = array(1, j, k)
+                    min_value(j,k) = array(1, j, k)
+                    min_loc(j,k) = 1
                     do i = 2, size(array, 1)
-                        if (array(i, j, k) .gt. max_value(j,k)) then
-                            max_value(j,k) = array(i, j, k)
+                        if (array(i, j, k) .lt. min_value(j,k)) then
+                            min_value(j,k) = array(i, j, k)
+                            min_loc(j,k) = i
                         end if
                     end do
                 end do
@@ -185,10 +206,12 @@ contains
             ! dim == 2, for each (i,k) iterate over j
             do i = 1, size(array, 1)
                 do k = 1, size(array, 3)
-                    max_value(i,k) = array(i, 1, k)
+                    min_value(i,k) = array(i, 1, k)
+                    min_loc(i,k) = 1
                     do j = 2, size(array, 2)
-                        if (array(i, j, k) .gt. max_value(i,k)) then
-                            max_value(i,k) = array(i, j, k)
+                        if (array(i, j, k) .lt. min_value(i,k)) then
+                            min_value(i,k) = array(i, j, k)
+                            min_loc(i,k) = j
                         end if
                     end do
                 end do
@@ -197,21 +220,23 @@ contains
             ! dim == 3, for each (i,j) iterate over k
             do i = 1, size(array, 1)
                 do j = 1, size(array, 2)
-                    max_value(i,j) = array(i,j,1)
+                    min_value(i,j) = array(i,j,1)
+                    min_loc(i,j) = 1
                     do k = 2, size(array, 3)
-                        if (array(i, j, k) .gt. max_value(i,j)) then
-                            max_value(i,j) = array(i, j, k)
+                        if (array(i, j, k) .lt. min_value(i,j)) then
+                            min_value(i,j) = array(i, j, k)
+                            min_loc(i,j) = k
                         end if
                     end do
                 end do
             end do
         end if
 
-    end function maxval_fp16_3d_dim
+    end function minloc_bf16_3d_dim
 
     ! Max along dim in 4D
-    module pure function maxval_fp16_4d_dim(array, dim) result(max_value)
-        type(fp16), dimension(:,:,:,:), intent(in) :: array
+    module pure function minloc_bf16_4d_dim(array, dim) result(min_loc)
+        type(bf16), dimension(:,:,:,:), intent(in) :: array
         integer, intent(in) :: dim
         !
         ! The input is a m x n x k x l array.
@@ -220,9 +245,13 @@ contains
         ! if dim == 3, the output is m x n x l, we need dimension 1, 2, 4
         ! if dim == 4, the output is m x n x k, we need dimension 1, 2, 3
         !
-        type(fp16), dimension( size(array, merge(2, 1, dim == 1)), &
+
+        integer, dimension( size(array, merge(2, 1, dim == 1)), &
             & size(array, merge(3, 2, dim < 3)), &
-            & size(array, merge(4, 3, dim == 4))) :: max_value
+            & size(array, merge(4, 3, dim == 4))) :: min_loc
+        type(bf16), dimension( size(array, merge(2, 1, dim == 1)), &
+            & size(array, merge(3, 2, dim < 3)), &
+            & size(array, merge(4, 3, dim == 4))) :: min_value
         integer :: i, j, k, l
 
         if (dim < 1 .or. dim > 4) then
@@ -234,10 +263,12 @@ contains
             do j = 1, size(array, 2)
                 do k = 1, size(array, 3)
                     do l = 1, size(array, 4)
-                        max_value(j,k,l) = array(1, j, k, l)
+                        min_value(j,k,l) = array(1, j, k, l)
+                        min_loc(j,k,l) = 1
                         do i = 2, size(array, 1)
-                            if (array(i, j, k, l) .gt. max_value(j,k,l)) then
-                                max_value(j,k,l) = array(i, j, k,l)
+                            if (array(i, j, k, l) .lt. min_value(j,k,l)) then
+                                min_value(j,k,l) = array(i, j, k,l)
+                                min_loc(j,k,l) = i
                             end if
                         end do
                     end do
@@ -248,10 +279,12 @@ contains
             do i = 1, size(array, 1)
                 do k = 1, size(array, 3)
                     do l =1, size(array, 4)
-                        max_value(i,k,l) = array(i, 1, k,l)
+                        min_value(i,k,l) = array(i, 1, k,l)
+                        min_loc(i,k,l) = 1
                         do j = 2, size(array, 2)
-                            if (array(i, j, k,l) .gt. max_value(i,k,l)) then
-                                max_value(i,k, l) = array(i, j, k, l)
+                            if (array(i, j, k,l) .lt. min_value(i,k,l)) then
+                                min_value(i,k, l) = array(i, j, k, l)
+                                min_loc(i,k,l) = j
                             end if
                         end do
                     end do
@@ -262,10 +295,12 @@ contains
             do i = 1, size(array, 1)
                 do j = 1, size(array, 2)
                     do l = 1, size(array, 4)
-                        max_value(i,j, l) = array(i,j,1, l)
+                        min_value(i,j, l) = array(i,j,1, l)
+                        min_loc(i,j,l) = 1
                         do k = 2, size(array, 3)
-                            if (array(i, j, k, l) .gt. max_value(i,j, l)) then
-                                max_value(i,j,l) = array(i, j, k, l)
+                            if (array(i, j, k, l) .lt. min_value(i,j, l)) then
+                                min_value(i,j,l) = array(i, j, k, l)
+                                min_loc(i,j,l) = k
                             end if
                         end do
                     end do
@@ -276,10 +311,12 @@ contains
             do i = 1, size(array, 1)
                 do j = 1, size(array, 2)
                     do k = 2, size(array, 3)
-                        max_value(i,j, k) = array(i,j,k,1)
+                        min_value(i,j, k) = array(i,j,k,1)
+                        min_loc(i, j, k) = 1
                         do l = 1, size(array, 4)
-                            if (array(i, j, k, l) .gt. max_value(i,j, k)) then
-                                max_value(i,j,k) = array(i, j, k, l)
+                            if (array(i, j, k, l) .lt. min_value(i,j, k)) then
+                                min_value(i,j,k) = array(i, j, k, l)
+                                min_loc(i, j, k) = l
                             end if
                         end do
                     end do
@@ -288,8 +325,6 @@ contains
 
         end if
 
-    end function maxval_fp16_4d_dim
+    end function minloc_bf16_4d_dim
 
-
-
-end submodule fp16_maxval
+end submodule bf16_minloc
