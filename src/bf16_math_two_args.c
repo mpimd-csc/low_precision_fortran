@@ -23,49 +23,49 @@
 #include <stdint.h>
 #include <math.h>
 
-#include "fp16_helper.h"
+#include "bf16_helper.h"
 
 /*
  * Function: atan2 ( C: atan2f )
  */
-HIDDEN void __fp16_helper_atan2(int16_t *out, int16_t in1, int16_t in2)
+HIDDEN void __bf16_helper_atan2(int16_t *out, int16_t in1, int16_t in2)
 {
-    fp16_handler_t *r = (fp16_handler_t * ) out;
-    fp16_handler_t _a = { .i16 = in1};
-    fp16_handler_t _b = { .i16 = in2};
-    r->f16 = (_Float16) atan2f ((float) _a.f16, (float) _b.f16);
+    bf16_handler_t *r = (bf16_handler_t * ) out;
+    bf16_handler_t _a = { .i16 = in1};
+    bf16_handler_t _b = { .i16 = in2};
+    r->bf16 = (__bf16) atan2f ((float) _a.bf16, (float) _b.bf16);
 }
 
 /*
  * Function: bessel_jn ( C: jnf )
  */
-HIDDEN void __fp16_helper_bessel_jn(int16_t *out, int16_t in1, int16_t in2)
+HIDDEN void __bf16_helper_bessel_jn(int16_t *out, int16_t in1, int16_t in2)
 {
-    fp16_handler_t *r = (fp16_handler_t * ) out;
-    fp16_handler_t _a = { .i16 = in1};
-    fp16_handler_t _b = { .i16 = in2};
-    r->f16 = (_Float16) jnf ((float) _a.f16, (float) _b.f16);
+    bf16_handler_t *r = (bf16_handler_t * ) out;
+    bf16_handler_t _a = { .i16 = in1};
+    bf16_handler_t _b = { .i16 = in2};
+    r->bf16 = (__bf16) jnf ((float) _a.bf16, (float) _b.bf16);
 }
 
 /*
  * Function: bessel_yn ( C: ynf )
  */
-HIDDEN void __fp16_helper_bessel_yn(int16_t *out, int16_t in1, int16_t in2)
+HIDDEN void __bf16_helper_bessel_yn(int16_t *out, int16_t in1, int16_t in2)
 {
-    fp16_handler_t *r = (fp16_handler_t * ) out;
-    fp16_handler_t _a = { .i16 = in1};
-    fp16_handler_t _b = { .i16 = in2};
-    r->f16 = (_Float16) ynf ((float) _a.f16, (float) _b.f16);
+    bf16_handler_t *r = (bf16_handler_t * ) out;
+    bf16_handler_t _a = { .i16 = in1};
+    bf16_handler_t _b = { .i16 = in2};
+    r->bf16 = (__bf16) ynf ((float) _a.bf16, (float) _b.bf16);
 }
 
 /*
  * Function: hypot ( C: hypotf )
  */
-HIDDEN void __fp16_helper_hypot(int16_t *out, int16_t in1, int16_t in2)
+HIDDEN void __bf16_helper_hypot(int16_t *out, int16_t in1, int16_t in2)
 {
-    fp16_handler_t *r = (fp16_handler_t * ) out;
-    fp16_handler_t _a = { .i16 = in1};
-    fp16_handler_t _b = { .i16 = in2};
-    r->f16 = (_Float16) hypotf ((float) _a.f16, (float) _b.f16);
+    bf16_handler_t *r = (bf16_handler_t * ) out;
+    bf16_handler_t _a = { .i16 = in1};
+    bf16_handler_t _b = { .i16 = in2};
+    r->bf16 = (__bf16) hypotf ((float) _a.bf16, (float) _b.bf16);
 }
 

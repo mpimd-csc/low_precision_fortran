@@ -113,15 +113,23 @@ include(CheckTypeSize)
 check_type_size("_Float16" FLOAT16 LANGUAGE C)
 if ( HAVE_FLOAT16 AND FLOAT16 EQUAL 2)
     MESSAGE(STATUS "Found proper _Float16 datatype")
+    SET(LPF_HAVE_FP16 True)
 else()
-    MESSAGE(FATAL_ERROR "_Float16 does not exists or is not two byte.")
+    MESSAGE(STATUS "_Float16 does not exists or is not two byte. Deactivating")
+    SET (LPF_HAVE_FP16 False)
 endif()
 
 check_type_size("__bf16" BFLOAT16 LANGUAGE C)
 if ( HAVE_BFLOAT16 AND BFLOAT16 EQUAL 2)
     MESSAGE(STATUS "Found proper _bf16 datatype")
+    SET (LPF_HAVE_BF16 True)
 else()
-    MESSAGE(FATAL_ERROR "__bf16 does not exists or is not two byte.")
+    MESSAGE(STATUS "__bf16 does not exists or is not two byte.")
+    SET (LPF_HAVE_BF16 False)
+endif()
+
+if (NOT ( LPF_HAVE_FP16 OR LPF_HAVE_BF16))
+    MESSAGE(FATAL_ERROR "Neither an fp16 nor an bf16 datatype is working.")
 endif()
 # Fortran Interface
 # Not Required by now since we are using iso_c
@@ -154,7 +162,7 @@ INSTALL(FILES
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/LPF
     )
 
-    CONFIGURE_FILE(lpf.pc.in lpf.pc @ONLY)
+CONFIGURE_FILE(lpf.pc.in lpf.pc @ONLY)
 INSTALL(FILES
     "${CMAKE_CURRENT_BINARY_DIR}/lpf.pc"
     DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
@@ -167,9 +175,9 @@ MESSAGE(STATUS "CMAKE_Fortran_FLAGS_RELEASE:  ${CMAKE_Fortran_FLAGS_RELEASE}")
 MESSAGE(STATUS "CMAKE_C_FLAGS:  ${CMAKE_Fortran_FLAGS}")
 MESSAGE(STATUS "CMAKE_C_FLAGS_DEBUG:  ${CMAKE_Fortran_FLAGS_DEBUG}")
 MESSAGE(STATUS "CMAKE_C_FLAGS_RELEASE:  ${CMAKE_Fortran_FLAGS_RELEASE}")
-# MESSAGE(STATUS "BLAS Libraries: ${BLAS_LIBRARIES}")
-# MESSAGE(STATUS "LAPACK Libraries: ${LAPACK_LIBRARIES}")
 MESSAGE(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 MESSAGE(STATUS "BUILD_SHARED_LIBS: ${BUILD_SHARED_LIBS}")
 MESSAGE(STATUS "LPF_TESTING: ${LPF_TESTING}")
+MESSAGE(STATUS "FP16 Support: ${LPF_HAVE_FP16}")
+MESSAGE(STATUS "BF16_Support: ${LPF_HAVE_BF16}")
 MESSAGE(STATUS "---------------------------------------------")

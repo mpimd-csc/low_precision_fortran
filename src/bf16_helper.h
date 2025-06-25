@@ -19,8 +19,8 @@
    */
 
 
-#ifndef FP16_HELPER_H_P7LSSW6X
-#define FP16_HELPER_H_P7LSSW6X
+#ifndef BF16_HELPER_H_P7LSSW6X
+#define BF16_HELPER_H_P7LSSW6X
 
 #include <stdint.h>
 #include <math.h>
@@ -29,10 +29,10 @@
 #define HIDDEN __attribute__((visibility("hidden")))
 
 typedef union {
-    _Float16 f16;
+    __bf16 bf16;
     int16_t  i16;
     uint16_t u16;
-} fp16_handler_t;
+} bf16_handler_t;
 
 
-#endif /* end of include guard: FP16_HELPER_H_P7LSSW6X */
+#endif /* end of include guard: BF16_HELPER_H_P7LSSW6X */
