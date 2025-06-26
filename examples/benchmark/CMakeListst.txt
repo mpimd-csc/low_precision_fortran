@@ -1,0 +1,5 @@
+ENABLE_LANGUAGE(CXX)
+
+ADD_EXECUTABLE(benchmark linspace.f90 benchmark.cpp)
+target_link_libraries(benchmark LPF::LPF)
+
