@@ -59,6 +59,12 @@ arrays. The optional `MASK` argument in `maxval` and `minval` is not yet support
 The `maxloc` and `minloc` function does not support the `mask`, `kind`, and
 `back` argument, yet.
 
+#### AMD AOCC
+
+The AMD AOCC compiler does not support the overloading of the `write` interface
+in a complete private environment and making the function public afterwards.
+For this reason, we do not support the AMD compiler suite.
+
 ## Installation
 
 The library currently only works with gcc compilers supporting the `_Float16`

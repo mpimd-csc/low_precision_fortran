@@ -24,7 +24,9 @@ MODULE FP16_SUPPORT
 
     PRIVATE
 
-    PUBLIC :: FP16, ASSIGNMENT(=), write(formatted), operator(+), operator(-), operator(*), operator(/)
+    PUBLIC :: FP16, ASSIGNMENT(=)
+    PUBLIC :: write(formatted)
+    PUBLIC :: operator(+), operator(-), operator(*), operator(/)
     PUBLIC :: operator(.lt.), operator(.le.), operator(.gt.), operator(.ge.)
     PUBLIC :: operator(.eq.), operator(.ne.)
     PUBLIC :: operator(**)

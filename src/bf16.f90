@@ -24,7 +24,10 @@ MODULE BF16_SUPPORT
 
     PRIVATE
 
-    PUBLIC :: BF16, ASSIGNMENT(=), write(formatted), operator(+), operator(-), operator(*), operator(/)
+    PUBLIC :: BF16
+    PUBLIC :: ASSIGNMENT(=)
+    PUBLIC :: write(formatted)
+    PUBLIC :: operator(+), operator(-), operator(*), operator(/)
     PUBLIC :: operator(.lt.), operator(.le.), operator(.gt.), operator(.ge.)
     PUBLIC :: operator(.eq.), operator(.ne.)
     PUBLIC :: operator(**)
