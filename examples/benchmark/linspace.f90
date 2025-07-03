@@ -1,4 +1,4 @@
-SUBROUTINE benchmark_linspace()
+SUBROUTINE test_linspace()
     USE FP16_SUPPORT
     IMPLICIT NONE
 
@@ -14,10 +14,10 @@ SUBROUTINE benchmark_linspace()
 
     DO K = 1, N+1
         x(k) = a + FP16(K-1) * h
-        y(k) = 0.625 * x(k)**2 + 0.125*x  + 1.0
+        y(k) = FP16(0.625) * x(k)*x(k) + FP16(0.125)*x(k)  + FP16(1.0)
     END DO
 
-    WRITE(*,*) x, y
+    ! WRITE(*,*) x, y
 END SUBROUTINE
 
 
