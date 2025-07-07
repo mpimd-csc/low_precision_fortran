@@ -91,6 +91,10 @@ MODULE FP16_SUPPORT
     PUBLIC :: maxloc
     PUBLIC :: minval
     PUBLIC :: minloc
+    PUBLIC :: isnan
+    PUBLIC :: isinf
+    PUBLIC :: min
+    PUBLIC :: max
 
     TYPE, BIND(C) :: FP16
         INTEGER(c_int16_t) :: value
@@ -299,6 +303,30 @@ MODULE FP16_SUPPORT
             type(FP16) :: out
         end function sign_fp16
     end interface
+
+    interface isnan
+        module elemental function isnan_fp16(x) result(out)
+            type(FP16), intent(in) :: x
+            logical :: out
+        end function isnan_fp16
+    end interface
+
+    interface isinf
+        module elemental function isinf_fp16(x) result(out)
+            type(FP16), intent(in) :: x
+            logical :: out
+        end function isinf_fp16
+    end interface
+
+    interface min
+        module procedure min_fp16
+        module procedure min3_fp16
+    end interface min
+
+    interface max
+        module procedure max_fp16
+        module procedure max3_fp16
+    end interface max
 
     interface acos
         module elemental function acos_fp16(in) result(out)
@@ -1264,6 +1292,56 @@ CONTAINS
 
         call helper_power_fp16_int(power%value, this%value, that)
     end function
+
+    elemental function min_fp16(x, y) result(out)
+        type(fp16), intent(in) :: x, y
+        type(fp16) :: out
+
+        if ( x .lt. y) then
+            out = x
+        else
+            out = y
+        end if
+    end function
+
+    elemental function min3_fp16(x, y, z) result(out)
+        type(fp16), intent(in) :: x, y, z
+        type(fp16) :: out
+
+        if ( x .lt. y .and. x.lt.z) then
+           out = x
+        else if ( y.lt.x .and. y .lt. z) then
+            out = y
+        else
+            out = z
+        end if
+    end function
+
+    elemental function max_fp16(x, y) result(out)
+        type(fp16), intent(in) :: x, y
+        type(fp16) :: out
+
+        if ( x .gt. y) then
+            out = x
+        else
+            out = y
+        end if
+    end function
+
+    elemental function max3_fp16(x, y, z) result(out)
+        type(fp16), intent(in) :: x, y, z
+        type(fp16) :: out
+
+        if ( x .gt. y .and. x .gt. y) then
+            out = x
+        else if ( y.gt. x .and. y.gt.z) then
+            out = y
+        else
+            out = z
+        end if
+    end function
+
+
 
 
     ! Formated output

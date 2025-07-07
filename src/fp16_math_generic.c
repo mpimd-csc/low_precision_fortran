@@ -241,3 +241,22 @@ HIDDEN void __fp16_helper_sign(int16_t *out, int16_t in1, int16_t  in2)
         r->f16 = aa;
 }
 
+/*
+ * IS INF
+ */
+HIDDEN void __fp16_helper_isinf(int *out, int16_t in)
+{
+    fp16_handler_t _a = { .i16 = in};
+    *out = isinf((float) _a.f16);
+}
+
+/*
+ * IS NAN
+ */
+HIDDEN void __fp16_helper_isnan(int *out, int16_t in)
+{
+    fp16_handler_t _a = { .i16 = in};
+    *out = isnan((float) _a.f16);
+}
+
+

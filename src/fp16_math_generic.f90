@@ -123,6 +123,18 @@ submodule (fp16_support) fp16_math_generic
             integer(c_int16_t), intent(out) :: out
         end subroutine
 
+        pure subroutine helper_isinf_fp16(out, in) bind(c, name = "__fp16_helper_isinf")
+            use, intrinsic :: iso_c_binding
+            integer(c_int16_t), intent(in), value :: in
+            integer(c_int), intent(out) :: out
+        end subroutine
+
+        pure subroutine helper_isnan_fp16(out, in) bind(c, name = "__fp16_helper_isnan")
+            use, intrinsic :: iso_c_binding
+            integer(c_int16_t), intent(in), value :: in
+            integer(c_int), intent(out) :: out
+        end subroutine
+
     END INTERFACE
 
 contains
@@ -305,6 +317,32 @@ contains
 
         call helper_sign_fp16(out%value, x%value, y%value)
     end function sign_fp16
+
+    module elemental function isnan_fp16(x) result(out)
+        type(FP16), intent(in) :: x
+        logical :: out
+
+        integer(c_int) :: outi
+        call helper_isnan_fp16(outi, x%value)
+        if ( outi.ne.0) then
+            out = .TRUE.
+        else
+            out = .FALSE.
+        end if
+    end function
+
+    module elemental function isinf_fp16(x) result(out)
+        type(FP16), intent(in) :: x
+        logical :: out
+
+        integer(c_int) :: outi
+        call helper_isinf_fp16(outi, x%value)
+        if ( outi.ne.0) then
+            out = .TRUE.
+        else
+            out = .FALSE.
+        end if
+    end function
 
 
 end submodule fp16_math_generic
