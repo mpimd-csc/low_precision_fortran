@@ -49,7 +49,7 @@ this would be from mpfr.
 * Support for `READ`
 * Support for unformatted IO
 * Lookup tables instead of type-casting
-* AXV512FP16 and emulation support at once
+* AXV512FP16 and emulation support at once, but dispatching causes an overhead.
 
 ### Issue / Missing Functionallity
 
@@ -100,6 +100,14 @@ In case of an fp16 or bf16 aware AArch64 CPU, the compiler flags will be
 ```shell
 -DCMAKE_C_FLAGS="-march=armv8.4-a+fp16+bf16"
 ```
+
+Alternatively, one can add
+```shell
+-DLPF_NATIVE=ON
+```
+to the `cmake` command line in order to try the cpu-native compilation, if
+supported by the target.
+
 
 ### Usage in other projects
 
