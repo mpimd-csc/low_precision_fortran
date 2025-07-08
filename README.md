@@ -59,6 +59,10 @@ arrays. The optional `MASK` argument in `maxval` and `minval` is not yet support
 The `maxloc` and `minloc` function does not support the `mask`, `kind`, and
 `back` argument, yet.
 
+#### MIN/MAX
+The `min` and `max` function involving fp16 or bf16 datatypes supports up to
+three inputs at the moment.
+
 #### AMD AOCC
 
 The AMD AOCC compiler does not support the overloading of the `write` interface

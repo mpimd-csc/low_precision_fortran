@@ -47,6 +47,11 @@
 #define __BFLT16_MAX_10_EXP__ 38
 #endif
 
+#ifndef __BFLT16_MANT_DIG__
+#define __BFLT16_MANT_DIG__ 8
+#endif
+
+
 #ifndef __FLT16_EPSILON__
 #define __FLT16_EPSILON__ 9.76562500000000000000000000000000000e-4F16
 #endif
@@ -72,5 +77,8 @@
 #define __FLT16_MAX_10_EXP__ 4
 #endif
 
+#ifndef __FLT16_MANT_DIG__
+#define __FLT16_MANT_DIG__ 11
+#endif
 
 #endif /* end of include guard: CONSTANTS_H_BEKCGTKC */

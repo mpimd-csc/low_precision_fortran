@@ -36,6 +36,12 @@ submodule (fp16_support) fp16_math_generic
             integer(c_int16_t), intent(out) :: out
         end subroutine
 
+        pure subroutine helper_digits_fp16(out) bind(c, name = "__fp16_helper_digits")
+            use, intrinsic :: iso_c_binding
+            integer(c_int), intent(out) :: out
+        end subroutine
+
+
         pure subroutine helper_exponent_fp16(out, in) bind(c, name = "__fp16_helper_exponent")
             use, intrinsic :: iso_c_binding
             integer(c_int16_t), intent(in), value :: in
@@ -143,6 +149,19 @@ contains
         type(FP16) :: abs_val
         call helper_abs_fp16(abs_val%value, x%value)
     end function abs_fp16
+
+    module elemental function digits_fp16(x) result(out)
+        type(FP16), intent(in) :: x
+        integer :: out
+
+        ! dummy to avoid compiler warnings
+        if ( 0 .eq. 1) then
+            out = INT(x%value)
+        end if
+
+        call helper_digits_fp16(out)
+    end function digits_fp16
+
 
     module elemental function epsilon_fp16(x) result(out)
         type(FP16), intent(in) :: x

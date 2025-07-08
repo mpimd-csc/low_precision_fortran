@@ -39,6 +39,15 @@ HIDDEN void __fp16_helper_abs(int16_t *out, int16_t in)
 }
 
 /*
+ * DIGITS
+ */
+HIDDEN void __fp16_helper_digits(int *out)
+{
+    *out =__FLT16_MANT_DIG__;
+}
+
+
+/*
  * EPSILON
  */
 HIDDEN void __fp16_helper_epsilon(int16_t *out)

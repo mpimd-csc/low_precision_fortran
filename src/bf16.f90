@@ -77,6 +77,7 @@ MODULE BF16_SUPPORT
     PUBLIC :: erfc_scaled
     PUBLIC :: huge
     PUBLIC :: tiny
+    PUBLIC :: digits
     PUBLIC :: minexponent
     PUBLIC :: maxexponent
     PUBLIC :: mod
@@ -122,6 +123,7 @@ MODULE BF16_SUPPORT
     ! Interface für den - Operator
     interface operator(-)
         module procedure subtract_bf16_bf16, subtract_bf16_real, subtract_real_bf16
+        module procedure unitary_minus_bf16
     end interface operator(-)
 
     ! Interface für den * Operator
@@ -178,6 +180,14 @@ MODULE BF16_SUPPORT
             type(BF16) :: abs_val
         end function abs_bf16
     end interface
+
+    interface digits
+        module elemental function digits_bf16(x) result(abs_val)
+            type(BF16), intent(in) :: x
+            integer :: abs_val
+        end function digits_bf16
+    end interface
+
 
     interface epsilon
         module elemental function epsilon_bf16(x) result(abs_val)
@@ -820,6 +830,13 @@ MODULE BF16_SUPPORT
             integer(c_int16_t), intent(in), value :: b
         end subroutine
 
+        pure subroutine helper_unitary_minus_bf16(out, a) bind(c, name = "__bf16_helper_unitary_minus")
+            use, intrinsic :: iso_c_binding
+            integer(c_int16_t), intent(out) :: out
+            integer(c_int16_t), intent(in), value :: a
+        end subroutine
+
+
         pure subroutine helper_div_bf16_bf16(out, a, b) bind(c, name = "__bf16_helper_div_bf16_bf16")
             use, intrinsic :: iso_c_binding
             integer(c_int16_t), intent(out) :: out
@@ -969,6 +986,13 @@ CONTAINS
         type(bf16) :: diff
 
         call helper_sub_real_bf16(diff%value, this, that%value)
+    end function
+
+    elemental function unitary_minus_bf16(this) result(out)
+        type(bf16), intent(in) :: this
+        type(bf16) :: out
+
+        call helper_unitary_minus_bf16(out%value, this%value)
     end function
 
     !
