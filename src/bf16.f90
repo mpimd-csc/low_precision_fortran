@@ -1396,6 +1396,19 @@ CONTAINS
                 iostat = -1
                 iomsg = 'Too many options in DT setting'
             endif
+        else if (iotype == 'DTE') then
+            if (size(v_list) == 0 ) then
+                write(unit, '(E0.4)', iostat=iostat, iomsg=iomsg) x
+            else if (size(v_list) == 1 ) then
+                write(pfmt, '(a,i2,a)') '(E0.', v_list(1),')'
+                write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
+            else if (size(v_list) == 2 ) then
+                write(pfmt, '(a,i0,a,i0,a)') '(E', v_list(1),'.',v_list(2),')'
+                write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
+            else
+                iostat = -1
+                iomsg = 'Too many options in DT setting'
+            endif
         else
             iostat = -1
             iomsg = 'Unsupported iotype'
