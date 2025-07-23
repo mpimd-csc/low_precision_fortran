@@ -96,6 +96,8 @@ MODULE FP16_SUPPORT
     PUBLIC :: isinf
     PUBLIC :: min
     PUBLIC :: max
+    PUBLIC :: real
+    PUBLIC :: dble
 
     TYPE, BIND(C) :: FP16
         INTEGER(c_int16_t) :: value
@@ -170,6 +172,15 @@ MODULE FP16_SUPPORT
     interface operator(.ne.)
         module procedure ne_fp16_fp16, ne_fp16_fp32, ne_fp32_fp16
     end interface operator(.ne.)
+
+    ! convert to real
+    interface real
+        module procedure real_fp16
+    end interface
+    interface dble
+        module procedure dble_fp16
+    end interface
+
 
 
 
@@ -935,6 +946,20 @@ CONTAINS
         TYPE(FP16), INTENT(IN) :: that
         this = GET_FP16(that%value)
     END SUBROUTINE
+
+    elemental function real_fp16(x) result (out)
+        type(fp16), intent(in) :: x
+        real(real32) :: out
+        out = GET_FP16(x%value)
+    end function
+
+    elemental function dble_fp16(x) result (out)
+        type(fp16), intent(in) :: x
+        real(real64) :: out
+        out = dble(GET_FP16(x%value))
+    end function
+
+
 
     !
     ! Operator(+)

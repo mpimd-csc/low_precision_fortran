@@ -96,6 +96,8 @@ MODULE BF16_SUPPORT
     PUBLIC :: isinf
     PUBLIC :: min
     PUBLIC :: max
+    PUBLIC :: real
+    PUBLIC :: dble
 
     TYPE, BIND(C) :: BF16
         INTEGER(c_int16_t) :: value
@@ -170,6 +172,15 @@ MODULE BF16_SUPPORT
     interface operator(.ne.)
         module procedure ne_bf16_bf16, ne_bf16_fp32, ne_fp32_bf16
     end interface operator(.ne.)
+
+    ! convert to real
+    interface real
+        module procedure real_bf16
+    end interface
+    interface dble
+        module procedure dble_bf16
+    end interface
+
 
 
 
@@ -935,6 +946,20 @@ CONTAINS
         TYPE(BF16), INTENT(IN) :: that
         this = GET_BF16(that%value)
     END SUBROUTINE
+
+    elemental function real_bf16(x) result (out)
+        type(bf16), intent(in) :: x
+        real(real32) :: out
+        out = GET_BF16(x%value)
+    end function
+
+    elemental function dble_bf16(x) result (out)
+        type(bf16), intent(in) :: x
+        real(real64) :: out
+        out = dble(GET_BF16(x%value))
+    end function
+
+
 
     !
     ! Operator(+)

@@ -45,4 +45,5 @@ PROGRAM FP16_DEMO
     WRITE(*,'(A, DT)')      "Output with DT      X2 = ", X2
     WRITE(*,'(A, DT(1))')   "Output with DT(1)   X2 = ", X2
     WRITE(*,'(A, DT(6,3))') "Output with DT(6,3) X2 = ", X2
+    WRITE(*,'(A, DT"E"(10,3))') "Output with DTE(10,3) X2 = ", X2
 END PROGRAM FP16_DEMO
