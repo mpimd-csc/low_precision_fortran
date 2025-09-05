@@ -2,6 +2,8 @@
 
 Low Precision Float types in Fortran.
 
+Copyright 2025 by Martin Köhler 
+
 ## Usage
 
 Since Fortran does not provide and interface to low precision float types, like
@@ -142,3 +144,7 @@ The project can either be used as subproject or integrated using CMake's
 `FetchContent` mechanism.
 
 
+## License 
+
+The library is licensed under GNU LGPL 3 or any later version if you want. See LICENSE for 
+details. 
