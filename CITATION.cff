@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "Köhler"
+    given-names: "Martin"
+    orcid: "https://orcid.org/00000-0003-2338-9904"
+title: "Low Precision Fortran"
+version: TBA
+doi: TBA
+date-released: 2025-10-14
+url: "https://gitlab.mpi-magdeburg.mpg.de/software/lpf"
+license: LGPL-3.0-or-later
+keywords:
+ - "Fortran"
+ - "Low Precision"
+ - "FP16"
+ - "BF16"
+ - "FP8"
