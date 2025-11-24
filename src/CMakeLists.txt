@@ -1,36 +1,36 @@
 SET(CMAKE_Fortran_STANDARD 08)
 SET(FP16_SRC
-    fp16.f90
-    fp16_math_generic.f90
-    fp16_math_one_arg.f90
-    fp16_math_two_args.f90
-    fp16_math_trig.f90
-    fp16_maxval.f90
-    fp16_maxloc.f90
-    fp16_minloc.f90
-    fp16_minval.f90
-    fp16_helper.c
-    fp16_math_one_arg.c
-    fp16_math_two_args.c
-    fp16_math_generic.c
-    fp16_math_trig.c
+    fp16/fp16.f90
+    fp16/fp16_math_generic.f90
+    fp16/fp16_math_one_arg.f90
+    fp16/fp16_math_two_args.f90
+    fp16/fp16_math_trig.f90
+    fp16/fp16_maxval.f90
+    fp16/fp16_maxloc.f90
+    fp16/fp16_minloc.f90
+    fp16/fp16_minval.f90
+    fp16/fp16_helper.c
+    fp16/fp16_math_one_arg.c
+    fp16/fp16_math_two_args.c
+    fp16/fp16_math_generic.c
+    fp16/fp16_math_trig.c
 )
 
 SET (BF16_SRC
-    bf16.f90
-    bf16_math_generic.f90
-    bf16_math_one_arg.f90
-    bf16_math_two_args.f90
-    bf16_math_trig.f90
-    bf16_maxval.f90
-    bf16_maxloc.f90
-    bf16_minloc.f90
-    bf16_minval.f90
-    bf16_helper.c
-    bf16_math_one_arg.c
-    bf16_math_two_args.c
-    bf16_math_generic.c
-    bf16_math_trig.c
+    bf16/bf16.f90
+    bf16/bf16_math_generic.f90
+    bf16/bf16_math_one_arg.f90
+    bf16/bf16_math_two_args.f90
+    bf16/bf16_math_trig.f90
+    bf16/bf16_maxval.f90
+    bf16/bf16_maxloc.f90
+    bf16/bf16_minloc.f90
+    bf16/bf16_minval.f90
+    bf16/bf16_helper.c
+    bf16/bf16_math_one_arg.c
+    bf16/bf16_math_two_args.c
+    bf16/bf16_math_generic.c
+    bf16/bf16_math_trig.c
 )
 
 ADD_LIBRARY(lpf
