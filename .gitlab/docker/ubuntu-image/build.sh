@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-export CI_REGISTRY_IMAGE=${CI_REGISTRY_IMAGE:-gitlab.mpi-magdeburg.mpg.de/koehlerm/lpf}
+export CI_REGISTRY_IMAGE=${CI_REGISTRY_IMAGE:-gitlab.mpi-magdeburg.mpg.de/software/lpf}
 export IMAGE_NAME=${IMAGE_NAME:-ubuntu}
 IMAGE_BASE=${CI_REGISTRY_IMAGE}/${IMAGE_NAME}
 
