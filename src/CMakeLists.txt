@@ -1,4 +1,7 @@
 SET(CMAKE_Fortran_STANDARD 08)
+SET(SYSINFO_SRC sysinfo/${CMAKE_SYSTEM_PROCESSOR}.c)
+
+
 SET(FP16_SRC
     fp16/fp16.f90
     fp16/fp16_math_generic.f90
@@ -33,9 +36,14 @@ SET (BF16_SRC
     bf16/bf16_math_trig.c
 )
 
+
 ADD_LIBRARY(lpf
     $<$<BOOL:${LPF_HAVE_FP16}>:${FP16_SRC}>
     $<$<BOOL:${LPF_HAVE_BF16}>:${BF16_SRC}>
+    aux/get_wtime.c
+    aux/xerbla.c
+    init.c
+    ${SYSINFO_SRC}
 )
 
 TARGET_LINK_LIBRARIES(lpf
@@ -50,6 +58,12 @@ TARGET_INCLUDE_DIRECTORIES(lpf
         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/fortran-modules>
         $<INSTALL_INTERFACE:include/lpf>
+)
+
+TARGET_COMPILE_DEFINITIONS(lpf PUBLIC
+    $<$<BOOL:${LPF_HAVE_FP16}>:-DLPF_HAVE_FP16>
+    $<$<BOOL:${LPF_HAVE_BF16}>:-DLPF_HAVE_BF16>
+
 )
 
 if(LPF_USE_IPO)
@@ -70,3 +84,6 @@ INSTALL(TARGETS lpf
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         )
 
+if(LPF_BLAS)
+    ADD_SUBDIRECTORY(blas)
+endif()

@@ -18,7 +18,7 @@
 !  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
 
-submodule (fp16_support) fp16_maxval
+submodule (lpf_fp16) lpf_fp16_maxval
     use iso_c_binding
     use iso_fortran_env
     implicit none
@@ -292,4 +292,4 @@ contains
 
 
 
-end submodule fp16_maxval
+end submodule

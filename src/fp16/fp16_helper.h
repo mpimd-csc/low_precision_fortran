@@ -23,6 +23,7 @@
 #define FP16_HELPER_H_P7LSSW6X
 
 #include <stdint.h>
+#include "lpf_internal.h"
 #include <math.h>
 #include "constants.h"
 
@@ -34,5 +35,11 @@ typedef union {
     uint16_t u16;
 } fp16_handler_t;
 
+/* Exports for C */
+
+lpf_float16_t abs_fp16(lpf_float16_t x);
+lpf_float16_t sqrt_fp16(lpf_float16_t x);
+lpf_float16_t sign_fp16(lpf_float16_t a, lpf_float16_t b);
+lpf_float16_t diff_fp16(lpf_float16_t a, lpf_float16_t b);
 
 #endif /* end of include guard: FP16_HELPER_H_P7LSSW6X */

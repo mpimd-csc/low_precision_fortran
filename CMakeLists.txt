@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 cmake_policy(SET CMP0048 NEW)
 
-PROJECT(LowPrecisionFortran VERSION 0.0.1 LANGUAGES C Fortran)
+PROJECT(LowPrecisionFortran VERSION 0.0.2 LANGUAGES C Fortran)
 
 # Add addtional CMAKE Paths.
 LIST(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
@@ -12,6 +12,8 @@ INCLUDE(OutOfSource)
 # Compile Options
 OPTION(LPF_DEBUG "Enable Debug Symbol generation" OFF)
 OPTION(LPF_NATIVE "Enable Native Build" OFF)
+OPTION(LPF_BLAS "Enable BLAS and LAPACK" ON)
+OPTION(LPF_INTEGER8 "Build Fortran integer of size 8" OFF)
 
 # Enable Testing
 IF(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
@@ -145,16 +147,15 @@ if (NOT ( LPF_HAVE_FP16 OR LPF_HAVE_BF16))
     MESSAGE(FATAL_ERROR "Neither an fp16 nor an bf16 datatype is working.")
 endif()
 # Fortran Interface
-# Not Required by now since we are using iso_c
-# include(FortranCInterface)
-# FortranCInterface_VERIFY()
-# FortranCInterface_HEADER(${PROJECT_BINARY_DIR}/src/hpblas_mangle.h MACRO_NAMESPACE "HPBLAS_")
+include(FortranCInterface)
+FortranCInterface_VERIFY()
+FortranCInterface_HEADER(${PROJECT_BINARY_DIR}/src/lpf_mangle.h MACRO_NAMESPACE "LPF_")
 
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(examples)
-#IF (LPF_TESTING)
-#    ADD_SUBDIRECTORY(test)
-#ENDIF()
+IF (LPF_TESTING)
+    ADD_SUBDIRECTORY(test)
+ENDIF()
 
 INCLUDE(CMakePackageConfigHelpers)
 WRITE_BASIC_PACKAGE_VERSION_FILE(
@@ -176,9 +177,16 @@ INSTALL(FILES
     )
 
 CONFIGURE_FILE(lpf.pc.in lpf.pc @ONLY)
+CONFIGURE_FILE(lpf-blas.pc.in lpf-blas.pc @ONLY)
 INSTALL(FILES
     "${CMAKE_CURRENT_BINARY_DIR}/lpf.pc"
     DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+if(LPF_BLAS)
+INSTALL(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/lpf-blas.pc"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+endif()
+
 
 MESSAGE(STATUS "------------ Build Information --------------")
 MESSAGE(STATUS "VERSION: ${PROJECT_VERSION} ${FULL_VERSION}")

@@ -19,7 +19,7 @@
 !
 
 PROGRAM FP16_DEMO
-    USE FP16_SUPPORT
+    USE LPF_FP16
 
     TYPE(FP16) :: x1, x2, x3, x4
     x1 = 1.0

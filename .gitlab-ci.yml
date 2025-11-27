@@ -19,13 +19,15 @@ linux-gcc:
     matrix:
       - OS: [ "ubuntu" ]
         OSVERSION: [ 'noble' ]
+        BLAS: ['ON', 'OFF']
 
   script:
-    - cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=RelWithDebInfo
+    - export BLAS=${BLAS##BLAS_}
+    - cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLPF_BLAS=${BLAS}
     - cmake --build build-dir 2>&1 | tee build.log
     - cmake --build build-dir --target install
-      # - (cd build-dir; OMP_NUM_THREADS=1 ctest -V)
-      # - cat build.log | grep -- \\[-W | sed 's/.*\[//; s/\]//' | sort | uniq -c | sort -nr
+    - (cd build-dir; OMP_NUM_THREADS=1 ctest -V)
+    - cat build.log | grep -- \\[-W | sed 's/.*\[//; s/\]//' | sort | uniq -c | sort -nr
 
 linux-clang:
   stage: build

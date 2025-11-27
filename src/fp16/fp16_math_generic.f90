@@ -18,7 +18,7 @@
 !  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
 
-submodule (fp16_support) fp16_math_generic
+submodule (lpf_fp16) lpf_fp16_math_generic
     use iso_c_binding
     use iso_fortran_env
     implicit none
@@ -364,4 +364,4 @@ contains
     end function
 
 
-end submodule fp16_math_generic
+end submodule
