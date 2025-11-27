@@ -20,7 +20,7 @@
 
 
 PROGRAM BF16_DEMO
-    USE BF16_SUPPORT
+    USE LPF_BF16
 
     TYPE(BF16) :: x1, x2, x3
     INTEGER:: e1, e2, e3

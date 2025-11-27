@@ -1422,9 +1422,6 @@ CONTAINS
             else if (size(v_list) == 2 ) then
                 write(pfmt, '(a,i0,a,i0,a)') '(F', v_list(1),'.',v_list(2),')'
                 write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
-            else if (size(v_list) == 3 ) then
-                write(pfmt, '(a,i0,a,i0,a,i0,a)') '(',v_list(1), 'F', v_list(2),'.',v_list(3),')'
-                write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
             else
                 iostat = -1
                 iomsg = 'Too many options in DT setting'
@@ -1437,9 +1434,6 @@ CONTAINS
                 write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
             else if (size(v_list) == 2 ) then
                 write(pfmt, '(a,i0,a,i0,a)') '(E', v_list(1),'.',v_list(2),')'
-                write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
-            else if (size(v_list) == 3 ) then
-                write(pfmt, '(a,i0,a,i0,a,i0,a)') '(',v_list(1), 'E', v_list(2),'.',v_list(3),')'
                 write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
             else
                 iostat = -1

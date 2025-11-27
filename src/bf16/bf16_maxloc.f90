@@ -19,7 +19,7 @@
 !
 
 
-submodule (bf16_support) bf16_maxloc
+submodule (lpf_bf16) bf16_maxloc
     use iso_c_binding
     use iso_fortran_env
     implicit none

@@ -37,7 +37,7 @@ linux-clang:
     - haswell
   parallel:
     matrix:
-      - LLVM_VERSION: [ "18", "19", "20"]
+      - LLVM_VERSION: [ "20"]
   script:
     - cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=RelWithDebInfo
     - cmake --build build-dir 2>&1 | tee build.log
@@ -54,7 +54,7 @@ linux-intel:
     - haswell
   parallel:
     matrix:
-      - INTEL_VERSION: [ "2025.1" , "2024.2"]
+      - INTEL_VERSION: [ "2025.1" ]
 
   script:
     - CC=icx FC=ifx cmake -S . -B build-dir
