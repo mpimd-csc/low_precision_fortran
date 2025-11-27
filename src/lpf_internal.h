@@ -93,7 +93,8 @@ extern "C" {
     typedef void (*lpf_blas_xerbla_func_t)(CFI_cdesc_t *msg_desc, lpf_blas_int_t *info);
 
     void LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)(char *str, lpf_blas_int_t *info, lpf_fortran_strlen_t len);
-    void LPF_GLOBAL(lpf_blas_xerbla_set, LPF_BLAS_XERBLA_SET)(void * func);
+    void LPF_GLOBAL(lpf_blas_xerbla_set, LPF_BLAS_XERBLA_SET)(void * func, lpf_blas_int_t *style);
+
 
     int lpf_cpu_has_basic_fp16(void);
     int lpf_cpu_has_full_fp16(void);

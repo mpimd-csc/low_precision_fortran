@@ -100,6 +100,7 @@
 !  =====================================================================
       PROGRAM HBLAT2
         USE LPF_FP16
+        USE LPF_XERBLA
         USE LPF_BLAS_FP16
         IMPLICIT NONE
 
@@ -322,7 +323,7 @@
          STOP
       END IF
 
-      CALL xerbla_set_function(LOCAL_XERBLA)
+      CALL xerbla_set_function_f77(LOCAL_XERBLA)
 !
 !     Test each subroutine in turn.
 !

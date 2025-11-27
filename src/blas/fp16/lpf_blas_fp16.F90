@@ -68,6 +68,16 @@ module lpf_blas_fp16
             type(fp16) :: out
         end function
 
+        pure function hnrm2_fp32(N,SX,INCX) bind(C, name = "lpf_blas_hnrm2_fp32_fortran") result(out)
+            use, intrinsic :: iso_c_binding
+            use lpf_fp16
+            import :: lpf_blas_int_t
+            integer(lpf_blas_int_t), intent(in) :: n, incx
+            type(fp16), intent(in), dimension(*) :: sx
+            type(fp16) :: out
+        end function
+
+
         pure subroutine hrot(N,SX,INCX,SY,INCY, SC, SS) bind(C, name = "lpf_blas_hrot_fortran")
             use, intrinsic :: iso_c_binding
             use lpf_fp16
@@ -539,7 +549,7 @@ module lpf_blas_fp16
     end interface
 
 
-    ! Auxillary Routines 
+    ! Auxillary Routines
     interface
         pure subroutine hlacpy(uplo, m, n, a, lda, b, ldb) bind(C, name = "lpf_blas_hlacpy_fortran")
             use, intrinsic :: iso_c_binding
@@ -606,32 +616,6 @@ module lpf_blas_fp16
             type(fp16), intent(in) :: y(*)
         end subroutine
 
-        subroutine xerbla_set_function_internal(func) bind(C, name = "lpf_blas_xerbla_set_function_fortran")
-            use, intrinsic :: iso_c_binding
-            use lpf_fp16
-            import :: lpf_blas_int_t
-            type(c_funptr), value, intent(in) :: func
-        end subroutine
-
     end interface
-
-    abstract interface
-        subroutine xerbla_function(msg, info)
-            use, intrinsic :: iso_c_binding
-            import :: lpf_blas_int_t
-            character(len=:), pointer, intent(in) :: msg
-            integer, intent(in) :: info
-        end subroutine
-    end interface
-contains
-    subroutine xerbla_set_function(func)
-        procedure(xerbla_function) :: func
-
-        type(c_funptr) :: cfun
-
-        cfun = c_funloc(func)
-        call xerbla_set_function_internal(cfun)
-
-    end subroutine
 
 end module
