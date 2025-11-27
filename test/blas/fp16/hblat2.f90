@@ -416,8 +416,8 @@
  9992 FORMAT( '   FOR N              ', 9I6 )
  9991 FORMAT( '   FOR K              ', 7I6 )
  9990 FORMAT( '   FOR INCX AND INCY  ', 7I6 )
- 9989 FORMAT( '   FOR ALPHA          ', DT(7,6,1) )
- 9988 FORMAT( '   FOR BETA           ', DT(7,6,1) )
+ 9989 FORMAT( '   FOR ALPHA          ', 7DT(6,1) )
+ 9988 FORMAT( '   FOR BETA           ', 7DT(6,1) )
  9987 FORMAT( ' AMEND DATA FILE OR INCREASE ARRAY SIZES IN PROGRAM',    &
      &      /' ******* TESTS ABANDONED *******' )
  9986 FORMAT( ' SUBPROGRAM NAME ', A6, ' NOT RECOGNIZED', /' ******* T',&

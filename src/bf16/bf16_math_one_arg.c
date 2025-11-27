@@ -23,6 +23,7 @@
 #include <math.h>
 
 #include "bf16_helper.h"
+#include "lpf_internal.h"
 
 /*
  * Function: acos ( C: acosf )
@@ -262,6 +263,11 @@ HIDDEN void __bf16_helper_sqrt(int16_t *out, int16_t in)
     bf16_handler_t *r = (bf16_handler_t * ) out;
     bf16_handler_t _a = { .i16 = in};
     r->bf16 = (__bf16) sqrtf ((float) _a.bf16);
+}
+
+lpf_bfloat16_t sqrt_bf16(lpf_bfloat16_t x)
+{
+    return (lpf_bfloat16_t) sqrtf((float) x);
 }
 
 /*

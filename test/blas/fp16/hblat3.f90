@@ -381,8 +381,8 @@
  9995 FORMAT( ' TESTS OF THE TYPE(FP16)             LEVEL 3 BLAS', //' THE F',&
      &      'OLLOWING PARAMETER VALUES WILL BE USED:' )
  9994 FORMAT( '   FOR N              ', 9I6 )
- 9993 FORMAT( '   FOR ALPHA          ', DT(7,6,1) )
- 9992 FORMAT( '   FOR BETA           ', DT(7,6,1) )
+ 9993 FORMAT( '   FOR ALPHA          ', 7DT(6,1) )
+ 9992 FORMAT( '   FOR BETA           ', 7DT(6,1) )
  9991 FORMAT( ' AMEND DATA FILE OR INCREASE ARRAY SIZES IN PROGRAM',    &
      &      /' ******* TESTS ABANDONED *******' )
  9990 FORMAT( ' SUBPROGRAM NAME ', A7, ' NOT RECOGNIZED', /' ******* T',&

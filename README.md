@@ -2,7 +2,7 @@
 
 Low Precision Float types in Fortran.
 
-Copyright 2025 by Martin Köhler 
+Copyright 2025 by Martin Köhler
 
 ## Usage
 
@@ -12,13 +12,13 @@ that they become interoperable between C and Fortran via a reinterpretation of
 the pointers. Furthermore, it uses Fortran 2008 features to provide an easy to
 use interface on the Fortran side. By defining a type
 ```fortran
- use fp16_support
+ use lpf_fp16
  type(FP16) :: x
 ```
 and using it like any other `REAL` variable, `fp16` can be used in Fortran.
 Analogously, the `bf16` support can be used via
 ```fortran
- use bf16_support
+ use lpf_bf16
  type(BF16) :: y
 ```
 Both work like any other numerical type, but with one difference: If they are
@@ -71,7 +71,6 @@ this would be from mpfr.
 
 ### ToDo
 
-* Support for `READ`
 * Support for unformatted IO
 * Lookup tables instead of type-casting
 * AXV512FP16 and emulation support at once, but dispatching causes an overhead.
@@ -144,7 +143,7 @@ The project can either be used as subproject or integrated using CMake's
 `FetchContent` mechanism.
 
 
-## License 
+## License
 
-The library is licensed under GNU LGPL 3 or any later version if you want. See LICENSE for 
-details. 
+The library is licensed under GNU LGPL 3 or any later version if you want. See LICENSE for
+details.

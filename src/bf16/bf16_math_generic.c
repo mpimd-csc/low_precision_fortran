@@ -23,7 +23,16 @@
 #include <math.h>
 
 #include "bf16_helper.h"
+#include "lpf_internal.h"
 
+
+lpf_bfloat16_t diff_bf16(lpf_bfloat16_t a, lpf_bfloat16_t b)
+{
+    if ( a < b )
+        return b - a ;
+    else
+        return a - b;
+}
 /*
  * ABS
  */
@@ -37,6 +46,15 @@ HIDDEN void __bf16_helper_abs(int16_t *out, int16_t in)
         r->bf16 =  _a.bf16;
     }
 }
+
+lpf_bfloat16_t abs_bf16(lpf_bfloat16_t a)
+{
+    if ( a < 0)
+        return -a;
+    else
+        return a;
+}
+
 
 /*
  * DIGITS
@@ -248,6 +266,16 @@ HIDDEN void __bf16_helper_sign(int16_t *out, int16_t in1, int16_t  in2)
         r->bf16 = -aa;
     else
         r->bf16 = aa;
+}
+
+lpf_bfloat16_t sign_bf16(lpf_bfloat16_t a, lpf_bfloat16_t b)
+{
+    if ( a < 0 )
+        a = -a;
+    if ( b < 0 )
+        return -a ;
+    else
+        return a;
 }
 
 /*

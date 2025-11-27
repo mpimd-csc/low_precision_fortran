@@ -23,7 +23,7 @@
 #define BF16_HELPER_H_P7LSSW6X
 
 #include <stdint.h>
-#include <math.h>
+#include "lpf_internal.h"
 #include "constants.h"
 
 #define HIDDEN __attribute__((visibility("hidden")))
@@ -33,6 +33,14 @@ typedef union {
     int16_t  i16;
     uint16_t u16;
 } bf16_handler_t;
+
+
+/* Exports for C */
+
+lpf_bfloat16_t abs_bf16 (lpf_bfloat16_t x);
+lpf_bfloat16_t sqrt_bf16(lpf_bfloat16_t x);
+lpf_bfloat16_t sign_bf16(lpf_bfloat16_t a, lpf_bfloat16_t b);
+lpf_bfloat16_t diff_bf16(lpf_bfloat16_t a, lpf_bfloat16_t b);
 
 
 #endif /* end of include guard: BF16_HELPER_H_P7LSSW6X */

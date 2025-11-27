@@ -18,7 +18,7 @@
 !  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
 
-submodule (bf16_support) bf16_math_two_args
+submodule (lpf_bf16) bf16_math_two_args
     use iso_c_binding
     use iso_fortran_env
     implicit none
