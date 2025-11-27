@@ -17,7 +17,7 @@
 !  along with this program; if not, write to the Free Software Foundation,
 !  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
-MODULE FP16_SUPPORT
+MODULE LPF_FP16
     USE iso_c_binding
     USE iso_fortran_env
     IMPLICIT NONE
@@ -26,6 +26,7 @@ MODULE FP16_SUPPORT
 
     PUBLIC :: FP16, ASSIGNMENT(=)
     PUBLIC :: write(formatted)
+    PUBLIC :: read(formatted)
     PUBLIC :: operator(+), operator(-), operator(*), operator(/)
     PUBLIC :: operator(.lt.), operator(.le.), operator(.gt.), operator(.ge.)
     PUBLIC :: operator(.eq.), operator(.ne.)
@@ -116,6 +117,11 @@ MODULE FP16_SUPPORT
     INTERFACE write(formatted)
         MODULE PROCEDURE  write_formatted
     END INTERFACE
+
+    INTERFACE read(formatted)
+        MODULE PROCEDURE read_formatted
+    END INTERFACE
+
 
     ! Interface für den + Operator
     interface operator(+)
@@ -1062,7 +1068,6 @@ CONTAINS
         type(fp16), intent(in) :: this
         real(real32), intent(in) :: that
         type(fp16) :: quot
-
         call helper_div_fp16_real(quot%value, this%value, that)
     end function
 
@@ -1417,6 +1422,9 @@ CONTAINS
             else if (size(v_list) == 2 ) then
                 write(pfmt, '(a,i0,a,i0,a)') '(F', v_list(1),'.',v_list(2),')'
                 write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
+            else if (size(v_list) == 3 ) then
+                write(pfmt, '(a,i0,a,i0,a,i0,a)') '(',v_list(1), 'F', v_list(2),'.',v_list(3),')'
+                write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
             else
                 iostat = -1
                 iomsg = 'Too many options in DT setting'
@@ -1430,6 +1438,9 @@ CONTAINS
             else if (size(v_list) == 2 ) then
                 write(pfmt, '(a,i0,a,i0,a)') '(E', v_list(1),'.',v_list(2),')'
                 write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
+            else if (size(v_list) == 3 ) then
+                write(pfmt, '(a,i0,a,i0,a,i0,a)') '(',v_list(1), 'E', v_list(2),'.',v_list(3),')'
+                write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
             else
                 iostat = -1
                 iomsg = 'Too many options in DT setting'
@@ -1439,5 +1450,20 @@ CONTAINS
             iomsg = 'Unsupported iotype'
         end if
     end subroutine write_formatted
+
+	! Formatted Input
+    SUBROUTINE read_formatted(dtv, unit, iotype, v_list, iostat, iomsg)
+        TYPE(FP16), INTENT(INOUT) :: dtv
+        INTEGER, INTENT(IN)      :: unit
+        CHARACTER(*), INTENT(IN) :: iotype
+        INTEGER, INTENT(IN)      :: v_list(:)
+        INTEGER, INTENT(OUT)     :: iostat
+        CHARACTER(*), INTENT(INOUT) :: iomsg
+
+        REAL(real32)   :: tmp
+
+        READ(unit, *, IOSTAT=iostat, IOMSG=iomsg) tmp
+        IF (iostat == 0) dtv = FP16(tmp)
+    END SUBROUTINE read_formatted
 
 END MODULE

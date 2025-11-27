@@ -19,7 +19,7 @@
 !
 
 
-submodule (fp16_support) fp16_maxloc
+submodule (lpf_fp16) lpf_fp16_maxloc
     use iso_c_binding
     use iso_fortran_env
     implicit none
@@ -328,4 +328,4 @@ contains
 
     end function maxloc_fp16_4d_dim
 
-end submodule fp16_maxloc
+end submodule

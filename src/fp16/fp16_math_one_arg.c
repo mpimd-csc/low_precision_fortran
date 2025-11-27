@@ -23,6 +23,7 @@
 #include <math.h>
 
 #include "fp16_helper.h"
+#include "lpf_internal.h"
 
 /*
  * Function: acos ( C: acosf )
@@ -262,6 +263,11 @@ HIDDEN void __fp16_helper_sqrt(int16_t *out, int16_t in)
     fp16_handler_t *r = (fp16_handler_t * ) out;
     fp16_handler_t _a = { .i16 = in};
     r->f16 = (_Float16) sqrtf ((float) _a.f16);
+}
+
+lpf_float16_t sqrt_fp16(lpf_float16_t x)
+{
+    return (lpf_float16_t) sqrtf((float) x);
 }
 
 /*

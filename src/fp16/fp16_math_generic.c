@@ -17,12 +17,23 @@
   along with this program; if not, write to the Free Software Foundation,
   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#include <stdio.h>
-#include <stdlib.h>
 #include <stdint.h>
 #include <math.h>
 
 #include "fp16_helper.h"
+#include "lpf_internal.h"
+
+/*
+ *
+ */
+lpf_float16_t diff_fp16(lpf_float16_t a, lpf_float16_t b)
+{
+    if ( a < b )
+        return b - a;
+    else
+        return a - b;
+
+}
 
 /*
  * ABS
@@ -36,6 +47,14 @@ HIDDEN void __fp16_helper_abs(int16_t *out, int16_t in)
     } else {
         r->f16 =  _a.f16;
     }
+}
+
+lpf_float16_t abs_fp16(lpf_float16_t x)
+{
+    if ( x < 0)
+        return -x;
+    else
+        return x;
 }
 
 /*
@@ -248,6 +267,18 @@ HIDDEN void __fp16_helper_sign(int16_t *out, int16_t in1, int16_t  in2)
         r->f16 = -aa;
     else
         r->f16 = aa;
+}
+
+lpf_float16_t sign_fp16(lpf_float16_t a, lpf_float16_t b)
+{
+    if (a < 0 )
+    {
+        a = -a;
+    }
+    if ( b < 0)
+        return -a;
+    else
+        return a;
 }
 
 /*

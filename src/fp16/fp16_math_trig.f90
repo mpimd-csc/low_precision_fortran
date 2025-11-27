@@ -18,7 +18,7 @@
 !  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
 
-submodule (fp16_support) fp16_math_trig
+submodule (lpf_fp16) lpf_fp16_math_trig
     use iso_c_binding
     use iso_fortran_env
     implicit none
@@ -137,4 +137,4 @@ contains
         call helper_atan2d_fp16(ret_val%value, x%value, y%value)
     end function atan2d_fp16
 
-end submodule fp16_math_trig
+end submodule

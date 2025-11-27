@@ -1,0 +1,11 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=@CMAKE_INSTALL_PREFIX@
+includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
+libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+moduledir=@CMAKE_INSTALL_FULL_MODULEDIR@
+
+Name: lpf-blas
+Description: The Low Precision Fortran library (BLAS Interface)
+Version: @PROJECT_VERSION@
+CFlags: -I${moduledir}
+Libs: -L${libdir} -llpf_blas -llpf

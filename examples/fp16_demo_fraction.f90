@@ -20,7 +20,7 @@
 
 
 PROGRAM FP16_DEMO
-    USE FP16_SUPPORT
+    USE LPF_FP16
 
     TYPE(FP16) :: x1, x2, x3
     INTEGER:: e1, e2, e3
