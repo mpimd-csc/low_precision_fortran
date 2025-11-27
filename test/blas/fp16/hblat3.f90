@@ -81,6 +81,7 @@
 !  =====================================================================
       PROGRAM SBLAT3
         USE LPF_FP16
+        USE LPF_XERBLA
         USE LPF_BLAS_FP16
         IMPLICIT NONE
           !
@@ -142,7 +143,7 @@
 
       ZERO = 0.0
       ONE = 1.0
-      CALL xerbla_set_function(LOCAL_XERBLA)
+      CALL xerbla_set_function_f77(LOCAL_XERBLA)
       READ( NIN, FMT = * )SUMMRY
       READ( NIN, FMT = * )NOUT
       IF (NOUT.NE.6) OPEN( NOUT, FILE = SUMMRY )

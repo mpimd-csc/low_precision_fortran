@@ -42,6 +42,7 @@ ADD_LIBRARY(lpf
     $<$<BOOL:${LPF_HAVE_BF16}>:${BF16_SRC}>
     aux/get_wtime.c
     aux/xerbla.c
+    aux/xerbla.f90
     init.c
     ${SYSINFO_SRC}
 )

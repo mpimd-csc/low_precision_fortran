@@ -57,16 +57,26 @@ void LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)(char *str, lpf_blas_int_t *inf
 
 }
 
-void LPF_GLOBAL(lpf_blas_xerbla_set,LPF_BLAS_XERBLA_SET)(void* func)
+void LPF_GLOBAL(lpf_blas_xerbla_set,LPF_BLAS_XERBLA_SET)(void* func, lpf_blas_int_t *new_style)
 {
     xerbla_function = func;
+    if (new_style)
+        xerbla_function_set_from_fortran = 1;
+    else
+        xerbla_function_set_from_fortran = 0;
+    return;
+}
+
+void lpf_blas_xerbla_set_function_fortran_old(void * funcptr)
+{
+    xerbla_function  = funcptr;
     xerbla_function_set_from_fortran = 0;
     return;
 }
 
-void lpf_blas_xerbla_set_function_fortran(void * funcptr)
+void lpf_blas_xerbla_set_function_fortran_new(void * funcptr)
 {
     xerbla_function  = funcptr;
-    /** xerbla_function_set_from_fortran = 1; */
+    xerbla_function_set_from_fortran = 1;
     return;
 }
