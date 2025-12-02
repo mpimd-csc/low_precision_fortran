@@ -1,5 +1,6 @@
 .ccls-cache
-build
-build-dir
+build*
+build-dir*
 *.swp
 .cache
+a.out

@@ -48,25 +48,25 @@ void check_brotg(bool *ok)
         SB = DB1[i];
         LPF_GLOBAL(brotg,BROTG)(&SA, &SB, &SC, &SS);
 
-        if ( diff_bf16( SA, DATRUE[i]) > __FLT16_EPSILON__ * abs_bf16(DATRUE[i])* 10.0) {
-            printf("BROTG   -- FAIL -- Testcase %2d: SA : Result = %10f, Expected = %10f\n", i+1, (float)SA, (float)DATRUE[i]);
+        if ( diff_bf16( SA, DATRUE[i]) > __BFLT16_EPSILON__ * abs_bf16(DATRUE[i])* 10.0) {
+            printf("BROTG   -- FAIL -- Testcase %2d: SA : Result = %10f, Expected = %10f\n",(int) i+1, (float)SA, (float)DATRUE[i]);
             lok = false;
         }
-        if ( diff_bf16( SB, DBTRUE[i]) > __FLT16_EPSILON__ * abs_bf16(DBTRUE[i])* 10.0) {
-            printf("BROTG   -- FAIL -- Testcase %2d: SB : Result = %10f, Expected = %10f\n", i+1, (float)SB, (float)DBTRUE[i]);
+        if ( diff_bf16( SB, DBTRUE[i]) > __BFLT16_EPSILON__ * abs_bf16(DBTRUE[i])* 10.0) {
+            printf("BROTG   -- FAIL -- Testcase %2d: SB : Result = %10f, Expected = %10f\n",(int) i+1, (float)SB, (float)DBTRUE[i]);
             lok = false;
         }
-        if ( diff_bf16( SC, DC1[i]) > __FLT16_EPSILON__ * abs_bf16(DC1[i])* 10.0) {
-            printf("BROTG   -- FAIL -- Testcase %2d: SC : Result = %10f, Expected = %10f\n", i+1, (float)SC, (float)DC1[i]);
+        if ( diff_bf16( SC, DC1[i]) > __BFLT16_EPSILON__ * abs_bf16(DC1[i])* 10.0) {
+            printf("BROTG   -- FAIL -- Testcase %2d: SC : Result = %10f, Expected = %10f\n",(int) i+1, (float)SC, (float)DC1[i]);
             lok = false;
         }
-        if ( diff_bf16( SS, DS1[i]) > __FLT16_EPSILON__ * abs_bf16(DS1[i])* 10.0) {
-            printf("BROTG   -- FAIL -- Testcase %2d: SS : Result = %10f, Expected = %10f\n", i+1, (float)SS, (float)DS1[i]);
+        if ( diff_bf16( SS, DS1[i]) > __BFLT16_EPSILON__ * abs_bf16(DS1[i])* 10.0) {
+            printf("BROTG   -- FAIL -- Testcase %2d: SS : Result = %10f, Expected = %10f\n",(int) i+1, (float)SS, (float)DS1[i]);
             lok = false;
         }
 
         if ( lok ) {
-            printf("BROTG   -- PASS -- Testcase %2d.\n", i+1);
+            printf("BROTG   -- PASS -- Testcase %2d.\n", (int)i+1);
         } else {
             *ok = false;
         }

@@ -66,9 +66,9 @@ void check_hdot( bool *ok) {
     for ( int i = 0; i < NTEST; i++) {
         lpf_float16_t result = from_u16(LPF_GLOBAL(hdot, HDOT)(&n[i], x[i], &incx[i], y[i], &incy[i]));
         if ( diff_fp16(result, hdot_expected[i]) < __FLT16_EPSILON__ * 10) {
-            printf("HDOT   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, Result = %10f, Expected = %10f\n", i+1, n[i], incx[i], incy[i], (float)result, (float)hdot_expected[i]);
+            printf("HDOT   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, Result = %10f, Expected = %10f\n", (int)i+1,(int) n[i],(int) incx[i],(int) incy[i], (float)result, (float)hdot_expected[i]);
         } else{
-            printf("HDOT   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, Result = %10f, Expected = %10f\n", i+1, n[i], incx[i], incy[i], (float)result, (float)hdot_expected[i]);
+            printf("HDOT   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, Result = %10f, Expected = %10f\n",(int) i+1,(int) n[i],(int) incx[i], (int)incy[i], (float)result, (float)hdot_expected[i]);
             *ok = false;
         }
     }

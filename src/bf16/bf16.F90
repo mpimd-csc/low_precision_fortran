@@ -19,7 +19,7 @@
 !
 MODULE LPF_BF16
     USE iso_c_binding
-    USE iso_fortran_env
+    USE :: iso_fortran_env, only: real32, real64
     IMPLICIT NONE
 
     PRIVATE
@@ -916,7 +916,9 @@ CONTAINS
     elemental function construct_int(in) result(r)
         integer, intent(in) :: in
         type(bf16) :: r
-        call SET_BF16_FROM_INT(r%value, in)
+        integer(c_int) :: tmp
+        tmp = int(in, kind = c_int)
+        call SET_BF16_FROM_INT(r%value, tmp)
     end function
 
 
@@ -926,7 +928,9 @@ CONTAINS
     elemental SUBROUTINE assign_int(this, that)
         TYPE(BF16), INTENT(OUT) :: this
         INTEGER, INTENT(IN) :: that
-        CALL SET_BF16_FROM_INT(this%value, that)
+        integer(c_int) :: tmp
+        tmp = INT(that, kind = c_int )
+        CALL SET_BF16_FROM_INT(this%value, tmp)
     END SUBROUTINE
 
     elemental SUBROUTINE assign_real(this, that)
@@ -1343,9 +1347,12 @@ CONTAINS
     elemental function power_bf16_int(this, that) result(power)
         type(bf16), intent(in) :: this
         integer, intent(in) :: that
-        type(bf16) :: power
 
-        call helper_power_bf16_int(power%value, this%value, that)
+        type(bf16) :: power
+        integer(c_int) :: tmp
+        tmp = INT(that, KIND = c_int)
+
+        call helper_power_bf16_int(power%value, this%value, tmp)
     end function
 
     elemental function min_bf16(x, y) result(out)
@@ -1404,37 +1411,60 @@ CONTAINS
         type(BF16), intent(in) :: dtv
         integer, intent(in) :: unit
         character(*), intent(in) :: iotype
+#if defined(__INTEL_COMPILER) || defined (__flang__)
         integer, intent(in) :: v_list(:)
+#else
+        integer, intent(in),target :: v_list(:)
+#endif
         integer, intent(out) :: iostat
         character(*), intent(inout) :: iomsg
-        character(10) :: pfmt
-
+        character(40) :: pfmt
+        type(c_ptr) :: v_list_ptr
+        integer(kind = 4), pointer :: v_list_4(:)
+        integer ::  shape_ptr(1)
         REAL(real32) :: x
+        integer :: v_list_internal(5), k
+
+#if defined(__INTEL_COMPILER) || (__flang__)
+        do k = 1, min(size(v_list), 5)
+            v_list_internal(k) = v_list(k)
+        end do
+#else
+        ! Workaround in GCC
+        shape_ptr(1)  = size(v_list)
+        v_list_ptr = c_loc(v_list)
+        call c_f_pointer(v_list_ptr, v_list_4, shape_ptr)
+
+        do k = 1, min(size(v_list), 5)
+            v_list_internal(k) = v_list_4(k)
+        end do
+#endif
+
         x = GET_BF16(dtv%value)
 
         if (iotype == 'LISTDIRECTED') then
             write(unit, '(F0.4)', iostat=iostat, iomsg=iomsg) x
         else if (iotype == 'DT') then
-            if (size(v_list) == 0 ) then
+            if (size(v_list_4) == 0 ) then
                 write(unit, '(F0.4)', iostat=iostat, iomsg=iomsg) x
-            else if (size(v_list) == 1 ) then
-                write(pfmt, '(a,i2,a)') '(F0.', v_list(1),')'
+            else if (size(v_list_4) == 1 ) then
+                write(pfmt, '(a,i2,a)') '(F0.', v_list_4(1),')'
                 write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
-            else if (size(v_list) == 2 ) then
-                write(pfmt, '(a,i0,a,i0,a)') '(F', v_list(1),'.',v_list(2),')'
+            else if (size(v_list_4) == 2 ) then
+                write(pfmt, '(a,i0,a,i0,a)') '(F', v_list_4(1),'.',v_list_4(2),')'
                 write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
             else
                 iostat = -1
                 iomsg = 'Too many options in DT setting'
             endif
         else if (iotype == 'DTE') then
-            if (size(v_list) == 0 ) then
+            if (size(v_list_4) == 0 ) then
                 write(unit, '(E0.4)', iostat=iostat, iomsg=iomsg) x
-            else if (size(v_list) == 1 ) then
-                write(pfmt, '(a,i2,a)') '(E0.', v_list(1),')'
+            else if (size(v_list_4) == 1 ) then
+                write(pfmt, '(a,i2,a)') '(E0.', v_list_4(1),')'
                 write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
-            else if (size(v_list) == 2 ) then
-                write(pfmt, '(a,i0,a,i0,a)') '(E', v_list(1),'.',v_list(2),')'
+            else if (size(v_list_4) == 2 ) then
+                write(pfmt, '(a,i0,a,i0,a)') '(E', v_list_4(1),'.',v_list_4(2),')'
                 write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
             else
                 iostat = -1

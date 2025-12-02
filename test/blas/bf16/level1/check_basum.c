@@ -49,10 +49,10 @@ void check_basum( bool *ok) {
 
     for ( int i = 0; i < NTEST; i++) {
         lpf_bfloat16_t result = from_u16(LPF_GLOBAL(basum, BASUM)(&n[i], data[i], &incx[i]));
-        if ( diff_bf16(result, basum_expected[i]) < __FLT16_EPSILON__ * 10) {
-            printf("BASUM   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, Result = %10f, Expected = %10f\n", i+1, n[i], incx[i], (float)result, (float)basum_expected[i]);
+        if ( diff_bf16(result, basum_expected[i]) < __BFLT16_EPSILON__ * 10) {
+            printf("BASUM   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, Result = %10f, Expected = %10f\n",(int) i+1,(int) n[i],(int) incx[i], (float)result, (float)basum_expected[i]);
         } else{
-            printf("BASUM   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, Result = %10f, Expected = %10f\n", i+1, n[i], incx[i], (float)result, (float)basum_expected[i]);
+            printf("BASUM   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, Result = %10f, Expected = %10f\n",(int) i+1,(int) n[i],(int) incx[i], (float)result, (float)basum_expected[i]);
             *ok = false;
         }
     }

@@ -1,6 +1,6 @@
 module lpf_blas_fp16
     use lpf_fp16
-    use iso_fortran_env
+    use iso_fortran_env, only : real32, real64
     use iso_c_binding
     implicit none
 #ifdef LPF_INTEGER8
@@ -416,7 +416,6 @@ module lpf_blas_fp16
         subroutine hgemm_32(transa,transb,m,n,k,alpha,a,lda,b,ldb,beta,c,ldc) bind(C, name = "lpf_blas_hgemm_fp32_fortran")
             use, intrinsic :: iso_c_binding
             use lpf_fp16
-            use iso_fortran_env
             import :: lpf_blas_int_t
 
             integer(lpf_blas_int_t), intent(in) :: ldc

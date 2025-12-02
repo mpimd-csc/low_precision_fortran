@@ -45,9 +45,9 @@ void check_ihamax( bool *ok) {
     for ( int i = 0; i < NTEST; i++) {
         lpf_blas_int_t result = LPF_GLOBAL(ihamax, IHAMAX)(&n[i], data[i], &incx[i]);
         if ( result- ihamax_expected[i] == 0) {
-            printf("IHAMAX  -- PASS -- Testcase %2d: N = %3d, INCX = %3d, Result = %2d, Expected = %2d\n", i+1, n[i], incx[i], (int)result, (int)ihamax_expected[i]);
+            printf("IHAMAX  -- PASS -- Testcase %2d: N = %3d, INCX = %3d, Result = %2d, Expected = %2d\n",(int) i+1,(int) n[i],(int) incx[i], (int)result, (int)ihamax_expected[i]);
         } else{
-            printf("IHAMAX  -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, Result = %2d, Expected = %2d\n", i+1, n[i], incx[i], (int)result, (int)ihamax_expected[i]);
+            printf("IHAMAX  -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, Result = %2d, Expected = %2d\n", (int)i+1,(int) n[i], (int)incx[i], (int)result, (int)ihamax_expected[i]);
             *ok = false;
         }
     }

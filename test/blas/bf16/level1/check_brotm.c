@@ -91,22 +91,22 @@ void check_brotm( bool *ok) {
             lpf_bfloat16_t mag1 = abs_bf16(xresult[i][k]);
             lpf_bfloat16_t mag2 = abs_bf16(yresult[i][k]);
 
-            if ( diff_bf16( xtemp[k], xresult[i][k]) > __FLT16_EPSILON__ * mag1 * 10.0 ) {
+            if ( diff_bf16( xtemp[k], xresult[i][k]) > __BFLT16_EPSILON__ * mag1 * 10.0 ) {
                 printf("BROTM   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, K = %2d, X, computed = %10f, expected = %10f\n",
-                        i+1, n[i], incx[i], incy[i], k, (float) xtemp[k], (float) xresult[i][k]);
+                       (int) i+1, (int)n[i],(int) incx[i], (int)incy[i],(int) k, (float) xtemp[k], (float) xresult[i][k]);
                 *ok = false;
                 lok = false;
             }
-            if ( diff_bf16( ytemp[k], yresult[i][k]) > __FLT16_EPSILON__ * mag2 * 10.0 ) {
+            if ( diff_bf16( ytemp[k], yresult[i][k]) > __BFLT16_EPSILON__ * mag2 * 10.0 ) {
                 printf("BROTM   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, K = %2d, Y, computed = %10f, expected = %10f\n",
-                        i+1, n[i], incx[i], incy[i], k, (float) ytemp[k], (float) yresult[i][k]);
+                       (int) i+1,(int) n[i],(int) incx[i],(int) incy[i],(int) k, (float) ytemp[k], (float) yresult[i][k]);
                 *ok = false;
                 lok = false;
             }
 
         }
         if (lok) {
-            printf("BROTM   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d\n", i+1, n[i], incx[i], incy[i]);
+            printf("BROTM   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d\n",(int) i+1, (int)n[i],(int) incx[i],(int) incy[i]);
         }
 
     }

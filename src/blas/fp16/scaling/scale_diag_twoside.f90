@@ -1,6 +1,6 @@
 module lpf_blas_scale_diag
     use lpf_fp16
-    use iso_fortran_env
+    use iso_fortran_env, only: real32, real64
     implicit none
 
     private
