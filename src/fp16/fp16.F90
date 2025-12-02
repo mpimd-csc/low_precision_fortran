@@ -19,7 +19,7 @@
 !
 MODULE LPF_FP16
     USE iso_c_binding
-    USE iso_fortran_env
+    USE iso_fortran_env, only: real32, real64
     IMPLICIT NONE
 
     PRIVATE
@@ -916,7 +916,9 @@ CONTAINS
     elemental function construct_int(in) result(r)
         integer, intent(in) :: in
         type(fp16) :: r
-        call SET_FP16_FROM_INT(r%value, in)
+        integer(c_int) :: tmp
+        tmp = int(in, kind = c_int )
+        call SET_FP16_FROM_INT(r%value, tmp)
     end function
 
 
@@ -926,7 +928,9 @@ CONTAINS
     elemental SUBROUTINE assign_int(this, that)
         TYPE(FP16), INTENT(OUT) :: this
         INTEGER, INTENT(IN) :: that
-        CALL SET_FP16_FROM_INT(this%value, that)
+        integer(c_int) :: tmp
+        tmp = int(that, kind=c_int)
+        CALL SET_FP16_FROM_INT(this%value, tmp)
     END SUBROUTINE
 
     elemental SUBROUTINE assign_real(this, that)
@@ -1343,8 +1347,10 @@ CONTAINS
         type(fp16), intent(in) :: this
         integer, intent(in) :: that
         type(fp16) :: power
+        integer(c_int) :: tmp
+        tmp = int(that, kind=c_int)
 
-        call helper_power_fp16_int(power%value, this%value, that)
+        call helper_power_fp16_int(power%value, this%value, tmp)
     end function
 
     elemental function min_fp16(x, y) result(out)
@@ -1400,15 +1406,38 @@ CONTAINS
 
     ! Formated output
     subroutine write_formatted(dtv, unit, iotype, v_list, iostat, iomsg)
+        use iso_c_binding
         type(FP16), intent(in) :: dtv
         integer, intent(in) :: unit
         character(*), intent(in) :: iotype
+#if defined(__INTEL_COMPILER) || defined (__flang__)
         integer, intent(in) :: v_list(:)
+#else
+        integer, intent(in),target :: v_list(:)
+#endif
         integer, intent(out) :: iostat
         character(*), intent(inout) :: iomsg
-        character(10) :: pfmt
-
+        character(40) :: pfmt
+        type(c_ptr) :: v_list_ptr
+        integer(kind = 4), pointer :: v_list_4(:)
+        integer :: shape_ptr(1)
         REAL(real32) :: x
+        integer :: v_list_internal(5), k
+
+#if defined(__INTEL_COMPILER) || defined (__flang__)
+        do k = 1, min(size(v_list), 5)
+            v_list_internal(k) = v_list(k)
+        end do
+#else
+        ! Workaround in GCC
+        shape_ptr(1)  = size(v_list)
+        v_list_ptr = c_loc(v_list)
+        call c_f_pointer(v_list_ptr, v_list_4, shape_ptr)
+        do k = 1, min(size(v_list), 5)
+            v_list_internal(k) = v_list_4(k)
+        end do
+#endif
+
         x = GET_FP16(dtv%value)
 
         if (iotype == 'LISTDIRECTED') then
@@ -1417,23 +1446,23 @@ CONTAINS
             if (size(v_list) == 0 ) then
                 write(unit, '(F0.4)', iostat=iostat, iomsg=iomsg) x
             else if (size(v_list) == 1 ) then
-                write(pfmt, '(a,i2,a)') '(F0.', v_list(1),')'
+                write(pfmt, '(a,i2,a)') '(F0.', v_list_internal(1),')'
                 write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
             else if (size(v_list) == 2 ) then
-                write(pfmt, '(a,i0,a,i0,a)') '(F', v_list(1),'.',v_list(2),')'
+                write(pfmt, '(a,i0,a,i0,a)') '(F', v_list_internal(1),'.',v_list_internal(2),')'
                 write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
             else
                 iostat = -1
                 iomsg = 'Too many options in DT setting'
             endif
         else if (iotype == 'DTE') then
-            if (size(v_list) == 0 ) then
+            if (size(v_list_internal) == 0 ) then
                 write(unit, '(E0.4)', iostat=iostat, iomsg=iomsg) x
             else if (size(v_list) == 1 ) then
-                write(pfmt, '(a,i2,a)') '(E0.', v_list(1),')'
+                write(pfmt, '(a,i2,a)') '(E0.', v_list_internal(1),')'
                 write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
             else if (size(v_list) == 2 ) then
-                write(pfmt, '(a,i0,a,i0,a)') '(E', v_list(1),'.',v_list(2),')'
+                write(pfmt, '(a,i0,a,i0,a)') '(E', v_list_internal(1),'.',v_list_internal(2),')'
                 write(unit, pfmt, iostat = iostat, iomsg = iomsg) x
             else
                 iostat = -1
@@ -1445,7 +1474,7 @@ CONTAINS
         end if
     end subroutine write_formatted
 
-	! Formatted Input
+    ! Formatted Input
     SUBROUTINE read_formatted(dtv, unit, iotype, v_list, iostat, iomsg)
         TYPE(FP16), INTENT(INOUT) :: dtv
         INTEGER, INTENT(IN)      :: unit
@@ -1454,9 +1483,10 @@ CONTAINS
         INTEGER, INTENT(OUT)     :: iostat
         CHARACTER(*), INTENT(INOUT) :: iomsg
 
-        REAL(real32)   :: tmp
+        REAL   :: tmp
 
-        READ(unit, *, IOSTAT=iostat, IOMSG=iomsg) tmp
+        WRITE(*,*) "iotype = ", iotype
+        READ(unit, FMT = *, IOSTAT=iostat, IOMSG=iomsg) tmp
         IF (iostat == 0) dtv = FP16(tmp)
     END SUBROUTINE read_formatted
 

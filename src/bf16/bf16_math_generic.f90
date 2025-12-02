@@ -20,7 +20,7 @@
 
 submodule (lpf_bf16) bf16_math_generic
     use iso_c_binding
-    use iso_fortran_env
+    use :: iso_fortran_env, only : real32, real64
     implicit none
 
     ! C Interfaces
@@ -153,13 +153,14 @@ contains
     module elemental function digits_bf16(x) result(out)
         type(BF16), intent(in) :: x
         integer :: out
-
+        integer(c_int) :: outi
         ! dummy to avoid compiler warnings
         if ( 0 .eq. 1) then
             out = INT(x%value)
         end if
 
-        call helper_digits_bf16(out)
+        call helper_digits_bf16(outi)
+        out = outi
     end function digits_bf16
 
 
@@ -178,8 +179,10 @@ contains
     module elemental function exponent_bf16 (x) result(out)
         type(BF16), intent(in) :: x
         integer :: out
+        integer(c_int) :: outi
 
-        call helper_exponent_bf16(out, x%value)
+        call helper_exponent_bf16(outi, x%value)
+        out = outi
     end function exponent_bf16
 
     module elemental function fraction_bf16 (x) result(out)
@@ -325,8 +328,10 @@ contains
         type(BF16), intent(in) :: x
         integer, intent(in) :: s
         type(BF16) :: out
+        integer(c_int) :: tmp
+        tmp = int(s, kind = c_int)
 
-        call helper_scale_bf16(out%value, x%value, s)
+        call helper_scale_bf16(out%value, x%value, tmp)
     end function scale_bf16
 
     module elemental function sign_bf16(x, y) result(out)

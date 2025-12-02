@@ -53,10 +53,10 @@ void check_bnrm2( bool *ok) {
 
     for ( int i = 0; i < NTEST; i++) {
         lpf_bfloat16_t result = from_u16(LPF_GLOBAL(bnrm2_fp32, BNRM2_FP32)(&n[i], data[i], &incx[i]));
-        if ( diff_bf16(result, bnrm2_expected[i]) < __FLT16_EPSILON__ * 10) {
-            printf("BNRM2_FP32   -- OK   -- Testcase %2d: N = %3d, INCX = %3d, Result = %10f, Expected = %10f\n", i+1, n[i], incx[i], (float)result, (float)bnrm2_expected[i]);
+        if ( diff_bf16(result, bnrm2_expected[i]) < __BFLT16_EPSILON__ * 10) {
+            printf("BNRM2_FP32   -- OK   -- Testcase %2d: N = %3d, INCX = %3d, Result = %10f, Expected = %10f\n",(int) i+1,(int) n[i],(int) incx[i], (float)result, (float)bnrm2_expected[i]);
         } else{
-            printf("BNRM2_FP32   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, Result = %10f, Expected = %10f\n", i+1, n[i], incx[i], (float)result, (float)bnrm2_expected[i]);
+            printf("BNRM2_FP32   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, Result = %10f, Expected = %10f\n", (int)i+1,(int) n[i],(int) incx[i], (float)result, (float)bnrm2_expected[i]);
             *ok = false;
         }
     }

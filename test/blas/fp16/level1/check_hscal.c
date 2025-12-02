@@ -57,13 +57,13 @@ void check_hscal( bool *ok) {
 
         for ( int k = 0;  k < 10; k++) {
             if ( diff_fp16(data[i][k], hscal_expected[i][k]) > __FLT16_EPSILON__ * 10) {
-                printf("HSCAL   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, K = %2d, Result = %10f, Expected = %10f\n", i+1, n[i], incx[i], k+1, (float)data[i][k], (float)hscal_expected[i][k]);
+                printf("HSCAL   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, K = %2d, Result = %10f, Expected = %10f\n",(int) i+1,(int) n[i],(int) incx[i],(int) k+1, (float)data[i][k], (float)hscal_expected[i][k]);
                 *ok = false;
                 lok = false;
             }
         }
         if (lok) {
-            printf("HSCAL   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, SA = %10f\n", i+1, n[i], incx[i], (float)sa[i]);
+            printf("HSCAL   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, SA = %10f\n",(int) i+1,(int) n[i],(int) incx[i], (float)sa[i]);
         }
     }
 }

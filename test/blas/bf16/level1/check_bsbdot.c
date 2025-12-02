@@ -66,10 +66,10 @@ void check_bsbdot( bool *ok) {
 
     for ( int i = 0; i < NTEST; i++) {
         lpf_bfloat16_t result = from_u16(LPF_GLOBAL(bsbdot, BSBDOT)(&n[i], &b, x[i], &incx[i], y[i], &incy[i]));
-        if ( diff_bf16(result, hsbdot_expected[i]) < __FLT16_EPSILON__ * 10) {
-            printf("HSBDOT -- PASS -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, Result = %10f, Expected = %10f\n", i+1, n[i], incx[i], incy[i], (float)result, (float)hsbdot_expected[i]);
+        if ( diff_bf16(result, hsbdot_expected[i]) < __BFLT16_EPSILON__ * 10) {
+            printf("HSBDOT -- PASS -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, Result = %10f, Expected = %10f\n",(int) i+1,(int) n[i], (int)incx[i],(int) incy[i], (float)result, (float)hsbdot_expected[i]);
         } else{
-            printf("HSBDOT -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, Result = %10f, Expected = %10f\n", i+1, n[i], incx[i], incy[i], (float)result, (float)hsbdot_expected[i]);
+            printf("HSBDOT -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, Result = %10f, Expected = %10f\n",(int) i+1,(int) n[i],(int) incx[i],(int) incy[i], (float)result, (float)hsbdot_expected[i]);
             *ok = false;
         }
     }

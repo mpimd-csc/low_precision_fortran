@@ -1,6 +1,6 @@
 submodule (lpf_bf16) bf16_math_one_arg
     use iso_c_binding
-    use iso_fortran_env
+    use :: iso_fortran_env, only : real32, real64
     implicit none
 
     interface

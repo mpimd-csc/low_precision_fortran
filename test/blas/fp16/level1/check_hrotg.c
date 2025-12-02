@@ -49,24 +49,24 @@ void check_hrotg(bool *ok)
         LPF_GLOBAL(hrotg,HROTG)(&SA, &SB, &SC, &SS);
 
         if ( diff_fp16( SA, DATRUE[i]) > __FLT16_EPSILON__ * abs_fp16(DATRUE[i])* 10.0) {
-            printf("HROTG   -- FAIL -- Testcase %2d: SA : Result = %10f, Expected = %10f\n", i+1, (float)SA, (float)DATRUE[i]);
+            printf("HROTG   -- FAIL -- Testcase %2d: SA : Result = %10f, Expected = %10f\n",(int) i+1, (float)SA, (float)DATRUE[i]);
             lok = false;
         }
         if ( diff_fp16( SB, DBTRUE[i]) > __FLT16_EPSILON__ * abs_fp16(DBTRUE[i])* 10.0) {
-            printf("HROTG   -- FAIL -- Testcase %2d: SB : Result = %10f, Expected = %10f\n", i+1, (float)SB, (float)DBTRUE[i]);
+            printf("HROTG   -- FAIL -- Testcase %2d: SB : Result = %10f, Expected = %10f\n",(int) i+1, (float)SB, (float)DBTRUE[i]);
             lok = false;
         }
         if ( diff_fp16( SC, DC1[i]) > __FLT16_EPSILON__ * abs_fp16(DC1[i])* 10.0) {
-            printf("HROTG   -- FAIL -- Testcase %2d: SC : Result = %10f, Expected = %10f\n", i+1, (float)SC, (float)DC1[i]);
+            printf("HROTG   -- FAIL -- Testcase %2d: SC : Result = %10f, Expected = %10f\n",(int) i+1, (float)SC, (float)DC1[i]);
             lok = false;
         }
         if ( diff_fp16( SS, DS1[i]) > __FLT16_EPSILON__ * abs_fp16(DS1[i])* 10.0) {
-            printf("HROTG   -- FAIL -- Testcase %2d: SS : Result = %10f, Expected = %10f\n", i+1, (float)SS, (float)DS1[i]);
+            printf("HROTG   -- FAIL -- Testcase %2d: SS : Result = %10f, Expected = %10f\n",(int) i+1, (float)SS, (float)DS1[i]);
             lok = false;
         }
 
         if ( lok ) {
-            printf("HROTG   -- PASS -- Testcase %2d.\n", i+1);
+            printf("HROTG   -- PASS -- Testcase %2d.\n", (int) i+1);
         } else {
             *ok = false;
         }

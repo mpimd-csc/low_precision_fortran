@@ -56,14 +56,14 @@ void check_bscal( bool *ok) {
         LPF_GLOBAL(bscal, BSCAL)(&n[i], &sa[i], data[i], &incx[i]);
 
         for ( int k = 0;  k < 10; k++) {
-            if ( diff_bf16(data[i][k], bscal_expected[i][k]) > __FLT16_EPSILON__ * 10) {
-                printf("BSCAL   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, K = %2d, Result = %10f, Expected = %10f\n", i+1, n[i], incx[i], k+1, (float)data[i][k], (float)bscal_expected[i][k]);
+            if ( diff_bf16(data[i][k], bscal_expected[i][k]) > __BFLT16_EPSILON__ * 10) {
+                printf("BSCAL   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, K = %2d, Result = %10f, Expected = %10f\n",(int) i+1,(int) n[i],(int) incx[i],(int) k+1, (float)data[i][k], (float)bscal_expected[i][k]);
                 *ok = false;
                 lok = false;
             }
         }
         if (lok) {
-            printf("BSCAL   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, SA = %10f\n", i+1, n[i], incx[i], (float)sa[i]);
+            printf("BSCAL   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, SA = %10f\n",(int) i+1,(int) n[i],(int) incx[i], (float)sa[i]);
         }
     }
 }

@@ -3,7 +3,7 @@ SET(SYSINFO_SRC sysinfo/${CMAKE_SYSTEM_PROCESSOR}.c)
 
 
 SET(FP16_SRC
-    fp16/fp16.f90
+    fp16/fp16.F90
     fp16/fp16_math_generic.f90
     fp16/fp16_math_one_arg.f90
     fp16/fp16_math_two_args.f90
@@ -20,7 +20,7 @@ SET(FP16_SRC
 )
 
 SET (BF16_SRC
-    bf16/bf16.f90
+    bf16/bf16.F90
     bf16/bf16_math_generic.f90
     bf16/bf16_math_one_arg.f90
     bf16/bf16_math_two_args.f90

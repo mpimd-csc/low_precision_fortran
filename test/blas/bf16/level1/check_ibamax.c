@@ -45,9 +45,9 @@ void check_ibamax( bool *ok) {
     for ( int i = 0; i < NTEST; i++) {
         lpf_blas_int_t result = LPF_GLOBAL(ibamax, IBAMAX)(&n[i], data[i], &incx[i]);
         if ( result- ibamax_expected[i] == 0) {
-            printf("IBAMAX  -- PASS -- Testcase %2d: N = %3d, INCX = %3d, Result = %2d, Expected = %2d\n", i+1, n[i], incx[i], (int)result, (int)ibamax_expected[i]);
+            printf("IBAMAX  -- PASS -- Testcase %2d: N = %3d, INCX = %3d, Result = %2d, Expected = %2d\n", (int) i+1, (int) n[i], (int) incx[i], (int)result, (int)ibamax_expected[i]);
         } else{
-            printf("IBAMAX  -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, Result = %2d, Expected = %2d\n", i+1, n[i], incx[i], (int)result, (int)ibamax_expected[i]);
+            printf("IBAMAX  -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, Result = %2d, Expected = %2d\n", (int) i+1, (int) n[i],  (int)incx[i], (int)result, (int)ibamax_expected[i]);
             *ok = false;
         }
     }

@@ -20,7 +20,7 @@
 
 submodule (lpf_fp16) lpf_fp16_maxval
     use iso_c_binding
-    use iso_fortran_env
+    use iso_fortran_env, only: real32, real64
     implicit none
 
 contains

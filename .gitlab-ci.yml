@@ -19,11 +19,12 @@ linux-gcc:
     matrix:
       - OS: [ "ubuntu" ]
         OSVERSION: [ 'noble' ]
-        BLAS: ['ON', 'OFF']
-
+        BLAS: ['BLAS_ON', 'BLAS_OFF']
+        INTEGER8: [ 'INTEGER8_ON', 'INTEGER8_OFF' ]
   script:
     - export BLAS=${BLAS##BLAS_}
-    - cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLPF_BLAS=${BLAS}
+    - export INTEGER8=${INTEGER8##INTEGER8_}
+    - cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLPF_BLAS=${BLAS} -DLPF_INTEGER8=${INTEGER8}
     - cmake --build build-dir 2>&1 | tee build.log
     - cmake --build build-dir --target install
     - (cd build-dir; OMP_NUM_THREADS=1 ctest -V)
@@ -37,9 +38,11 @@ linux-clang:
     - haswell
   parallel:
     matrix:
-      - LLVM_VERSION: [ "20"]
+      - LLVM_VERSION: [ "20", "21"]
+        INTEGER8: [ 'INTEGER8_ON', 'INTEGER8_OFF' ]
   script:
-    - cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=RelWithDebInfo
+    - export INTEGER8=${INTEGER8##INTEGER8_}
+    - cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLPF_INTEGER8=${INTEGER8}
     - cmake --build build-dir 2>&1 | tee build.log
     - cmake --build build-dir --target install
       # - (cd build-dir; OMP_NUM_THREADS=1 ctest -V)
@@ -55,9 +58,12 @@ linux-intel:
   parallel:
     matrix:
       - INTEL_VERSION: [ "2025.1" ]
+        INTEGER8: [ 'INTEGER8_ON', 'INTEGER8_OFF' ]
+
 
   script:
-    - CC=icx FC=ifx cmake -S . -B build-dir
+    - export INTEGER8=${INTEGER8##INTEGER8_}
+    - CC=icx FC=ifx cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLPF_INTEGER8=${INTEGER8}
     - cmake --build build-dir 2>&1 | tee build.log
     - cmake --build build-dir --target install
     # - (cd build-dir; OMP_NUM_THREADS=1 ctest -V)

@@ -50,9 +50,9 @@ void check_hasum( bool *ok) {
     for ( int i = 0; i < NTEST; i++) {
         lpf_float16_t result = from_u16(LPF_GLOBAL(hasum, HASUM)(&n[i], data[i], &incx[i]));
         if ( diff_fp16(result, hasum_expected[i]) < __FLT16_EPSILON__ * 10) {
-            printf("HASUM   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, Result = %10f, Expected = %10f\n", i+1, n[i], incx[i], (float)result, (float)hasum_expected[i]);
+            printf("HASUM   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, Result = %10f, Expected = %10f\n",(int) i+1,(int) n[i], (int)incx[i], (float)result, (float)hasum_expected[i]);
         } else{
-            printf("HASUM   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, Result = %10f, Expected = %10f\n", i+1, n[i], incx[i], (float)result, (float)hasum_expected[i]);
+            printf("HASUM   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, Result = %10f, Expected = %10f\n", (int)i+1, (int)n[i],(int) incx[i], (float)result, (float)hasum_expected[i]);
             *ok = false;
         }
     }

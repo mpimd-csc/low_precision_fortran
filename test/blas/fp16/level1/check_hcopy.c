@@ -77,13 +77,13 @@ void check_hcopy( bool *ok) {
         for ( k = 0;  k < 10; k++) {
             lpf_float16_t mag = abs_fp16(hcopy_expected[i][k]);
             if ( diff_fp16(ytemp[k], hcopy_expected[i][k]) > __FLT16_EPSILON__ * mag * 10 ) {
-                printf("HCOPY   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, K = %2d, Result = %10f, Expected = %10f\n", i+1, n[i], incx[i], incy[i], k, (float)ytemp[k], (float)hcopy_expected[i][k]);
+                printf("HCOPY   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, K = %2d, Result = %10f, Expected = %10f\n", (int)i+1, (int)n[i],(int) incx[i], (int)incy[i], (int)k, (float)ytemp[k], (float)hcopy_expected[i][k]);
                 *ok = false;
                 lok = false;
             }
         }
         if (lok) {
-            printf("HCOPY   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d\n", i+1, n[i], incx[i], incy[i]);
+            printf("HCOPY   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d\n",(int) i+1,(int) n[i],(int) incx[i],(int) incy[i]);
         }
 
     }

@@ -69,12 +69,12 @@ void check_hrotmg(bool *ok)
             lpf_float16_t true_val = DTRUE[i][k];
             lpf_float16_t mag = abs_fp16(DTRUE[i][k]);
             if ( diff_fp16( comp, true_val) > __FLT16_EPSILON__ * mag * 10.0) {
-                printf("HROTMG  -- FAIL -- Testcase %2d: Value %d : Result = %10f, Expected = %10f\n", i+1, k, (float)comp, (float)true_val);
+                printf("HROTMG  -- FAIL -- Testcase %2d: Value %d : Result = %10f, Expected = %10f\n", (int)i+1,(int) k, (float)comp, (float)true_val);
                 lok = false;
             }
         }
         if ( lok ) {
-            printf("HROTMG  -- PASS -- Testcase %2d.\n", i+1);
+            printf("HROTMG  -- PASS -- Testcase %2d.\n",(int) i+1);
         } else {
             *ok = false;
         }

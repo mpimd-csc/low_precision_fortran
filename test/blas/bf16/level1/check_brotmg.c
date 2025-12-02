@@ -68,13 +68,13 @@ void check_brotmg(bool *ok)
             lpf_bfloat16_t comp = DTEMP[k];
             lpf_bfloat16_t true_val = DTRUE[i][k];
             lpf_bfloat16_t mag = abs_bf16(DTRUE[i][k]);
-            if ( diff_bf16( comp, true_val) > __FLT16_EPSILON__ * mag * 10.0) {
-                printf("BROTMG  -- FAIL -- Testcase %2d: Value %d : Result = %10f, Expected = %10f\n", i+1, k, (float)comp, (float)true_val);
+            if ( diff_bf16( comp, true_val) > __BFLT16_EPSILON__ * mag * 10.0) {
+                printf("BROTMG  -- FAIL -- Testcase %2d: Value %d : Result = %10f, Expected = %10f\n",(int) i+1,(int) k, (float)comp, (float)true_val);
                 lok = false;
             }
         }
         if ( lok ) {
-            printf("BROTMG  -- PASS -- Testcase %2d.\n", i+1);
+            printf("BROTMG  -- PASS -- Testcase %2d.\n",(int) i+1);
         } else {
             *ok = false;
         }

@@ -93,20 +93,20 @@ void check_hrotm( bool *ok) {
 
             if ( diff_fp16( xtemp[k], xresult[i][k]) > __FLT16_EPSILON__ * mag1 * 10.0 ) {
                 printf("HROTM   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, K = %2d, X, computed = %10f, expected = %10f\n",
-                        i+1, n[i], incx[i], incy[i], k, (float) xtemp[k], (float) xresult[i][k]);
+                       (int) i+1,(int) n[i],(int) incx[i],(int) incy[i],(int) k, (float) xtemp[k], (float) xresult[i][k]);
                 *ok = false;
                 lok = false;
             }
             if ( diff_fp16( ytemp[k], yresult[i][k]) > __FLT16_EPSILON__ * mag2 * 10.0 ) {
                 printf("HROTM   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, K = %2d, Y, computed = %10f, expected = %10f\n",
-                        i+1, n[i], incx[i], incy[i], k, (float) ytemp[k], (float) yresult[i][k]);
+                       (int) i+1,(int) n[i],(int) incx[i],(int) incy[i],(int) k, (float) ytemp[k], (float) yresult[i][k]);
                 *ok = false;
                 lok = false;
             }
 
         }
         if (lok) {
-            printf("HROTM   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d\n", i+1, n[i], incx[i], incy[i]);
+            printf("HROTM   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d\n",(int) i+1, (int)n[i],(int) incx[i], (int)incy[i]);
         }
 
     }

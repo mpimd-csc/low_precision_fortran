@@ -68,13 +68,13 @@ void check_bswap( bool *ok) {
 
         for ( k = 0;  k < n[i]; k++) {
             if ( xtemp[k*incx[i]] != y[i][k*incy[i]] || ytemp[k*incy[i]] != x[i][k*incx[i]] ) {
-                printf("BCOPY   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, K = %2d \n", i+1, n[i], incx[i], incy[i], k);
+                printf("BCOPY   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, K = %2d \n",(int) i+1,(int) n[i],(int) incx[i],(int) incy[i],(int) k);
                 *ok = false;
                 lok = false;
             }
         }
         if (lok) {
-            printf("BCOPY   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d\n", i+1, n[i], incx[i], incy[i]);
+            printf("BCOPY   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d\n",(int) i+1,(int) n[i],(int) incx[i],(int) incy[i]);
         }
 
     }

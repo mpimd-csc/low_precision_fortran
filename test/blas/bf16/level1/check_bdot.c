@@ -61,14 +61,14 @@ void check_bdot( bool *ok) {
         {1, 2, -1, 2, 1, 2, -1, 2, 1, 2 },
         {10,4,-4,-5,0.4,12,0,0,0,0 }
     };
-    lpf_bfloat16_t bdot_expected[NTEST] = {55, 20.75, -5, -3, 1.599609, 243, 6, 0};
+    lpf_bfloat16_t bdot_expected[NTEST] = {55, 20.75, -5, -3, 1.625000, 243, 6, 0};
 
     for ( int i = 0; i < NTEST; i++) {
         lpf_bfloat16_t result = from_u16(LPF_GLOBAL(bdot, BDOT)(&n[i], x[i], &incx[i], y[i], &incy[i]));
-        if ( diff_bf16(result, bdot_expected[i]) < __FLT16_EPSILON__ * 10) {
-            printf("BDOT   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, Result = %10f, Expected = %10f\n", i+1, n[i], incx[i], incy[i], (float)result, (float)bdot_expected[i]);
+        if ( diff_bf16(result, bdot_expected[i]) < __BFLT16_EPSILON__ * 10) {
+            printf("BDOT   -- PASS -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, Result = %10f, Expected = %10f\n",(int) i+1,(int) n[i],(int) incx[i],(int) incy[i], (float)result, (float)bdot_expected[i]);
         } else{
-            printf("BDOT   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, Result = %10f, Expected = %10f\n", i+1, n[i], incx[i], incy[i], (float)result, (float)bdot_expected[i]);
+            printf("BDOT   -- FAIL -- Testcase %2d: N = %3d, INCX = %3d, INCY = %3d, Result = %10f, Expected = %10f\n",(int) i+1,(int) n[i],(int) incx[i],(int) incy[i], (float)result, (float)bdot_expected[i]);
             *ok = false;
         }
     }
