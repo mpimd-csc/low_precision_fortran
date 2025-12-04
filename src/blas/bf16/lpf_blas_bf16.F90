@@ -617,4 +617,16 @@ module lpf_blas_bf16
 
     end interface
 
+    !
+    ! Submodules
+    !
+    interface scale_diag
+        module subroutine scale_diag_bf16(m, n, a, lda, dl, dr, info)
+            integer, intent(in) :: m, n, lda
+            integer, intent(inout) :: info
+            type(bf16), intent(inout), dimension(lda, *) :: a
+            type(bf16), intent(out), dimension(*) :: dl, dr
+        end subroutine
+    end interface scale_diag
+
 end module
