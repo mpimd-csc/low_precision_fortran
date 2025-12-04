@@ -4,8 +4,9 @@ if (LPF_HAVE_FP16)
     ADD_SUBDIRECTORY(fp16/level2)
     ADD_SUBDIRECTORY(fp16/level3)
     ADD_SUBDIRECTORY(fp16/aux)
-    # ADD_SUBDIRECTORY(fp16/scaling)
-    SET(SRC ${SRC} fp16/lpf_blas_fp16.F90)
+    SET(SRC ${SRC}
+        fp16/scaling/scale_diag_twoside.f90
+        fp16/lpf_blas_fp16.F90)
 endif()
 
 if (LPF_HAVE_BF16)
@@ -13,22 +14,25 @@ if (LPF_HAVE_BF16)
     ADD_SUBDIRECTORY(bf16/level2)
     ADD_SUBDIRECTORY(bf16/level3)
     ADD_SUBDIRECTORY(bf16/aux)
-    # ADD_SUBDIRECTORY(bf16/scaling)
-    SET(SRC ${SRC} bf16/lpf_blas_bf16.F90)
+    SET(SRC ${SRC}
+        bf16/scaling/scale_diag_twoside.f90
+        bf16/lpf_blas_bf16.F90)
 endif()
 
+
+SET(SRC ${SRC}
+    highprecision/scale_diag_twoside.f90
+)
 
 ADD_LIBRARY(lpf_blas
     $<$<BOOL:${LPF_HAVE_FP16}>:$<TARGET_OBJECTS:fp16_level1>>
     $<$<BOOL:${LPF_HAVE_FP16}>:$<TARGET_OBJECTS:fp16_level2>>
     $<$<BOOL:${LPF_HAVE_FP16}>:$<TARGET_OBJECTS:fp16_level3>>
     $<$<BOOL:${LPF_HAVE_FP16}>:$<TARGET_OBJECTS:fp16_aux>>
-    # $<$<BOOL:${LPF_HAVE_FP16}>:$<TARGET_OBJECTS:fp16_scaling>>
 
     $<$<BOOL:${LPF_HAVE_BF16}>:$<TARGET_OBJECTS:bf16_level1>>
     $<$<BOOL:${LPF_HAVE_BF16}>:$<TARGET_OBJECTS:bf16_level2>>
     $<$<BOOL:${LPF_HAVE_BF16}>:$<TARGET_OBJECTS:bf16_level3>>
-    # $<$<BOOL:${LPF_HAVE_BF16}>:$<TARGET_OBJECTS:bf16_scaling>>
     $<$<BOOL:${LPF_HAVE_BF16}>:$<TARGET_OBJECTS:bf16_aux>>
 
     ${SRC}

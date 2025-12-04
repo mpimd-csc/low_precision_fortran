@@ -1,15 +1,15 @@
-submodule (lpf_blas_fp16) lpf_blas_fp16_scale_diag
-    use lpf_fp16
+submodule (lpf_blas_bf16) lpf_blas_bf16_scale_diag
+    use lpf_bf16
     use iso_fortran_env, only: real32, real64
     implicit none
 
 contains
 
-    module subroutine scale_diag_fp16(m, n, a, lda, dl, dr, info)
+    module subroutine scale_diag_bf16(m, n, a, lda, dl, dr, info)
         integer, intent(in) :: m, n, lda
         integer, intent(inout) :: info
-        type(fp16), intent(inout), dimension(lda, *) :: a
-        type(fp16), intent(out), dimension(*) :: dl, dr
+        type(bf16), intent(inout), dimension(lda, *) :: a
+        type(bf16), intent(out), dimension(*) :: dl, dr
 
         integer :: k
 
@@ -24,7 +24,7 @@ contains
         end if
 
         if ( info .ne. 0) then
-            call lpf_blas_xerbla("scale_diag / scale_diag_fp16", info)
+            call lpf_blas_xerbla("scale_diag / scale_diag_bf16", info)
             return
         end if
 
@@ -34,12 +34,12 @@ contains
         end if
 
         do k = 1, m
-            dl(k) = FP16(1.0)/maxval(abs(a(k,1:n)))
+            dl(k) = bf16(1.0)/maxval(abs(a(k,1:n)))
             a(k,1:n) = a(k,1:n)  * dl(k)
         end do
 
         do k = 1, n
-            dr(k) = FP16(1.0)/maxval(abs(a(1:m,k)))
+            dr(k) = bf16(1.0)/maxval(abs(a(1:m,k)))
             a(1:m,k) = a(1:m,k) * dr(k)
         end do
     end subroutine
