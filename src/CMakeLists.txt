@@ -44,6 +44,7 @@ ADD_LIBRARY(lpf
     aux/xerbla.c
     aux/xerbla.f90
     init.c
+    types.F90
     ${SYSINFO_SRC}
 )
 
@@ -64,7 +65,7 @@ TARGET_INCLUDE_DIRECTORIES(lpf
 TARGET_COMPILE_DEFINITIONS(lpf PUBLIC
     $<$<BOOL:${LPF_HAVE_FP16}>:-DLPF_HAVE_FP16>
     $<$<BOOL:${LPF_HAVE_BF16}>:-DLPF_HAVE_BF16>
-
+    $<$<BOOL:${LPF_INTEGER8}>:-DLPF_INTEGER8>
 )
 
 if(LPF_USE_IPO)

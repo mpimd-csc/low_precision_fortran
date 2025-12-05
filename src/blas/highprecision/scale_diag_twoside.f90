@@ -1,5 +1,6 @@
 module lpf_blas_scale_diag
     use iso_fortran_env, only: real32, real64
+    use lpf_types
     implicit none
 
     private
@@ -15,12 +16,14 @@ contains
 
     subroutine scale_diag_fp32(m, n, a, lda, dl, dr, info)
         use lpf_xerbla
-        integer, intent(in) :: m, n, lda
-        integer, intent(inout) :: info
+        integer(lpf_default_int_kind), intent(in) :: m, n, lda
+        integer(lpf_default_int_kind), intent(inout) :: info
         real(real32), intent(inout), dimension(lda, *) :: a
         real(real32), intent(out), dimension(*) :: dl, dr
 
-        integer :: k
+        integer(lpf_default_int_kind) :: k
+
+        external :: lpf_blas_xerbla
 
         ! Check arguments
         info = 0
@@ -55,12 +58,14 @@ contains
     end subroutine
 
     subroutine scale_diag_fp64(m, n, a, lda, dl, dr, info)
-        integer, intent(in) :: m, n, lda
-        integer, intent(inout) :: info
+        integer(lpf_default_int_kind), intent(in) :: m, n, lda
+        integer(lpf_default_int_kind), intent(inout) :: info
         real(real64), intent(inout), dimension(lda, *) :: a
         real(real64), intent(out), dimension(*) :: dl, dr
 
-        integer :: k
+        integer(lpf_default_int_kind) :: k
+
+        external :: lpf_blas_xerbla
 
         ! Check arguments
         info = 0

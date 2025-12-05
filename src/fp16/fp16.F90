@@ -20,6 +20,7 @@
 MODULE LPF_FP16
     USE iso_c_binding
     USE iso_fortran_env, only: real32, real64
+    USE lpf_types
     IMPLICIT NONE
 
     PRIVATE
@@ -107,11 +108,12 @@ MODULE LPF_FP16
     interface FP16
         module procedure :: construct_real
         module procedure :: construct_double
-        module procedure :: construct_int
+        module procedure :: construct_int32
+        module procedure :: construct_int64
     end interface
 
     INTERFACE ASSIGNMENT(=)
-        MODULE PROCEDURE assign_int, assign_real, assign_double, assign_fp16, assign_to_real
+        MODULE PROCEDURE assign_int32, assign_int64, assign_real, assign_double, assign_fp16, assign_to_real
     END INTERFACE
 
     INTERFACE write(formatted)
@@ -304,23 +306,29 @@ MODULE LPF_FP16
     interface precision
         module elemental function precision_fp16(x) result(out)
             type(FP16), intent(in) :: x
-            integer :: out
+            integer(lpf_default_int_kind) :: out
         end function precision_fp16
     end interface
 
     interface range
         module elemental function range_fp16(x) result(out)
             type(FP16), intent(in) :: x
-            integer :: out
+            integer(lpf_default_int_kind) :: out
         end function range_fp16
     end interface
 
     interface scale
-        module elemental function scale_fp16(x, s) result(out)
+        module elemental function scale_fp16_32(x, s) result(out)
             type(FP16), intent(in) :: x
-            integer, intent(in) :: s
+            integer(lpf_int32_kind), intent(in) :: s
             type(FP16) :: out
-        end function scale_fp16
+        end function scale_fp16_32
+        module elemental function scale_fp16_64(x, s) result(out)
+            type(FP16), intent(in) :: x
+            integer(lpf_int64_kind), intent(in) :: s
+            type(FP16) :: out
+        end function scale_fp16_64
+
     end interface
 
     interface sign
@@ -624,23 +632,23 @@ MODULE LPF_FP16
         end function
         module pure function maxval_fp16_1d_dim(array, dim) result(max_value)
             type(fp16), dimension(:), intent(in) :: array
-            integer, intent(in) :: dim
+            integer(lpf_default_int_kind), intent(in) :: dim
             type(fp16) :: max_value
         end function
         module pure function maxval_fp16_2d_dim(array, dim) result(max_value)
             type(fp16), dimension(:,:), intent(in) :: array
-            integer, intent(in) :: dim
+            integer(lpf_default_int_kind), intent(in) :: dim
             type(fp16), dimension(size(array, merge(2, 1, dim == 1))) :: max_value
         end function
         module pure function maxval_fp16_3d_dim(array, dim) result(max_value)
             type(fp16), dimension(:,:,:), intent(in) :: array
-            integer, intent(in) :: dim
+            integer(lpf_default_int_kind), intent(in) :: dim
             type(fp16), dimension( size(array, merge(2, 1, dim == 1)), &
                 & size(array, merge(2, 3, dim == 3))) :: max_value
         end function
         module pure function maxval_fp16_4d_dim(array, dim) result(max_value)
             type(fp16), dimension(:,:,:,:), intent(in) :: array
-            integer, intent(in) :: dim
+            integer(lpf_default_int_kind), intent(in) :: dim
             type(fp16), dimension( size(array, merge(2, 1, dim == 1)), &
                 & size(array, merge(3, 2, dim < 3)), &
                 & size(array, merge(4, 3, dim == 4))) :: max_value
@@ -666,23 +674,23 @@ MODULE LPF_FP16
         end function
         module pure function minval_fp16_1d_dim(array, dim) result(min_value)
             type(fp16), dimension(:), intent(in) :: array
-            integer, intent(in) :: dim
+            integer(lpf_default_int_kind), intent(in) :: dim
             type(fp16) :: min_value
         end function
         module pure function minval_fp16_2d_dim(array, dim) result(min_value)
             type(fp16), dimension(:,:), intent(in) :: array
-            integer, intent(in) :: dim
+            integer(lpf_default_int_kind), intent(in) :: dim
             type(fp16), dimension(size(array, merge(2, 1, dim == 1))) :: min_value
         end function
         module pure function minval_fp16_3d_dim(array, dim) result(min_value)
             type(fp16), dimension(:,:,:), intent(in) :: array
-            integer, intent(in) :: dim
+            integer(lpf_default_int_kind), intent(in) :: dim
             type(fp16), dimension( size(array, merge(2, 1, dim == 1)), &
                 & size(array, merge(2, 3, dim == 3))) :: min_value
         end function
         module pure function minval_fp16_4d_dim(array, dim) result(min_value)
             type(fp16), dimension(:,:,:,:), intent(in) :: array
-            integer, intent(in) :: dim
+            integer(lpf_default_int_kind), intent(in) :: dim
             type(fp16), dimension( size(array, merge(2, 1, dim == 1)), &
                 & size(array, merge(3, 2, dim < 3)), &
                 & size(array, merge(4, 3, dim == 4))) :: min_value
@@ -693,40 +701,40 @@ MODULE LPF_FP16
     interface maxloc
         module pure function maxloc_fp16_1d(array) result(max_loc)
             type(fp16), dimension(:), intent(in) :: array
-            integer :: max_loc
+            integer(lpf_default_int_kind) :: max_loc
         end function
         module pure function maxloc_fp16_2d(array) result(max_loc)
             type(fp16), dimension(:,:), intent(in) :: array
-            integer, dimension(2) :: max_loc
+            integer(lpf_default_int_kind), dimension(2) :: max_loc
         end function
         module pure function maxloc_fp16_3d(array) result(max_loc)
             type(fp16), dimension(:,:,:), intent(in) :: array
-            integer, dimension(3) :: max_loc
+            integer(lpf_default_int_kind), dimension(3) :: max_loc
         end function
         module pure function maxloc_fp16_4d(array) result(max_loc)
             type(fp16), dimension(:,:,:,:), intent(in) :: array
-            integer, dimension(4) :: max_loc
+            integer(lpf_default_int_kind), dimension(4) :: max_loc
         end function
         module pure function maxloc_fp16_1d_dim(array, dim) result(max_loc)
             type(fp16), dimension(:), intent(in) :: array
-            integer, intent(in) :: dim
-            integer :: max_loc
+            integer(lpf_default_int_kind), intent(in) :: dim
+            integer(lpf_default_int_kind) :: max_loc
         end function
         module pure function maxloc_fp16_2d_dim(array, dim) result(max_loc)
             type(fp16), dimension(:,:), intent(in) :: array
-            integer, intent(in) :: dim
-            integer, dimension(size(array, merge(2, 1, dim == 1))) :: max_loc
+            integer(lpf_default_int_kind), intent(in) :: dim
+            integer(lpf_default_int_kind), dimension(size(array, merge(2, 1, dim == 1))) :: max_loc
         end function
         module pure function maxloc_fp16_3d_dim(array, dim) result(max_loc)
             type(fp16), dimension(:,:,:), intent(in) :: array
-            integer, intent(in) :: dim
-            integer, dimension( size(array, merge(2, 1, dim == 1)), &
+            integer(lpf_default_int_kind), intent(in) :: dim
+            integer(lpf_default_int_kind), dimension( size(array, merge(2, 1, dim == 1)), &
                 & size(array, merge(2, 3, dim == 3))) :: max_loc
         end function
         module pure function maxloc_fp16_4d_dim(array, dim) result(max_loc)
             type(fp16), dimension(:,:,:,:), intent(in) :: array
-            integer, intent(in) :: dim
-            integer, dimension( size(array, merge(2, 1, dim == 1)), &
+            integer(lpf_default_int_kind), intent(in) :: dim
+            integer(lpf_default_int_kind), dimension( size(array, merge(2, 1, dim == 1)), &
                 & size(array, merge(3, 2, dim < 3)), &
                 & size(array, merge(4, 3, dim == 4))) :: max_loc
         end function
@@ -736,40 +744,40 @@ MODULE LPF_FP16
     interface minloc
         module pure function minloc_fp16_1d(array) result(min_loc)
             type(fp16), dimension(:), intent(in) :: array
-            integer :: min_loc
+            integer(lpf_default_int_kind) :: min_loc
         end function
         module pure function minloc_fp16_2d(array) result(min_loc)
             type(fp16), dimension(:,:), intent(in) :: array
-            integer, dimension(2) :: min_loc
+            integer(lpf_default_int_kind), dimension(2) :: min_loc
         end function
         module pure function minloc_fp16_3d(array) result(min_loc)
             type(fp16), dimension(:,:,:), intent(in) :: array
-            integer, dimension(3) :: min_loc
+            integer(lpf_default_int_kind), dimension(3) :: min_loc
         end function
         module pure function minloc_fp16_4d(array) result(min_loc)
             type(fp16), dimension(:,:,:,:), intent(in) :: array
-            integer, dimension(4) :: min_loc
+            integer(lpf_default_int_kind), dimension(4) :: min_loc
         end function
         module pure function minloc_fp16_1d_dim(array, dim) result(min_loc)
             type(fp16), dimension(:), intent(in) :: array
-            integer, intent(in) :: dim
-            integer :: min_loc
+            integer(lpf_default_int_kind), intent(in) :: dim
+            integer(lpf_default_int_kind) :: min_loc
         end function
         module pure function minloc_fp16_2d_dim(array, dim) result(min_loc)
             type(fp16), dimension(:,:), intent(in) :: array
-            integer, intent(in) :: dim
-            integer, dimension(size(array, merge(2, 1, dim == 1))) :: min_loc
+            integer(lpf_default_int_kind), intent(in) :: dim
+            integer(lpf_default_int_kind), dimension(size(array, merge(2, 1, dim == 1))) :: min_loc
         end function
         module pure function minloc_fp16_3d_dim(array, dim) result(min_loc)
             type(fp16), dimension(:,:,:), intent(in) :: array
-            integer, intent(in) :: dim
-            integer, dimension( size(array, merge(2, 1, dim == 1)), &
+            integer(lpf_default_int_kind), intent(in) :: dim
+            integer(lpf_default_int_kind), dimension( size(array, merge(2, 1, dim == 1)), &
                 & size(array, merge(2, 3, dim == 3))) :: min_loc
         end function
         module pure function minloc_fp16_4d_dim(array, dim) result(min_loc)
             type(fp16), dimension(:,:,:,:), intent(in) :: array
-            integer, intent(in) :: dim
-            integer, dimension( size(array, merge(2, 1, dim == 1)), &
+            integer(lpf_default_int_kind), intent(in) :: dim
+            integer(lpf_default_int_kind), dimension( size(array, merge(2, 1, dim == 1)), &
                 & size(array, merge(3, 2, dim < 3)), &
                 & size(array, merge(4, 3, dim == 4))) :: min_loc
         end function
@@ -913,8 +921,16 @@ CONTAINS
         call SET_FP16_FROM_DOUBLE(r%value, in)
     end function
 
-    elemental function construct_int(in) result(r)
-        integer, intent(in) :: in
+    elemental function construct_int32(in) result(r)
+        integer(lpf_int32_kind), intent(in) :: in
+        type(fp16) :: r
+        integer(c_int) :: tmp
+        tmp = int(in, kind = c_int )
+        call SET_FP16_FROM_INT(r%value, tmp)
+    end function
+
+    elemental function construct_int64(in) result(r)
+        integer(lpf_int64_kind), intent(in) :: in
         type(fp16) :: r
         integer(c_int) :: tmp
         tmp = int(in, kind = c_int )
@@ -922,51 +938,61 @@ CONTAINS
     end function
 
 
+
     !
     ! Assignment Operator
     !
-    elemental SUBROUTINE assign_int(this, that)
-        TYPE(FP16), INTENT(OUT) :: this
-        INTEGER, INTENT(IN) :: that
+    elemental subroutine assign_int32(this, that)
+        type(fp16), intent(out) :: this
+        integer(lpf_int32_kind), intent(in) :: that
         integer(c_int) :: tmp
         tmp = int(that, kind=c_int)
-        CALL SET_FP16_FROM_INT(this%value, tmp)
-    END SUBROUTINE
+        call set_fp16_from_int(this%value, tmp)
+    end subroutine
 
-    elemental SUBROUTINE assign_real(this, that)
-        TYPE(FP16), INTENT(OUT) :: this
-        REAL(real32), INTENT(IN) :: that
-        CALL SET_FP16_FROM_REAL(this%value, that)
-    END SUBROUTINE
+    elemental subroutine assign_int64(this, that)
+        type(fp16), intent(out) :: this
+        integer(lpf_int64_kind), intent(in) :: that
+        integer(c_int) :: tmp
+        tmp = int(that, kind=c_int)
+        call set_fp16_from_int(this%value, tmp)
+    end subroutine
 
-    elemental SUBROUTINE assign_double(this, that)
-        TYPE(FP16), INTENT(OUT) :: this
-        REAL(real64), INTENT(IN) :: that
-        CALL SET_FP16_FROM_DOUBLE(this%value, that)
-    END SUBROUTINE
 
-    elemental SUBROUTINE assign_fp16(this, that)
-        TYPE(FP16), INTENT(OUT) :: this
-        TYPE(FP16), INTENT(IN) :: that
+    elemental subroutine assign_real(this, that)
+        type(fp16), intent(out) :: this
+        real(real32), intent(in) :: that
+        call set_fp16_from_real(this%value, that)
+    end subroutine
+
+    elemental subroutine assign_double(this, that)
+        type(fp16), intent(out) :: this
+        real(real64), intent(in) :: that
+        call set_fp16_from_double(this%value, that)
+    end subroutine
+
+    elemental subroutine assign_fp16(this, that)
+        type(fp16), intent(out) :: this
+        type(fp16), intent(in) :: that
         this%value = that%value
-    END SUBROUTINE
+    end subroutine
 
-    elemental SUBROUTINE assign_to_real(this, that)
-        REAL(real32), INTENT(OUT) :: this
-        TYPE(FP16), INTENT(IN) :: that
-        this = GET_FP16(that%value)
-    END SUBROUTINE
+    elemental subroutine assign_to_real(this, that)
+        real(real32), intent(out) :: this
+        type(fp16), intent(in) :: that
+        this = get_fp16(that%value)
+    end subroutine
 
     elemental function real_fp16(x) result (out)
         type(fp16), intent(in) :: x
         real(real32) :: out
-        out = GET_FP16(x%value)
+        out = get_fp16(x%value)
     end function
 
     elemental function dble_fp16(x) result (out)
         type(fp16), intent(in) :: x
         real(real64) :: out
-        out = dble(GET_FP16(x%value))
+        out = dble(get_fp16(x%value))
     end function
 
 
@@ -1485,7 +1511,6 @@ CONTAINS
 
         REAL   :: tmp
 
-        WRITE(*,*) "iotype = ", iotype
         READ(unit, FMT = *, IOSTAT=iostat, IOMSG=iomsg) tmp
         IF (iostat == 0) dtv = FP16(tmp)
     END SUBROUTINE read_formatted

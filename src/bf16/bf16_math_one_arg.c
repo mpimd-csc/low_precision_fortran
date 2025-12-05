@@ -265,9 +265,9 @@ HIDDEN void __bf16_helper_sqrt(int16_t *out, int16_t in)
     r->bf16 = (__bf16) sqrtf ((float) _a.bf16);
 }
 
-lpf_bfloat16_t sqrt_bf16(lpf_bfloat16_t x)
+lpf_float16_t sqrt_bf16(lpf_float16_t x)
 {
-    return (lpf_bfloat16_t) sqrtf((float) x);
+    return (lpf_float16_t) sqrtf((float) x);
 }
 
 /*

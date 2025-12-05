@@ -18,9 +18,9 @@
 !  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
 
-submodule (lpf_bf16) bf16_math_trig
+submodule (lpf_bf16) lpf_bf16_math_trig
     use iso_c_binding
-    use iso_fortran_env, only : real32, real64
+    use iso_fortran_env, only: real32, real64
     implicit none
 
     ! C Interfaces
@@ -137,4 +137,4 @@ contains
         call helper_atan2d_bf16(ret_val%value, x%value, y%value)
     end function atan2d_bf16
 
-end submodule bf16_math_trig
+end submodule

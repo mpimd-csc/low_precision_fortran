@@ -18,9 +18,9 @@
 !  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
 
-submodule (lpf_bf16) bf16_math_generic
+submodule (lpf_bf16) lpf_bf16_math_generic
     use iso_c_binding
-    use :: iso_fortran_env, only : real32, real64
+    use iso_fortran_env, only: real32, real64
     implicit none
 
     ! C Interfaces
@@ -180,7 +180,6 @@ contains
         type(BF16), intent(in) :: x
         integer :: out
         integer(c_int) :: outi
-
         call helper_exponent_bf16(outi, x%value)
         out = outi
     end function exponent_bf16
@@ -299,7 +298,7 @@ contains
 
     module elemental function precision_bf16(x) result(out)
         type(BF16), intent(in) :: x
-        integer :: out
+        integer(lpf_default_int_kind) :: out
 
         integer(c_int) :: outt
         ! dummy to avoid compiler warnings
@@ -308,12 +307,12 @@ contains
         end if
 
         call helper_precision_bf16(outt)
-        out = INT(outt)
+        out = INT(outt, kind = lpf_default_int_kind)
     end function precision_bf16
 
     module elemental function range_bf16(x) result(out)
         type(BF16), intent(in) :: x
-        integer :: out
+        integer(lpf_default_int_kind) :: out
         integer(c_int) :: lout
 
         ! dummy to avoid compiler warnings
@@ -324,15 +323,24 @@ contains
         out = lout
     end function range_bf16
 
-    module elemental function scale_bf16(x, s) result(out)
+    module elemental function scale_bf16_32(x, s) result(out)
         type(BF16), intent(in) :: x
-        integer, intent(in) :: s
+        integer(lpf_int32_kind), intent(in) :: s
         type(BF16) :: out
         integer(c_int) :: tmp
-        tmp = int(s, kind = c_int)
-
+        tmp  = int(s, kind = c_int )
         call helper_scale_bf16(out%value, x%value, tmp)
-    end function scale_bf16
+    end function scale_bf16_32
+
+    module elemental function scale_bf16_64(x, s) result(out)
+        type(BF16), intent(in) :: x
+        integer(lpf_int64_kind), intent(in) :: s
+        type(BF16) :: out
+        integer(c_int) :: tmp
+        tmp  = int(s, kind = c_int )
+        call helper_scale_bf16(out%value, x%value, tmp)
+    end function scale_bf16_64
+
 
     module elemental function sign_bf16(x, y) result(out)
         type(BF16), intent(in) :: x
@@ -369,4 +377,4 @@ contains
     end function
 
 
-end submodule bf16_math_generic
+end submodule
