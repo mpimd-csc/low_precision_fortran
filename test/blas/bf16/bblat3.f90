@@ -81,6 +81,7 @@
 !  =====================================================================
       PROGRAM SBLAT3
         USE LPF_BF16
+        USE LPF_TYPES, dik => lpf_default_int_kind
         USE LPF_XERBLA
         USE LPF_BLAS_BF16
         IMPLICIT NONE
@@ -92,18 +93,18 @@
 !  =====================================================================
 !
 !     .. Parameters ..
-      INTEGER            NIN
+      INTEGER(lpf_default_int_kind)            NIN
       PARAMETER          ( NIN = 5 )
-      INTEGER            NSUBS
+      INTEGER(lpf_default_int_kind)            NSUBS
       PARAMETER          ( NSUBS = 7 )
       TYPE(BF16)               ZERO, ONE
-      INTEGER            NMAX
+      INTEGER(lpf_default_int_kind)            NMAX
       PARAMETER          ( NMAX = 65 )
-      INTEGER            NIDMAX, NALMAX, NBEMAX
+      INTEGER(lpf_default_int_kind)            NIDMAX, NALMAX, NBEMAX
       PARAMETER          ( NIDMAX = 9, NALMAX = 7, NBEMAX = 7 )
 !     .. Local Scalars ..
       TYPE(BF16)               EPS, ERR, THRESH
-      INTEGER            I, ISNUM, J, N, NALF, NBET, NIDIM, NOUT, NTRA
+      INTEGER(lpf_default_int_kind)            I, ISNUM, J, N, NALF, NBET, NIDIM, NOUT, NTRA
       LOGICAL            FATAL, LTESTT, REWI, SAME, SFATAL, TRACE,      &
      &                   TSTERR
       CHARACTER*1        TRANSA, TRANSB
@@ -116,7 +117,7 @@
      &                   BS( NMAX*NMAX ), C( NMAX, NMAX ),              &
      &                   CC( NMAX*NMAX ), CS( NMAX*NMAX ), CT( NMAX ),  &
      &                   G( NMAX ), W( 2*NMAX )
-      INTEGER            IDIM( NIDMAX )
+      INTEGER(lpf_default_int_kind)            IDIM( NIDMAX )
       LOGICAL            LTEST( NSUBS )
       CHARACTER*7        SNAMES( NSUBS )
 !     .. External Functions ..
@@ -127,7 +128,7 @@
 !     .. External Subroutines ..
       EXTERNAL           SCHK1, SCHK2, SCHK3, SCHK4, SCHK5, SCHKE, SMMCH
 !     .. Scalars in Common ..
-      INTEGER            INFOT, NOUTC
+      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
       LOGICAL            LERR, OK
       CHARACTER*7        SRNAMT
 !     .. Common blocks ..
@@ -253,7 +254,7 @@
 !     the result computed by SMMCH.
       TRANSA = 'N'
       TRANSB = 'N'
-      CALL SMMCH( TRANSA, TRANSB, N, 1, N, ONE, AB, NMAX,               &
+      CALL SMMCH( TRANSA, TRANSB, N, 1_dik, N, ONE, AB, NMAX,               &
      &            AB( 1, NMAX + 1 ), NMAX, ZERO, C, NMAX, CT, G, CC,    &
      &            NMAX, EPS, ERR, FATAL, NOUT, .TRUE. )
       SAME = LSE( CC, CT, N )
@@ -262,7 +263,7 @@
          STOP 1
       END IF
       TRANSB = 'T'
-      CALL SMMCH( TRANSA, TRANSB, N, 1, N, ONE, AB, NMAX,               &
+      CALL SMMCH( TRANSA, TRANSB, N, 1_dik, N, ONE, AB, NMAX,               &
      &            AB( 1, NMAX + 1 ), NMAX, ZERO, C, NMAX, CT, G, CC,    &
      &            NMAX, EPS, ERR, FATAL, NOUT, .TRUE. )
       SAME = LSE( CC, CT, N )
@@ -280,7 +281,7 @@
   130 END DO
       TRANSA = 'T'
       TRANSB = 'N'
-      CALL SMMCH( TRANSA, TRANSB, N, 1, N, ONE, AB, NMAX,               &
+      CALL SMMCH( TRANSA, TRANSB, N, 1_dik, N, ONE, AB, NMAX,               &
      &            AB( 1, NMAX + 1 ), NMAX, ZERO, C, NMAX, CT, G, CC,    &
      &            NMAX, EPS, ERR, FATAL, NOUT, .TRUE. )
       SAME = LSE( CC, CT, N )
@@ -289,7 +290,7 @@
          STOP
       END IF
       TRANSB = 'T'
-      CALL SMMCH( TRANSA, TRANSB, N, 1, N, ONE, AB, NMAX,               &
+      CALL SMMCH( TRANSA, TRANSB, N, 1_dik, N, ONE, AB, NMAX,               &
      &            AB( 1, NMAX + 1 ), NMAX, ZERO, C, NMAX, CT, G, CC,    &
      &            NMAX, EPS, ERR, FATAL, NOUT, .TRUE. )
       SAME = LSE( CC, CT, N )
@@ -406,6 +407,7 @@
      &                  FATAL, NIDIM, IDIM, NALF, ALF, NBET, BET, NMAX, &
      &                  A, AA, AS, B, BB, BS, C, CC, CS, CT, G )
         USE LPF_BF16
+        USE LPF_TYPES
         USE LPF_BLAS_BF16
         IMPLICIT NONE
  !
@@ -423,7 +425,7 @@
       TYPE(BF16)               ZERO
 !     .. Scalar Arguments ..
       TYPE(BF16)               EPS, THRESH
-      INTEGER            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
+      INTEGER(lpf_default_int_kind)            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*7        SNAME
 !     .. Array Arguments ..
@@ -432,10 +434,10 @@
      &                   BB( NMAX*NMAX ), BET( NBET ), BS( NMAX*NMAX ), &
      &                   C( NMAX, NMAX ), CC( NMAX*NMAX ),              &
      &                   CS( NMAX*NMAX ), CT( NMAX ), G( NMAX )
-      INTEGER            IDIM( NIDIM )
+      INTEGER(lpf_default_int_kind)            IDIM( NIDIM )
 !     .. Local Scalars ..
       TYPE(BF16)               ALPHA, ALS, BETA, BLS, ERR, ERRMAX
-      INTEGER            I, IA, IB, ICA, ICB, IK, IM, IN, K, KS, LAA,   &
+      INTEGER(lpf_default_int_kind)            I, IA, IB, ICA, ICB, IK, IM, IN, K, KS, LAA,   &
      &                   LBB, LCC, LDA, LDAS, LDB, LDBS, LDC, LDCS, M,  &
      &                   MA, MB, MS, N, NA, NARGS, NB, NC, NS
       LOGICAL            NULL, RESET, SAME, TRANA, TRANB
@@ -449,7 +451,7 @@
 !     .. External Subroutines ..
       EXTERNAL           SMAKE, SMMCH
 !     .. Scalars in Common ..
-      INTEGER            INFOT, NOUTC
+      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -688,6 +690,7 @@
      &                  FATAL, NIDIM, IDIM, NALF, ALF, NBET, BET, NMAX, &
      &                  A, AA, AS, B, BB, BS, C, CC, CS, CT, G )
         USE LPF_BF16
+        USE LPF_TYPES
         USE LPF_BLAS_BF16
         IMPLICIT NONE
  !
@@ -705,7 +708,7 @@
       TYPE(BF16)               ZERO
 !     .. Scalar Arguments ..
       TYPE(BF16)               EPS, THRESH
-      INTEGER            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
+      INTEGER(lpf_default_int_kind)            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*7        SNAME
 !     .. Array Arguments ..
@@ -714,10 +717,10 @@
      &                   BB( NMAX*NMAX ), BET( NBET ), BS( NMAX*NMAX ), &
      &                   C( NMAX, NMAX ), CC( NMAX*NMAX ),              &
      &                   CS( NMAX*NMAX ), CT( NMAX ), G( NMAX )
-      INTEGER            IDIM( NIDIM )
+      INTEGER(lpf_default_int_kind)            IDIM( NIDIM )
 !     .. Local Scalars ..
       TYPE(BF16)               ALPHA, ALS, BETA, BLS, ERR, ERRMAX
-      INTEGER            I, IA, IB, ICS, ICU, IM, IN, LAA, LBB, LCC,    &
+      INTEGER(lpf_default_int_kind)            I, IA, IB, ICS, ICU, IM, IN, LAA, LBB, LCC,    &
      &                   LDA, LDAS, LDB, LDBS, LDC, LDCS, M, MS, N, NA, &
      &                   NARGS, NC, NS
       LOGICAL            LEFT, NULL, RESET, SAME
@@ -731,7 +734,7 @@
 !     .. External Subroutines ..
       EXTERNAL           SMAKE, SMMCH
 !     .. Scalars in Common ..
-      INTEGER            INFOT, NOUTC
+      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -960,6 +963,7 @@
      &                  FATAL, NIDIM, IDIM, NALF, ALF, NMAX, A, AA, AS, &
      &                  B, BB, BS, CT, G, C )
         USE LPF_BF16
+        USE LPF_TYPES
         USE LPF_BLAS_BF16
         IMPLICIT NONE
 !
@@ -977,7 +981,7 @@
       TYPE(BF16)               ZERO, ONE
 !     .. Scalar Arguments ..
       TYPE(BF16)               EPS, THRESH
-      INTEGER            NALF, NIDIM, NMAX, NOUT, NTRA
+      INTEGER(lpf_default_int_kind)            NALF, NIDIM, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*7        SNAME
 !     .. Array Arguments ..
@@ -985,10 +989,10 @@
      &                   AS( NMAX*NMAX ), B( NMAX, NMAX ),              &
      &                   BB( NMAX*NMAX ), BS( NMAX*NMAX ),              &
      &                   C( NMAX, NMAX ), CT( NMAX ), G( NMAX )
-      INTEGER            IDIM( NIDIM )
+      INTEGER(lpf_default_int_kind)            IDIM( NIDIM )
 !     .. Local Scalars ..
       TYPE(BF16)               ALPHA, ALS, ERR, ERRMAX
-      INTEGER            I, IA, ICD, ICS, ICT, ICU, IM, IN, J, LAA, LBB,&
+      INTEGER(lpf_default_int_kind)            I, IA, ICD, ICS, ICT, ICU, IM, IN, J, LAA, LBB,&
      &                   LDA, LDAS, LDB, LDBS, M, MS, N, NA, NARGS, NC, &
      &                   NS
       LOGICAL            LEFT, NULL, RESET, SAME
@@ -1004,7 +1008,7 @@
 !     .. External Subroutines ..
       EXTERNAL           SMAKE, SMMCH
 !     .. Scalars in Common ..
-      INTEGER            INFOT, NOUTC
+      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -1268,6 +1272,7 @@
      &                  FATAL, NIDIM, IDIM, NALF, ALF, NBET, BET, NMAX, &
      &                  A, AA, AS, B, BB, BS, C, CC, CS, CT, G )
         USE LPF_BF16
+        USE LPF_TYPES, dik => lpf_default_int_kind
         USE LPF_BLAS_BF16
         IMPLICIT NONE
  !
@@ -1285,7 +1290,7 @@
       TYPE(BF16)               ZERO
 !     .. Scalar Arguments ..
       TYPE(BF16)               EPS, THRESH
-      INTEGER            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
+      INTEGER(lpf_default_int_kind)            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*7        SNAME
 !     .. Array Arguments ..
@@ -1294,10 +1299,10 @@
      &                   BB( NMAX*NMAX ), BET( NBET ), BS( NMAX*NMAX ), &
      &                   C( NMAX, NMAX ), CC( NMAX*NMAX ),              &
      &                   CS( NMAX*NMAX ), CT( NMAX ), G( NMAX )
-      INTEGER            IDIM( NIDIM )
+      INTEGER(lpf_default_int_kind)            IDIM( NIDIM )
 !     .. Local Scalars ..
       TYPE(BF16)               ALPHA, ALS, BETA, BETS, ERR, ERRMAX
-      INTEGER            I, IA, IB, ICT, ICU, IK, IN, J, JC, JJ, K, KS, &
+      INTEGER(lpf_default_int_kind)            I, IA, IB, ICT, ICU, IK, IN, J, JC, JJ, K, KS, &
      &                   LAA, LCC, LDA, LDAS, LDC, LDCS, LJ, MA, N, NA, &
      &                   NARGS, NC, NS
       LOGICAL            NULL, RESET, SAME, TRAN, UPPER
@@ -1312,7 +1317,7 @@
 !     .. External Subroutines ..
       EXTERNAL           SMAKE, SMMCH
 !     .. Scalars in Common ..
-      INTEGER            INFOT, NOUTC
+      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -1464,14 +1469,14 @@
                                  LJ = N - J + 1
                               END IF
                               IF( TRAN )THEN
-                                 CALL SMMCH( 'T', 'N', LJ, 1, K, ALPHA, &
+                                 CALL SMMCH( 'T', 'N', LJ, 1_dik, K, ALPHA, &
      &                                       A( 1, JJ ), NMAX,          &
      &                                       A( 1, J ), NMAX, BETA,     &
      &                                       C( JJ, J ), NMAX, CT, G,   &
      &                                       CC( JC ), LDC, EPS, ERR,   &
      &                                       FATAL, NOUT, .TRUE. )
                               ELSE
-                                 CALL SMMCH( 'N', 'T', LJ, 1, K, ALPHA, &
+                                 CALL SMMCH( 'N', 'T', LJ, 1_dik, K, ALPHA, &
      &                                       A( JJ, 1 ), NMAX,          &
      &                                       A( J, 1 ), NMAX, BETA,     &
      &                                       C( JJ, J ), NMAX, CT, G,   &
@@ -1545,6 +1550,7 @@
      &                  FATAL, NIDIM, IDIM, NALF, ALF, NBET, BET, NMAX, &
      &                  AB, AA, AS, BB, BS, C, CC, CS, CT, G, W )
         USE LPF_BF16
+        USE LPF_TYPES, dik => lpf_default_int_kind
         USE LPF_BLAS_BF16
         IMPLICIT NONE
  !
@@ -1562,7 +1568,7 @@
       TYPE(BF16)               ZERO
 !     .. Scalar Arguments ..
       TYPE(BF16)               EPS, THRESH
-      INTEGER            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
+      INTEGER(lpf_default_int_kind)            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*7        SNAME
 !     .. Array Arguments ..
@@ -1571,10 +1577,10 @@
      &                   BET( NBET ), BS( NMAX*NMAX ), C( NMAX, NMAX ), &
      &                   CC( NMAX*NMAX ), CS( NMAX*NMAX ), CT( NMAX ),  &
      &                   G( NMAX ), W( 2*NMAX )
-      INTEGER            IDIM( NIDIM )
+      INTEGER(lpf_default_int_kind)            IDIM( NIDIM )
 !     .. Local Scalars ..
       TYPE(BF16)               ALPHA, ALS, BETA, BETS, ERR, ERRMAX
-      INTEGER            I, IA, IB, ICT, ICU, IK, IN, J, JC, JJ, JJAB,  &
+      INTEGER(lpf_default_int_kind)            I, IA, IB, ICT, ICU, IK, IN, J, JC, JJ, JJAB,  &
      &                   K, KS, LAA, LBB, LCC, LDA, LDAS, LDB, LDBS,    &
      &                   LDC, LDCS, LJ, MA, N, NA, NARGS, NC, NS
       LOGICAL            NULL, RESET, SAME, TRAN, UPPER
@@ -1589,7 +1595,7 @@
 !     .. External Subroutines ..
       EXTERNAL           SMAKE, SMMCH
 !     .. Scalars in Common ..
-      INTEGER            INFOT, NOUTC
+      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -1771,7 +1777,7 @@
                                     W( K + I ) = AB( ( J - 1 )*2*NMAX + &
      &                                           I )
    50                            CONTINUE
-                                 CALL SMMCH( 'T', 'N', LJ, 1, 2*K,      &
+                                 CALL SMMCH( 'T', 'N', LJ, 1_dik, 2*K,      &
      &                                       ALPHA, AB( JJAB ), 2*NMAX, &
      &                                       W, 2*NMAX, BETA,           &
      &                                       C( JJ, J ), NMAX, CT, G,   &
@@ -1784,7 +1790,7 @@
                                     W( K + I ) = AB( ( I - 1 )*NMAX +   &
      &                                           J )
    60                            CONTINUE
-                                 CALL SMMCH( 'N', 'N', LJ, 1, 2*K,      &
+                                 CALL SMMCH( 'N', 'N', LJ, 1_dik, 2*K,      &
      &                                       ALPHA, AB( JJ ), NMAX, W,  &
      &                                       2*NMAX, BETA, C( JJ, J ),  &
      &                                       NMAX, CT, G, CC( JC ), LDC,&
@@ -1859,6 +1865,7 @@
       END
       SUBROUTINE SCHKE( ISNUM, SRNAMT, NOUT )
         USE LPF_BF16
+        USE LPF_TYPES, dik => lpf_default_int_kind
         USE LPF_BLAS_BF16
         IMPLICIT NONE
           !
@@ -1878,10 +1885,10 @@
 !  3-19-92:  Fix argument 12 in calls to BSYMM with INFOT = 9  (eca)
 !
 !     .. Scalar Arguments ..
-      INTEGER            ISNUM, NOUT
+      INTEGER(lpf_default_int_kind)            ISNUM, NOUT
       CHARACTER*7        SRNAMT
 !     .. Scalars in Common ..
-      INTEGER            INFOT, NOUTC
+      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Parameters ..
       TYPE(BF16)               ONE, TWO
@@ -1911,574 +1918,574 @@
 !
       GO TO ( 10, 20, 30, 40, 50, 60, 70 )ISNUM
    10 INFOT = 1
-      CALL BGEMM( '/', 'N', 0, 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( '/', 'N', 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 1
-      CALL BGEMM( '/', 'T', 0, 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( '/', 'T', 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BGEMM( 'N', '/', 0, 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'N', '/', 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BGEMM( 'T', '/', 0, 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'T', '/', 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BGEMM( 'N', 'N', -1, 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'N', 'N', -1_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BGEMM( 'N', 'T', -1, 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'N', 'T', -1_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BGEMM( 'T', 'N', -1, 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'T', 'N', -1_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BGEMM( 'T', 'T', -1, 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'T', 'T', -1_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BGEMM( 'N', 'N', 0, -1, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'N', 'N', 0_dik, -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BGEMM( 'N', 'T', 0, -1, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'N', 'T', 0_dik, -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BGEMM( 'T', 'N', 0, -1, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'T', 'N', 0_dik, -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BGEMM( 'T', 'T', 0, -1, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'T', 'T', 0_dik, -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BGEMM( 'N', 'N', 0, 0, -1, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'N', 'N', 0_dik, 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BGEMM( 'N', 'T', 0, 0, -1, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'N', 'T', 0_dik, 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BGEMM( 'T', 'N', 0, 0, -1, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'T', 'N', 0_dik, 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BGEMM( 'T', 'T', 0, 0, -1, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'T', 'T', 0_dik, 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL BGEMM( 'N', 'N', 2, 0, 0, ALPHA, A, 1, B, 1, BETA, C, 2 )
+      CALL BGEMM( 'N', 'N', 2_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL BGEMM( 'N', 'T', 2, 0, 0, ALPHA, A, 1, B, 1, BETA, C, 2 )
+      CALL BGEMM( 'N', 'T', 2_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL BGEMM( 'T', 'N', 0, 0, 2, ALPHA, A, 1, B, 2, BETA, C, 1 )
+      CALL BGEMM( 'T', 'N', 0_dik, 0_dik, 2_dik, ALPHA, A, 1_dik, B, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL BGEMM( 'T', 'T', 0, 0, 2, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'T', 'T', 0_dik, 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL BGEMM( 'N', 'N', 0, 0, 2, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'N', 'N', 0_dik, 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL BGEMM( 'T', 'N', 0, 0, 2, ALPHA, A, 2, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'T', 'N', 0_dik, 0_dik, 2_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL BGEMM( 'N', 'T', 0, 2, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'N', 'T', 0_dik, 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL BGEMM( 'T', 'T', 0, 2, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'T', 'T', 0_dik, 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 13
-      CALL BGEMM( 'N', 'N', 2, 0, 0, ALPHA, A, 2, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'N', 'N', 2_dik, 0_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 13
-      CALL BGEMM( 'N', 'T', 2, 0, 0, ALPHA, A, 2, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'N', 'T', 2_dik, 0_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 13
-      CALL BGEMM( 'T', 'N', 2, 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'T', 'N', 2_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 13
-      CALL BGEMM( 'T', 'T', 2, 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMM( 'T', 'T', 2_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 80
    20 INFOT = 1
-      CALL BSYMM( '/', 'U', 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYMM( '/', 'U', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BSYMM( 'L', '/', 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYMM( 'L', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BSYMM( 'L', 'U', -1, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYMM( 'L', 'U', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BSYMM( 'R', 'U', -1, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYMM( 'R', 'U', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BSYMM( 'L', 'L', -1, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYMM( 'L', 'L', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BSYMM( 'R', 'L', -1, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYMM( 'R', 'L', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BSYMM( 'L', 'U', 0, -1, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYMM( 'L', 'U', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BSYMM( 'R', 'U', 0, -1, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYMM( 'R', 'U', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BSYMM( 'L', 'L', 0, -1, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYMM( 'L', 'L', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BSYMM( 'R', 'L', 0, -1, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYMM( 'R', 'L', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BSYMM( 'L', 'U', 2, 0, ALPHA, A, 1, B, 2, BETA, C, 2 )
+      CALL BSYMM( 'L', 'U', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BSYMM( 'R', 'U', 0, 2, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYMM( 'R', 'U', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BSYMM( 'L', 'L', 2, 0, ALPHA, A, 1, B, 2, BETA, C, 2 )
+      CALL BSYMM( 'L', 'L', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BSYMM( 'R', 'L', 0, 2, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYMM( 'R', 'L', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BSYMM( 'L', 'U', 2, 0, ALPHA, A, 2, B, 1, BETA, C, 2 )
+      CALL BSYMM( 'L', 'U', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BSYMM( 'R', 'U', 2, 0, ALPHA, A, 1, B, 1, BETA, C, 2 )
+      CALL BSYMM( 'R', 'U', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BSYMM( 'L', 'L', 2, 0, ALPHA, A, 2, B, 1, BETA, C, 2 )
+      CALL BSYMM( 'L', 'L', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BSYMM( 'R', 'L', 2, 0, ALPHA, A, 1, B, 1, BETA, C, 2 )
+      CALL BSYMM( 'R', 'L', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 12
-      CALL BSYMM( 'L', 'U', 2, 0, ALPHA, A, 2, B, 2, BETA, C, 1 )
+      CALL BSYMM( 'L', 'U', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 12
-      CALL BSYMM( 'R', 'U', 2, 0, ALPHA, A, 1, B, 2, BETA, C, 1 )
+      CALL BSYMM( 'R', 'U', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 12
-      CALL BSYMM( 'L', 'L', 2, 0, ALPHA, A, 2, B, 2, BETA, C, 1 )
+      CALL BSYMM( 'L', 'L', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 12
-      CALL BSYMM( 'R', 'L', 2, 0, ALPHA, A, 1, B, 2, BETA, C, 1 )
+      CALL BSYMM( 'R', 'L', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 80
    30 INFOT = 1
-      CALL BTRMM( '/', 'U', 'N', 'N', 0, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( '/', 'U', 'N', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BTRMM( 'L', '/', 'N', 'N', 0, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'L', '/', 'N', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BTRMM( 'L', 'U', '/', 'N', 0, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'L', 'U', '/', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BTRMM( 'L', 'U', 'N', '/', 0, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'L', 'U', 'N', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BTRMM( 'L', 'U', 'N', 'N', -1, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'L', 'U', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BTRMM( 'L', 'U', 'T', 'N', -1, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'L', 'U', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BTRMM( 'R', 'U', 'N', 'N', -1, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'R', 'U', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BTRMM( 'R', 'U', 'T', 'N', -1, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'R', 'U', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BTRMM( 'L', 'L', 'N', 'N', -1, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'L', 'L', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BTRMM( 'L', 'L', 'T', 'N', -1, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'L', 'L', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BTRMM( 'R', 'L', 'N', 'N', -1, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'R', 'L', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BTRMM( 'R', 'L', 'T', 'N', -1, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'R', 'L', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BTRMM( 'L', 'U', 'N', 'N', 0, -1, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'L', 'U', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BTRMM( 'L', 'U', 'T', 'N', 0, -1, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'L', 'U', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BTRMM( 'R', 'U', 'N', 'N', 0, -1, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'R', 'U', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BTRMM( 'R', 'U', 'T', 'N', 0, -1, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'R', 'U', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BTRMM( 'L', 'L', 'N', 'N', 0, -1, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'L', 'L', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BTRMM( 'L', 'L', 'T', 'N', 0, -1, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'L', 'L', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BTRMM( 'R', 'L', 'N', 'N', 0, -1, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'R', 'L', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BTRMM( 'R', 'L', 'T', 'N', 0, -1, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'R', 'L', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BTRMM( 'L', 'U', 'N', 'N', 2, 0, ALPHA, A, 1, B, 2 )
+      CALL BTRMM( 'L', 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BTRMM( 'L', 'U', 'T', 'N', 2, 0, ALPHA, A, 1, B, 2 )
+      CALL BTRMM( 'L', 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BTRMM( 'R', 'U', 'N', 'N', 0, 2, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'R', 'U', 'N', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BTRMM( 'R', 'U', 'T', 'N', 0, 2, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'R', 'U', 'T', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BTRMM( 'L', 'L', 'N', 'N', 2, 0, ALPHA, A, 1, B, 2 )
+      CALL BTRMM( 'L', 'L', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BTRMM( 'L', 'L', 'T', 'N', 2, 0, ALPHA, A, 1, B, 2 )
+      CALL BTRMM( 'L', 'L', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BTRMM( 'R', 'L', 'N', 'N', 0, 2, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'R', 'L', 'N', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BTRMM( 'R', 'L', 'T', 'N', 0, 2, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'R', 'L', 'T', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL BTRMM( 'L', 'U', 'N', 'N', 2, 0, ALPHA, A, 2, B, 1 )
+      CALL BTRMM( 'L', 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL BTRMM( 'L', 'U', 'T', 'N', 2, 0, ALPHA, A, 2, B, 1 )
+      CALL BTRMM( 'L', 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL BTRMM( 'R', 'U', 'N', 'N', 2, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'R', 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL BTRMM( 'R', 'U', 'T', 'N', 2, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'R', 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL BTRMM( 'L', 'L', 'N', 'N', 2, 0, ALPHA, A, 2, B, 1 )
+      CALL BTRMM( 'L', 'L', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL BTRMM( 'L', 'L', 'T', 'N', 2, 0, ALPHA, A, 2, B, 1 )
+      CALL BTRMM( 'L', 'L', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL BTRMM( 'R', 'L', 'N', 'N', 2, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'R', 'L', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL BTRMM( 'R', 'L', 'T', 'N', 2, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRMM( 'R', 'L', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 80
    40 INFOT = 1
-      CALL BTRSM( '/', 'U', 'N', 'N', 0, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( '/', 'U', 'N', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BTRSM( 'L', '/', 'N', 'N', 0, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'L', '/', 'N', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BTRSM( 'L', 'U', '/', 'N', 0, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'L', 'U', '/', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BTRSM( 'L', 'U', 'N', '/', 0, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'L', 'U', 'N', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BTRSM( 'L', 'U', 'N', 'N', -1, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'L', 'U', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BTRSM( 'L', 'U', 'T', 'N', -1, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'L', 'U', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BTRSM( 'R', 'U', 'N', 'N', -1, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'R', 'U', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BTRSM( 'R', 'U', 'T', 'N', -1, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'R', 'U', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BTRSM( 'L', 'L', 'N', 'N', -1, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'L', 'L', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BTRSM( 'L', 'L', 'T', 'N', -1, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'L', 'L', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BTRSM( 'R', 'L', 'N', 'N', -1, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'R', 'L', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BTRSM( 'R', 'L', 'T', 'N', -1, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'R', 'L', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BTRSM( 'L', 'U', 'N', 'N', 0, -1, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'L', 'U', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BTRSM( 'L', 'U', 'T', 'N', 0, -1, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'L', 'U', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BTRSM( 'R', 'U', 'N', 'N', 0, -1, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'R', 'U', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BTRSM( 'R', 'U', 'T', 'N', 0, -1, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'R', 'U', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BTRSM( 'L', 'L', 'N', 'N', 0, -1, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'L', 'L', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BTRSM( 'L', 'L', 'T', 'N', 0, -1, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'L', 'L', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BTRSM( 'R', 'L', 'N', 'N', 0, -1, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'R', 'L', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BTRSM( 'R', 'L', 'T', 'N', 0, -1, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'R', 'L', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BTRSM( 'L', 'U', 'N', 'N', 2, 0, ALPHA, A, 1, B, 2 )
+      CALL BTRSM( 'L', 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BTRSM( 'L', 'U', 'T', 'N', 2, 0, ALPHA, A, 1, B, 2 )
+      CALL BTRSM( 'L', 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BTRSM( 'R', 'U', 'N', 'N', 0, 2, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'R', 'U', 'N', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BTRSM( 'R', 'U', 'T', 'N', 0, 2, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'R', 'U', 'T', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BTRSM( 'L', 'L', 'N', 'N', 2, 0, ALPHA, A, 1, B, 2 )
+      CALL BTRSM( 'L', 'L', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BTRSM( 'L', 'L', 'T', 'N', 2, 0, ALPHA, A, 1, B, 2 )
+      CALL BTRSM( 'L', 'L', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BTRSM( 'R', 'L', 'N', 'N', 0, 2, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'R', 'L', 'N', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BTRSM( 'R', 'L', 'T', 'N', 0, 2, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'R', 'L', 'T', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL BTRSM( 'L', 'U', 'N', 'N', 2, 0, ALPHA, A, 2, B, 1 )
+      CALL BTRSM( 'L', 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL BTRSM( 'L', 'U', 'T', 'N', 2, 0, ALPHA, A, 2, B, 1 )
+      CALL BTRSM( 'L', 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL BTRSM( 'R', 'U', 'N', 'N', 2, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'R', 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL BTRSM( 'R', 'U', 'T', 'N', 2, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'R', 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL BTRSM( 'L', 'L', 'N', 'N', 2, 0, ALPHA, A, 2, B, 1 )
+      CALL BTRSM( 'L', 'L', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL BTRSM( 'L', 'L', 'T', 'N', 2, 0, ALPHA, A, 2, B, 1 )
+      CALL BTRSM( 'L', 'L', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL BTRSM( 'R', 'L', 'N', 'N', 2, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'R', 'L', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL BTRSM( 'R', 'L', 'T', 'N', 2, 0, ALPHA, A, 1, B, 1 )
+      CALL BTRSM( 'R', 'L', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 80
    50 INFOT = 1
-      CALL BSYRK( '/', 'N', 0, 0, ALPHA, A, 1, BETA, C, 1 )
+      CALL BSYRK( '/', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BSYRK( 'U', '/', 0, 0, ALPHA, A, 1, BETA, C, 1 )
+      CALL BSYRK( 'U', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BSYRK( 'U', 'N', -1, 0, ALPHA, A, 1, BETA, C, 1 )
+      CALL BSYRK( 'U', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BSYRK( 'U', 'T', -1, 0, ALPHA, A, 1, BETA, C, 1 )
+      CALL BSYRK( 'U', 'T', -1_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BSYRK( 'L', 'N', -1, 0, ALPHA, A, 1, BETA, C, 1 )
+      CALL BSYRK( 'L', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BSYRK( 'L', 'T', -1, 0, ALPHA, A, 1, BETA, C, 1 )
+      CALL BSYRK( 'L', 'T', -1_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BSYRK( 'U', 'N', 0, -1, ALPHA, A, 1, BETA, C, 1 )
+      CALL BSYRK( 'U', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BSYRK( 'U', 'T', 0, -1, ALPHA, A, 1, BETA, C, 1 )
+      CALL BSYRK( 'U', 'T', 0_dik, -1_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BSYRK( 'L', 'N', 0, -1, ALPHA, A, 1, BETA, C, 1 )
+      CALL BSYRK( 'L', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BSYRK( 'L', 'T', 0, -1, ALPHA, A, 1, BETA, C, 1 )
+      CALL BSYRK( 'L', 'T', 0_dik, -1_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BSYRK( 'U', 'N', 2, 0, ALPHA, A, 1, BETA, C, 2 )
+      CALL BSYRK( 'U', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BSYRK( 'U', 'T', 0, 2, ALPHA, A, 1, BETA, C, 1 )
+      CALL BSYRK( 'U', 'T', 0_dik, 2_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BSYRK( 'L', 'N', 2, 0, ALPHA, A, 1, BETA, C, 2 )
+      CALL BSYRK( 'L', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BSYRK( 'L', 'T', 0, 2, ALPHA, A, 1, BETA, C, 1 )
+      CALL BSYRK( 'L', 'T', 0_dik, 2_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL BSYRK( 'U', 'N', 2, 0, ALPHA, A, 2, BETA, C, 1 )
+      CALL BSYRK( 'U', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL BSYRK( 'U', 'T', 2, 0, ALPHA, A, 1, BETA, C, 1 )
+      CALL BSYRK( 'U', 'T', 2_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL BSYRK( 'L', 'N', 2, 0, ALPHA, A, 2, BETA, C, 1 )
+      CALL BSYRK( 'L', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL BSYRK( 'L', 'T', 2, 0, ALPHA, A, 1, BETA, C, 1 )
+      CALL BSYRK( 'L', 'T', 2_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 80
    60 INFOT = 1
-      CALL BSYR2K( '/', 'N', 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYR2K( '/', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BSYR2K( 'U', '/', 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYR2K( 'U', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BSYR2K( 'U', 'N', -1, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYR2K( 'U', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BSYR2K( 'U', 'T', -1, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYR2K( 'U', 'T', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BSYR2K( 'L', 'N', -1, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYR2K( 'L', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BSYR2K( 'L', 'T', -1, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYR2K( 'L', 'T', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BSYR2K( 'U', 'N', 0, -1, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYR2K( 'U', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BSYR2K( 'U', 'T', 0, -1, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYR2K( 'U', 'T', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BSYR2K( 'L', 'N', 0, -1, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYR2K( 'L', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BSYR2K( 'L', 'T', 0, -1, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYR2K( 'L', 'T', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BSYR2K( 'U', 'N', 2, 0, ALPHA, A, 1, B, 1, BETA, C, 2 )
+      CALL BSYR2K( 'U', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BSYR2K( 'U', 'T', 0, 2, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYR2K( 'U', 'T', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BSYR2K( 'L', 'N', 2, 0, ALPHA, A, 1, B, 1, BETA, C, 2 )
+      CALL BSYR2K( 'L', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BSYR2K( 'L', 'T', 0, 2, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYR2K( 'L', 'T', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BSYR2K( 'U', 'N', 2, 0, ALPHA, A, 2, B, 1, BETA, C, 2 )
+      CALL BSYR2K( 'U', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BSYR2K( 'U', 'T', 0, 2, ALPHA, A, 2, B, 1, BETA, C, 1 )
+      CALL BSYR2K( 'U', 'T', 0_dik, 2_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BSYR2K( 'L', 'N', 2, 0, ALPHA, A, 2, B, 1, BETA, C, 2 )
+      CALL BSYR2K( 'L', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BSYR2K( 'L', 'T', 0, 2, ALPHA, A, 2, B, 1, BETA, C, 1 )
+      CALL BSYR2K( 'L', 'T', 0_dik, 2_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 12
-      CALL BSYR2K( 'U', 'N', 2, 0, ALPHA, A, 2, B, 2, BETA, C, 1 )
+      CALL BSYR2K( 'U', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 12
-      CALL BSYR2K( 'U', 'T', 2, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYR2K( 'U', 'T', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 12
-      CALL BSYR2K( 'L', 'N', 2, 0, ALPHA, A, 2, B, 2, BETA, C, 1 )
+      CALL BSYR2K( 'L', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 12
-      CALL BSYR2K( 'L', 'T', 2, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BSYR2K( 'L', 'T', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 80
    70 INFOT = 1
-      CALL BGEMMTR( '/', 'N', 'N', 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMMTR( '/', 'N', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BGEMMTR( 'U', '/', 'N', 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMMTR( 'U', '/', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BGEMMTR( 'U', '/', 'T', 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMMTR( 'U', '/', 'T', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BGEMMTR( 'U', 'N', '/', 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMMTR( 'U', 'N', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BGEMMTR( 'U', 'T', '/', 0, 0, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMMTR( 'U', 'T', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BGEMMTR( 'U', 'N', 'N', -1, 0, ALPHA, A, 1, B, 1, BETA, C,   &
-     &              1 )
+      CALL BGEMMTR( 'U', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
+     &              1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BGEMMTR( 'U', 'N', 'T', -1, 0, ALPHA, A, 1, B, 1, BETA, C,   &
-     &              1 )
+      CALL BGEMMTR( 'U', 'N', 'T', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
+     &              1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BGEMMTR( 'U', 'T', 'N', -1, 0, ALPHA, A, 1, B, 1, BETA, C,   &
-     &              1 )
+      CALL BGEMMTR( 'U', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
+     &              1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BGEMMTR( 'U', 'T', 'T', -1, 0, ALPHA, A, 1, B, 1, BETA, C,   &
-     &              1 )
+      CALL BGEMMTR( 'U', 'T', 'T', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
+     &              1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BGEMMTR( 'U', 'N', 'N', 0, -1, ALPHA, A, 1, B, 1, BETA, C,   &
-     &              1 )
+      CALL BGEMMTR( 'U', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
+     &              1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BGEMMTR( 'U', 'N', 'T', 0, -1, ALPHA, A, 1, B, 1, BETA, C,   &
-     &              1 )
+      CALL BGEMMTR( 'U', 'N', 'T', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
+     &              1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BGEMMTR( 'U', 'T', 'N', 0, -1, ALPHA, A, 1, B, 1, BETA, C,   &
-     &              1 )
+      CALL BGEMMTR( 'U', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
+     &              1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BGEMMTR( 'U', 'T', 'T', 0, -1, ALPHA, A, 1, B, 1, BETA, C,   &
-     &              1 )
+      CALL BGEMMTR( 'U', 'T', 'T', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
+     &              1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL BGEMMTR( 'U', 'N', 'N', 2, 0,  ALPHA, A, 1, B, 2, BETA, C,   &
-     &              2 )
+      CALL BGEMMTR( 'U', 'N', 'N', 2_dik, 0_dik,  ALPHA, A, 1_dik, B, 2_dik, BETA, C,   &
+     &              2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL BGEMMTR( 'U', 'N', 'T', 2, 0, ALPHA, A, 1, B, 2, BETA, C, 2 )
+      CALL BGEMMTR( 'U', 'N', 'T', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL BGEMMTR( 'U', 'N', 'N', 0, 2, ALPHA, A, 1, B, 1, BETA, C, 1 )
+      CALL BGEMMTR( 'U', 'N', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL BGEMMTR( 'U', 'T', 'N', 0, 2, ALPHA, A, 2, B, 1, BETA, C, 1 )
+      CALL BGEMMTR( 'U', 'T', 'N', 0_dik, 2_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL BGEMMTR( 'U', 'N', 'T', 2, 0, ALPHA, A, 2, B, 1, BETA, C, 1 )
+      CALL BGEMMTR( 'U', 'N', 'T', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL BGEMMTR( 'U', 'T', 'T', 2, 0, ALPHA, A, 2, B, 1, BETA, C, 1 )
+      CALL BGEMMTR( 'U', 'T', 'T', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 13
-      CALL BGEMMTR( 'U', 'N', 'N', 2, 0, ALPHA, A, 2, B, 1, BETA, C, 1 )
+      CALL BGEMMTR( 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 13
-      CALL BGEMMTR( 'U', 'N', 'T', 2, 0, ALPHA, A, 2, B, 2, BETA, C, 1 )
+      CALL BGEMMTR( 'U', 'N', 'T', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 13
-      CALL BGEMMTR( 'U', 'T', 'N', 2, 0, ALPHA, A, 2, B, 1, BETA, C, 1 )
+      CALL BGEMMTR( 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 13
-      CALL BGEMMTR( 'U', 'T', 'T', 2, 0, ALPHA, A, 2, B, 2, BETA, C, 1 )
+      CALL BGEMMTR( 'U', 'T', 'T', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
 !
    80 IF( OK )THEN
@@ -2498,6 +2505,7 @@
       SUBROUTINE SMAKE( TYPE, UPLO, DIAG, M, N, A, NMAX, AA, LDA, RESET,&
      &                  TRANSL )
         USE LPF_BF16
+        USE LPF_TYPES
         USE LPF_BLAS_BF16
         IMPLICIT NONE
  !
@@ -2520,14 +2528,14 @@
       TYPE(BF16)               ROGUE
 !     .. Scalar Arguments ..
       TYPE(BF16)               TRANSL
-      INTEGER            LDA, M, N, NMAX
+      INTEGER(lpf_default_int_kind)            LDA, M, N, NMAX
       LOGICAL            RESET
       CHARACTER*1        DIAG, UPLO
       CHARACTER*2        TYPE
 !     .. Array Arguments ..
       TYPE(BF16)               A( NMAX, * ), AA( * )
 !     .. Local Scalars ..
-      INTEGER            I, IBEG, IEND, J
+      INTEGER(lpf_default_int_kind)            I, IBEG, IEND, J
       LOGICAL            GEN, LOWER, SYM, TRI, UNIT, UPPER
 !     .. External Functions ..
       TYPE(BF16)               SBEG
@@ -2617,6 +2625,7 @@
      &                  BETA, C, LDC, CT, G, CC, LDCC, EPS, ERR, FATAL, &
      &                  NOUT, MV )
         USE LPF_BF16
+        USE LPF_TYPES
         USE LPF_BLAS_BF16
         IMPLICIT NONE
  !
@@ -2634,7 +2643,7 @@
       TYPE(BF16)               ZERO, ONE
 !     .. Scalar Arguments ..
       TYPE(BF16)               ALPHA, BETA, EPS, ERR
-      INTEGER            KK, LDA, LDB, LDC, LDCC, M, N, NOUT
+      INTEGER(lpf_default_int_kind)            KK, LDA, LDB, LDC, LDCC, M, N, NOUT
       LOGICAL            FATAL, MV
       CHARACTER*1        TRANSA, TRANSB
 !     .. Array Arguments ..
@@ -2642,7 +2651,7 @@
      &                   CC( LDCC, * ), CT( * ), G( * )
 !     .. Local Scalars ..
       TYPE(BF16)               ERRI
-      INTEGER            I, J, K
+      INTEGER(lpf_default_int_kind)            I, J, K
       LOGICAL            TRANA, TRANB
 !     .. Executable Statements ..
 
@@ -2740,6 +2749,7 @@
       END
       LOGICAL FUNCTION LSE( RI, RJ, LR )
         USE LPF_BF16
+        USE LPF_TYPES
         USE lpf_blas_bf16
         IMPLICIT NONE
 !
@@ -2754,11 +2764,11 @@
 !     Sven Hammarling, Numerical Algorithms Group Ltd.
 !
 !     .. Scalar Arguments ..
-      INTEGER            LR
+      INTEGER(lpf_default_int_kind)            LR
 !     .. Array Arguments ..
       TYPE(BF16)               RI( * ), RJ( * )
 !     .. Local Scalars ..
-      INTEGER            I
+      INTEGER(lpf_default_int_kind)            I
 !     .. Executable Statements ..
       DO 10 I = 1, LR
          IF( RI( I ).NE.RJ( I ) )                                       &
@@ -2775,6 +2785,7 @@
       END
       LOGICAL FUNCTION LSERES( TYPE, UPLO, M, N, AA, AS, LDA )
         USE LPF_BF16
+        USE LPF_TYPES
         USE lpf_blas_bf16
         IMPLICIT NONE
 !
@@ -2792,13 +2803,13 @@
 !     Sven Hammarling, Numerical Algorithms Group Ltd.
 !
 !     .. Scalar Arguments ..
-      INTEGER            LDA, M, N
+      INTEGER(lpf_default_int_kind)            LDA, M, N
       CHARACTER*1        UPLO
       CHARACTER*2        TYPE
 !     .. Array Arguments ..
       TYPE(BF16)               AA( LDA, * ), AS( LDA, * )
 !     .. Local Scalars ..
-      INTEGER            I, IBEG, IEND, J
+      INTEGER(lpf_default_int_kind)            I, IBEG, IEND, J
       LOGICAL            UPPER
 !     .. Executable Statements ..
       UPPER = UPLO.EQ.'U'
@@ -2840,6 +2851,7 @@
       END
       TYPE(BF16) FUNCTION SBEG( RESET )
         USE LPF_BF16
+        USE LPF_TYPES
         USE lpf_blas_bf16
         IMPLICIT NONE
 !
@@ -2857,7 +2869,7 @@
 !     .. Scalar Arguments ..
       LOGICAL            RESET
 !     .. Local Scalars ..
-      INTEGER            I, IC, MI
+      INTEGER(lpf_default_int_kind)            I, IC, MI
 !     .. Save statement ..
       SAVE               I, IC, MI
 !     .. Executable Statements ..
@@ -2890,6 +2902,7 @@
       END
       TYPE(BF16) FUNCTION SDIFF( X, Y )
         USE LPF_BF16
+        USE LPF_TYPES
         USE lpf_blas_bf16
         IMPLICIT NONE
 !
@@ -2913,6 +2926,7 @@
       END
       SUBROUTINE CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
         USE LPF_BF16
+        USE LPF_TYPES
         USE LPF_BLAS_BF16
         IMPLICIT NONE
           !
@@ -2927,7 +2941,7 @@
 !     Sven Hammarling, Numerical Algorithms Group Ltd.
 !
 !     .. Scalar Arguments ..
-      INTEGER            INFOT, NOUT
+      INTEGER(lpf_default_int_kind)            INFOT, NOUT
       LOGICAL            LERR, OK
       CHARACTER*7        SRNAMT
 !     .. Executable Statements ..
@@ -2946,6 +2960,7 @@
       END
       SUBROUTINE LOCAL_XERBLA( SRNAME, INFO )
         USE LPF_BF16
+        USE LPF_TYPES
         USE LPF_BLAS_BF16
         IMPLICIT NONE
 !
@@ -2967,10 +2982,10 @@
 !     Sven Hammarling, Numerical Algorithms Group Ltd.
 !
 !     .. Scalar Arguments ..
-      INTEGER            INFO
+      INTEGER(lpf_default_int_kind)            INFO
       CHARACTER*(*)      SRNAME
 !     .. Scalars in Common ..
-      INTEGER            INFOT, NOUT
+      INTEGER(lpf_default_int_kind)            INFOT, NOUT
       LOGICAL            LERR, OK
       CHARACTER*7        SRNAMT
 !     .. Common blocks ..
@@ -3008,6 +3023,7 @@
      &                  FATAL, NIDIM, IDIM, NALF, ALF, NBET, BET, NMAX, &
      &                  A, AA, AS, B, BB, BS, C, CC, CS, CT, G )
         USE LPF_BF16
+        USE LPF_TYPES
         USE LPF_BLAS_BF16
         IMPLICIT NONE
  !
@@ -3022,7 +3038,7 @@
       TYPE(BF16)               ZERO
 !     .. Scalar Arguments ..
       TYPE(BF16)               EPS, THRESH
-      INTEGER            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
+      INTEGER(lpf_default_int_kind)            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*7        SNAME
 !     .. Array Arguments ..
@@ -3031,10 +3047,10 @@
      &                   BB( NMAX*NMAX ), BET( NBET ), BS( NMAX*NMAX ), &
      &                   C( NMAX, NMAX ), CC( NMAX*NMAX ),              &
      &                   CS( NMAX*NMAX ), CT( NMAX ), G( NMAX )
-      INTEGER            IDIM( NIDIM )
+      INTEGER(lpf_default_int_kind)            IDIM( NIDIM )
 !     .. Local Scalars ..
       TYPE(BF16)               ALPHA, ALS, BETA, BLS, ERR, ERRMAX
-      INTEGER            I, IA, IB, ICA, ICB, IK, IN, K, KS, LAA,       &
+      INTEGER(lpf_default_int_kind)            I, IA, IB, ICA, ICB, IK, IN, K, KS, LAA,       &
      &                   LBB, LCC, LDA, LDAS, LDB, LDBS, LDC, LDCS,     &
      &                   MA, MB, N, NA, NARGS, NB, NC, NS, IS
       LOGICAL            NULL, RESET, SAME, TRANA, TRANB
@@ -3049,7 +3065,7 @@
 !     .. External Subroutines ..
       EXTERNAL           SMAKE, SMMTCH
 !     .. Scalars in Common ..
-      INTEGER            INFOT, NOUTC
+      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -3295,6 +3311,7 @@
      &                  B, LDB, BETA, C, LDC, CT, G, CC, LDCC, EPS, ERR,&
      &                  FATAL, NOUT, MV )
         USE LPF_BF16
+        USE LPF_TYPES
         USE lpf_blas_bf16
         IMPLICIT NONE
 !
@@ -3310,7 +3327,7 @@
       TYPE(BF16)               ZERO, ONE
 !     .. Scalar Arguments ..
       TYPE(BF16)               ALPHA, BETA, EPS, ERR
-      INTEGER            KK, LDA, LDB, LDC, LDCC, N, NOUT
+      INTEGER(lpf_default_int_kind)            KK, LDA, LDB, LDC, LDCC, N, NOUT
       LOGICAL            FATAL, MV
       CHARACTER*1        UPLO, TRANSA, TRANSB
 !     .. Array Arguments ..
@@ -3318,7 +3335,7 @@
      &                   CC( LDCC, * ), CT( * ), G( * )
 !     .. Local Scalars ..
       TYPE(BF16)               ERRI
-      INTEGER            I, J, K, ISTART, ISTOP
+      INTEGER(lpf_default_int_kind)            I, J, K, ISTART, ISTOP
       LOGICAL            TRANA, TRANB, UPPER
 !     .. Executable Statements ..
 

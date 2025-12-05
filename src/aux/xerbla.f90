@@ -1,5 +1,6 @@
 module lpf_xerbla
     use iso_c_binding
+    use lpf_types
     implicit none
 
     interface
@@ -11,13 +12,15 @@ module lpf_xerbla
             use, intrinsic :: iso_c_binding
             type(c_funptr), value, intent(in) :: func
         end subroutine
+
     end interface
 
     abstract interface
         subroutine xerbla_function(msg, info)
             use, intrinsic :: iso_c_binding
+            import :: lpf_default_int_kind
             character(len=:), pointer, intent(in) :: msg
-            integer, intent(in) :: info
+            integer(lpf_default_int_kind), intent(in) :: info
         end subroutine
     end interface
 contains

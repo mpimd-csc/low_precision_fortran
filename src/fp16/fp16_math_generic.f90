@@ -298,7 +298,7 @@ contains
 
     module elemental function precision_fp16(x) result(out)
         type(FP16), intent(in) :: x
-        integer :: out
+        integer(lpf_default_int_kind) :: out
 
         integer(c_int) :: outt
         ! dummy to avoid compiler warnings
@@ -307,12 +307,12 @@ contains
         end if
 
         call helper_precision_fp16(outt)
-        out = INT(outt)
+        out = INT(outt, kind = lpf_default_int_kind)
     end function precision_fp16
 
     module elemental function range_fp16(x) result(out)
         type(FP16), intent(in) :: x
-        integer :: out
+        integer(lpf_default_int_kind) :: out
         integer(c_int) :: lout
 
         ! dummy to avoid compiler warnings
@@ -323,14 +323,24 @@ contains
         out = lout
     end function range_fp16
 
-    module elemental function scale_fp16(x, s) result(out)
+    module elemental function scale_fp16_32(x, s) result(out)
         type(FP16), intent(in) :: x
-        integer, intent(in) :: s
+        integer(lpf_int32_kind), intent(in) :: s
         type(FP16) :: out
         integer(c_int) :: tmp
         tmp  = int(s, kind = c_int )
         call helper_scale_fp16(out%value, x%value, tmp)
-    end function scale_fp16
+    end function scale_fp16_32
+
+    module elemental function scale_fp16_64(x, s) result(out)
+        type(FP16), intent(in) :: x
+        integer(lpf_int64_kind), intent(in) :: s
+        type(FP16) :: out
+        integer(c_int) :: tmp
+        tmp  = int(s, kind = c_int )
+        call helper_scale_fp16(out%value, x%value, tmp)
+    end function scale_fp16_64
+
 
     module elemental function sign_fp16(x, y) result(out)
         type(FP16), intent(in) :: x

@@ -1,18 +1,21 @@
 submodule (lpf_blas_fp16) lpf_blas_fp16_scale_diag
     use lpf_fp16
     use iso_fortran_env, only: real32, real64
+    use lpf_types
     implicit none
 
 contains
 
     module subroutine scale_diag_fp16(m, n, a, lda, dl, dr, info)
-        integer, intent(in) :: m, n, lda
-        integer, intent(inout) :: info
+        integer(lpf_default_int_kind), intent(in) :: m, n, lda
+        integer(lpf_default_int_kind), intent(inout) :: info
         type(fp16), intent(inout), dimension(lda, *) :: a
         type(fp16), intent(out), dimension(*) :: dl, dr
 
-        integer :: k
+        integer(lpf_default_int_kind) :: k, l
+        type(fp16) :: max_value, value
 
+        external :: lpf_blas_xerbla
         ! Check arguments
         info = 0
         if ( m .lt. 0 ) then
@@ -34,12 +37,26 @@ contains
         end if
 
         do k = 1, m
-            dl(k) = FP16(1.0)/maxval(abs(a(k,1:n)))
+            max_value = abs(a(k,1))
+            do l = 1, n
+                value = abs(a(k,l))
+                if (value .gt. max_value) then
+                    max_value = value
+                end if
+            end do
+            dl(k) = FP16(1.0)/max_value
             a(k,1:n) = a(k,1:n)  * dl(k)
         end do
 
         do k = 1, n
-            dr(k) = FP16(1.0)/maxval(abs(a(1:m,k)))
+            max_value = abs(a(1, k))
+            do l = 1, m
+                value = abs(a(l, k))
+                if (value .gt. max_value) then
+                    max_value = value
+                end if
+            end do
+            dr(k) = FP16(1.0)/max_value
             a(1:m,k) = a(1:m,k) * dr(k)
         end do
     end subroutine

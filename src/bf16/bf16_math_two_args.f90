@@ -18,7 +18,7 @@
 !  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
 
-submodule (lpf_bf16) bf16_math_two_args
+submodule (lpf_bf16) lpf_bf16_math_two_args
     use iso_c_binding
     use iso_fortran_env, only: real32, real64
     implicit none
@@ -78,4 +78,4 @@ contains
 
             call helper_bf16_hypot(out%value, in1%value, in2%value)
     end function
-end submodule bf16_math_two_args
+end submodule

@@ -100,6 +100,7 @@
 !  =====================================================================
       PROGRAM HBLAT2
         USE LPF_BF16
+        USE LPF_TYPES, dik => lpf_default_int_kind
         USE LPF_XERBLA
         USE LPF_BLAS_BF16
         IMPLICIT NONE
@@ -113,20 +114,20 @@
 !  =====================================================================
 !
 !     .. Parameters ..
-      INTEGER            NIN
+      INTEGER(lpf_default_int_kind)            NIN
       PARAMETER          ( NIN = 5 )
-      INTEGER            NSUBS
+      INTEGER(lpf_default_int_kind)            NSUBS
       PARAMETER          ( NSUBS = 16 )
       TYPE(BF16)         ZERO, ONE
-      INTEGER            NMAX, INCMAX
+      INTEGER(lpf_default_int_kind)            NMAX, INCMAX
       PARAMETER          ( NMAX = 32, INCMAX = 2 )
-      INTEGER            NINMAX, NIDMAX, NKBMAX, NALMAX, NBEMAX
+      INTEGER(lpf_default_int_kind)            NINMAX, NIDMAX, NKBMAX, NALMAX, NBEMAX
       PARAMETER          ( NINMAX = 7, NIDMAX = 9, NKBMAX = 7,          &
      &                   NALMAX = 7, NBEMAX = 7 )
 !     .. Local Scalars ..
       TYPE(BF16)               EPS, ERR, THRESH
       REAL               THRESHR
-      INTEGER            I, ISNUM, J, N, NALF, NBET, NIDIM, NINC, NKB,  &
+      INTEGER(lpf_default_int_kind)            I, ISNUM, J, N, NALF, NBET, NIDIM, NINC, NKB,  &
      &                   NOUT, NTRA
       LOGICAL            FATAL, LTESTT, REWI, SAME, SFATAL, TRACE,      &
      &                   TSTERR
@@ -140,7 +141,7 @@
      &                   XX( NMAX*INCMAX ), Y( NMAX ),                  &
      &                   YS( NMAX*INCMAX ), YT( NMAX ),                 &
      &                   YY( NMAX*INCMAX ), Z( 2*NMAX )
-      INTEGER            IDIM( NIDMAX ), INC( NINMAX ), KB( NKBMAX )
+      INTEGER(lpf_default_int_kind)            IDIM( NIDMAX ), INC( NINMAX ), KB( NKBMAX )
       LOGICAL            LTEST( NSUBS )
       CHARACTER*6        SNAMES( NSUBS )
 !     .. External Functions ..
@@ -152,7 +153,7 @@
      &                   HCHKE, HMVCH
       EXTERNAL           LOCAL_XERBLA
 !     .. Scalars in Common ..
-      INTEGER            INFOT, NOUTC
+      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
       LOGICAL            LERR, OK
       CHARACTER*6        SRNAMT
 !     .. Common blocks ..
@@ -307,7 +308,7 @@
 !     YY holds the exact result. On exit from HMVCH YT holds
 !     the result computed by HMVCH.
       TRANS = 'N'
-      CALL HMVCH( TRANS, N, N, ONE, A, NMAX, X, 1, ZERO, Y, 1, YT, G,   &
+      CALL HMVCH( TRANS, N, N, ONE, A, NMAX, X, 1_dik, ZERO, Y, 1_dik, YT, G,   &
      &            YY, EPS, ERR, FATAL, NOUT, .TRUE. )
       SAME = LSE( YY, YT, N )
       IF( .NOT.SAME.OR.ERR.NE.ZERO )THEN
@@ -315,7 +316,7 @@
          STOP 1
       END IF
       TRANS = 'T'
-      CALL HMVCH( TRANS, N, N, ONE, A, NMAX, X, -1, ZERO, Y, -1, YT, G, &
+      CALL HMVCH( TRANS, N, N, ONE, A, NMAX, X, -1_dik, ZERO, Y, -1_dik, YT, G, &
      &            YY, EPS, ERR, FATAL, NOUT, .TRUE. )
       SAME = LSE( YY, YT, N )
       IF( .NOT.SAME.OR.ERR.NE.ZERO )THEN
@@ -441,6 +442,7 @@
      &                  BET, NINC, INC, NMAX, INCMAX, A, AA, AS, X, XX, &
      &                  XS, Y, YY, YS, YT, G )
         USE LPF_BF16
+        USE LPF_TYPES, dik=>lpf_default_int_kind
         USE LPF_BLAS_BF16
 
  !
@@ -456,7 +458,7 @@
       TYPE(BF16)  ::     ZERO, HALF
 !     .. Scalar Arguments ..
       TYPE(BF16) ::      EPS, THRESH
-      INTEGER            INCMAX, NALF, NBET, NIDIM, NINC, NKB, NMAX,    &
+      INTEGER(lpf_default_int_kind)            INCMAX, NALF, NBET, NIDIM, NINC, NKB, NMAX,    &
      &                   NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*6        SNAME
@@ -467,10 +469,10 @@
      &                   XX( NMAX*INCMAX ), Y( NMAX ),                  &
      &                   YS( NMAX*INCMAX ), YT( NMAX ),                 &
      &                   YY( NMAX*INCMAX )
-      INTEGER            IDIM( NIDIM ), INC( NINC ), KB( NKB )
+      INTEGER(lpf_default_int_kind)            IDIM( NIDIM ), INC( NINC ), KB( NKB )
 !     .. Local Scalars ..
       TYPE(BF16) ::      ALPHA, ALS, BETA, BLS, ERR, ERRMAX, TRANSL
-      INTEGER            I, IA, IB, IC, IKU, IM, IN, INCX, INCXS, INCY, &
+      INTEGER(lpf_default_int_kind)            I, IA, IB, IC, IKU, IM, IN, INCX, INCXS, INCY, &
      &                   INCYS, IX, IY, KL, KLS, KU, KUS, LAA, LDA,     &
      &                   LDAS, LX, LY, M, ML, MS, N, NARGS, NC, ND, NK, &
      &                   NL, NS
@@ -485,7 +487,7 @@
 !     .. External Subroutines ..
       EXTERNAL           HMAKE, HMVCH, SREGR1
 !     .. Scalars in Common ..
-      INTEGER            INFOT, NOUTC
+      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -570,8 +572,8 @@
 !                    Generate the vector X.
 !
                      TRANSL = HALF
-                     CALL HMAKE( 'GE', ' ', ' ', 1, NL, X, 1, XX,       &
-     &                           ABS( INCX ), 0, NL - 1, RESET, TRANSL )
+                     CALL HMAKE( 'GE', ' ', ' ', 1_dik, NL, X, 1_dik, XX,       &
+     &                           ABS( INCX ), 0_dik, NL - 1, RESET, TRANSL )
                      IF( NL.GT.1 )THEN
                         X( NL/2 ) = ZERO
                         XX( 1 + ABS( INCX )*( NL/2 - 1 ) ) = ZERO
@@ -590,8 +592,8 @@
 !                             Generate the vector Y.
 !
                               TRANSL = ZERO
-                              CALL HMAKE( 'GE', ' ', ' ', 1, ML, Y, 1,  &
-     &                                    YY, ABS( INCY ), 0, ML - 1,   &
+                              CALL HMAKE( 'GE', ' ', ' ', 1_dik, ML, Y, 1_dik,  &
+     &                                    YY, ABS( INCY ), 0_dik, ML - 1,   &
      &                                    RESET, TRANSL )
 !
                               NC = NC + 1
@@ -666,7 +668,7 @@
                                  IF( NULL )THEN
                                     ISAME( 10 ) = LSE( YS, YY, LY )
                                  ELSE
-                                    ISAME( 10 ) = LSERES( 'GE', ' ', 1, &
+                                    ISAME( 10 ) = LSERES( 'GE', ' ', 1_dik, &
      &                                            ML, YS, YY,           &
      &                                            ABS( INCY ) )
                                  END IF
@@ -683,7 +685,7 @@
                                  IF( NULL )THEN
                                     ISAME( 12 ) = LSE( YS, YY, LY )
                                  ELSE
-                                    ISAME( 12 ) = LSERES( 'GE', ' ', 1, &
+                                    ISAME( 12 ) = LSERES( 'GE', ' ', 1_dik, &
      &                                            ML, YS, YY,           &
      &                                            ABS( INCY ) )
                                  END IF
@@ -814,6 +816,7 @@
      &                  BET, NINC, INC, NMAX, INCMAX, A, AA, AS, X, XX, &
      &                  XS, Y, YY, YS, YT, G )
         USE LPF_BF16
+        USE LPF_TYPES, dik => lpf_default_int_kind
         USE LPF_BLAS_BF16
 
 !
@@ -829,7 +832,7 @@
       TYPE(BF16)         ZERO, HALF
 !     .. Scalar Arguments ..
       TYPE(BF16)               EPS, THRESH
-      INTEGER            INCMAX, NALF, NBET, NIDIM, NINC, NKB, NMAX,    &
+      INTEGER(lpf_default_int_kind)            INCMAX, NALF, NBET, NIDIM, NINC, NKB, NMAX,    &
      &                   NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*6        SNAME
@@ -840,10 +843,10 @@
      &                   XX( NMAX*INCMAX ), Y( NMAX ),                  &
      &                   YS( NMAX*INCMAX ), YT( NMAX ),                 &
      &                   YY( NMAX*INCMAX )
-      INTEGER            IDIM( NIDIM ), INC( NINC ), KB( NKB )
+      INTEGER(lpf_default_int_kind)            IDIM( NIDIM ), INC( NINC ), KB( NKB )
 !     .. Local Scalars ..
       TYPE(BF16)         ALPHA, ALS, BETA, BLS, ERR, ERRMAX, TRANSL
-      INTEGER            I, IA, IB, IC, IK, IN, INCX, INCXS, INCY,      &
+      INTEGER(lpf_default_int_kind)            I, IA, IB, IC, IK, IN, INCX, INCXS, INCY,      &
      &                   INCYS, IX, IY, K, KS, LAA, LDA, LDAS, LX, LY,  &
      &                   N, NARGS, NC, NK, NS
       LOGICAL            BANDED, FULL, NULL, PACKED, RESET, SAME
@@ -857,7 +860,7 @@
 !     .. External Subroutines ..
       EXTERNAL           HMAKE, HMVCH
 !     .. Scalars in Common ..
-      INTEGER            INFOT, NOUTC
+      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -931,8 +934,8 @@
 !                 Generate the vector X.
 !
                   TRANSL = HALF
-                  CALL HMAKE( 'GE', ' ', ' ', 1, N, X, 1, XX,           &
-     &                        ABS( INCX ), 0, N - 1, RESET, TRANSL )
+                  CALL HMAKE( 'GE', ' ', ' ', 1_dik, N, X, 1_dik, XX,           &
+     &                        ABS( INCX ), 0_dik, N - 1, RESET, TRANSL )
                   IF( N.GT.1 )THEN
                      X( N/2 ) = ZERO
                      XX( 1 + ABS( INCX )*( N/2 - 1 ) ) = ZERO
@@ -951,8 +954,8 @@
 !                          Generate the vector Y.
 !
                            TRANSL = ZERO
-                           CALL HMAKE( 'GE', ' ', ' ', 1, N, Y, 1, YY,  &
-     &                                 ABS( INCY ), 0, N - 1, RESET,    &
+                           CALL HMAKE( 'GE', ' ', ' ', 1_dik, N, Y, 1_dik, YY,  &
+     &                                 ABS( INCY ), 0_dik, N - 1, RESET,    &
      &                                 TRANSL )
 !
                            NC = NC + 1
@@ -1029,7 +1032,7 @@
                               IF( NULL )THEN
                                  ISAME( 9 ) = LSE( YS, YY, LY )
                               ELSE
-                                 ISAME( 9 ) = LSERES( 'GE', ' ', 1, N,  &
+                                 ISAME( 9 ) = LSERES( 'GE', ' ', 1_dik, N,  &
      &                                        YS, YY, ABS( INCY ) )
                               END IF
                               ISAME( 10 ) = INCYS.EQ.INCY
@@ -1044,7 +1047,7 @@
                               IF( NULL )THEN
                                  ISAME( 10 ) = LSE( YS, YY, LY )
                               ELSE
-                                 ISAME( 10 ) = LSERES( 'GE', ' ', 1, N, &
+                                 ISAME( 10 ) = LSERES( 'GE', ' ', 1_dik, N, &
      &                                         YS, YY, ABS( INCY ) )
                               END IF
                               ISAME( 11 ) = INCYS.EQ.INCY
@@ -1057,7 +1060,7 @@
                               IF( NULL )THEN
                                  ISAME( 8 ) = LSE( YS, YY, LY )
                               ELSE
-                                 ISAME( 8 ) = LSERES( 'GE', ' ', 1, N,  &
+                                 ISAME( 8 ) = LSERES( 'GE', ' ', 1_dik, N,  &
      &                                        YS, YY, ABS( INCY ) )
                               END IF
                               ISAME( 9 ) = INCYS.EQ.INCY
@@ -1159,6 +1162,7 @@
      &                  FATAL, NIDIM, IDIM, NKB, KB, NINC, INC, NMAX,   &
      &                  INCMAX, A, AA, AS, X, XX, XS, XT, G, Z )
         USE LPF_BF16
+        USE LPF_TYPES, dik => lpf_default_int_kind
         USE LPF_BLAS_BF16
 
 !
@@ -1174,7 +1178,7 @@
       TYPE(BF16)               ZERO, HALF, ONE
 !     .. Scalar Arguments ..
       TYPE(BF16)               EPS, THRESH
-      INTEGER            INCMAX, NIDIM, NINC, NKB, NMAX, NOUT, NTRA
+      INTEGER(lpf_default_int_kind)            INCMAX, NIDIM, NINC, NKB, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*6        SNAME
 !     .. Array Arguments ..
@@ -1182,10 +1186,10 @@
      &                   AS( NMAX*NMAX ), G( NMAX ), X( NMAX ),         &
      &                   XS( NMAX*INCMAX ), XT( NMAX ),                 &
      &                   XX( NMAX*INCMAX ), Z( NMAX )
-      INTEGER            IDIM( NIDIM ), INC( NINC ), KB( NKB )
+      INTEGER(lpf_default_int_kind)            IDIM( NIDIM ), INC( NINC ), KB( NKB )
 !     .. Local Scalars ..
       TYPE(BF16)               ERR, ERRMAX, TRANSL
-      INTEGER            I, ICD, ICT, ICU, IK, IN, INCX, INCXS, IX, K,  &
+      INTEGER(lpf_default_int_kind)            I, ICD, ICT, ICU, IK, IN, INCX, INCXS, IX, K,  &
      &                   KS, LAA, LDA, LDAS, LX, N, NARGS, NC, NK, NS
       LOGICAL            BANDED, FULL, NULL, PACKED, RESET, SAME
       CHARACTER*1        DIAG, DIAGS, TRANS, TRANSS, UPLO, UPLOS
@@ -1199,7 +1203,7 @@
 !     .. External Subroutines ..
       EXTERNAL           HMAKE, HMVCH
 !     .. Scalars in Common ..
-      INTEGER            INFOT, NOUTC
+      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -1285,8 +1289,8 @@
 !                       Generate the vector X.
 !
                         TRANSL = HALF
-                        CALL HMAKE( 'GE', ' ', ' ', 1, N, X, 1, XX,     &
-     &                              ABS( INCX ), 0, N - 1, RESET,       &
+                        CALL HMAKE( 'GE', ' ', ' ', 1_dik, N, X, 1_dik, XX,     &
+     &                              ABS( INCX ), 0_dik, N - 1, RESET,       &
      &                              TRANSL )
                         IF( N.GT.1 )THEN
                            X( N/2 ) = ZERO
@@ -1387,7 +1391,7 @@
                            IF( NULL )THEN
                               ISAME( 7 ) = LSE( XS, XX, LX )
                            ELSE
-                              ISAME( 7 ) = LSERES( 'GE', ' ', 1, N, XS, &
+                              ISAME( 7 ) = LSERES( 'GE', ' ', 1_dik, N, XS, &
      &                                     XX, ABS( INCX ) )
                            END IF
                            ISAME( 8 ) = INCXS.EQ.INCX
@@ -1398,7 +1402,7 @@
                            IF( NULL )THEN
                               ISAME( 8 ) = LSE( XS, XX, LX )
                            ELSE
-                              ISAME( 8 ) = LSERES( 'GE', ' ', 1, N, XS, &
+                              ISAME( 8 ) = LSERES( 'GE', ' ', 1_dik, N, XS, &
      &                                     XX, ABS( INCX ) )
                            END IF
                            ISAME( 9 ) = INCXS.EQ.INCX
@@ -1407,7 +1411,7 @@
                            IF( NULL )THEN
                               ISAME( 6 ) = LSE( XS, XX, LX )
                            ELSE
-                              ISAME( 6 ) = LSERES( 'GE', ' ', 1, N, XS, &
+                              ISAME( 6 ) = LSERES( 'GE', ' ', 1_dik, N, XS, &
      &                                     XX, ABS( INCX ) )
                            END IF
                            ISAME( 7 ) = INCXS.EQ.INCX
@@ -1521,6 +1525,7 @@
      &                  INCMAX, A, AA, AS, X, XX, XS, Y, YY, YS, YT, G, &
      &                  Z )
         USE LPF_BF16
+        USE LPF_TYPES, dik => lpf_default_int_kind
         USE LPF_BLAS_BF16
 
 !
@@ -1536,7 +1541,7 @@
       TYPE(BF16)         ZERO, HALF, ONE
 !     .. Scalar Arguments ..
       TYPE(BF16)         EPS, THRESH
-      INTEGER            INCMAX, NALF, NIDIM, NINC, NMAX, NOUT, NTRA
+      INTEGER(lpf_default_int_kind)            INCMAX, NALF, NIDIM, NINC, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*6        SNAME
 !     .. Array Arguments ..
@@ -1545,10 +1550,10 @@
      &                   XS( NMAX*INCMAX ), XX( NMAX*INCMAX ),          &
      &                   Y( NMAX ), YS( NMAX*INCMAX ), YT( NMAX ),      &
      &                   YY( NMAX*INCMAX ), Z( NMAX )
-      INTEGER            IDIM( NIDIM ), INC( NINC )
+      INTEGER(lpf_default_int_kind)            IDIM( NIDIM ), INC( NINC )
 !     .. Local Scalars ..
       TYPE(BF16)         ALPHA, ALS, ERR, ERRMAX, TRANSL
-      INTEGER            I, IA, IM, IN, INCX, INCXS, INCY, INCYS, IX,   &
+      INTEGER(lpf_default_int_kind)            I, IA, IM, IN, INCX, INCXS, INCY, INCYS, IX,   &
      &                   IY, J, LAA, LDA, LDAS, LX, LY, M, MS, N, NARGS,&
      &                   NC, ND, NS
       LOGICAL            NULL, RESET, SAME
@@ -1561,7 +1566,7 @@
 !     .. External Subroutines ..
       EXTERNAL           HMAKE, HMVCH
 !     .. Scalars in Common ..
-      INTEGER            INFOT, NOUTC
+      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -1605,8 +1610,8 @@
 !              Generate the vector X.
 !
                TRANSL = HALF
-               CALL HMAKE( 'GE', ' ', ' ', 1, M, X, 1, XX, ABS( INCX ), &
-     &                     0, M - 1, RESET, TRANSL )
+               CALL HMAKE( 'GE', ' ', ' ', 1_dik, M, X, 1_dik, XX, ABS( INCX ), &
+     &                     0_dik, M - 1, RESET, TRANSL )
                IF( M.GT.1 )THEN
                   X( M/2 ) = ZERO
                   XX( 1 + ABS( INCX )*( M/2 - 1 ) ) = ZERO
@@ -1619,8 +1624,8 @@
 !                 Generate the vector Y.
 !
                   TRANSL = ZERO
-                  CALL HMAKE( 'GE', ' ', ' ', 1, N, Y, 1, YY,           &
-     &                        ABS( INCY ), 0, N - 1, RESET, TRANSL )
+                  CALL HMAKE( 'GE', ' ', ' ', 1_dik, N, Y, 1_dik, YY,           &
+     &                        ABS( INCY ), 0_dik, N - 1, RESET, TRANSL )
                   IF( N.GT.1 )THEN
                      Y( N/2 ) = ZERO
                      YY( 1 + ABS( INCY )*( N/2 - 1 ) ) = ZERO
@@ -1722,8 +1727,8 @@
                            ELSE
                               W( 1 ) = Y( N - J + 1 )
                            END IF
-                           CALL HMVCH( 'N', M, 1, ALPHA, Z, NMAX, W, 1, &
-     &                                 ONE, A( 1, J ), 1, YT, G,        &
+                           CALL HMVCH( 'N', M, 1_dik, ALPHA, Z, NMAX, W, 1_dik, &
+     &                                 ONE, A( 1, J ), 1_dik, YT, G,        &
      &                                 AA( 1 + ( J - 1 )*LDA ), EPS,    &
      &                                 ERR, FATAL, NOUT, .TRUE. )
                            ERRMAX = MAX( ERRMAX, ERR )
@@ -1787,6 +1792,7 @@
      &                  INCMAX, A, AA, AS, X, XX, XS, Y, YY, YS, YT, G, &
      &                  Z )
         USE LPF_BF16
+        USE LPF_TYPES, dik => lpf_default_int_kind
         USE LPF_BLAS_BF16
 
 !
@@ -1802,7 +1808,7 @@
       TYPE(BF16)         ZERO, HALF, ONE
 !     .. Scalar Arguments ..
       TYPE(BF16)         EPS, THRESH
-      INTEGER            INCMAX, NALF, NIDIM, NINC, NMAX, NOUT, NTRA
+      INTEGER(lpf_default_int_kind)            INCMAX, NALF, NIDIM, NINC, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*6        SNAME
 !     .. Array Arguments ..
@@ -1811,10 +1817,10 @@
      &                   XS( NMAX*INCMAX ), XX( NMAX*INCMAX ),          &
      &                   Y( NMAX ), YS( NMAX*INCMAX ), YT( NMAX ),      &
      &                   YY( NMAX*INCMAX ), Z( NMAX )
-      INTEGER            IDIM( NIDIM ), INC( NINC )
+      INTEGER(lpf_default_int_kind)            IDIM( NIDIM ), INC( NINC )
 !     .. Local Scalars ..
       TYPE(BF16)         ALPHA, ALS, ERR, ERRMAX, TRANSL
-      INTEGER            I, IA, IC, IN, INCX, INCXS, IX, J, JA, JJ, LAA,&
+      INTEGER(lpf_default_int_kind)            I, IA, IC, IN, INCX, INCXS, IX, J, JA, JJ, LAA,&
      &                   LDA, LDAS, LJ, LX, N, NARGS, NC, NS
       LOGICAL            FULL, NULL, PACKED, RESET, SAME, UPPER
       CHARACTER*1        UPLO, UPLOS
@@ -1828,7 +1834,7 @@
 !     .. External Subroutines ..
       EXTERNAL           HMAKE, HMVCH
 !     .. Scalars in Common ..
-      INTEGER            INFOT, NOUTC
+      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -1879,8 +1885,8 @@
 !              Generate the vector X.
 !
                TRANSL = HALF
-               CALL HMAKE( 'GE', ' ', ' ', 1, N, X, 1, XX, ABS( INCX ), &
-     &                     0, N - 1, RESET, TRANSL )
+               CALL HMAKE( 'GE', ' ', ' ', 1_dik, N, X, 1_dik, XX, ABS( INCX ), &
+     &                     0_dik, N - 1, RESET, TRANSL )
                IF( N.GT.1 )THEN
                   X( N/2 ) = ZERO
                   XX( 1 + ABS( INCX )*( N/2 - 1 ) ) = ZERO
@@ -1991,8 +1997,8 @@
                            JJ = J
                            LJ = N - J + 1
                         END IF
-                        CALL HMVCH( 'N', LJ, 1, ALPHA, Z( JJ ), LJ, W,  &
-     &                              1, ONE, A( JJ, J ), 1, YT, G,       &
+                        CALL HMVCH( 'N', LJ, 1_dik, ALPHA, Z( JJ ), LJ, W,  &
+     &                              1_dik, ONE, A( JJ, J ), 1_dik, YT, G,       &
      &                              AA( JA ), EPS, ERR, FATAL, NOUT,    &
      &                              .TRUE. )
                         IF( FULL )THEN
@@ -2070,6 +2076,7 @@
      &                  INCMAX, A, AA, AS, X, XX, XS, Y, YY, YS, YT, G, &
      &                  Z )
         USE LPF_BF16
+        USE LPF_TYPES, dik => lpf_default_int_kind
         USE LPF_BLAS_BF16
 
 !
@@ -2085,7 +2092,7 @@
       TYPE(BF16)         ZERO, HALF, ONE
 !     .. Scalar Arguments ..
       TYPE(BF16)               EPS, THRESH
-      INTEGER            INCMAX, NALF, NIDIM, NINC, NMAX, NOUT, NTRA
+      INTEGER(lpf_default_int_kind)            INCMAX, NALF, NIDIM, NINC, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*6        SNAME
 !     .. Array Arguments ..
@@ -2094,10 +2101,10 @@
      &                   XS( NMAX*INCMAX ), XX( NMAX*INCMAX ),          &
      &                   Y( NMAX ), YS( NMAX*INCMAX ), YT( NMAX ),      &
      &                   YY( NMAX*INCMAX ), Z( NMAX, 2 )
-      INTEGER            IDIM( NIDIM ), INC( NINC )
+      INTEGER(lpf_default_int_kind)            IDIM( NIDIM ), INC( NINC )
 !     .. Local Scalars ..
       TYPE(BF16)               ALPHA, ALS, ERR, ERRMAX, TRANSL
-      INTEGER            I, IA, IC, IN, INCX, INCXS, INCY, INCYS, IX,   &
+      INTEGER(lpf_default_int_kind)            I, IA, IC, IN, INCX, INCXS, INCY, INCYS, IX,   &
      &                   IY, J, JA, JJ, LAA, LDA, LDAS, LJ, LX, LY, N,  &
      &                   NARGS, NC, NS
       LOGICAL            FULL, NULL, PACKED, RESET, SAME, UPPER
@@ -2112,7 +2119,7 @@
 !     .. External Subroutines ..
       EXTERNAL           HMAKE, HMVCH
 !     .. Scalars in Common ..
-      INTEGER            INFOT, NOUTC
+      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -2163,8 +2170,8 @@
 !              Generate the vector X.
 !
                TRANSL = HALF
-               CALL HMAKE( 'GE', ' ', ' ', 1, N, X, 1, XX, ABS( INCX ), &
-     &                     0, N - 1, RESET, TRANSL )
+               CALL HMAKE( 'GE', ' ', ' ', 1_dik, N, X, 1_dik, XX, ABS( INCX ), &
+     &                     0_dik, N - 1, RESET, TRANSL )
                IF( N.GT.1 )THEN
                   X( N/2 ) = ZERO
                   XX( 1 + ABS( INCX )*( N/2 - 1 ) ) = ZERO
@@ -2177,8 +2184,8 @@
 !                 Generate the vector Y.
 !
                   TRANSL = ZERO
-                  CALL HMAKE( 'GE', ' ', ' ', 1, N, Y, 1, YY,           &
-     &                        ABS( INCY ), 0, N - 1, RESET, TRANSL )
+                  CALL HMAKE( 'GE', ' ', ' ', 1_dik, N, Y, 1_dik, YY,           &
+     &                        ABS( INCY ), 0_dik, N - 1, RESET, TRANSL )
                   IF( N.GT.1 )THEN
                      Y( N/2 ) = ZERO
                      YY( 1 + ABS( INCY )*( N/2 - 1 ) ) = ZERO
@@ -2308,8 +2315,8 @@
                               JJ = J
                               LJ = N - J + 1
                            END IF
-                           CALL HMVCH( 'N', LJ, 2, ALPHA, Z( JJ, 1 ),   &
-     &                                 NMAX, W, 1, ONE, A( JJ, J ), 1,  &
+                           CALL HMVCH( 'N', LJ, 2_dik, ALPHA, Z( JJ, 1 ),   &
+     &                                 NMAX, W, 1_dik, ONE, A( JJ, J ), 1_dik,  &
      &                                 YT, G, AA( JA ), EPS, ERR, FATAL,&
      &                                 NOUT, .TRUE. )
                            IF( FULL )THEN
@@ -2387,6 +2394,7 @@
       END
       SUBROUTINE HCHKE( ISNUM, SRNAMT, NOUT )
         USE LPF_BF16
+        USE LPF_TYPES, dik => lpf_default_int_kind
         USE LPF_BLAS_BF16
 
           !
@@ -2401,10 +2409,10 @@
 !     Jeremy Du Croz, NAG Central Office.
 !
 !     .. Scalar Arguments ..
-      INTEGER            ISNUM, NOUT
+      INTEGER(lpf_default_int_kind)            ISNUM, NOUT
       CHARACTER*6        SRNAMT
 !     .. Scalars in Common ..
-      INTEGER            INFOT, NOUTC
+      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Local Scalars ..
       TYPE(BF16) ::      ALPHA, BETA
@@ -2425,277 +2433,277 @@
      &        90, 100, 110, 120, 130, 140, 150,                         &
      &        160 )ISNUM
    10 INFOT = 1
-      CALL BGEMV( '/', 0, 0, ALPHA, A, 1, X, 1, BETA, Y, 1 )
+      CALL BGEMV( '/', 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BGEMV( 'N', -1, 0, ALPHA, A, 1, X, 1, BETA, Y, 1 )
+      CALL BGEMV( 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BGEMV( 'N', 0, -1, ALPHA, A, 1, X, 1, BETA, Y, 1 )
+      CALL BGEMV( 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BGEMV( 'N', 2, 0, ALPHA, A, 1, X, 1, BETA, Y, 1 )
+      CALL BGEMV( 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL BGEMV( 'N', 0, 0, ALPHA, A, 1, X, 0, BETA, Y, 1 )
+      CALL BGEMV( 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, X, 0_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL BGEMV( 'N', 0, 0, ALPHA, A, 1, X, 1, BETA, Y, 0 )
+      CALL BGEMV( 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
    20 INFOT = 1
-      CALL BGBMV( '/', 0, 0, 0, 0, ALPHA, A, 1, X, 1, BETA, Y, 1 )
+      CALL BGBMV( '/', 0_dik, 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BGBMV( 'N', -1, 0, 0, 0, ALPHA, A, 1, X, 1, BETA, Y, 1 )
+      CALL BGBMV( 'N', -1_dik, 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BGBMV( 'N', 0, -1, 0, 0, ALPHA, A, 1, X, 1, BETA, Y, 1 )
+      CALL BGBMV( 'N', 0_dik, -1_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BGBMV( 'N', 0, 0, -1, 0, ALPHA, A, 1, X, 1, BETA, Y, 1 )
+      CALL BGBMV( 'N', 0_dik, 0_dik, -1_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BGBMV( 'N', 2, 0, 0, -1, ALPHA, A, 1, X, 1, BETA, Y, 1 )
+      CALL BGBMV( 'N', 2_dik, 0_dik, 0_dik, -1_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL BGBMV( 'N', 0, 0, 1, 0, ALPHA, A, 1, X, 1, BETA, Y, 1 )
+      CALL BGBMV( 'N', 0_dik, 0_dik, 1_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL BGBMV( 'N', 0, 0, 0, 0, ALPHA, A, 1, X, 0, BETA, Y, 1 )
+      CALL BGBMV( 'N', 0_dik, 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, X, 0_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 13
-      CALL BGBMV( 'N', 0, 0, 0, 0, ALPHA, A, 1, X, 1, BETA, Y, 0 )
+      CALL BGBMV( 'N', 0_dik, 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
    30 INFOT = 1
-      CALL BSYMV( '/', 0, ALPHA, A, 1, X, 1, BETA, Y, 1 )
+      CALL BSYMV( '/', 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BSYMV( 'U', -1, ALPHA, A, 1, X, 1, BETA, Y, 1 )
+      CALL BSYMV( 'U', -1_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BSYMV( 'U', 2, ALPHA, A, 1, X, 1, BETA, Y, 1 )
+      CALL BSYMV( 'U', 2_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BSYMV( 'U', 0, ALPHA, A, 1, X, 0, BETA, Y, 1 )
+      CALL BSYMV( 'U', 0_dik, ALPHA, A, 1_dik, X, 0_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL BSYMV( 'U', 0, ALPHA, A, 1, X, 1, BETA, Y, 0 )
+      CALL BSYMV( 'U', 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
    40 INFOT = 1
-      CALL BSBMV( '/', 0, 0, ALPHA, A, 1, X, 1, BETA, Y, 1 )
+      CALL BSBMV( '/', 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BSBMV( 'U', -1, 0, ALPHA, A, 1, X, 1, BETA, Y, 1 )
+      CALL BSBMV( 'U', -1_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BSBMV( 'U', 0, -1, ALPHA, A, 1, X, 1, BETA, Y, 1 )
+      CALL BSBMV( 'U', 0_dik, -1_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BSBMV( 'U', 0, 1, ALPHA, A, 1, X, 1, BETA, Y, 1 )
+      CALL BSBMV( 'U', 0_dik, 1_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL BSBMV( 'U', 0, 0, ALPHA, A, 1, X, 0, BETA, Y, 1 )
+      CALL BSBMV( 'U', 0_dik, 0_dik, ALPHA, A, 1_dik, X, 0_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL BSBMV( 'U', 0, 0, ALPHA, A, 1, X, 1, BETA, Y, 0 )
+      CALL BSBMV( 'U', 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
    50 INFOT = 1
-      CALL BSPMV( '/', 0, ALPHA, A, X, 1, BETA, Y, 1 )
+      CALL BSPMV( '/', 0_dik, ALPHA, A, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BSPMV( 'U', -1, ALPHA, A, X, 1, BETA, Y, 1 )
+      CALL BSPMV( 'U', -1_dik, ALPHA, A, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BSPMV( 'U', 0, ALPHA, A, X, 0, BETA, Y, 1 )
+      CALL BSPMV( 'U', 0_dik, ALPHA, A, X, 0_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BSPMV( 'U', 0, ALPHA, A, X, 1, BETA, Y, 0 )
+      CALL BSPMV( 'U', 0_dik, ALPHA, A, X, 1_dik, BETA, Y, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
    60 INFOT = 1
-      CALL BTRMV( '/', 'N', 'N', 0, A, 1, X, 1 )
+      CALL BTRMV( '/', 'N', 'N', 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BTRMV( 'U', '/', 'N', 0, A, 1, X, 1 )
+      CALL BTRMV( 'U', '/', 'N', 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BTRMV( 'U', 'N', '/', 0, A, 1, X, 1 )
+      CALL BTRMV( 'U', 'N', '/', 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BTRMV( 'U', 'N', 'N', -1, A, 1, X, 1 )
+      CALL BTRMV( 'U', 'N', 'N', -1_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BTRMV( 'U', 'N', 'N', 2, A, 1, X, 1 )
+      CALL BTRMV( 'U', 'N', 'N', 2_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL BTRMV( 'U', 'N', 'N', 0, A, 1, X, 0 )
+      CALL BTRMV( 'U', 'N', 'N', 0_dik, A, 1_dik, X, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
    70 INFOT = 1
-      CALL BTBMV( '/', 'N', 'N', 0, 0, A, 1, X, 1 )
+      CALL BTBMV( '/', 'N', 'N', 0_dik, 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BTBMV( 'U', '/', 'N', 0, 0, A, 1, X, 1 )
+      CALL BTBMV( 'U', '/', 'N', 0_dik, 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BTBMV( 'U', 'N', '/', 0, 0, A, 1, X, 1 )
+      CALL BTBMV( 'U', 'N', '/', 0_dik, 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BTBMV( 'U', 'N', 'N', -1, 0, A, 1, X, 1 )
+      CALL BTBMV( 'U', 'N', 'N', -1_dik, 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BTBMV( 'U', 'N', 'N', 0, -1, A, 1, X, 1 )
+      CALL BTBMV( 'U', 'N', 'N', 0_dik, -1_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BTBMV( 'U', 'N', 'N', 0, 1, A, 1, X, 1 )
+      CALL BTBMV( 'U', 'N', 'N', 0_dik, 1_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BTBMV( 'U', 'N', 'N', 0, 0, A, 1, X, 0 )
+      CALL BTBMV( 'U', 'N', 'N', 0_dik, 0_dik, A, 1_dik, X, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
    80 INFOT = 1
-      CALL BTPMV( '/', 'N', 'N', 0, A, X, 1 )
+      CALL BTPMV( '/', 'N', 'N', 0_dik, A, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BTPMV( 'U', '/', 'N', 0, A, X, 1 )
+      CALL BTPMV( 'U', '/', 'N', 0_dik, A, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BTPMV( 'U', 'N', '/', 0, A, X, 1 )
+      CALL BTPMV( 'U', 'N', '/', 0_dik, A, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BTPMV( 'U', 'N', 'N', -1, A, X, 1 )
+      CALL BTPMV( 'U', 'N', 'N', -1_dik, A, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BTPMV( 'U', 'N', 'N', 0, A, X, 0 )
+      CALL BTPMV( 'U', 'N', 'N', 0_dik, A, X, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
    90 INFOT = 1
-      CALL BTRSV( '/', 'N', 'N', 0, A, 1, X, 1 )
+      CALL BTRSV( '/', 'N', 'N', 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BTRSV( 'U', '/', 'N', 0, A, 1, X, 1 )
+      CALL BTRSV( 'U', '/', 'N', 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BTRSV( 'U', 'N', '/', 0, A, 1, X, 1 )
+      CALL BTRSV( 'U', 'N', '/', 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BTRSV( 'U', 'N', 'N', -1, A, 1, X, 1 )
+      CALL BTRSV( 'U', 'N', 'N', -1_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL BTRSV( 'U', 'N', 'N', 2, A, 1, X, 1 )
+      CALL BTRSV( 'U', 'N', 'N', 2_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL BTRSV( 'U', 'N', 'N', 0, A, 1, X, 0 )
+      CALL BTRSV( 'U', 'N', 'N', 0_dik, A, 1_dik, X, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
   100 INFOT = 1
-      CALL BTBSV( '/', 'N', 'N', 0, 0, A, 1, X, 1 )
+      CALL BTBSV( '/', 'N', 'N', 0_dik, 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BTBSV( 'U', '/', 'N', 0, 0, A, 1, X, 1 )
+      CALL BTBSV( 'U', '/', 'N', 0_dik, 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BTBSV( 'U', 'N', '/', 0, 0, A, 1, X, 1 )
+      CALL BTBSV( 'U', 'N', '/', 0_dik, 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BTBSV( 'U', 'N', 'N', -1, 0, A, 1, X, 1 )
+      CALL BTBSV( 'U', 'N', 'N', -1_dik, 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BTBSV( 'U', 'N', 'N', 0, -1, A, 1, X, 1 )
+      CALL BTBSV( 'U', 'N', 'N', 0_dik, -1_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BTBSV( 'U', 'N', 'N', 0, 1, A, 1, X, 1 )
+      CALL BTBSV( 'U', 'N', 'N', 0_dik, 1_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BTBSV( 'U', 'N', 'N', 0, 0, A, 1, X, 0 )
+      CALL BTBSV( 'U', 'N', 'N', 0_dik, 0_dik, A, 1_dik, X, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
   110 INFOT = 1
-      CALL BTPSV( '/', 'N', 'N', 0, A, X, 1 )
+      CALL BTPSV( '/', 'N', 'N', 0_dik, A, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BTPSV( 'U', '/', 'N', 0, A, X, 1 )
+      CALL BTPSV( 'U', '/', 'N', 0_dik, A, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL BTPSV( 'U', 'N', '/', 0, A, X, 1 )
+      CALL BTPSV( 'U', 'N', '/', 0_dik, A, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL BTPSV( 'U', 'N', 'N', -1, A, X, 1 )
+      CALL BTPSV( 'U', 'N', 'N', -1_dik, A, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BTPSV( 'U', 'N', 'N', 0, A, X, 0 )
+      CALL BTPSV( 'U', 'N', 'N', 0_dik, A, X, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
   120 INFOT = 1
-      CALL BGER( -1, 0, ALPHA, X, 1, Y, 1, A, 1 )
+      CALL BGER( -1_dik, 0_dik, ALPHA, X, 1_dik, Y, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BGER( 0, -1, ALPHA, X, 1, Y, 1, A, 1 )
+      CALL BGER( 0_dik, -1_dik, ALPHA, X, 1_dik, Y, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BGER( 0, 0, ALPHA, X, 0, Y, 1, A, 1 )
+      CALL BGER( 0_dik, 0_dik, ALPHA, X, 0_dik, Y, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BGER( 0, 0, ALPHA, X, 1, Y, 0, A, 1 )
+      CALL BGER( 0_dik, 0_dik, ALPHA, X, 1_dik, Y, 0_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BGER( 2, 0, ALPHA, X, 1, Y, 1, A, 1 )
+      CALL BGER( 2_dik, 0_dik, ALPHA, X, 1_dik, Y, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
   130 INFOT = 1
-      CALL BSYR( '/', 0, ALPHA, X, 1, A, 1 )
+      CALL BSYR( '/', 0_dik, ALPHA, X, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BSYR( 'U', -1, ALPHA, X, 1, A, 1 )
+      CALL BSYR( 'U', -1_dik, ALPHA, X, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BSYR( 'U', 0, ALPHA, X, 0, A, 1 )
+      CALL BSYR( 'U', 0_dik, ALPHA, X, 0_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BSYR( 'U', 2, ALPHA, X, 1, A, 1 )
+      CALL BSYR( 'U', 2_dik, ALPHA, X, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
   140 INFOT = 1
-      CALL BSPR( '/', 0, ALPHA, X, 1, A )
+      CALL BSPR( '/', 0_dik, ALPHA, X, 1_dik, A )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BSPR( 'U', -1, ALPHA, X, 1, A )
+      CALL BSPR( 'U', -1_dik, ALPHA, X, 1_dik, A )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BSPR( 'U', 0, ALPHA, X, 0, A )
+      CALL BSPR( 'U', 0_dik, ALPHA, X, 0_dik, A )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
   150 INFOT = 1
-      CALL BSYR2( '/', 0, ALPHA, X, 1, Y, 1, A, 1 )
+      CALL BSYR2( '/', 0_dik, ALPHA, X, 1_dik, Y, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BSYR2( 'U', -1, ALPHA, X, 1, Y, 1, A, 1 )
+      CALL BSYR2( 'U', -1_dik, ALPHA, X, 1_dik, Y, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BSYR2( 'U', 0, ALPHA, X, 0, Y, 1, A, 1 )
+      CALL BSYR2( 'U', 0_dik, ALPHA, X, 0_dik, Y, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BSYR2( 'U', 0, ALPHA, X, 1, Y, 0, A, 1 )
+      CALL BSYR2( 'U', 0_dik, ALPHA, X, 1_dik, Y, 0_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL BSYR2( 'U', 2, ALPHA, X, 1, Y, 1, A, 1 )
+      CALL BSYR2( 'U', 2_dik, ALPHA, X, 1_dik, Y, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
   160 INFOT = 1
-      CALL BSPR2( '/', 0, ALPHA, X, 1, Y, 1, A )
+      CALL BSPR2( '/', 0_dik, ALPHA, X, 1_dik, Y, 1_dik, A )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL BSPR2( 'U', -1, ALPHA, X, 1, Y, 1, A )
+      CALL BSPR2( 'U', -1_dik, ALPHA, X, 1_dik, Y, 1_dik, A )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL BSPR2( 'U', 0, ALPHA, X, 0, Y, 1, A )
+      CALL BSPR2( 'U', 0_dik, ALPHA, X, 0_dik, Y, 1_dik, A )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL BSPR2( 'U', 0, ALPHA, X, 1, Y, 0, A )
+      CALL BSPR2( 'U', 0_dik, ALPHA, X, 1_dik, Y, 0_dik, A )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
 !
   170 IF( OK )THEN
@@ -2715,6 +2723,7 @@
       SUBROUTINE HMAKE( TYPE, UPLO, DIAG, M, N, A, NMAX, AA, LDA, KL,   &
      &                  KU, RESET, TRANSL )
         USE LPF_BF16
+        USE LPF_TYPES
         USE LPF_BLAS_BF16
 
 !
@@ -2736,14 +2745,14 @@
       TYPE(BF16)               ROGUE
 !     .. Scalar Arguments ..
       TYPE(BF16)               TRANSL
-      INTEGER            KL, KU, LDA, M, N, NMAX
+      INTEGER(lpf_default_int_kind)            KL, KU, LDA, M, N, NMAX
       LOGICAL            RESET
       CHARACTER*1        DIAG, UPLO
       CHARACTER*2        TYPE
 !     .. Array Arguments ..
       TYPE(BF16)               A( NMAX, * ), AA( * )
 !     .. Local Scalars ..
-      INTEGER            I, I1, I2, I3, IBEG, IEND, IOFF, J, KK
+      INTEGER(lpf_default_int_kind)            I, I1, I2, I3, IBEG, IEND, IOFF, J, KK
       LOGICAL            GEN, LOWER, SYM, TRI, UNIT, UPPER
 !     .. External Functions ..
       TYPE(BF16)               SBEG
@@ -2895,6 +2904,7 @@
       SUBROUTINE HMVCH( TRANS, M, N, ALPHA, A, NMAX, X, INCX, BETA, Y,  &
      &                  INCY, YT, G, YY, EPS, ERR, FATAL, NOUT, MV )
         USE LPF_BF16
+        USE LPF_TYPES
         USE LPF_BLAS_BF16
 
 !
@@ -2910,7 +2920,7 @@
       TYPE(BF16)         ZERO, ONE
 !     .. Scalar Arguments ..
       TYPE(BF16)               ALPHA, BETA, EPS, ERR
-      INTEGER            INCX, INCY, M, N, NMAX, NOUT
+      INTEGER(lpf_default_int_kind)            INCX, INCY, M, N, NMAX, NOUT
       LOGICAL            FATAL, MV
       CHARACTER*1        TRANS
 !     .. Array Arguments ..
@@ -2918,7 +2928,7 @@
      &                   YY( * )
 !     .. Local Scalars ..
       TYPE(BF16)               ERRI
-      INTEGER            I, INCXL, INCYL, IY, J, JX, KX, KY, ML, NL
+      INTEGER(lpf_default_int_kind)            I, INCXL, INCYL, IY, J, JX, KX, KY, ML, NL
       LOGICAL            TRAN
 !     .. Executable Statements ..
 
@@ -3014,6 +3024,7 @@
       END
       LOGICAL FUNCTION LSE( RI, RJ, LR )
         USE LPF_BF16
+        USE LPF_TYPES
         USE LPF_BLAS_BF16
 !
 !  Tests if two arrays are identical.
@@ -3025,11 +3036,11 @@
 !     Jeremy Du Croz, NAG Central Office.
 !
 !     .. Scalar Arguments ..
-      INTEGER            LR
+      INTEGER(lpf_default_int_kind)            LR
 !     .. Array Arguments ..
       TYPE(BF16)         RI( * ), RJ( * )
 !     .. Local Scalars ..
-      INTEGER            I
+      INTEGER(lpf_default_int_kind)            I
 !     .. Executable Statements ..
       DO 10 I = 1, LR
          IF( RI( I ).NE.RJ( I ) )                                       &
@@ -3046,6 +3057,7 @@
       END
       LOGICAL FUNCTION LSERES( TYPE, UPLO, M, N, AA, AS, LDA )
           USE LPF_BF16
+          USE LPF_TYPES
           USE LPF_BLAS_BF16
 !
 !  Tests if selected elements in two arrays are equal.
@@ -3059,13 +3071,13 @@
 !     Jeremy Du Croz, NAG Central Office.
 !
 !     .. Scalar Arguments ..
-      INTEGER            LDA, M, N
+      INTEGER(lpf_default_int_kind)            LDA, M, N
       CHARACTER*1        UPLO
       CHARACTER*2        TYPE
 !     .. Array Arguments ..
       TYPE(BF16)         AA( LDA, * ), AS( LDA, * )
 !     .. Local Scalars ..
-      INTEGER            I, IBEG, IEND, J
+      INTEGER(lpf_default_int_kind)            I, IBEG, IEND, J
       LOGICAL            UPPER
 !     .. Executable Statements ..
       UPPER = UPLO.EQ.'U'
@@ -3107,6 +3119,7 @@
       END
       TYPE(BF16) FUNCTION SBEG( RESET )
           USE LPF_BF16
+          USE LPF_TYPES
           USE LPF_BLAS_BF16
 !
 !  Generates random numbers uniformly distributed between -0.5 and 0.5.
@@ -3120,7 +3133,7 @@
 !     .. Scalar Arguments ..
       LOGICAL            RESET
 !     .. Local Scalars ..
-      INTEGER            I, IC, MI
+      INTEGER(lpf_default_int_kind)            I, IC, MI
 !     .. Save statement ..
       SAVE               I, IC, MI
 !     .. Intrinsic Functions ..
@@ -3154,6 +3167,7 @@
       END
       TYPE(BF16) FUNCTION SDIFF( X, Y )
           USE LPF_BF16
+        USE LPF_TYPES
           USE LPF_BLAS_BF16
 !
 !  Auxiliary routine for test program for Level 2 Blas.
@@ -3171,6 +3185,7 @@
 !
       END
       SUBROUTINE CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
+          USE LPF_TYPES
 !
 !  Tests whether XERBLA has detected an error when it should.
 !
@@ -3181,7 +3196,7 @@
 !     Jeremy Du Croz, NAG Central Office.
 !
 !     .. Scalar Arguments ..
-      INTEGER            INFOT, NOUT
+      INTEGER(lpf_default_int_kind)            INFOT, NOUT
       LOGICAL            LERR, OK
       CHARACTER*6        SRNAMT
 !     .. Executable Statements ..
@@ -3201,18 +3216,19 @@
       SUBROUTINE SREGR1( TRANS, M, N, LY, KL, KU, ALPHA, A, LDA, X,     &
      &   INCX, BETA, Y, INCY, YS )
         USE LPF_BF16
+        USE LPF_TYPES
         USE LPF_BLAS_BF16
 !
 !  Input initialization for regression test.
 !
 !     .. Scalar Arguments ..
       CHARACTER*1        TRANS
-      INTEGER            LY, M, N, KL, KU, LDA, INCX, INCY
+      INTEGER(lpf_default_int_kind)            LY, M, N, KL, KU, LDA, INCX, INCY
       TYPE(BF16)         ALPHA, BETA
 !     .. Array Arguments ..
       TYPE(BF16)         A(LDA,*), X(*), Y(*), YS(*)
 !     .. Local Scalars ..
-      INTEGER            I
+      INTEGER(lpf_default_int_kind)            I
 !     .. Executable Statements ..
       TRANS = 'T'
       M = 0
@@ -3232,7 +3248,8 @@
       RETURN
       END
       SUBROUTINE LOCAL_XERBLA( SRNAME, INFO )
-        implicit none
+        USE LPF_TYPES
+          implicit none
         CHARACTER*6 :: SRNAME
         integer, intent(in) :: info
 
@@ -3255,7 +3272,7 @@
 !
 !     .. Scalar Arguments ..
 !     .. Scalars in Common ..
-      INTEGER            INFOT, NOUT
+      INTEGER(lpf_default_int_kind)            INFOT, NOUT
       LOGICAL            LERR, OK
       CHARACTER*6        SRNAMT
 !     .. Common blocks ..
