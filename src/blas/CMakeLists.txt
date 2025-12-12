@@ -1,3 +1,44 @@
+# Detect Externals
+IF (LPF_INTEGER8)
+    SET(BLA_SIZEOF_INTEGER 8)
+ELSE()
+    SET(BLA_SIZEOF_INTEGER 4)
+ENDIF()
+FIND_PACKAGE(BLAS)
+FIND_PACKAGE(LAPACK)
+
+# Search for special in routines in BLAS
+IF (BLAS_FOUND AND LAPACK_FOUND)
+SET(_CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES})
+SET(CMAKE_REQUIRED_LIBRARIES LAPACK::LAPACK BLAS::BLAS)
+check_function_exists(cblas_hgemm LPF_BLAS_USE_HGEMM)
+check_function_exists(cblas_gemm_f16f16f32 LPF_BLAS_USE_GEMM_F16F16F32)
+check_function_exists(cblas_gemm_bf16bf16f32 LPF_BLAS_USE_GEMM_BF16BF16F32)
+check_function_exists(aocl_gemm_bf16bf16f32of32 LPF_BLAS_USE_AMD_GEMM_BF16BF16F32)
+check_function_exists(mkl_get_version LPF_BLAS_IS_MKL)
+check_function_exists(AOCL_BLIS_set_progress LPF_BLAS_IS_AOCL)
+SET(CMAKE_REQUIRED_LIBRARIES ${_CMAKE_REQUIRED_LIBRARIES})
+
+IF (LPF_BLAS_IS_MKL)
+    FIND_PATH(MKL_INCLUDE_DIR mkl.h
+        HINTS
+        "$ENV{MKLROOT}/include"
+        "${MKLROOT}/include"
+        "$ENV{MKL_ROOT}/include"
+        "${MKL_ROOT}/include"
+    )
+    if (NOT MKL_INCLUDE_DIR)
+        message(FATAL_ERROR "Inte (one)MKL detected but mkl.h not found.")
+    endif()
+    message(STATUS "MKL include directory: ${MKL_INCLUDE_DIR}")
+    set_property(TARGET BLAS::BLAS PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${MKL_INCLUDE_DIR}")
+ENDIF()
+ENDIF()
+
+
+
+
+
 SET (SRC )
 if (LPF_HAVE_FP16)
     ADD_SUBDIRECTORY(fp16/level1)
@@ -43,6 +84,8 @@ TARGET_LINK_LIBRARIES(lpf_blas
     $<$<BOOL:NEED_LINKING_AGAINST_LIBM>:${LIBM_NAME}>
     PUBLIC
     LPF::LPF
+    $<$<BOOL:${BLAS_FOUND}>:BLAS::BLAS>
+    $<$<BOOL:${LAPACK_FOUND}>:LAPACK::LAPACK>
 )
 
 TARGET_INCLUDE_DIRECTORIES(lpf_blas

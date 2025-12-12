@@ -24,7 +24,7 @@
 #include <ctype.h>
 #include <string.h>
 
-#ifdef BLAS_IS_MKL
+#ifdef LPF_BLAS_IS_MKL
 #include <mkl.h>
 #endif
 
@@ -265,7 +265,7 @@ void LPF_GLOBAL(hgemm,HGEMM)(char *transa, char *transb, lpf_blas_int_t *m, lpf_
     b_offset = 1 + b_dim1;
     c_dim1 = *ldc;
     c_offset = 1 + c_dim1;
-#ifndef USE_BLAS_HGEMM
+#ifndef LPF_BLAS_USE_HGEMM
     a -= a_offset;
     b -= b_offset;
     c__ -= c_offset;
@@ -319,7 +319,7 @@ void LPF_GLOBAL(hgemm,HGEMM)(char *transa, char *transb, lpf_blas_int_t *m, lpf_
         return;
     }
 
-#ifdef USE_BLAS_HGEMM
+#ifdef LPF_BLAS_USE_HGEMM
     CBLAS_TRANSPOSE ta, tb;
     union {
         lpf_float16_t f;

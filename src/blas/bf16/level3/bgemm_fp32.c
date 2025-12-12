@@ -18,13 +18,12 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
    */
 
-#include <math.h>
 #include <stdint.h>
-#include "lpf_internal.h"
-#include <ctype.h>
 #include <string.h>
+#include <ctype.h>
+#include "lpf_internal.h"
 
-#ifdef BLAS_IS_MKL
+#ifdef LPF_BLAS_IS_MKL
 #include <mkl.h>
 #endif
 
@@ -265,7 +264,7 @@ void LPF_GLOBAL(bgemm_fp32,BGEMM_FP32)(char *transa, char *transb, lpf_blas_int_
     b_offset = 1 + b_dim1;
     c_dim1 = *ldc;
     c_offset = 1 + c_dim1;
-#ifndef USE_BLAS_GEMM_F16F16F32
+#ifndef LPF_BLAS_USE_GEMM_BF16BF16F32
     a -= a_offset;
     b -= b_offset;
     c__ -= c_offset;
@@ -319,8 +318,7 @@ void LPF_GLOBAL(bgemm_fp32,BGEMM_FP32)(char *transa, char *transb, lpf_blas_int_
         return;
     }
 
-#ifdef USE_BLAS_GEMM_F16F16F32
-#warning hier
+#ifdef LPF_BLAS_USE_GEMM_BF16BF16F32
     CBLAS_TRANSPOSE ta, tb;
     float falpha = (float) *alpha;
     float fbeta   = (float) *beta;
