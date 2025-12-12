@@ -24,12 +24,12 @@
 #include <ctype.h>
 #include <string.h>
 
-#ifdef BLAS_IS_MKL
+#ifdef LPF_BLAS_IS_MKL
 #include <mkl.h>
 #endif
 
 
-/* > \brief \b HGEMM */
+/* > \brief \b HGEMM_FP32 */
 
 /*  =========== DOCUMENTATION =========== */
 
@@ -39,7 +39,7 @@
 /*  Definition: */
 /*  =========== */
 
-/*       SUBROUTINE HGEMM(TRANSA,TRANSB,M,N,K,ALPHA,A,LDA,B,LDB,BETA,C,LDC) */
+/*       SUBROUTINE HGEMM_FP32(TRANSA,TRANSB,M,N,K,ALPHA,A,LDA,B,LDB,BETA,C,LDC) */
 
 /*       .. Scalar Arguments .. */
 /*       REAL ALPHA,BETA */
@@ -265,7 +265,7 @@ void LPF_GLOBAL(hgemm_fp32,HGEMM_FP32)(char *transa, char *transb, lpf_blas_int_
     b_offset = 1 + b_dim1;
     c_dim1 = *ldc;
     c_offset = 1 + c_dim1;
-#ifndef USE_BLAS_GEMM_F16F16F32
+#ifndef LPF_BLAS_USE_GEMM_F16F16F32
     a -= a_offset;
     b -= b_offset;
     c__ -= c_offset;
@@ -319,8 +319,7 @@ void LPF_GLOBAL(hgemm_fp32,HGEMM_FP32)(char *transa, char *transb, lpf_blas_int_
         return;
     }
 
-#ifdef USE_BLAS_GEMM_F16F16F32
-#warning hier
+#ifdef LPF_BLAS_USE_GEMM_F16F16F32
     CBLAS_TRANSPOSE ta, tb;
     float falpha = (float) *alpha;
     float fbeta   = (float) *beta;
@@ -336,7 +335,6 @@ void LPF_GLOBAL(hgemm_fp32,HGEMM_FP32)(char *transa, char *transb, lpf_blas_int_
     }
 
     cblas_gemm_f16f16f32 (CblasColMajor, ta, tb, *m, *n, *k, falpha, (MKL_F16*) a, *lda, (MKL_F16*) b, *ldb, fbeta, c__, *ldc);
-
 
     return;
 
