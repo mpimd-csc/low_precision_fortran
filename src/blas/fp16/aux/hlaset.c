@@ -68,7 +68,7 @@ void LPF_GLOBAL(hlaset,HLASET)(const char * uplo, lpf_blas_int_t *m, lpf_blas_in
     }
 }
 
-void hpblas_hlaset_fortran(char * uplo, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_ffloat16_t *alpha, lpf_ffloat16_t *beta, lpf_ffloat16_t *a, lpf_blas_int_t *lda)
+void lpf_blas_hlaset_fortran(char * uplo, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_ffloat16_t *alpha, lpf_ffloat16_t *beta, lpf_ffloat16_t *a, lpf_blas_int_t *lda)
 {
     LPF_GLOBAL(hlaset,HLASET)( uplo, m, n, (lpf_float16_t *)alpha, (lpf_float16_t*) beta, (lpf_float16_t *)a, lda, 1);
 }

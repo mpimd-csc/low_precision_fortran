@@ -66,7 +66,7 @@ void LPF_GLOBAL(b2slacpy,B2SLACPY)(const char * uplo, lpf_blas_int_t *m, lpf_bla
 }
 
 
-void hpblas_b2slacpy_fortran(char * uplo, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_fbfloat16_t *a, lpf_blas_int_t *lda, float *b, lpf_blas_int_t *ldb)
+void lpf_blas_b2slacpy_fortran(char * uplo, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_fbfloat16_t *a, lpf_blas_int_t *lda, float *b, lpf_blas_int_t *ldb)
 {
     LPF_GLOBAL(b2slacpy,B2SLACPY)( uplo, m, n, (lpf_bfloat16_t *) a, lda, b, ldb, 1);
 }

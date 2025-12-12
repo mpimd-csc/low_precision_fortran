@@ -158,7 +158,7 @@ void LPF_GLOBAL(h2scopy,H2SCOPY)(lpf_blas_int_t *n, lpf_float16_t *sx, lpf_blas_
     return;
 } /* hcopy_ */
 
-void hpblas_h2scopy_fortran(lpf_blas_int_t *n, lpf_ffloat16_t *sx, lpf_blas_int_t *incx, float *sy,
+void lpf_blas_h2scopy_fortran(lpf_blas_int_t *n, lpf_ffloat16_t *sx, lpf_blas_int_t *incx, float *sy,
         lpf_blas_int_t *incy)
 {
     LPF_GLOBAL(h2scopy,H2SCOPY)(n, (lpf_float16_t *)sx, incx, sy, incy);

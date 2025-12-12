@@ -6,7 +6,18 @@ if (LPF_HAVE_FP16)
     ADD_SUBDIRECTORY(fp16/aux)
     SET(SRC ${SRC}
         fp16/scaling/scale_diag_twoside.f90
-        fp16/lpf_blas_fp16.F90)
+        fp16/lpf_blas_fp16.F90
+
+        fp16/lapack/householder/larf.f90
+        fp16/lapack/householder/larf1f.f90
+        fp16/lapack/householder/larfg.f90
+        fp16/lapack/qr/geqr2.f90
+        fp16/lapack/qr/orm2r.f90
+        fp16/lapack/lange.f90
+        fp16/lpf_lapack_fp16.F90
+
+
+    )
 endif()
 
 if (LPF_HAVE_BF16)

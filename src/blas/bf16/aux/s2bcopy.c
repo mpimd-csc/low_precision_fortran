@@ -158,7 +158,7 @@ void LPF_GLOBAL(s2bcopy,S2BCOPY)(lpf_blas_int_t *n, float *sx, lpf_blas_int_t *i
     return;
 } /* bcopy_ */
 
-void hpblas_s2bcopy_fortran(lpf_blas_int_t *n, float *sx, lpf_blas_int_t *incx, lpf_fbfloat16_t *sy,
+void lpf_blas_s2bcopy_fortran(lpf_blas_int_t *n, float *sx, lpf_blas_int_t *incx, lpf_fbfloat16_t *sy,
         lpf_blas_int_t *incy)
 {
     LPF_GLOBAL(s2bcopy,S2BCOPY)(n, sx, incx, (lpf_bfloat16_t *)sy, incy);
