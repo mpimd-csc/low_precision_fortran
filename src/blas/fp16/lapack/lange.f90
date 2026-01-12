@@ -127,6 +127,8 @@ contains
         type(fp16) ::            one, zero
         !     .. local scalars ..
         integer(lpf_default_int_kind)            :: i, j
+        integer(lpf_default_int_kind), parameter :: ione = 1
+
         real(real32) :: sca, sum
         type(fp16) :: value, temp
         !     ..
@@ -183,7 +185,7 @@ contains
             sca = 0.0
             sum = 1.0
             do  j = 1, n
-                call lassq( m, a( 1, j ), 1, sca, sum )
+                call lassq( m, a( 1, j ), ione, sca, sum )
             end do
             value = fp16(sca*sqrt( sum ))
         end if
