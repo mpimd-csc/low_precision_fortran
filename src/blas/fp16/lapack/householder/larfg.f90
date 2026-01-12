@@ -1,5 +1,6 @@
 submodule (lpf_lapack_fp16) lpf_lapack_larfg_fp16
     use lpf_fp16
+    use lpf_types
     implicit none
 
 
