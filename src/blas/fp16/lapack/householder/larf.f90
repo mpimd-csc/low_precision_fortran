@@ -197,11 +197,11 @@ contains
                 !
                 call hgemv( 'transpose', lastv, lastc, one, c, ldc, v, &
                     incv, &
-                    zero, work, 1 )
+                    zero, work, 1_lpf_default_int_kind )
                 !
                 !       c(1:lastv,1:lastc) := c(...) - v(1:lastv,1) * w(1:lastc,1)**t
                 !
-                call hger( lastv, lastc, -tau, v, incv, work, 1, c, ldc )
+                call hger( lastv, lastc, -tau, v, incv, work, 1_lpf_default_int_kind, c, ldc )
             end if
         else
             !
@@ -212,11 +212,11 @@ contains
                 !       w(1:lastc,1) := c(1:lastc,1:lastv) * v(1:lastv,1)
                 !
                 call hgemv( 'no transpose', lastc, lastv, one, c, ldc, &
-                    v, incv, zero, work, 1 )
+                    v, incv, zero, work, 1_lpf_default_int_kind )
                 !
                 !       c(1:lastc,1:lastv) := c(...) - w(1:lastc,1) * v(1:lastv,1)**t
                 !
-                call hger( lastc, lastv, -tau, work, 1, v, incv, c, ldc )
+                call hger( lastc, lastv, -tau, work, 1_lpf_default_int_kind, v, incv, c, ldc )
             end if
         end if
         return
