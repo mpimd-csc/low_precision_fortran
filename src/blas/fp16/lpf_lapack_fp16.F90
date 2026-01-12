@@ -113,7 +113,7 @@ module lpf_lapack_fp16
         out = inta .eq. intb
     end function
 
-    module integer(lpf_default_int_kind) function last_column( m, n, a, lda )
+    integer(lpf_default_int_kind) function last_column( m, n, a, lda )
         integer(lpf_default_int_kind), intent(in) ::  m, n, lda
         type(fp16), intent(in) :: a( lda, * )
 
@@ -138,7 +138,7 @@ module lpf_lapack_fp16
         return
     end function
 
-    module integer(lpf_default_int_kind) function last_row( m, n, a, lda )
+    integer(lpf_default_int_kind) function last_row( m, n, a, lda )
         integer(lpf_default_int_kind), intent(in)  ::  m, n, lda
         type(fp16), intent(in) :: a( lda, * )
 
@@ -166,7 +166,7 @@ module lpf_lapack_fp16
         return
     end function
 
-    module function lamch(cmach) result(out)
+    function lamch(cmach) result(out)
         character, intent(in) :: cmach
         type(fp16) :: out
         ! ..
@@ -235,7 +235,7 @@ module lpf_lapack_fp16
         return
     end function
 
-    module function lapy2( x, y ) result(out)
+    function lapy2( x, y ) result(out)
         type(fp16), intent(in) :: x, y
         type(fp16) :: out
 
@@ -275,7 +275,7 @@ module lpf_lapack_fp16
     end function
 
 
-    module function lapy3( x, y, z ) result(out)
+    function lapy3( x, y, z ) result(out)
         type(fp16), intent(in) :: x, y, z
         type(fp16) :: out
         type(fp16) :: zero
