@@ -241,7 +241,7 @@ contains
 !
 !           w(1:lastc,1) += v(1,1) * c(1:lastc,1)
 !
-            call haxpy( lastc, one, c, 1, work, ione )
+            call haxpy( lastc, one, c, ione, work, ione )
 !
 !           c(1:lastc,1) += - tau * v(1,1) * w(1:lastc,1)
 !
