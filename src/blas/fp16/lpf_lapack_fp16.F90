@@ -44,7 +44,7 @@ module lpf_lapack_fp16
 
     interface
         module subroutine larfg( norm, n, alpha, x, incx, tau )
-            integer, intent(in) :: incx, n
+            integer(lpf_default_int_kind), intent(in) :: incx, n
             character,  intent(in)    :: norm(*)
             type(fp16), intent(inout) :: alpha
             type(fp16), intent(out)   ::  tau
