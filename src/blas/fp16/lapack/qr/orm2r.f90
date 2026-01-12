@@ -179,6 +179,9 @@ contains
 !     .. local scalars ..
       logical            :: left, notran
       integer(lpf_default_int_kind) :: i, i1, i2, i3, ic, jc, mi, ni, nq
+      integer(lpf_default_int_kind) :: ione = 1
+
+      external :: lpf_blas_xerbla
 !     ..
 !     .. executable statements ..
 !
@@ -256,8 +259,7 @@ contains
 !
 !        apply h(i)
 !
-         call larf1f( side, mi, ni, a( i, i ), 1, tau( i ), c( ic,     &
-     &               jc ), ldc, work )
+         call larf1f( side, mi, ni, a( i, i ), ione, tau( i ), c( ic, jc ), ldc, work )
       end do
       return
 !
