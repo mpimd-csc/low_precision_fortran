@@ -153,6 +153,7 @@ contains
 !     .. local scalars ..
       logical   ::     applyleft
       integer(lpf_default_int_kind) :: i, lastv, lastc
+      integer(lpf_default_int_kind), parameter :: ione = 1
 
       !
 !     .. executable statements ..
@@ -206,20 +207,20 @@ contains
 !        w(1:lastc,1) := c(2:lastv,1:lastc)**t * v(2:lastv,1)
 !
          call hgemv( 'transpose', lastv - 1, lastc, one, c( 2, 1 ),     &
-     &               ldc, v( 1 + incv ), incv, zero, work, 1 )
+     &               ldc, v( 1 + incv ), incv, zero, work, ione )
 !
 !        w(1:lastc,1) += v(1,1) * c(1,1:lastc)**t
 !
-         call haxpy( lastc, one, c, ldc, work, 1 )
+         call haxpy( lastc, one, c, ldc, work, ione )
 !
 !        c(1, 1:lastc) += - tau * v(1,1) * w(1:lastc,1)**t
 !
-         call haxpy( lastc, -tau, work, 1, c, ldc )
+         call haxpy( lastc, -tau, work, ione, c, ldc )
 !
 !        c(2:lastv,1:lastc) += - tau * v(2:lastv,1) * w(1:lastc,1)**t
 !
          call hger( lastv - 1, lastc, -tau, v( 1 + incv ), incv,        &
-     &              work, 1, c( 2, 1 ), ldc )
+     &              work, ione, c( 2, 1 ), ldc )
             end if
       else
 !
@@ -229,26 +230,26 @@ contains
 !
 !           c(1:lastc,1) := ( 1 - tau ) * c(1:lastc,1)
 !
-            call hscal( lastc, one - tau, c, 1 )
+            call hscal( lastc, one - tau, c, ione )
          else
 !
 !           w(1:lastc,1) := c(1:lastc,2:lastv) * v(2:lastv,1)
 !
             call hgemv( 'no transpose', lastc, lastv - 1, one,          &
      &                  c( 1, 2 ), ldc, v( 1 + incv ), incv, zero,      &
-     &                  work, 1 )
+     &                  work, ione )
 !
 !           w(1:lastc,1) += v(1,1) * c(1:lastc,1)
 !
-            call haxpy( lastc, one, c, 1, work, 1 )
+            call haxpy( lastc, one, c, 1, work, ione )
 !
 !           c(1:lastc,1) += - tau * v(1,1) * w(1:lastc,1)
 !
-            call haxpy( lastc, -tau, work, 1, c, 1 )
+            call haxpy( lastc, -tau, work, ione, c, ione )
 !
 !           c(1:lastc,2:lastv) += - tau * w(1:lastc,1) * v(2:lastv)**t
 !
-            call hger( lastc, lastv - 1, -tau, work, 1,                 &
+            call hger( lastc, lastv - 1, -tau, work, ione,                 &
      &                 v( 1 + incv ), incv, c( 1, 2 ), ldc )
          end if
       end if
