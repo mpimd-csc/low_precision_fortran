@@ -35,7 +35,7 @@ module lpf_lapack_fp16
         module subroutine larf( side, m, n, v, incv, tau, c, ldc, work )
             implicit none
             character, intent(in) :: side
-            integer, intent(in) :: incv, ldc, m, n
+            integer(lpf_default_int_kind), intent(in) :: incv, ldc, m, n
             type(fp16), intent(in) :: tau
             type(fp16), intent(in) :: v(*)
             type(fp16), intent(inout) :: c( ldc, * ), work( * )
