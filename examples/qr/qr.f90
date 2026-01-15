@@ -1,4 +1,4 @@
-subroutine qrf2(m, n, srcA, lda, st)
+subroutine qrf2(m, n, house_norm, srcA, lda, st)
     use qr_stat
     use lpf_fp16
     use lpf_lapack_fp16
@@ -9,6 +9,10 @@ subroutine qrf2(m, n, srcA, lda, st)
     integer(lpf_default_int_kind) :: m, n, lda
     type(qr_stats) :: st
     real(real32) :: srcA(lda, *)
+    character :: house_norm
+
+    external slange
+    real(real32) :: slange
 
     type(fp16), allocatable :: A(:,:)
     type(fp16), allocatable :: R(:,:)
@@ -19,6 +23,7 @@ subroutine qrf2(m, n, srcA, lda, st)
 
     integer(lpf_default_int_kind) :: k, l, info
     real(real64) :: tic, toc
+    real(real32) :: nrm_A
 
     k = min(m,n)
 
@@ -27,14 +32,14 @@ subroutine qrf2(m, n, srcA, lda, st)
     allocate(Q(m,m))
     allocate(QQ(m,m))
     allocate(tau(k))
-    allocate(work(n))
+    allocate(work(max(m,n)))
 
-    st = qr_stats_init(m,n)
+    st = qr_stats_init(m,n, house_norm, "geqr2")
 
     A(1:m, 1:n) = srcA(1:m,1:n)
 
     tic = lpf_get_wtime()
-    call geqr2("L", m, n, A, m, tau, work, info)
+    call geqr2(house_norm, m, n, A, m, tau, work, info)
     toc = lpf_get_wtime()
 
 
@@ -59,28 +64,61 @@ subroutine qrf2(m, n, srcA, lda, st)
 
     st % orth_err = lange("F", m, m, QQ, m, work) / sqrt(real(m))
 
+
+    A(1:m, 1:n) = srcA(1:m,1:n)
+
+    call hgemm("N", "N", m, n, k, fp16(-1.0), Q, m, R, k, fp16(1.0), A, m )
+    nrm_A = slange("F", m, n, srcA, lda, work)
+    st % reconstruct_err = lange ("F", m, n, A, m, work) / fp16(nrm_A)
+
     deallocate(A, R, Q, QQ, tau, work)
 
 end subroutine
 
 program qr_benchmark
     use qr_stat
+    use getopt_f
     implicit none
 
-    integer, parameter :: m = 20
-    integer, parameter :: n = 20
+    integer :: m, n, runs
 
-    real (real32) :: A(m,n)
+    real (real32), allocatable :: A(:,:)
+    character(len = 1024) :: arg
     type(qr_stats) :: st
+
+    m = 100
+    n = 100
+    runs = 5
+
+    if ( command_argument_count() .ge. 2) then
+        call get_command_argument(1,  arg )
+        read(arg, *) m
+        call get_command_argument(2,  arg )
+        read(arg, *)
+    end if
+    if ( command_argument_count() .eq. 3) then
+        call get_command_argument(3,  arg )
+        read(arg, *) runs
+    endif
+
+    write(*,'("# m    = ", I8)') m
+    write(*,'("# n    = ", I8)') n
+    write(*,'("# runs = ", I8)') runs
+
+    allocate(A(m,n))
 
     call RANDOM_NUMBER(A)
 
     call print_qr_stats_header()
 
-    call qrf2(m, n, A, m, st)
+    call qrf2(m, n, 'L',A, m, st)
+
+    call print_qr_stats(st)
+    call qrf2(m, n, 'H',A, m, st)
 
     call print_qr_stats(st)
 
+    deallocate(A)
 
 
     !     use fp16_support
