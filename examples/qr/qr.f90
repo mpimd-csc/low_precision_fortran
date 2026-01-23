@@ -77,7 +77,6 @@ end subroutine
 
 program qr_benchmark
     use qr_stat
-    use getopt_f
     implicit none
 
     integer :: m, n, runs
