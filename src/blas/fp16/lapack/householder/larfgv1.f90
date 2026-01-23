@@ -1,4 +1,4 @@
-submodule (lpf_lapack_fp16) lpf_lapack_larfg_fp16
+submodule (lpf_lapack_fp16) lpf_lapack_larfgv1_fp16
     use lpf_fp16
     use lpf_types
     implicit none
@@ -24,15 +24,15 @@ contains
     !  Definition:
     !  ===========
     !
-    !   SUBROUTINE HLARFG( NORM, N, ALPHA, X, INCX, TAU )
+    !   SUBROUTINE HLARFG( NORM, N, ALPHA, V1, X, INCX, TAU )
     !
     !   .. Scalar Arguments ..
     !   INTEGER            INCX, N
-    !   REAL               ALPHA, TAU
+    !   TYPE(FP16)               ALPHA, V1, TAU
     !   ..
     !   .. Array Arguments ..
     !   CHARACTER          NORM(*)
-    !   REAL               X( * )
+    !   TYPE(FP16)               X( * )
     !   ..
     !
     !
@@ -50,11 +50,12 @@ contains
     !> where alpha and beta are scalars, and x is an (n-1)-element real
     !> vector. H is represented in the form
     !>
-    !>       H = I - tau * ( 1 ) * ( 1 v**T ) ,
-    !>                     ( v )
+    !>       H = I - tau  *( v1 ) ( v1 v**T ) ,
+    !>                    ( v  )
     !>
-    !> where tau is a real scalar and v is a real (n-1)-element
-    !> vector.
+    !> where tau, v1 are real scalars and v is a real (n-1)-element
+    !> vector. The vector (v1 v) is normalized, such that || ( v1 v ) ||_2 = 1
+    !> and tau = 2
     !>
     !> If the elements of x are all zero, then tau = 0 and H is taken to be
     !> the unit matrix.
@@ -79,14 +80,22 @@ contains
     !>
     !> \param[in,out] ALPHA
     !> \verbatim
-    !>          ALPHA is REAL
+    !>          ALPHA is TYPE(FP16)
     !>          On entry, the value alpha.
     !>          On exit, it is overwritten with the value beta.
     !> \endverbatim
     !>
+    !> \param[out] V1
+    !> \verbatim
+    !>          ALPHA is V1
+    !>          On entry, the value alpha.
+    !>          On exit, it is overwritten with the value beta.
+    !> \endverbatim
+
+    !>
     !> \param[in,out] X
     !> \verbatim
-    !>          X is REAL array, dimension
+    !>          X is TYPE(FP16) array, dimension
     !>                         (1+(N-2)*abs(INCX))
     !>          On entry, the vector x.
     !>          On exit, it is overwritten with the vector v.
@@ -100,7 +109,7 @@ contains
     !>
     !> \param[out] TAU
     !> \verbatim
-    !>          TAU is REAL
+    !>          TAU is TYPE(FP16)
     !>          The value tau.
     !> \endverbatim
     !
@@ -115,11 +124,12 @@ contains
     !> \ingroup larfg
     !
     !  =====================================================================
-    module subroutine larfg( norm, n, alpha, x, incx, tau )
+    module subroutine larfgv1( norm, n, alpha, v1,  x, incx, tau )
         integer(lpf_default_int_kind), intent(in) :: incx, n
         character,  intent(in)    :: norm(*)
         type(fp16), intent(inout) :: alpha
-        type(fp16), intent(out)   ::  tau
+        type(fp16), intent(out)   :: v1
+        type(fp16), intent(out)   :: tau
         type(fp16), intent(inout) :: x( * )
 
         ! .. parameters ..
@@ -129,7 +139,7 @@ contains
         ! .. local scalars ..
         integer(lpf_default_int_kind) :: j, knt
         type(fp16) :: beta, rsafmn, safmin, xnorm
-
+        type(fp16) :: s
         logical :: high_precision_norm
 
         one = 1.0
@@ -138,6 +148,7 @@ contains
         high_precision_norm = lsame(norm(1), "H")
         if( n.le.1 ) then
             tau = zero
+            v1  = zero
             return
         end if
 
@@ -152,11 +163,12 @@ contains
             !    h  =  i
             !
             tau = zero
+            v1  = zero
         else
             !
             !    general case
             !
-            if (high_precision_norm) then
+            if ( high_precision_norm ) then
                 beta = -sign( lapy2_fp32( alpha, xnorm ), alpha )
             else
                 beta = -sign( lapy2( alpha, xnorm ), alpha )
@@ -192,9 +204,19 @@ contains
                     xnorm = hnrm2( n-1, x, incx )
                     beta = -sign( lapy2( alpha, xnorm ), alpha )
                 end if
+
             end if
-            tau = ( beta-alpha ) / beta
-            call hscal( n-1, one / ( alpha-beta ), x, incx )
+
+
+            tau = 2
+            if ( high_precision_norm ) then
+                s = one / lapy2_fp32(xnorm, (alpha-beta))
+            else
+                s = one / lapy2(xnorm, (alpha-beta))
+            end if
+
+            v1  = (alpha-beta) * s
+            call hscal( n-1, s , x, incx )
             !
             !    if alpha is subnormal, it may lose relative accuracy
             !
@@ -208,7 +230,7 @@ contains
         !
         ! end of hlarfg
         !
-    end subroutine larfg
+    end subroutine larfgv1
 
 
 end submodule

@@ -75,6 +75,91 @@ subroutine qrf2(m, n, house_norm, srcA, lda, st)
 
 end subroutine
 
+
+
+subroutine qrf2_v1(m, n, house_norm, srcA, lda, st)
+    use qr_stat
+    use lpf_fp16
+    use lpf_lapack_fp16
+    use lpf_types
+    use iso_fortran_env, only: real32, real64
+    implicit none
+
+    integer(lpf_default_int_kind) :: m, n, lda
+    type(qr_stats) :: st
+    real(real32) :: srcA(lda, *)
+    character :: house_norm
+
+    external slange
+    real(real32) :: slange
+
+    type(fp16), allocatable :: A(:,:)
+    type(fp16), allocatable :: R(:,:)
+    type(fp16), allocatable :: Q(:,:)
+    type(fp16), allocatable :: QQ(:,:)
+    type(fp16), allocatable :: tau(:)
+    type(fp16), allocatable :: diagr(:)
+    type(fp16), allocatable :: work(:)
+
+    integer(lpf_default_int_kind) :: k, l, info
+    real(real64) :: tic, toc
+    real(real32) :: nrm_A
+
+    k = min(m,n)
+
+    allocate(A(m,n))
+    allocate(R(k,n))
+    allocate(Q(m,m))
+    allocate(QQ(m,m))
+    allocate(tau(k))
+    allocate(diagr(k))
+    allocate(work(max(m,n)))
+
+    st = qr_stats_init(m,n, house_norm, "geqr2_v1")
+
+    A(1:m, 1:n) = srcA(1:m,1:n)
+
+    tic = lpf_get_wtime()
+    call geqr2_v1(house_norm, m, n, A, m, diagr, tau, work, info)
+    toc = lpf_get_wtime()
+
+
+
+    st % walltime = toc - tic
+    st % info = info
+
+    ! Get R
+    R = 0.0
+    call hlacpy("u", k, n, A, m , R, k)
+    do l = 1, k
+        R(l,l) = diagr(l)
+    end do
+
+    ! Get Q
+    Q = 0.0
+    QQ = 0.0
+    do l = 1, m
+        Q(l,l) = 1.0
+        QQ(l,l) = 1.0
+    end do
+    call orm2rv("L", "N", m, m, k, A, m, tau, Q, m, work, info )
+
+    call hgemm("T", "N", m, m, m, fp16(-1.0), Q, m, Q, m, fp16(1.0), QQ, m)
+
+    st % orth_err = lange("F", m, m, QQ, m, work) / sqrt(real(m))
+
+
+    A(1:m, 1:n) = srcA(1:m,1:n)
+
+    call hgemm("N", "N", m, n, k, fp16(-1.0), Q, m, R, k, fp16(1.0), A, m )
+    nrm_A = slange("F", m, n, srcA, lda, work)
+    st % reconstruct_err = lange ("F", m, n, A, m, work) / fp16(nrm_A)
+
+    deallocate(A, R, Q, QQ, tau, diagr, work)
+
+end subroutine
+
+
 program qr_benchmark
     use qr_stat
     implicit none
@@ -93,7 +178,7 @@ program qr_benchmark
         call get_command_argument(1,  arg )
         read(arg, *) m
         call get_command_argument(2,  arg )
-        read(arg, *)
+        read(arg, *) n
     end if
     if ( command_argument_count() .eq. 3) then
         call get_command_argument(3,  arg )
@@ -113,9 +198,20 @@ program qr_benchmark
     call qrf2(m, n, 'L',A, m, st)
 
     call print_qr_stats(st)
+
     call qrf2(m, n, 'H',A, m, st)
 
     call print_qr_stats(st)
+
+    call qrf2_v1(m, n, 'L',A, m, st)
+
+    call print_qr_stats(st)
+
+    call qrf2_v1(m, n, 'H',A, m, st)
+
+    call print_qr_stats(st)
+
+
 
     deallocate(A)
 

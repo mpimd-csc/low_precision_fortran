@@ -53,6 +53,18 @@ module lpf_lapack_fp16
     end interface
 
     interface
+        module subroutine larfgv1( norm, n, alpha, v1, x, incx, tau )
+            integer(lpf_default_int_kind), intent(in) :: incx, n
+            character,  intent(in)    :: norm(*)
+            type(fp16), intent(inout) :: alpha
+            type(fp16), intent(out)   :: v1
+            type(fp16), intent(out)   :: tau
+            type(fp16), intent(inout) :: x( * )
+        end subroutine
+    end interface
+
+
+    interface
         module subroutine larf1f( side, m, n, v, incv, tau, c, ldc, work )
             character, intent(in) :: side
             integer(lpf_default_int_kind), intent(in) ::incv, ldc, m, n
@@ -61,6 +73,7 @@ module lpf_lapack_fp16
             type(fp16), intent(in) ::  v( * )
         end subroutine
     end interface
+
     !
     ! Householder QR Decompositions
     !
@@ -74,6 +87,16 @@ module lpf_lapack_fp16
     end interface
 
     interface
+        module subroutine geqr2_v1( norm, m, n, a, lda, diagr, tau, work, info ) bind(c, name="hgeqr2_v1_")
+            integer(lpf_default_int_kind), intent(in) ::  lda, m, n
+            integer(lpf_default_int_kind), intent(inout) ::  info
+            character(len=*), intent(in)  :: norm
+            type(fp16), intent(inout)     :: a( lda, * ), diagr(*), tau( * ), work( * )
+        end subroutine
+    end interface
+
+
+    interface
         module subroutine orm2r(  side, trans, m, n, k, a, lda, tau, c, ldc, work, info )
             character, intent(in) :: side, trans
             integer(lpf_default_int_kind), intent(in)   :: k, lda, ldc, m, n
@@ -82,6 +105,17 @@ module lpf_lapack_fp16
             type(fp16), intent(inout)     ::          c( ldc, * ), work( * )
         end subroutine
     end interface
+
+    interface
+        module subroutine orm2rv(  side, trans, m, n, k, a, lda, tau, c, ldc, work, info )
+            character, intent(in) :: side, trans
+            integer(lpf_default_int_kind), intent(in)   :: k, lda, ldc, m, n
+            integer(lpf_default_int_kind), intent(inout) :: info
+            type(fp16), intent(in)     ::          a( lda, * ), tau( * )
+            type(fp16), intent(inout)     ::          c( ldc, * ), work( * )
+        end subroutine
+    end interface
+
 
   contains
     function lsame(ca,cb) result(out)
@@ -273,6 +307,48 @@ module lpf_lapack_fp16
         return
 
     end function
+
+    function lapy2_fp32( x, y ) result(out)
+        type(fp16), intent(in) :: x, y
+        type(fp16) :: out
+
+        ! local parameters
+        real(real32), parameter :: zero = 0.0
+        real(real32), parameter :: one  = 1.0
+
+        ! ..
+        ! .. local scalars ..
+        real(real32) :: w, xabs, yabs, z, hugeval
+        logical :: x_is_nan, y_is_nan
+        real(real32) :: x32, y32
+
+        ! ..
+        ! .. executable statements ..
+        !
+        x32 = real(x)
+        y32 = real(y)
+
+        x_is_nan = isnan( x32 )
+        y_is_nan = isnan( y32 )
+        if ( x_is_nan ) out = fp16(x32)
+        if ( y_is_nan ) out = fp16(y32)
+        hugeval = huge(x)
+        !
+        if ( .not.( x_is_nan.or.y_is_nan ) ) then
+           xabs = abs( x32 )
+           yabs = abs( y32 )
+           w = max( xabs, yabs )
+           z = min( xabs, yabs )
+           if( z.eq.zero .or. w.gt.hugeval ) then
+              out = fp16(w)
+           else
+              out = fp16(w*sqrt( one+( z / w )**2 ))
+           end if
+        end if
+        return
+
+    end function
+
 
 
     function lapy3( x, y, z ) result(out)
