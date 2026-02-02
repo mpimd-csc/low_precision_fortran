@@ -142,6 +142,26 @@ module lpf_lapack_fp16
             type(fp16), intent(inout)  :: a( lda, * ), tau( * ), work( * )
         end subroutine
     end interface
+
+    interface
+        module subroutine gemqrt( side, trans, m, n, k, nb, v, ldv, t, ldt,     &
+            &                   c, ldc, work, info )
+            character, intent(in) :: side, trans
+            integer(lpf_default_int_kind), intent(in) :: k, ldv, ldc, m, n, nb, ldt
+            integer(lpf_default_int_kind), intent(out) :: info
+            type(fp16), intent(in) ::  v( ldv, * ), t(ldt, *)
+            type(fp16), intent(inout) :: c( ldc, * ), work( * )
+        end subroutine
+    end interface
+    interface
+        module subroutine ormqr( side, trans, m, n, k, a, lda, tau, c, ldc, work, lwork, info )
+            character, intent(in) ::          side, trans
+            integer(lpf_default_int_kind), intent(inout) ::            info, lwork
+            integer(lpf_default_int_kind), intent(in)    ::   lda, ldc, m, n, k
+            type(fp16), intent(in)  ::  a( lda, * ), tau(*)
+            type(fp16), intent(inout) :: c( ldc, * ), work( * )
+        end subroutine
+    end interface
   contains
     function lsame(ca,cb) result(out)
         character, intent(in) :: ca,cb

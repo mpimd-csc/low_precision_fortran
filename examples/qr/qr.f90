@@ -188,7 +188,7 @@ subroutine qrf(m, n, house_norm, srcA, lda, st)
     real(real32) :: nrm_A
 
     nb = 64
-    lwork =  nb * max(m,n)
+    lwork =  nb * max(m,n) + (nb+1)**2
 
     k = min(m,n)
 
@@ -197,7 +197,7 @@ subroutine qrf(m, n, house_norm, srcA, lda, st)
     allocate(Q(m,m))
     allocate(QQ(m,m))
     allocate(tau(k))
-    allocate(work(nb*max(m,n)))
+    allocate(work(lwork))
 
     st = qr_stats_init(m,n, house_norm, "geqrf")
 
@@ -223,7 +223,8 @@ subroutine qrf(m, n, house_norm, srcA, lda, st)
         Q(l,l) = 1.0
         QQ(l,l) = 1.0
     end do
-    call orm2r("L", "N", m, m, k, A, m, tau, Q, m, work, info )
+    ! call orm2r("L", "N", m, m, k, A, m, tau, Q, m, work, info )
+    call ormqr("L", "N", m, m, k, A, m, tau, Q, m, work, lwork, info )
 
     call hgemm("T", "N", m, m, m, fp16(-1.0), Q, m, Q, m, fp16(1.0), QQ, m)
 
