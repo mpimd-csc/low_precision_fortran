@@ -162,8 +162,34 @@ module lpf_lapack_fp16
             type(fp16), intent(inout) :: c( ldc, * ), work( * )
         end subroutine
     end interface
-  contains
-    function lsame(ca,cb) result(out)
+    interface
+        module subroutine geqrt( norm, m, n, nb, a, lda, t, ldt, work, info )
+            integer(lpf_default_int_kind), intent(in)  :: lda, ldt, m, n, nb
+            integer(lpf_default_int_kind), intent(out) :: info
+            type(fp16), intent(inout) :: a( lda, * ), t( ldt, * ), work( * )
+            character(len=*), intent(in)  :: norm
+        end subroutine
+    end interface
+    interface
+        module subroutine geqrt2( norm, m, n, a, lda, t, ldt, info )
+            integer(lpf_default_int_kind), intent(in) :: lda, ldt, m, n
+            integer(lpf_default_int_kind), intent(inout) :: info
+            type(fp16), intent(inout) :: a( lda, * ), t( ldt, * )
+            character(len=*), intent(in)  :: norm
+        end subroutine
+    end interface
+
+    interface
+        module recursive subroutine geqrt3( norm, m, n, a, lda, t, ldt, info )
+            integer(lpf_default_int_kind), intent(in) :: lda, m, n, ldt
+            integer(lpf_default_int_kind), intent(out) :: info
+            character(len=*), intent(in)  :: norm
+            type(fp16), intent(inout) ::  a( lda, * ), t( ldt, * )
+        end subroutine
+        end interface
+
+    contains
+        function lsame(ca,cb) result(out)
         character, intent(in) :: ca,cb
         logical :: out
         intrinsic :: ichar

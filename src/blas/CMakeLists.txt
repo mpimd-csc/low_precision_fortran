@@ -54,6 +54,9 @@ if (LPF_HAVE_FP16)
         fp16/lapack/qr/geqr2.f90
         fp16/lapack/qr/geqr2_v1.f90
         fp16/lapack/qr/geqrf.f90
+        fp16/lapack/qr/geqrt.f90
+        fp16/lapack/qr/geqrt2.f90
+        fp16/lapack/qr/geqrt3.f90
         fp16/lapack/qr/gemqrt.f90
         fp16/lapack/qr/orm2r.f90
         fp16/lapack/qr/ormqr.f90
