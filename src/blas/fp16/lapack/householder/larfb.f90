@@ -285,7 +285,7 @@ contains
                     !          w := c1
                     !
                     do j = 1, k
-                        call hcopy( m, c( 1, j ), 1, work( 1, j ), 1_lpf_default_int_kind )
+                        call hcopy( m, c( 1, j ), 1_lpf_default_int_kind, work( 1, j ), 1_lpf_default_int_kind )
                     end do
                     !
                     !          w := w * v1
@@ -389,7 +389,7 @@ contains
                     !          w := c2
                     !
                     do j = 1, k
-                        call hcopy( m, c( 1, n-k+j ), 1, work( 1, j ), 1_lpf_default_int_kind )
+                        call hcopy( m, c( 1, n-k+j ), 1_lpf_default_int_kind, work( 1, j ), 1_lpf_default_int_kind )
                     end do
                     !
                     !          w := w * v2
@@ -495,7 +495,7 @@ contains
                     !          w := c1
                     !
                     do j = 1, k
-                        call hcopy( m, c( 1, j ), 1, work( 1, j ), 1_lpf_default_int_kind )
+                        call hcopy( m, c( 1, j ), 1_lpf_default_int_kind, work( 1, j ), 1_lpf_default_int_kind )
                     end do
                     !
                     !          w := w * v1**t
@@ -599,7 +599,7 @@ contains
                     !          w := c2
                     !
                     do j = 1, k
-                        call hcopy( m, c( 1, n-k+j ), 1, work( 1, j ), 1_lpf_default_int_kind )
+                        call hcopy( m, c( 1, n-k+j ), 1_lpf_default_int_kind, work( 1, j ), 1_lpf_default_int_kind )
                     end do
                     !
                     !          w := w * v2**t
