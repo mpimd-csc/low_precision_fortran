@@ -167,7 +167,7 @@ contains
             !
             !        compute householder transform when n=1
             !
-            call larfg( norm, m, a(1,1), a( min( 2, m ), 1 ), 1, t(1,1) )
+            call larfg( norm, m, a(1,1), a( min( 2, m ), 1 ), 1_lpf_default_int_kind, t(1,1) )
             !
         else
             !
