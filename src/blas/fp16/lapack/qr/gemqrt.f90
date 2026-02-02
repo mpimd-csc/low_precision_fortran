@@ -178,8 +178,7 @@ contains
             !     .. local scalars ..
             logical ::  left, right, tran, notran
             integer(lpf_default_int_kind) ::  i, ib, ldwork, kf, q
-            !     .. external subroutines ..
-            external ::  hpblas_xerbla
+
             !
             info   = 0
             left   = lsame( side,  'l' )
