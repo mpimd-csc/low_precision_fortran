@@ -92,6 +92,25 @@ module lpf_lapack_fp16
         end subroutine
     end interface
 
+    interface
+        module subroutine larfbv( side, trans, direct, storev, m, n, k, v, ldv, t, ldt, c, ldc, work, ldwork ) &
+                & bind(c, name="hlarfbv_")
+            character, intent(in) :: direct, side, storev, trans
+            integer(lpf_default_int_kind), intent(in) :: k, ldc, ldt, ldv, ldwork, m, n
+            type(fp16), intent(in) :: t( ldt, * ), v( ldv, * )
+            type(fp16), intent(inout) :: c( ldc, * ), work( ldwork, * )
+        end subroutine
+    end interface
+    interface
+        module recursive subroutine larftv( direct, storev, n, k, v, ldv, tau, t, ldt ) bind(c, name="hlarftv_")
+            character, intent(in) ::         direct, storev
+            integer(lpf_default_int_kind), intent(in)   ::     k, ldt, ldv, n
+            type(fp16), intent(out) ::   t( ldt, * )
+            type(fp16), intent(in)  ::   tau( * ), v( ldv, * )
+        end subroutine
+    end interface
+
+
     !
     ! Householder QR Decompositions
     !
@@ -142,6 +161,16 @@ module lpf_lapack_fp16
             type(fp16), intent(inout)  :: a( lda, * ), tau( * ), work( * )
         end subroutine
     end interface
+
+    interface
+        module subroutine geqrfv( norm, m, n, a, lda, diagr, tau, work, lwork, info )
+            integer(lpf_default_int_kind),  intent(inout) ::            info, lwork
+            integer(lpf_default_int_kind), intent(in) :: lda, m, n
+            character(len=*), intent(in)  :: norm
+            type(fp16), intent(inout)  :: a( lda, * ), diagr(*), tau( * ), work( * )
+        end subroutine
+    end interface
+
 
     interface
         module subroutine gemqrt( side, trans, m, n, k, nb, v, ldv, t, ldt,     &

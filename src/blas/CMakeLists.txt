@@ -47,13 +47,16 @@ if (LPF_HAVE_FP16)
 
         fp16/lapack/householder/larf.f90
         fp16/lapack/householder/larfb.f90
+        fp16/lapack/householder/larfbv.f90
         fp16/lapack/householder/larft.f90
+        fp16/lapack/householder/larftv.f90
         fp16/lapack/householder/larf1f.f90
         fp16/lapack/householder/larfg.f90
         fp16/lapack/householder/larfgv1.f90
         fp16/lapack/qr/geqr2.f90
         fp16/lapack/qr/geqr2_v1.f90
         fp16/lapack/qr/geqrf.f90
+        fp16/lapack/qr/geqrfv.f90
         fp16/lapack/qr/geqrt.f90
         fp16/lapack/qr/geqrt2.f90
         fp16/lapack/qr/geqrt3.f90

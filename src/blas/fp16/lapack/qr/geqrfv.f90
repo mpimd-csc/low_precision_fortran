@@ -1,4 +1,4 @@
-submodule(lpf_lapack_fp16) lpf_lapack_geqrfv_fp16
+submodule(lpf_lapack_fp16) lpf_lapack_geqrf_fp16
 
 contains
 
@@ -147,7 +147,7 @@ contains
     !> \endverbatim
     !>
     !  =====================================================================
-    module subroutine geqrf( norm, m, n, a, lda, tau, work, lwork, info ) bind(c, name="hgeqrf_")
+    module subroutine geqrfv( norm, m, n, a, lda, diagr, tau, work, lwork, info )
 
         !
         !  -- lapack computational routine --
@@ -160,7 +160,7 @@ contains
         character(len=*), intent(in)  :: norm
         !     ..
         !     .. array arguments ..
-        type(fp16), intent(inout)  :: a( lda, * ), tau( * ), work( * )
+        type(fp16), intent(inout)  :: a( lda, * ), diagr(*), tau( * ), work( * )
         !     ..
         !
         !  =====================================================================
@@ -189,10 +189,10 @@ contains
             info = -4
         else if( .not.lquery ) then
             if( lwork.le.0 .or. ( m.gt.0 .and. lwork.lt.max( 1, n ) ) )    &
-                &      info = -7
+                &      info = -8
         end if
         if( info.ne.0 ) then
-            call lpf_blas_xerbla( 'geqrf', -info )
+            call lpf_blas_xerbla( 'geqrfv', -info )
             return
         else if( lquery ) then
             if( k.eq.0 ) then
@@ -233,17 +233,17 @@ contains
                 !           compute the qr factorization of the current block
                 !           a(i:m,i:i+ib-1)
                 !
-                call geqr2( norm, m-i+1, ib, a( i, i ), lda, tau( i ), work, iinfo )
+                call geqr2_v1( norm, m-i+1, ib, a( i, i ), lda, diagr(i), tau( i ), work, iinfo )
                 if( i+ib.le.n ) then
                     !
                     !              form the triangular factor of the block reflector
                     !              h = h(i) h(i+1) . . . h(i+ib-1)
                     !
-                    call larft( 'forward', 'columnwise', m-i+1, ib, a( i, i ), lda, tau( i ), work, ldwork )
+                    call larftv( 'forward', 'columnwise', m-i+1, ib, a( i, i ), lda, tau( i ), work, ldwork )
                     !
                     !              apply h**t to a(i:m,i+ib:n) from the left
                     !
-                    call larfb( 'left', 'transpose', 'forward', 'columnwise', m-i+1, n-i-ib+1, ib,   &
+                    call larfbv( 'left', 'transpose', 'forward', 'columnwise', m-i+1, n-i-ib+1, ib,   &
                         &                      a( i, i ), lda, work, ldwork, a( i, i+ib ), lda, work( ib+1 ), ldwork )
                 end if
             end do
@@ -254,7 +254,7 @@ contains
         !     use unblocked code to factor the last or only block.
         !
         if( i.le.k ) then
-            call geqr2( norm, m-i+1, n-i+1, a( i, i ), lda, tau( i ), work, iinfo )
+            call geqr2_v1( norm, m-i+1, n-i+1, a( i, i ), lda, diagr(i), tau( i ), work, iinfo )
         end if
         !
         return
