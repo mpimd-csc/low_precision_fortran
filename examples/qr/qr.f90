@@ -265,7 +265,7 @@ subroutine qrfv(m, n, house_norm, srcA, lda, st)
     type(fp16), allocatable :: tau(:)
     type(fp16), allocatable :: work(:)
     type(fp16), allocatable :: diagr(:)
-    
+
     integer(lpf_default_int_kind) :: k, l, info
     real(real64) :: tic, toc
     real(real32) :: nrm_A
@@ -310,8 +310,8 @@ subroutine qrfv(m, n, house_norm, srcA, lda, st)
         Q(l,l) = 1.0
         QQ(l,l) = 1.0
     end do
-    call orm2rv("L", "N", m, m, k, A, m, tau, Q, m, work, info )
-    ! call ormqr("L", "N", m, m, k, A, m, tau, Q, m, work, lwork, info )
+    ! call orm2rv("L", "N", m, m, k, A, m, tau, Q, m, work, info )
+    call ormqrv("L", "N", m, m, k, A, m, tau, Q, m, work, lwork, info )
 
     call hgemm("T", "N", m, m, m, fp16(-1.0), Q, m, Q, m, fp16(1.0), QQ, m)
 
@@ -360,7 +360,7 @@ subroutine qrt(m, n, house_norm, srcA, lda, st)
 
     nb = 64
     lwork =  nb * max(m,n) + (nb+1)**2
-    ldt = nb 
+    ldt = nb
     k = min(m,n)
     nb = min(nb, k)
 

@@ -191,6 +191,17 @@ module lpf_lapack_fp16
             type(fp16), intent(inout) :: c( ldc, * ), work( * )
         end subroutine
     end interface
+
+    interface
+        module subroutine ormqrv( side, trans, m, n, k, a, lda, tau, c, ldc, work, lwork, info )
+            character, intent(in) ::          side, trans
+            integer(lpf_default_int_kind), intent(inout) ::            info, lwork
+            integer(lpf_default_int_kind), intent(in)    ::   lda, ldc, m, n, k
+            type(fp16), intent(in)  ::  a( lda, * ), tau(*)
+            type(fp16), intent(inout) :: c( ldc, * ), work( * )
+        end subroutine
+    end interface
+
     interface
         module subroutine geqrt( norm, m, n, nb, a, lda, t, ldt, work, info )
             integer(lpf_default_int_kind), intent(in)  :: lda, ldt, m, n, nb
