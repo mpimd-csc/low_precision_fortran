@@ -182,6 +182,19 @@ module lpf_lapack_fp16
             type(fp16), intent(inout) :: c( ldc, * ), work( * )
         end subroutine
     end interface
+
+    interface
+        module subroutine gemqrtv( side, trans, m, n, k, nb, v, ldv, t, ldt,     &
+            &                   c, ldc, work, info )
+            character, intent(in) :: side, trans
+            integer(lpf_default_int_kind), intent(in) :: k, ldv, ldc, m, n, nb, ldt
+            integer(lpf_default_int_kind), intent(out) :: info
+            type(fp16), intent(in) ::  v( ldv, * ), t(ldt, *)
+            type(fp16), intent(inout) :: c( ldc, * ), work( * )
+        end subroutine
+    end interface
+
+
     interface
         module subroutine ormqr( side, trans, m, n, k, a, lda, tau, c, ldc, work, lwork, info )
             character, intent(in) ::          side, trans
@@ -226,7 +239,34 @@ module lpf_lapack_fp16
             character(len=*), intent(in)  :: norm
             type(fp16), intent(inout) ::  a( lda, * ), t( ldt, * )
         end subroutine
-        end interface
+    end interface
+
+    interface
+        module subroutine geqrtv( norm, m, n, nb, a, lda, diagr, t, ldt, work, info )
+            integer(lpf_default_int_kind), intent(in)  :: lda, ldt, m, n, nb
+            integer(lpf_default_int_kind), intent(out) :: info
+            type(fp16), intent(inout) :: a( lda, * ), diagr(*), t( ldt, * ), work( * )
+            character(len=*), intent(in)  :: norm
+        end subroutine
+    end interface
+    interface
+        module subroutine geqrt2v( norm, m, n, a, lda, diagr, t, ldt, info )
+            integer(lpf_default_int_kind), intent(in) :: lda, ldt, m, n
+            integer(lpf_default_int_kind), intent(inout) :: info
+            type(fp16), intent(inout) :: a( lda, * ), diagr(*), t( ldt, * )
+            character(len=*), intent(in)  :: norm
+        end subroutine
+    end interface
+
+    interface
+        module recursive subroutine geqrt3v( norm, m, n, a, lda, diagr ,t, ldt, info )
+            integer(lpf_default_int_kind), intent(in) :: lda, m, n, ldt
+            integer(lpf_default_int_kind), intent(out) :: info
+            character(len=*), intent(in)  :: norm
+            type(fp16), intent(inout) ::  a( lda, * ), diagr(*), t( ldt, * )
+        end subroutine
+    end interface
+
 
     contains
         function lsame(ca,cb) result(out)
