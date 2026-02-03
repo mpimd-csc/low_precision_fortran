@@ -110,6 +110,14 @@ module lpf_lapack_fp16
         end subroutine
     end interface
 
+    interface
+        module subroutine tprfb( side, trans, direct, storev, m, n, k, l,       &
+                &                   v, ldv, t, ldt, a, lda, b, ldb, work, ldwork )
+            character, intent(in) ::  direct, side, storev, trans
+            integer(lpf_default_int_kind), intent(in) ::  k, l, lda, ldb, ldt, ldv, ldwork, m, n
+            type(fp16), intent(inout)  ::  a( lda, * ), b( ldb, * ), t( ldt, * ), v( ldv, * ), work( ldwork, * )
+        end subroutine
+    end interface
 
     !
     ! Householder QR Decompositions
@@ -267,7 +275,49 @@ module lpf_lapack_fp16
         end subroutine
     end interface
 
-
+    !
+    ! Tall-Skinny QR
+    !
+    interface
+        module subroutine latsqr( norm, m, n, mb, nb, a, lda, t, ldt, work, lwork, info )
+            character(len=*), intent(in)  :: norm
+            integer(lpf_default_int_kind), intent(inout) :: info, lwork
+            integer(lpf_default_int_kind), intent(in) :: lda, m, n, mb, nb, ldt
+            type(fp16), intent(inout) ::  a( lda, * ), work( * ), t( ldt, * )
+        end subroutine
+    end interface
+    interface
+        module subroutine tpqrt( norm, m, n, l, nb, a, lda, b, ldb, t, ldt, work, info )
+            integer(lpf_default_int_kind), intent(inout) ::  info
+            integer(lpf_default_int_kind), intent(in) :: lda, ldb, ldt, n, m, l, nb
+            character(len=*), intent(in)  :: norm
+            type(fp16), intent(inout) :: a( lda, * ), b( ldb, * ), t( ldt, * ), work( * )
+        end subroutine
+    end interface
+    interface
+        module subroutine tpqrt2( norm, m, n, l, a, lda, b, ldb, t, ldt, info )
+            integer(lpf_default_int_kind), intent(inout) ::   info
+            integer(lpf_default_int_kind), intent(in) :: lda, ldb, ldt, n, m, l
+            character(len=*), intent(in)  :: norm
+            type(fp16), intent(inout) ::  a( lda, * ), b( ldb, * ), t( ldt, * )
+        end subroutine
+    end interface
+    interface
+        module subroutine tpmqrt( side, trans, m, n, k, l, nb, v, ldv, t, ldt, a, lda, b, ldb, work, info )
+            character, intent(in) :: side, trans
+            integer(lpf_default_int_kind), intent(inout) ::    info
+            integer(lpf_default_int_kind), intent(in) :: k, ldv, lda, ldb, m, n, l, nb, ldt
+            type(fp16), intent(inout) ::   v( ldv, * ), a( lda, * ), b( ldb, * ), t( ldt, * ), work( * )
+        end subroutine
+    end interface
+    interface
+        module subroutine lamtsqr( side, trans, m, n, k, mb, nb, a, lda, t, ldt, c, ldc, work, lwork, info )
+            character, intent(in) :: side, trans
+            integer(lpf_default_int_kind), intent(inout) :: info, lwork
+            integer(lpf_default_int_kind), intent(in) :: lda, m, n, k, mb, nb, ldt, ldc
+            type(fp16), intent(inout) ::  a( lda, * ), work( * ), c( ldc, * ), t( ldt, * )
+        end subroutine
+    end interface
     contains
         function lsame(ca,cb) result(out)
         character, intent(in) :: ca,cb
