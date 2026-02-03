@@ -159,7 +159,7 @@ contains
             info = -6
         end if
         if( info.ne.0 ) then
-            call lpf_blas_xerbla( 'geqrt3', -info )
+            call lpf_blas_xerbla( 'geqrt3v', -info )
             return
         end if
         !
@@ -167,6 +167,7 @@ contains
             !
             !        compute householder transform when n=1
             !
+            diagr(1) = a(1,1)
             call larfgv1( norm, m, diagr(1), a(1,1), a( min( 2, m ), 1 ), 1_lpf_default_int_kind, t(1,1) )
             !
         else

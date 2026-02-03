@@ -157,6 +157,7 @@ contains
             !
             !        generate elem. refl. h(i) to annihilate a(i+1:m,i), tau(i) -> t
             !
+            diagr(i) = a(i,i)
             call larfgv1( norm, m-i+1, diagr(i), a( i, i ), a( min( i+1, m ), i ), 1_lpf_default_int_kind,       &
                 &                t( i, 1 ) )
 
