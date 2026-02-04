@@ -38,7 +38,7 @@ linux-clang:
     - haswell
   parallel:
     matrix:
-      - LLVM_VERSION: [ "20", "21"]
+      - LLVM_VERSION: [ "20", "21", "22" ]
         INTEGER8: [ 'INTEGER8_ON', 'INTEGER8_OFF' ]
   script:
     - export INTEGER8=${INTEGER8##INTEGER8_}
