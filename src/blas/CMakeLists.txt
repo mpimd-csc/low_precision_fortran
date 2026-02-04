@@ -55,7 +55,7 @@ if (LPF_HAVE_FP16)
         fp16/lapack/householder/larfgv1.f90
         fp16/lapack/householder/tprfb.f90
         fp16/lapack/qr/geqr2.f90
-        fp16/lapack/qr/geqr2_v1.f90
+        fp16/lapack/qr/geqr2v.f90
         fp16/lapack/qr/geqrf.f90
         fp16/lapack/qr/geqrfv.f90
         fp16/lapack/qr/geqrt.f90

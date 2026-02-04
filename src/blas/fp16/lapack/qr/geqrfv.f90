@@ -233,7 +233,7 @@ contains
                 !           compute the qr factorization of the current block
                 !           a(i:m,i:i+ib-1)
                 !
-                call geqr2_v1( norm, m-i+1, ib, a( i, i ), lda, diagr(i), tau( i ), work, iinfo )
+                call geqr2v( norm, m-i+1, ib, a( i, i ), lda, diagr(i), tau( i ), work, iinfo )
                 if( i+ib.le.n ) then
                     !
                     !              form the triangular factor of the block reflector
@@ -254,7 +254,7 @@ contains
         !     use unblocked code to factor the last or only block.
         !
         if( i.le.k ) then
-            call geqr2_v1( norm, m-i+1, n-i+1, a( i, i ), lda, diagr(i), tau( i ), work, iinfo )
+            call geqr2v( norm, m-i+1, n-i+1, a( i, i ), lda, diagr(i), tau( i ), work, iinfo )
         end if
         !
         return

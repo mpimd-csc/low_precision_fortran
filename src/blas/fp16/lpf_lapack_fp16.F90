@@ -132,7 +132,7 @@ module lpf_lapack_fp16
     end interface
 
     interface
-        module subroutine geqr2_v1( norm, m, n, a, lda, diagr, tau, work, info ) bind(c, name="hgeqr2_v1_")
+        module subroutine geqr2v( norm, m, n, a, lda, diagr, tau, work, info ) bind(c, name="hgeqr2v_")
             integer(lpf_default_int_kind), intent(in) ::  lda, m, n
             integer(lpf_default_int_kind), intent(inout) ::  info
             character(len=*), intent(in)  :: norm

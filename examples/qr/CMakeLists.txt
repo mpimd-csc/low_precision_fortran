@@ -6,6 +6,7 @@ add_executable(qr_benchmark
     qr.f90
     aux_print_matrix.f90
     qr_stats.f90
+    qr_calls.f90
 )
 
 TARGET_LINK_LIBRARIES(qr_benchmark

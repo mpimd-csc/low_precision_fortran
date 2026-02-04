@@ -1,4 +1,4 @@
-submodule(lpf_lapack_fp16) lpf_lapack_geqr2_v1_fp16
+submodule(lpf_lapack_fp16) lpf_lapack_geqr2v_fp16
 
 contains
 
@@ -130,7 +130,7 @@ contains
 !> \endverbatim
 !>
 !  =====================================================================
-      module subroutine geqr2_v1( norm, m, n, a, lda, diagr, tau, work, info ) bind(c, name="hgeqr2_v1_")
+      module subroutine geqr2v( norm, m, n, a, lda, diagr, tau, work, info ) bind(c, name="hgeqr2v_")
 !
 !  -- lapack computational routine --
 !  -- lapack is a software package provided by univ. of tennessee,    --
