@@ -45,6 +45,13 @@ if (LPF_HAVE_FP16)
         fp16/scaling/scale_diag_twoside.f90
         fp16/lpf_blas_fp16.F90
 
+        fp16/lapack/cholesky/potf2.f90
+        fp16/lapack/cholesky/potrf.f90
+        fp16/lapack/cholesky/potrf2.f90
+        fp16/lapack/cholesky/potrfp.f90
+        fp16/lapack/cholqr/gecholqr.f90
+        fp16/lapack/cholqr/gecholqr_shift.f90
+
         fp16/lapack/householder/larf.f90
         fp16/lapack/householder/larfb.f90
         fp16/lapack/householder/larfbv.f90

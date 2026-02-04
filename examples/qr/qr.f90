@@ -42,7 +42,7 @@ program qr_benchmark
 
     econ_q = .true.
 
-    do qr_type = 1, 14
+    do qr_type = 15, 16
         select case(qr_type)
             case (1)
                 call qrf2 (m, n, 'L', A, m, econ_q, runs, st)
@@ -72,6 +72,12 @@ program qr_benchmark
                 call tsqr (m, n, 'L', A, m, econ_q, runs, st)
             case (14)
                 call tsqr (m, n, 'H', A, m, econ_q, runs, st)
+            case (15)
+                call cholqr (m, n, 'H', A, m, econ_q, runs, st)
+            case (16)
+                call cholqr_shift (m, n, 'H', A, m, econ_q, runs, st)
+
+
 
         end select
 

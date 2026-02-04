@@ -28,6 +28,47 @@ module lpf_lapack_fp16
         end subroutine
     end interface
 
+
+    !
+    ! Cholesky Decompostion
+    !
+    interface
+        module subroutine potf2( uplo, n, a, lda, info )
+            character, intent(in) :: uplo
+            integer(lpf_default_int_kind), intent(in)   :: lda, n
+            integer(lpf_default_int_kind), intent(inout) :: info
+            type(fp16), intent(inout) :: a( lda, * )
+        end subroutine
+    end interface
+
+    interface
+        module subroutine potrf( uplo, n, a, lda, info )
+         character, intent(in) ::          uplo
+         integer(lpf_default_int_kind), intent(in) :: lda, n
+         integer(lpf_default_int_kind), intent(inout) :: info
+         type(fp16), intent(inout) ::  a( lda, * )
+        end subroutine
+    end interface
+
+    interface
+        module recursive subroutine potrf2( uplo, n, a, lda, info )
+            character, intent(in) ::          uplo
+            integer(lpf_default_int_kind), intent(in) ::  lda, n
+            integer(lpf_default_int_kind), intent(inout) :: info
+            type(fp16), intent(inout) ::               a( lda, * )
+        end subroutine
+    end interface
+
+    interface
+        module subroutine hpotrfp(uplo, n, a, lda, ipiv, info)
+            character, intent(in) :: uplo
+            integer(lpf_default_int_kind), intent(in) :: n, lda
+            integer(lpf_default_int_kind), intent(inout) :: info
+            integer(lpf_default_int_kind), intent(inout) :: ipiv(*)
+            type(fp16), intent(inout) :: a(lda, *)
+        end subroutine
+    end interface
+
     !
     ! Householder related functions
     !
@@ -318,6 +359,27 @@ module lpf_lapack_fp16
             type(fp16), intent(inout) ::  a( lda, * ), work( * ), c( ldc, * ), t( ldt, * )
         end subroutine
     end interface
+
+    !
+    ! Cholesky QR
+    !
+    interface
+        module subroutine gecholqr(m, n, a, lda, r, ldr, info)
+            integer(lpf_default_int_kind), intent(in)    :: m, n, lda, ldr
+            integer(lpf_default_int_kind), intent(inout) :: info
+            type(fp16) , intent(inout)   :: a(lda, *), r(ldr, *)
+        end subroutine
+    end interface
+    interface
+        module subroutine gecholqr_shift(m, n, a, lda, r, ldr, work, info)
+            implicit none
+            ! arguments
+            integer(lpf_default_int_kind), intent(in)   :: m, n, lda, ldr
+            integer(lpf_default_int_kind), intent(inout) :: info
+            type(fp16), intent(inout) :: a(lda, *), r(ldr, *), work(*)
+        end subroutine
+    end interface
+
     contains
         function lsame(ca,cb) result(out)
         character, intent(in) :: ca,cb
