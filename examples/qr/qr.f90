@@ -1,9 +1,10 @@
 program qr_benchmark
     use qr_stat
     use qr_calls
+    use lpf_types
     implicit none
 
-    integer :: m, n, runs
+    integer(lpf_default_int_kind) :: m, n, runs
 
     real (real32), allocatable :: A(:,:)
     character(len = 1024) :: arg
@@ -42,7 +43,7 @@ program qr_benchmark
 
     econ_q = .true.
 
-    do qr_type = 15, 16
+    do qr_type = 1, 16
         select case(qr_type)
             case (1)
                 call qrf2 (m, n, 'L', A, m, econ_q, runs, st)
