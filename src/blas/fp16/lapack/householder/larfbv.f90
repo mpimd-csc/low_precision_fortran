@@ -247,7 +247,7 @@ contains
                         !
                         !             w := w + c2**t * v2
                         !
-                        call hgemm( 'transpose','no transpose', n, k, m-k, one, c( k+1, 1 ),ldc, v( k+1, 1 ),ldv, one, work,ldwork)
+                        call gemm( 'transpose','no transpose', n, k, m-k, one, c( k+1, 1 ),ldc, v( k+1, 1 ),ldv, one, work,ldwork)
                     end if
                     !
                     !          w := w * t**t  or  w * t
@@ -260,7 +260,7 @@ contains
                         !
                         !             c2 := c2 - v2 * w**t
                         !
-                        call hgemm( 'no transpose', 'transpose', m-k, n, k, -one, v( k+1, 1 ), ldv, work, ldwork, one, &
+                        call gemm( 'no transpose', 'transpose', m-k, n, k, -one, v( k+1, 1 ), ldv, work, ldwork, one, &
                             c( k+1, 1 ), ldc )
                     end if
                     !
@@ -295,7 +295,7 @@ contains
                         !
                         !             w := w + c2 * v2
                         !
-                        call hgemm( 'no transpose', 'no transpose', m, k, n-k, one, c( 1, k+1 ), ldc, v( k+1, 1 ), ldv, &
+                        call gemm( 'no transpose', 'no transpose', m, k, n-k, one, c( 1, k+1 ), ldc, v( k+1, 1 ), ldv, &
                             one, work, ldwork )
                     end if
                     !
@@ -309,7 +309,7 @@ contains
                         !
                         !             c2 := c2 - w * v2**t
                         !
-                        call hgemm( 'no transpose', 'transpose', m, n-k, k, -one, work, ldwork, v( k+1, 1 ), ldv, one, &
+                        call gemm( 'no transpose', 'transpose', m, n-k, k, -one, work, ldwork, v( k+1, 1 ), ldv, one, &
                             c( 1, k+1 ), ldc )
                     end if
                     !
@@ -352,7 +352,7 @@ contains
                         !
                         !             w := w + c1**t * v1
                         !
-                        call hgemm( 'transpose', 'no transpose', n, k, m-k, one, c, ldc, v, ldv, one, work, ldwork )
+                        call gemm( 'transpose', 'no transpose', n, k, m-k, one, c, ldc, v, ldv, one, work, ldwork )
                     end if
                     !
                     !          w := w * t**t  or  w * t
@@ -365,7 +365,7 @@ contains
                         !
                         !             c1 := c1 - v1 * w**t
                         !
-                        call hgemm( 'no transpose', 'transpose', m-k, n, k, -one, v, ldv, work, ldwork, one, c, ldc )
+                        call gemm( 'no transpose', 'transpose', m-k, n, k, -one, v, ldv, work, ldwork, one, c, ldc )
                     end if
                     !
                     !          w := w * v2**t
@@ -399,7 +399,7 @@ contains
                         !
                         !             w := w + c1 * v1
                         !
-                        call hgemm( 'no transpose', 'no transpose', m, k, n-k, one, c, ldc, v, ldv, one, work, ldwork )
+                        call gemm( 'no transpose', 'no transpose', m, k, n-k, one, c, ldc, v, ldv, one, work, ldwork )
                     end if
                     !
                     !          w := w * t  or  w * t**t
@@ -412,7 +412,7 @@ contains
                         !
                         !             c1 := c1 - w * v1**t
                         !
-                        call hgemm( 'no transpose', 'transpose', m, n-k, k, -one, work, ldwork, v, ldv, one, c, ldc )
+                        call gemm( 'no transpose', 'transpose', m, n-k, k, -one, work, ldwork, v, ldv, one, c, ldc )
                     end if
                     !
                     !          w := w * v2**t
@@ -456,7 +456,7 @@ contains
                         !
                         !             w := w + c2**t * v2**t
                         !
-                        call hgemm( 'transpose', 'transpose', n, k, m-k, one,  c( k+1, 1 ), ldc, v( 1, k+1 ), ldv, one, &
+                        call gemm( 'transpose', 'transpose', n, k, m-k, one,  c( k+1, 1 ), ldc, v( 1, k+1 ), ldv, one, &
                             work, ldwork )
                     end if
                     !
@@ -470,7 +470,7 @@ contains
                         !
                         !             c2 := c2 - v2**t * w**t
                         !
-                        call hgemm( 'transpose', 'transpose', m-k, n, k, -one,  v( 1, k+1 ), ldv, work, ldwork, one, &
+                        call gemm( 'transpose', 'transpose', m-k, n, k, -one,  v( 1, k+1 ), ldv, work, ldwork, one, &
                             c( k+1, 1 ), ldc )
                     end if
                     !
@@ -505,7 +505,7 @@ contains
                         !
                         !             w := w + c2 * v2**t
                         !
-                        call hgemm( 'no transpose', 'transpose', m, k, n-k, one, c( 1, k+1 ), ldc, v( 1, k+1 ), ldv, &
+                        call gemm( 'no transpose', 'transpose', m, k, n-k, one, c( 1, k+1 ), ldc, v( 1, k+1 ), ldv, &
                             one, work, ldwork )
                     end if
                     !
@@ -519,7 +519,7 @@ contains
                         !
                         !             c2 := c2 - w * v2
                         !
-                        call hgemm( 'no transpose', 'no transpose', m, n-k, k, -one, work, ldwork, v( 1, k+1 ), ldv, one, &
+                        call gemm( 'no transpose', 'no transpose', m, n-k, k, -one, work, ldwork, v( 1, k+1 ), ldv, one, &
                             c( 1, k+1 ), ldc )
                     end if
                     !
@@ -562,7 +562,7 @@ contains
                         !
                         !             w := w + c1**t * v1**t
                         !
-                        call hgemm( 'transpose', 'transpose', n, k, m-k, one, c, ldc, v, ldv, one, work, ldwork )
+                        call gemm( 'transpose', 'transpose', n, k, m-k, one, c, ldc, v, ldv, one, work, ldwork )
                     end if
                     !
                     !          w := w * t**t  or  w * t
@@ -575,7 +575,7 @@ contains
                         !
                         !             c1 := c1 - v1**t * w**t
                         !
-                        call hgemm( 'transpose', 'transpose', m-k, n, k, -one, v, ldv, work, ldwork, one, c, ldc )
+                        call gemm( 'transpose', 'transpose', m-k, n, k, -one, v, ldv, work, ldwork, one, c, ldc )
                     end if
                     !
                     !          w := w * v2
@@ -609,7 +609,7 @@ contains
                         !
                         !             w := w + c1 * v1**t
                         !
-                        call hgemm( 'no transpose', 'transpose', m, k, n-k, one, c, ldc, v, ldv, one, work, ldwork )
+                        call gemm( 'no transpose', 'transpose', m, k, n-k, one, c, ldc, v, ldv, one, work, ldwork )
                     end if
                     !
                     !          w := w * t  or  w * t**t
@@ -622,7 +622,7 @@ contains
                         !
                         !             c1 := c1 - w * v1
                         !
-                        call hgemm( 'no transpose', 'no transpose', m, n-k, k, -one, work, ldwork, v, ldv, one, c, ldc )
+                        call gemm( 'no transpose', 'no transpose', m, n-k, k, -one, work, ldwork, v, ldv, one, c, ldc )
                     end if
                     !
                     !          w := w * v2

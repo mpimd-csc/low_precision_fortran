@@ -451,26 +451,28 @@ module lpf_blas_fp16
     ! Level 3
     !
     interface gemm
-        subroutine hgemm(transa,transb,m,n,k,alpha,a,lda,b,ldb,beta,c,ldc) bind(C, name = "lpf_blas_hgemm_fortran")
+        subroutine hgemm(transa,transb,m,n,k,alpha,a,lda,b,ldb,beta,c,ldc) bind(C, name = "lpf_blas_hgemm_fortran_dyn_rank")
             use, intrinsic :: iso_c_binding
             use lpf_fp16
-            import :: lpf_default_c_int_kind
+            import :: lpf_default_int_kind
 
-            integer(lpf_default_c_int_kind), intent(in) :: ldc
-            integer(lpf_default_c_int_kind), intent(in) :: ldb
-            integer(lpf_default_c_int_kind), intent(in) :: lda
-            character(c_char), dimension(*), intent(in) :: transa
-            character(c_char), dimension(*), intent(in) :: transb
-            integer(lpf_default_c_int_kind), intent(in) :: m
-            integer(lpf_default_c_int_kind), intent(in) :: n
-            integer(lpf_default_c_int_kind), intent(in) :: k
+            integer(lpf_default_int_kind), intent(in) :: ldc
+            integer(lpf_default_int_kind), intent(in) :: ldb
+            integer(lpf_default_int_kind), intent(in) :: lda
+            character, intent(in) :: transa
+            character, intent(in) :: transb
+            integer(lpf_default_int_kind), intent(in) :: m
+            integer(lpf_default_int_kind), intent(in) :: n
+            integer(lpf_default_int_kind), intent(in) :: k
             type(fp16), intent(in) :: alpha
-            type(fp16), intent(in) :: a(lda,*)
-            type(fp16), intent(in) :: b(ldb,*)
+            type(fp16), intent(in) :: a(..)
+            type(fp16), intent(in) :: b(..)
             type(fp16), intent(in) :: beta
-            type(fp16), intent(inout) :: c(ldc,*)
+            type(fp16), intent(inout) :: c(..)
         end subroutine hgemm
+
     end interface
+
 
     interface gemm_fp32
         subroutine hgemm_fp32(transa,transb,m,n,k,alpha,a,lda,b,ldb,beta,c,ldc) bind(C, name = "lpf_blas_hgemm_fp32_fortran")
@@ -707,6 +709,74 @@ module lpf_blas_fp16
         end subroutine
     end interface scale_diag
 
+    interface scale_diag_right
+        module subroutine scale_diag_rightfp16(m, n, a, lda, dr, info)
+            integer(lpf_default_int_kind), intent(in) :: m, n, lda
+            integer(lpf_default_int_kind), intent(inout) :: info
+            type(fp16), intent(inout), dimension(lda, *) :: a
+            type(fp16), intent(out), dimension(*) :: dr
+        end subroutine
+    end interface scale_diag_right
 
+
+! contains
+!
+!     subroutine hgemm(transa,transb,m,n,k,alpha,a,lda,b,ldb,beta,c,ldc)
+!         use, intrinsic :: iso_c_binding
+!         use lpf_fp16
+!
+!         integer(lpf_default_int_kind), intent(in) :: ldc
+!         integer(lpf_default_int_kind), intent(in) :: ldb
+!         integer(lpf_default_int_kind), intent(in) :: lda
+!         character, intent(in) :: transa
+!         character, intent(in) :: transb
+!         integer(lpf_default_int_kind), intent(in) :: m
+!         integer(lpf_default_int_kind), intent(in) :: n
+!         integer(lpf_default_int_kind), intent(in) :: k
+!         type(fp16), intent(in) :: alpha
+!         type(fp16), intent(in) :: a(..)
+!         type(fp16), intent(in) :: b(..)
+!         type(fp16), intent(in) :: beta
+!         type(fp16), intent(inout) :: c(..)
+!
+!         select rank(a)
+!             rank(0)
+!                 select rank(b)
+!                     rank(0)
+!                         select rank(c)
+!                             rank(0)
+!                                 call hgemm_c(transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c, ldc)
+!                             rank(*)
+!                                 call hgemm_c(transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c(1), ldc)
+!                         end select
+!                     rank(*)
+!                          select rank(c)
+!                             rank(0)
+!                                 call hgemm_c(transa, transb, m, n, k, alpha, a, lda, b(1), ldb, beta, c, ldc)
+!                             rank(*)
+!                                 call hgemm_c(transa, transb, m, n, k, alpha, a, lda, b(1), ldb, beta, c(1), ldc)
+!                         end select
+!                 end select
+!             rank(*)
+!                 select rank(b)
+!                     rank(0)
+!                         select rank(c)
+!                             rank(0)
+!                                 call hgemm_c(transa, transb, m, n, k, alpha, a(1), lda, b, ldb, beta, c, ldc)
+!                             rank(*)
+!                                 call hgemm_c(transa, transb, m, n, k, alpha, a(1), lda, b, ldb, beta, c(1), ldc)
+!                         end select
+!                     rank(*)
+!                          select rank(c)
+!                             rank(0)
+!                                 call hgemm_c(transa, transb, m, n, k, alpha, a(1), lda, b(1), ldb, beta, c, ldc)
+!                             rank(*)
+!                                 call hgemm_c(transa, transb, m, n, k, alpha, a(1), lda, b(1), ldb, beta, c(1), ldc)
+!                         end select
+!                 end select
+!         end select
+!
+!     end subroutine hgemm
+!
 
 end module

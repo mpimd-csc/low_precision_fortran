@@ -308,7 +308,7 @@ contains
             !        t_{1,2} = v_{3,1}'*v_{3,2} + t_{1,2}
             !        note: we assume k <= n, and gemm will do nothing if n=k
             !
-            call hgemm('transpose', 'no transpose', l, k-l, n-k, one, v(k+1, 1), ldv, v(k+1, l+1), ldv, one, t(1, l+1), ldt)
+            call gemm('transpose', 'no transpose', l, k-l, n-k, one, v(k+1, 1), ldv, v(k+1, l+1), ldv, one, t(1, l+1), ldt)
             !
             !        at this point, we have that t_{1,2} = v_1'*v_2
             !        all that is left is to pre and post multiply by -t_{1,1} and t_
@@ -394,7 +394,7 @@ contains
             !        t_{1,2} = v_{1,3}*v_{2,3}' + t_{1,2}
             !        note: we assume k <= n, and gemm will do nothing if n=k
             !
-            call hgemm('no transpose', 'transpose', l, k-l, n-k, one, v(1, k+1), ldv, v(l+1, k+1), ldv, one, t(1, l+1), ldt)
+            call gemm('no transpose', 'transpose', l, k-l, n-k, one, v(1, k+1), ldv, v(l+1, k+1), ldv, one, t(1, l+1), ldt)
             !
             !        at this point, we have that t_{1,2} = v_1*v_2'
             !        all that is left is to pre and post multiply by -t_{1,1} and t_
@@ -483,7 +483,7 @@ contains
             !        t_{2,1} = v_{2,2}'*v_{2,1} + t_{2,1}
             !        note: we assume k <= n, and gemm will do nothing if n=k
             !
-            call hgemm('transpose', 'no transpose', l, k-l, n-k, one, v(1, k-l+1), ldv, v, ldv, one, t(k-l+1, 1), ldt)
+            call gemm('transpose', 'no transpose', l, k-l, n-k, one, v(1, k-l+1), ldv, v, ldv, one, t(k-l+1, 1), ldt)
             !
             !        at this point, we have that t_{2,1} = v_2'*v_1
             !        all that is left is to pre and post multiply by -t_{2,2} and t_
@@ -576,7 +576,7 @@ contains
             !        t_{2,1} = v_{2,1}*v_{1,1}' + t_{2,1}
             !        note: we assume k <= n, and gemm will do nothing if n=k
             !
-            call hgemm('no transpose', 'transpose', l, k-l, n-k, one,      &
+            call gemm('no transpose', 'transpose', l, k-l, n-k, one,      &
                 &               v(k-l+1, 1), ldv, v, ldv, one, t(k-l+1, 1),        &
                 &               ldt)
 

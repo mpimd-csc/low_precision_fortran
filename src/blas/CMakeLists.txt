@@ -43,6 +43,7 @@ if (LPF_HAVE_FP16)
     ADD_SUBDIRECTORY(fp16/aux)
     SET(SRC ${SRC}
         fp16/scaling/scale_diag_twoside.f90
+        fp16/scaling/scale_diag_right.f90
         fp16/lpf_blas_fp16.F90
 
         fp16/lapack/cholesky/potf2.f90
@@ -96,12 +97,14 @@ if (LPF_HAVE_BF16)
     ADD_SUBDIRECTORY(bf16/aux)
     SET(SRC ${SRC}
         bf16/scaling/scale_diag_twoside.f90
+        bf16/scaling/scale_diag_right.f90
         bf16/lpf_blas_bf16.F90)
 endif()
 
 
 SET(SRC ${SRC}
     highprecision/scale_diag_twoside.f90
+    highprecision/scale_diag_right.f90
 )
 
 ADD_LIBRARY(lpf_blas
