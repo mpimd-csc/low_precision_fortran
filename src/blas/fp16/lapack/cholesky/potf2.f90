@@ -175,7 +175,8 @@ contains
                 !           compute elements j+1:n of row j.
                 !
                 if( j.lt.n ) then
-                    call hgemv( 'transpose', j-1, n-j, -one, a( 1, j+1 ), lda, a( 1, j ), 1, one, a( j, j+1 ), lda )
+                    call hgemv( 'transpose', j-1, n-j, -one, a( 1, j+1 ), lda, a( 1, j ), 1_lpf_default_int_kind, &
+                        & one, a( j, j+1 ), lda )
                     call hscal( n-j, one / ajj, a( j, j+1 ), lda )
                 end if
             end do

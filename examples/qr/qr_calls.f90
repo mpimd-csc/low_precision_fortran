@@ -545,6 +545,10 @@ contains
         ! Get R
         R = 0.0
         call hlacpy("u", k, n, A, m , R, k)
+        do l = 1, k
+            R(l,l) = diagr(l)
+        end do
+
 
         ! Get Q
         Q = 0.0

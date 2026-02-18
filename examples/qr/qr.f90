@@ -1,9 +1,10 @@
 program qr_benchmark
     use qr_stat
     use qr_calls
+    use lpf_types
     implicit none
 
-    integer :: m, n, runs
+    integer(lpf_default_int_kind) :: m, n, runs
 
     real (real32), allocatable :: A(:,:)
     character(len = 1024) :: arg

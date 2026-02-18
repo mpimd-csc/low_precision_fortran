@@ -199,7 +199,7 @@ contains
     !> \ingroup lamtsqr
     !>
     !  =====================================================================
-    subroutine lamtsqr( side, trans, m, n, k, mb, nb, a, lda, t, ldt, c, ldc, work, lwork, info )
+    module subroutine lamtsqr( side, trans, m, n, k, mb, nb, a, lda, t, ldt, c, ldc, work, lwork, info )
         implicit none
         !
         !  -- lapack computational routine --

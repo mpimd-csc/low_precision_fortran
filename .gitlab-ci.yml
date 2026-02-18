@@ -38,7 +38,7 @@ linux-clang:
     - haswell
   parallel:
     matrix:
-      - LLVM_VERSION: [ "20", "21"]
+      - LLVM_VERSION: [ "20", "21", "22" ]
         INTEGER8: [ 'INTEGER8_ON', 'INTEGER8_OFF' ]
   script:
     - apt update && apt install -y libblas-dev libblas64-dev liblapack-dev liblapack64-dev
