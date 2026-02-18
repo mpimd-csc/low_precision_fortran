@@ -12,6 +12,7 @@ program qr_benchmark
     external slarnv
     integer :: qr_type
     logical :: econ_q
+    integer :: type_start
 
     m = 100
     n = 100
@@ -42,7 +43,13 @@ program qr_benchmark
 
     econ_q = .true.
 
-    do qr_type = 15, 16
+    if ( m .le. 2000 ) then
+        type_start = 1
+    else
+        type_start = 5
+    end if
+
+    do qr_type = type_start, 16
         select case(qr_type)
             case (1)
                 call qrf2 (m, n, 'L', A, m, econ_q, runs, st)
