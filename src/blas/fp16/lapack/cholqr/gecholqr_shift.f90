@@ -147,7 +147,7 @@ contains
         do it = 1, 3
             ! call hsyrk( "upper", "trans", n, m, one, a, lda, zero, work, n)
 
-            call hgemm("T", "N", n, n, m, one, a, lda, a, lda, zero, work, n)
+            call gemm("T", "N", n, n, m, one, a, lda, a, lda, zero, work, n)
 
             if ( it .le. 1 ) then
                 do k = 1, n

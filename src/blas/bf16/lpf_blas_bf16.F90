@@ -711,4 +711,14 @@ module lpf_blas_bf16
         end subroutine
     end interface scale_diag
 
+    interface scale_diag_right
+        module subroutine scale_diag_right_bf16(m, n, a, lda, dr, info)
+            integer(lpf_default_int_kind), intent(in) :: m, n, lda
+            integer(lpf_default_int_kind), intent(inout) :: info
+            type(bf16), intent(inout), dimension(lda, *) :: a
+            type(bf16), intent(out), dimension(*) :: dr
+        end subroutine
+    end interface scale_diag_right
+
+
 end module

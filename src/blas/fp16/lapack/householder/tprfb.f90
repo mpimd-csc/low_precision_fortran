@@ -348,9 +348,9 @@ contains
             end do
             call htrmm( 'l', 'u', 't', 'n', l, n, one, v( mp, 1 ), ldv,    &
                 &               work, ldwork )
-            call hgemm( 't', 'n', l, n, m-l, one, v, ldv, b, ldb,          &
+            call gemm( 't', 'n', l, n, m-l, one, v, ldv, b, ldb,          &
                 &               one, work, ldwork )
-            call hgemm( 't', 'n', k-l, n, m, one, v( 1, kp ), ldv,         &
+            call gemm( 't', 'n', k-l, n, m, one, v( 1, kp ), ldv,         &
                 &               b, ldb, zero, work( kp, 1 ), ldwork )
             !
             do j = 1, n
@@ -368,9 +368,9 @@ contains
                 end do
             end do
             !
-            call hgemm( 'n', 'n', m-l, n, k, -one, v, ldv, work, ldwork,   &
+            call gemm( 'n', 'n', m-l, n, k, -one, v, ldv, work, ldwork,   &
                 &               one, b, ldb )
-            call hgemm( 'n', 'n', l, n, k-l, -one, v( mp, kp ), ldv,       &
+            call gemm( 'n', 'n', l, n, k-l, -one, v( mp, kp ), ldv,       &
                 &               work( kp, 1 ), ldwork, one, b( mp, 1 ),  ldb )
             call htrmm( 'l', 'u', 'n', 'n', l, n, one, v( mp, 1 ), ldv,    &
                 &               work, ldwork )
@@ -408,9 +408,9 @@ contains
             end do
             call htrmm( 'r', 'u', 'n', 'n', m, l, one, v( np, 1 ), ldv,    &
                 &               work, ldwork )
-            call hgemm( 'n', 'n', m, l, n-l, one, b, ldb,                  &
+            call gemm( 'n', 'n', m, l, n-l, one, b, ldb,                  &
                 &               v, ldv, one, work, ldwork )
-            call hgemm( 'n', 'n', m, k-l, n, one, b, ldb,                  &
+            call gemm( 'n', 'n', m, k-l, n, one, b, ldb,                  &
                 &               v( 1, kp ), ldv, zero, work( 1, kp ), ldwork )
             !
             do j = 1, k
@@ -428,9 +428,9 @@ contains
                 end do
             end do
             !
-            call hgemm( 'n', 't', m, n-l, k, -one, work, ldwork,           &
+            call gemm( 'n', 't', m, n-l, k, -one, work, ldwork,           &
                 &               v, ldv, one, b, ldb )
-            call hgemm( 'n', 't', m, l, k-l, -one, work( 1, kp ),          &
+            call gemm( 'n', 't', m, l, k-l, -one, work( 1, kp ),          &
                 &               ldwork,                                            &
                 &               v( np, kp ), ldv, one, b( 1, np ), ldb )
             call htrmm( 'r', 'u', 't', 'n', m, l, one, v( np, 1 ), ldv,    &
@@ -471,9 +471,9 @@ contains
             !
             call htrmm( 'l', 'l', 't', 'n', l, n, one, v( 1, kp ), ldv,    &
                 &               work( kp, 1 ), ldwork )
-            call hgemm( 't', 'n', l, n, m-l, one, v( mp, kp ), ldv,        &
+            call gemm( 't', 'n', l, n, m-l, one, v( mp, kp ), ldv,        &
                 &               b( mp, 1 ), ldb, one, work( kp, 1 ), ldwork )
-            call hgemm( 't', 'n', k-l, n, m, one, v, ldv,                  &
+            call gemm( 't', 'n', k-l, n, m, one, v, ldv,                  &
                 &               b, ldb, zero, work, ldwork )
             !
             do j = 1, n
@@ -491,9 +491,9 @@ contains
                 end do
             end do
             !
-            call hgemm( 'n', 'n', m-l, n, k, -one, v( mp, 1 ), ldv,        &
+            call gemm( 'n', 'n', m-l, n, k, -one, v( mp, 1 ), ldv,        &
                 &               work, ldwork, one, b( mp, 1 ), ldb )
-            call hgemm( 'n', 'n', l, n, k-l, -one, v, ldv,                 &
+            call gemm( 'n', 'n', l, n, k-l, -one, v, ldv,                 &
                 &               work, ldwork, one, b,  ldb )
             call htrmm( 'l', 'l', 'n', 'n', l, n, one, v( 1, kp ), ldv,    &
                 &               work( kp, 1 ), ldwork )
@@ -531,9 +531,9 @@ contains
             end do
             call htrmm( 'r', 'l', 'n', 'n', m, l, one, v( 1, kp ), ldv,    &
                 &               work( 1, kp ), ldwork )
-            call hgemm( 'n', 'n', m, l, n-l, one, b( 1, np ), ldb,         &
+            call gemm( 'n', 'n', m, l, n-l, one, b( 1, np ), ldb,         &
                 &               v( np, kp ), ldv, one, work( 1, kp ), ldwork )
-            call hgemm( 'n', 'n', m, k-l, n, one, b, ldb,                  &
+            call gemm( 'n', 'n', m, k-l, n, one, b, ldb,                  &
                 &               v, ldv, zero, work, ldwork )
             !
             do j = 1, k
@@ -551,9 +551,9 @@ contains
                 end do
             end do
             !
-            call hgemm( 'n', 't', m, n-l, k, -one, work, ldwork,           &
+            call gemm( 'n', 't', m, n-l, k, -one, work, ldwork,           &
                 &               v( np, 1 ), ldv, one, b( 1, np ), ldb )
-            call hgemm( 'n', 't', m, l, k-l, -one, work, ldwork,           &
+            call gemm( 'n', 't', m, l, k-l, -one, work, ldwork,           &
                 &               v, ldv, one, b, ldb )
             call htrmm( 'r', 'l', 't', 'n', m, l, one, v( 1, kp ), ldv,    &
                 &               work( 1, kp ), ldwork )
@@ -591,9 +591,9 @@ contains
             end do
             call htrmm( 'l', 'l', 'n', 'n', l, n, one, v( 1, mp ), ldv,    &
                 &               work, ldb )
-            call hgemm( 'n', 'n', l, n, m-l, one, v, ldv,b, ldb,           &
+            call gemm( 'n', 'n', l, n, m-l, one, v, ldv,b, ldb,           &
                 &               one, work, ldwork )
-            call hgemm( 'n', 'n', k-l, n, m, one, v( kp, 1 ), ldv,         &
+            call gemm( 'n', 'n', k-l, n, m, one, v( kp, 1 ), ldv,         &
                 &               b, ldb, zero, work( kp, 1 ), ldwork )
             !
             do j = 1, n
@@ -611,9 +611,9 @@ contains
                 end do
             end do
             !
-            call hgemm( 't', 'n', m-l, n, k, -one, v, ldv, work, ldwork,   &
+            call gemm( 't', 'n', m-l, n, k, -one, v, ldv, work, ldwork,   &
                 &               one, b, ldb )
-            call hgemm( 't', 'n', l, n, k-l, -one, v( kp, mp ), ldv,       &
+            call gemm( 't', 'n', l, n, k-l, -one, v( kp, mp ), ldv,       &
                 &               work( kp, 1 ), ldwork, one, b( mp, 1 ), ldb )
             call htrmm( 'l', 'l', 't', 'n', l, n, one, v( 1, mp ), ldv,    &
                 &               work, ldwork )
@@ -650,9 +650,9 @@ contains
             end do
             call htrmm( 'r', 'l', 't', 'n', m, l, one, v( 1, np ), ldv,    &
                 &               work, ldwork )
-            call hgemm( 'n', 't', m, l, n-l, one, b, ldb, v, ldv,          &
+            call gemm( 'n', 't', m, l, n-l, one, b, ldb, v, ldv,          &
                 &               one, work, ldwork )
-            call hgemm( 'n', 't', m, k-l, n, one, b, ldb,                  &
+            call gemm( 'n', 't', m, k-l, n, one, b, ldb,                  &
                 &               v( kp, 1 ), ldv, zero, work( 1, kp ), ldwork )
             !
             do j = 1, k
@@ -670,9 +670,9 @@ contains
                 end do
             end do
             !
-            call hgemm( 'n', 'n', m, n-l, k, -one, work, ldwork,           &
+            call gemm( 'n', 'n', m, n-l, k, -one, work, ldwork,           &
                 &               v, ldv, one, b, ldb )
-            call hgemm( 'n', 'n', m, l, k-l, -one, work( 1, kp ),          &
+            call gemm( 'n', 'n', m, l, k-l, -one, work( 1, kp ),          &
                 &               ldwork,                                            &
                 &               v( kp, np ), ldv, one, b( 1, np ), ldb )
             call htrmm( 'r', 'l', 'n', 'n', m, l, one, v( 1, np ), ldv,    &
@@ -711,9 +711,9 @@ contains
             end do
             call htrmm( 'l', 'u', 'n', 'n', l, n, one, v( kp, 1 ), ldv,    &
                 &               work( kp, 1 ), ldwork )
-            call hgemm( 'n', 'n', l, n, m-l, one, v( kp, mp ), ldv,        &
+            call gemm( 'n', 'n', l, n, m-l, one, v( kp, mp ), ldv,        &
                 &               b( mp, 1 ), ldb, one, work( kp, 1 ), ldwork )
-            call hgemm( 'n', 'n', k-l, n, m, one, v, ldv, b, ldb,          &
+            call gemm( 'n', 'n', k-l, n, m, one, v, ldv, b, ldb,          &
                 &               zero, work, ldwork )
             !
             do j = 1, n
@@ -731,9 +731,9 @@ contains
                 end do
             end do
             !
-            call hgemm( 't', 'n', m-l, n, k, -one, v( 1, mp ), ldv,        &
+            call gemm( 't', 'n', m-l, n, k, -one, v( 1, mp ), ldv,        &
                 &               work, ldwork, one, b( mp, 1 ), ldb )
-            call hgemm( 't', 'n', l, n, k-l, -one, v, ldv,                 &
+            call gemm( 't', 'n', l, n, k-l, -one, v, ldv,                 &
                 &               work, ldwork, one, b, ldb )
             call htrmm( 'l', 'u', 't', 'n', l, n, one, v( kp, 1 ), ldv,    &
                 &               work( kp, 1 ), ldwork )
@@ -770,9 +770,9 @@ contains
             end do
             call htrmm( 'r', 'u', 't', 'n', m, l, one, v( kp, 1 ), ldv,    &
                 &               work( 1, kp ), ldwork )
-            call hgemm( 'n', 't', m, l, n-l, one, b( 1, np ), ldb,         &
+            call gemm( 'n', 't', m, l, n-l, one, b( 1, np ), ldb,         &
                 &               v( kp, np ), ldv, one, work( 1, kp ), ldwork )
-            call hgemm( 'n', 't', m, k-l, n, one, b, ldb, v, ldv,          &
+            call gemm( 'n', 't', m, k-l, n, one, b, ldb, v, ldv,          &
                 &               zero, work, ldwork )
             !
             do j = 1, k
@@ -790,9 +790,9 @@ contains
                 end do
             end do
             !
-            call hgemm( 'n', 'n', m, n-l, k, -one, work, ldwork,           &
+            call gemm( 'n', 'n', m, n-l, k, -one, work, ldwork,           &
                 &               v( 1, np ), ldv, one, b( 1, np ), ldb )
-            call hgemm( 'n', 'n', m, l, k-l , -one, work, ldwork,          &
+            call gemm( 'n', 'n', m, l, k-l , -one, work, ldwork,          &
                 &               v, ldv, one, b, ldb )
             call htrmm( 'r', 'u', 'n', 'n', m, l, one, v( kp, 1 ), ldv,    &
                 &               work( 1, kp ), ldwork )

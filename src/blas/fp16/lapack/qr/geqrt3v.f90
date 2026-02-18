@@ -193,13 +193,13 @@ contains
             call htrmm( 'l', 'l', 't', 'non-unit', n1, n2, one,                   &
                 &               a, lda, t( 1, j1 ), ldt )
             !
-            call hgemm( 't', 'n', n1, n2, m-n1, one, a( j1, 1 ), lda,      &
+            call gemm( 't', 'n', n1, n2, m-n1, one, a( j1, 1 ), lda,      &
                 &               a( j1, j1 ), lda, one, t( 1, j1 ), ldt)
             !
             call htrmm( 'l', 'u', 't', 'n', n1, n2, one,                   &
                 &               t, ldt, t( 1, j1 ), ldt )
             !
-            call hgemm( 'n', 'n', m-n1, n2, n1, -one, a( j1, 1 ), lda,     &
+            call gemm( 'n', 'n', m-n1, n2, n1, -one, a( j1, 1 ), lda,     &
                 &               t( 1, j1 ), ldt, one, a( j1, j1 ), lda )
             !
             call htrmm( 'l', 'l', 'n', 'non-unit', n1, n2, one,                   &
@@ -227,7 +227,7 @@ contains
             call htrmm( 'r', 'l', 'n', 'non-unit', n1, n2, one,                   &
                 &               a( j1, j1 ), lda, t( 1, j1 ), ldt )
             !
-            call hgemm( 't', 'n', n1, n2, m-n, one, a( i1, 1 ), lda,       &
+            call gemm( 't', 'n', n1, n2, m-n, one, a( i1, 1 ), lda,       &
                 &               a( i1, j1 ), lda, one, t( 1, j1 ), ldt )
             !
             call htrmm( 'l', 'u', 'n', 'n', n1, n2, -one, t, ldt,          &

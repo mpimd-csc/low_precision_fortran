@@ -183,7 +183,8 @@ contains
                         !
                         !                 compute the current block row.
                         !
-                        call hgemm( 'transpose', 'no transpose', jb,          &
+                        ! call gemm ('t', 'n', n, n, n, one, a, lda, a, lda, one, A, lda)
+                        call gemm( 'transpose', 'no transpose', jb,          &
                             &                        n-j-jb+1,                                 &
                             &                        j-1, -one, a( 1, j ), lda, a( 1, j+jb ),  &
                             &                        lda, one, a( j, j+jb ), lda )
@@ -215,7 +216,7 @@ contains
                         !
                         !                 compute the current block column.
                         !
-                        call hgemm( 'no transpose', 'transpose', n-j-jb+1,    &
+                        call gemm( 'no transpose', 'transpose', n-j-jb+1,    &
                             &                        jb,                                       &
                             &                        j-1, -one, a( j+jb, 1 ), lda, a( j, 1 ),  &
                             &                        lda, one, a( j+jb, j ), lda )
