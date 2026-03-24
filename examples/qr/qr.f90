@@ -2,13 +2,17 @@ program qr_benchmark
     use qr_stat
     use qr_calls
     use lpf_types
+    use lpf_blas_scale_diag_right
+    use lpf_blas_scale_diag
     implicit none
 
     integer(lpf_default_int_kind) :: m, n, runs
 
     real (real32), allocatable :: A(:,:)
+    real (real32), allocatable :: dr(:), dl(:)
     character(len = 1024) :: arg
     type(qr_stats) :: st
+    integer(lpf_default_int_kind) :: info
     integer, dimension(4) :: seed =(/1,1,1,1/)
     external slarnv
     integer :: qr_type
@@ -34,10 +38,14 @@ program qr_benchmark
     write(*,'("# runs = ", I8)') runs
 
     allocate(A(m,n))
+    allocate(dr(n))
+    allocate(dl(m))
 
     ! call RANDOM_NUMBER(A)
     call slarnv(2, seed, m * n, A)
     ! A = 1
+    ! call scale_diag_right(m, n, A, m, dr, info)
+    ! call scale_diag(m, n, A, m, dl, dr, info)
 
     call print_qr_stats_header()
 
