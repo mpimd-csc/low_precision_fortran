@@ -498,3 +498,18 @@ void lpf_blas_hsyr2k_fortran(char *uplo, char *trans, lpf_blas_int_t *n, lpf_bla
         (lpf_float16_t *)alpha, (lpf_float16_t *)a, lda, (lpf_float16_t *)b, ldb, (lpf_float16_t *)beta,
         (lpf_float16_t *)c__, ldc, 1, 1);
 }
+
+#include <ISO_Fortran_binding.h>
+
+void lpf_blas_hsyr2k_fortran_dyn_rank(char *uplo, char *trans, lpf_blas_int_t *n, lpf_blas_int_t *k,
+        lpf_ffloat16_t *alpha, CFI_cdesc_t *_a, lpf_blas_int_t *lda, CFI_cdesc_t *_b, lpf_blas_int_t *ldb,
+        lpf_ffloat16_t *beta, CFI_cdesc_t *_c, lpf_blas_int_t *ldc)
+{
+    lpf_float16_t *a = _a->base_addr;
+    lpf_float16_t *b = _b->base_addr;
+    lpf_float16_t *c = _c->base_addr;
+
+    LPF_GLOBAL(hsyr2k,HSYR2K)(uplo, trans, n, k,
+        (lpf_float16_t *)alpha, (lpf_float16_t *)a, lda, (lpf_float16_t *)b, ldb, (lpf_float16_t *)beta,
+        (lpf_float16_t *)c, ldc, 1, 1);
+}

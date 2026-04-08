@@ -512,6 +512,7 @@ void lpf_blas_hgemm_fortran(char *transa, char *transb, lpf_blas_int_t *m, lpf_b
 #include <stdio.h>
 #include <ISO_Fortran_binding.h>
 
+#if 0
 void dump_cfi_desc(const char * s , const CFI_cdesc_t *d)
 {
     int i;
@@ -536,22 +537,13 @@ void dump_cfi_desc(const char * s , const CFI_cdesc_t *d)
         printf("    sm           = %td\n", d->dim[i].sm);
     }
 }
-
+#endif
 
 
 void lpf_blas_hgemm_fortran_dyn_rank(char *transa, char *transb, lpf_blas_int_t *m, lpf_blas_int_t *
         n, lpf_blas_int_t *k, lpf_ffloat16_t *alpha, CFI_cdesc_t * _a, lpf_blas_int_t *lda, CFI_cdesc_t *_b, lpf_blas_int_t *
         ldb, lpf_ffloat16_t *beta, CFI_cdesc_t *_c, lpf_blas_int_t *ldc)
 {
-	/** printf("transa = %c\n", transa[0]); */
-	/** printf("transb = %c\n", transb[0]); */
-	/** printf("m = %d \t n = %d \t k = %d\n", (int) *m, (int) *n, (int) *k); */
-
-	/** printf("alpha = %f\n", (float) *_alpha); */
-	/** printf("beta  = %f\n", (float) *_alpha); */
-	/** dump_cfi_desc("A", a); */
-	/** dump_cfi_desc("B", b); */
-	/** dump_cfi_desc("C", c__); */
     lpf_float16_t *a = _a -> base_addr;
     lpf_float16_t *b = _b -> base_addr;
     lpf_float16_t *c = _c -> base_addr;
@@ -561,5 +553,5 @@ void lpf_blas_hgemm_fortran_dyn_rank(char *transa, char *transb, lpf_blas_int_t 
         n, k, (lpf_float16_t *)alpha, (lpf_float16_t *)a, lda, (lpf_float16_t *)b,
         ldb, (lpf_float16_t *)beta, (lpf_float16_t *)c, ldc, 1, 1);
 
-
 }
+

@@ -291,3 +291,13 @@ void LPF_GLOBAL(hrotmg,HROTMG)(lpf_float16_t *sd1, lpf_float16_t *sd2, lpf_float
     LPF_GLOBAL(hrotmg,HROTMG)((lpf_float16_t *)sd1, (lpf_float16_t *)sd2, (lpf_float16_t *) sx1, (lpf_float16_t *)sy1,
             (lpf_float16_t *) sparam);
 }
+
+#include <ISO_Fortran_binding.h>
+
+void lpf_blas_hrotmg_fortran_dyn_rank(
+        lpf_ffloat16_t *sd1, lpf_ffloat16_t *sd2, lpf_ffloat16_t *sx1, lpf_ffloat16_t *sy1,
+        CFI_cdesc_t *_sparam)
+{
+    lpf_ffloat16_t *sparam = (lpf_ffloat16_t *)_sparam->base_addr;
+    lpf_blas_hrotmg_fortran(sd1, sd2, sx1, sy1, sparam);
+}

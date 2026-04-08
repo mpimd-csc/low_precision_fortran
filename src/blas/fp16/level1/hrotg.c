@@ -130,3 +130,5 @@ void lpf_blas_hrotg_fortran(lpf_ffloat16_t *sa, lpf_ffloat16_t *sb, lpf_ffloat16
 {
     LPF_GLOBAL(hrotg,HROTG)((lpf_float16_t *) sa, (lpf_float16_t *) sb, (lpf_float16_t *) c__, (lpf_float16_t *) s);
 }
+
+

@@ -149,3 +149,11 @@ lpf_blas_int_t lpf_blas_ihamax_fortran(lpf_blas_int_t *n, lpf_ffloat16_t *sx, lp
 {
     return LPF_GLOBAL(ihamax,IHAMAX)(n, (lpf_float16_t *) sx, incx);
 }
+
+#include <ISO_Fortran_binding.h>
+
+lpf_blas_int_t lpf_blas_ihamax_fortran_dyn_rank(lpf_blas_int_t *n, CFI_cdesc_t *_sx, lpf_blas_int_t *incx)
+{
+    lpf_float16_t *sx = _sx->base_addr;
+    return lpf_blas_ihamax_fortran(n, (lpf_ffloat16_t *)sx, incx);
+}

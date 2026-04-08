@@ -397,3 +397,16 @@ void lpf_blas_hspmv_fortran(char *uplo, lpf_blas_int_t *n, lpf_ffloat16_t *alpha
         (lpf_float16_t *)x, incx, (lpf_float16_t *)beta, (lpf_float16_t *)y, incy, 1);
 }
 
+#include <ISO_Fortran_binding.h>
+
+void lpf_blas_hspmv_fortran_dyn_rank(char *uplo, lpf_blas_int_t *n, lpf_ffloat16_t *alpha, CFI_cdesc_t *ap,
+        CFI_cdesc_t *x, lpf_blas_int_t *incx, lpf_ffloat16_t *beta, CFI_cdesc_t *y, lpf_blas_int_t *incy)
+{
+    lpf_float16_t *ap_ptr = ap->base_addr;
+    lpf_float16_t *x_ptr = x->base_addr;
+    lpf_float16_t *y_ptr = y->base_addr;
+
+    LPF_GLOBAL(hspmv,HSPMV)(uplo, n, (lpf_float16_t *)alpha, (lpf_float16_t *)ap_ptr,
+        (lpf_float16_t *)x_ptr, incx, (lpf_float16_t *)beta, (lpf_float16_t *)y_ptr, incy, 1);
+}
+

@@ -395,3 +395,18 @@ void lpf_blas_hgemv_fortran(char *trans, lpf_blas_int_t *m, lpf_blas_int_t *n, l
         (lpf_float16_t *)a, lda, (lpf_float16_t *)x, incx, (lpf_float16_t *)beta, (lpf_float16_t *)y,
         incy, 1);
 }
+
+#include <ISO_Fortran_binding.h>
+
+void lpf_blas_hgemv_fortran_dyn_rank(char *trans, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_ffloat16_t *alpha,
+        CFI_cdesc_t *a, lpf_blas_int_t *lda, CFI_cdesc_t *x, lpf_blas_int_t *incx, lpf_ffloat16_t *beta, CFI_cdesc_t *y,
+        lpf_blas_int_t *incy)
+{
+    lpf_float16_t *a_ptr = a->base_addr;
+    lpf_float16_t *x_ptr = x->base_addr;
+    lpf_float16_t *y_ptr = y->base_addr;
+
+    LPF_GLOBAL(hgemv,HGEMV)(trans, m, n, (lpf_float16_t *)alpha,
+        (lpf_float16_t *)a_ptr, lda, (lpf_float16_t *)x_ptr, incx, (lpf_float16_t *)beta, (lpf_float16_t *)y_ptr,
+        incy, 1);
+}

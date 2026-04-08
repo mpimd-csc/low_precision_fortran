@@ -72,3 +72,11 @@ void lpf_blas_hlaset_fortran(char * uplo, lpf_blas_int_t *m, lpf_blas_int_t *n, 
 {
     LPF_GLOBAL(hlaset,HLASET)( uplo, m, n, (lpf_float16_t *)alpha, (lpf_float16_t*) beta, (lpf_float16_t *)a, lda, 1);
 }
+
+#include <ISO_Fortran_binding.h>
+
+void lpf_blas_hlaset_fortran_dyn_rank(char *uplo, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_ffloat16_t *alpha, lpf_ffloat16_t *beta, CFI_cdesc_t *_a, lpf_blas_int_t *lda)
+{
+    lpf_float16_t *a = _a->base_addr;
+    LPF_GLOBAL(hlaset,HLASET)( uplo, m, n, (lpf_float16_t *)alpha, (lpf_float16_t*) beta, (lpf_float16_t *)a, lda, 1);
+}
