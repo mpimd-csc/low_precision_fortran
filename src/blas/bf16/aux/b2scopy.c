@@ -163,3 +163,12 @@ void lpf_blas_b2scopy_fortran(lpf_blas_int_t *n, lpf_fbfloat16_t *sx, lpf_blas_i
 {
     LPF_GLOBAL(b2scopy,B2SCOPY)(n, (lpf_bfloat16_t *)sx, incx, sy, incy);
 }
+
+#include <ISO_Fortran_binding.h>
+
+void lpf_blas_b2scopy_fortran_dyn_rank(lpf_blas_int_t *n, CFI_cdesc_t *_sx, lpf_blas_int_t *incx, float *sy,
+        lpf_blas_int_t *incy)
+{
+    lpf_bfloat16_t *sx = _sx->base_addr;
+    LPF_GLOBAL(b2scopy,B2SCOPY)(n, sx, incx, sy, incy);
+}

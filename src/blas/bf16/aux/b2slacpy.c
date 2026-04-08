@@ -70,3 +70,11 @@ void lpf_blas_b2slacpy_fortran(char * uplo, lpf_blas_int_t *m, lpf_blas_int_t *n
 {
     LPF_GLOBAL(b2slacpy,B2SLACPY)( uplo, m, n, (lpf_bfloat16_t *) a, lda, b, ldb, 1);
 }
+
+#include <ISO_Fortran_binding.h>
+
+void lpf_blas_b2slacpy_fortran_dyn_rank(char * uplo, lpf_blas_int_t *m, lpf_blas_int_t *n, CFI_cdesc_t *_a, lpf_blas_int_t *lda, float *b, lpf_blas_int_t *ldb)
+{
+    lpf_bfloat16_t *a = _a->base_addr;
+    LPF_GLOBAL(b2slacpy,B2SLACPY)( uplo, m, n, a, lda, b, ldb, 1);
+}

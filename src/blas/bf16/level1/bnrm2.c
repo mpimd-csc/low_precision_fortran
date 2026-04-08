@@ -158,3 +158,11 @@ int16_t LPF_GLOBAL(bnrm2,BNRM2)(lpf_blas_int_t *n, lpf_bfloat16_t *x, lpf_blas_i
     return r;
 }
 
+#include <ISO_Fortran_binding.h>
+
+lpf_fbfloat16_t lpf_blas_bnrm2_fortran_dyn_rank(lpf_blas_int_t *n, CFI_cdesc_t *_x, lpf_blas_int_t *incx)
+{
+    lpf_bfloat16_t *x = _x->base_addr;
+    return lpf_blas_bnrm2_fortran(n, (lpf_fbfloat16_t *)x, incx);
+}
+

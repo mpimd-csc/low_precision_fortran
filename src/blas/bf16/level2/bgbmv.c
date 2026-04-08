@@ -458,3 +458,16 @@ void lpf_blas_bgbmv_fortran(char *trans, lpf_blas_int_t *m, lpf_blas_int_t *n, l
         ku, (lpf_bfloat16_t *)alpha, (lpf_bfloat16_t *)a, lda, (lpf_bfloat16_t *)x,
         incx, (lpf_bfloat16_t *)beta, (lpf_bfloat16_t *)y, incy, 1);
 }
+
+#include <ISO_Fortran_binding.h>
+
+void lpf_blas_bgbmv_fortran_dyn_rank(char *trans, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_blas_int_t *kl,
+        lpf_blas_int_t *ku, lpf_fbfloat16_t *alpha, CFI_cdesc_t *_a, lpf_blas_int_t *lda, CFI_cdesc_t *_x, lpf_blas_int_t *incx, lpf_fbfloat16_t *beta, CFI_cdesc_t *_y, lpf_blas_int_t *incy)
+{
+    lpf_bfloat16_t *a = _a->base_addr;
+    lpf_bfloat16_t *x = _x->base_addr;
+    lpf_bfloat16_t *y = _y->base_addr;
+    LPF_GLOBAL(bgbmv,BGBMV)(trans, m, n, kl,
+        ku, (lpf_bfloat16_t *)alpha, (lpf_bfloat16_t *)a, lda, (lpf_bfloat16_t *)x,
+        incx, (lpf_bfloat16_t *)beta, (lpf_bfloat16_t *)y, incy, 1);
+}

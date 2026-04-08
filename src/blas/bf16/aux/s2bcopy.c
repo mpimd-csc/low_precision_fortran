@@ -163,3 +163,12 @@ void lpf_blas_s2bcopy_fortran(lpf_blas_int_t *n, float *sx, lpf_blas_int_t *incx
 {
     LPF_GLOBAL(s2bcopy,S2BCOPY)(n, sx, incx, (lpf_bfloat16_t *)sy, incy);
 }
+
+#include <ISO_Fortran_binding.h>
+
+void lpf_blas_s2bcopy_fortran_dyn_rank(lpf_blas_int_t *n, float *sx, lpf_blas_int_t *incx, CFI_cdesc_t *_sy,
+        lpf_blas_int_t *incy)
+{
+    lpf_bfloat16_t *sy = _sy->base_addr;
+    LPF_GLOBAL(s2bcopy,S2BCOPY)(n, sx, incx, sy, incy);
+}

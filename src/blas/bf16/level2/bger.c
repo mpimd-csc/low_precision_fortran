@@ -274,3 +274,15 @@ void lpf_blas_bger_fortran(lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_fbfloat16_t
     LPF_GLOBAL(bger,BGER)(m, n, (lpf_bfloat16_t *)alpha, (lpf_bfloat16_t *)x,
         incx, (lpf_bfloat16_t *)y, incy, (lpf_bfloat16_t *)a, lda);
 }
+
+#include <ISO_Fortran_binding.h>
+
+void lpf_blas_bger_fortran_dyn_rank(lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_fbfloat16_t *alpha, CFI_cdesc_t *_x,
+        lpf_blas_int_t *incx, CFI_cdesc_t *_y, lpf_blas_int_t *incy, CFI_cdesc_t *_a, lpf_blas_int_t *lda)
+{
+    lpf_bfloat16_t *x = _x->base_addr;
+    lpf_bfloat16_t *y = _y->base_addr;
+    lpf_bfloat16_t *a = _a->base_addr;
+    LPF_GLOBAL(bger,BGER)(m, n, (lpf_bfloat16_t *)alpha, (lpf_bfloat16_t *)x,
+        incx, (lpf_bfloat16_t *)y, incy, (lpf_bfloat16_t *)a, lda);
+}

@@ -457,3 +457,14 @@ void lpf_blas_bsyrk_fortran(char *uplo, char *trans, lpf_blas_int_t *n, lpf_blas
         (lpf_bfloat16_t *)alpha, (lpf_bfloat16_t *)a, lda, (lpf_bfloat16_t *)beta, (lpf_bfloat16_t *)c__, ldc, 1, 1);
 }
 
+#include <ISO_Fortran_binding.h>
+
+void lpf_blas_bsyrk_fortran_dyn_rank(char *uplo, char *trans, lpf_blas_int_t *n, lpf_blas_int_t *k,
+        lpf_fbfloat16_t *alpha, CFI_cdesc_t *_a, lpf_blas_int_t *lda, lpf_fbfloat16_t *beta, CFI_cdesc_t *_c, lpf_blas_int_t * ldc)
+{
+    lpf_bfloat16_t *a = _a->base_addr;
+    lpf_bfloat16_t *c = _c->base_addr;
+    LPF_GLOBAL(bsyrk,BSYRK)(uplo, trans, n, k,
+        (lpf_bfloat16_t *)alpha, (lpf_bfloat16_t *)a, lda, (lpf_bfloat16_t *)beta, (lpf_bfloat16_t *)c, ldc, 1, 1);
+}
+
