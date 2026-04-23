@@ -36,8 +36,3 @@ FOREACH( S IN LISTS SRC)
 
 ENDFOREACH()
 
-if (LPF_BLAS)
-    add_subdirectory(qr)
-endif()
-
-# ADD_SUBDIRECTORY(benchmark)

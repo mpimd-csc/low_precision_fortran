@@ -1,7 +1,7 @@
 submodule(lpf_lapack_fp16) lpf_lapack_potrfp_fp16
 
 contains
-    module subroutine hpotrfp(uplo, n, a, lda, ipiv, info)
+    module subroutine potrfp(uplo, n, a, lda, ipiv, info)
         character, intent(in) :: uplo
         integer(lpf_default_int_kind), intent(in) :: n, lda
         integer(lpf_default_int_kind), intent(inout) :: info
