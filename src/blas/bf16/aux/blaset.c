@@ -68,7 +68,15 @@ void LPF_GLOBAL(blaset,BLASET)(const char * uplo, lpf_blas_int_t *m, lpf_blas_in
     }
 }
 
-void hpblas_blaset_fortran(char * uplo, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_fbfloat16_t *alpha, lpf_fbfloat16_t *beta, lpf_fbfloat16_t *a, lpf_blas_int_t *lda)
+void lpf_blas_blaset_fortran(char * uplo, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_fbfloat16_t *alpha, lpf_fbfloat16_t *beta, lpf_fbfloat16_t *a, lpf_blas_int_t *lda)
 {
     LPF_GLOBAL(blaset,BLASET)( uplo, m, n, (lpf_bfloat16_t *)alpha, (lpf_bfloat16_t*) beta, (lpf_bfloat16_t *)a, lda, 1);
+}
+
+#include <ISO_Fortran_binding.h>
+
+void lpf_blas_blaset_fortran_dyn_rank(char * uplo, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_fbfloat16_t *alpha, lpf_fbfloat16_t *beta, CFI_cdesc_t *_a, lpf_blas_int_t *lda)
+{
+    lpf_bfloat16_t *a = _a->base_addr;
+    LPF_GLOBAL(blaset,BLASET)( uplo, m, n, (lpf_bfloat16_t *)alpha, (lpf_bfloat16_t*) beta, a, lda, 1);
 }

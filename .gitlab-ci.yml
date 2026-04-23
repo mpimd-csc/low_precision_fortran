@@ -41,6 +41,7 @@ linux-clang:
       - LLVM_VERSION: [ "20", "21", "22" ]
         INTEGER8: [ 'INTEGER8_ON', 'INTEGER8_OFF' ]
   script:
+    - apt update && apt install -y libblas-dev libblas64-dev liblapack-dev liblapack64-dev
     - export INTEGER8=${INTEGER8##INTEGER8_}
     - cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLPF_INTEGER8=${INTEGER8}
     - cmake --build build-dir 2>&1 | tee build.log

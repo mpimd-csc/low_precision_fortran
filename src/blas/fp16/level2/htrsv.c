@@ -428,3 +428,15 @@ void lpf_blas_htrsv_fortran(char *uplo, char *trans, char *diag, lpf_blas_int_t 
     LPF_GLOBAL(htrsv,HTRSV)(uplo, trans, diag, n,
         (lpf_float16_t *)a, lda, (lpf_float16_t *)x, incx, 1, 1, 1);
 }
+
+#include <ISO_Fortran_binding.h>
+
+void lpf_blas_htrsv_fortran_dyn_rank(char *uplo, char *trans, char *diag, lpf_blas_int_t *n,
+        CFI_cdesc_t *a, lpf_blas_int_t *lda, CFI_cdesc_t *x, lpf_blas_int_t *incx)
+{
+    lpf_float16_t *a_ptr = a->base_addr;
+    lpf_float16_t *x_ptr = x->base_addr;
+
+    LPF_GLOBAL(htrsv,HTRSV)(uplo, trans, diag, n,
+        (lpf_float16_t *)a_ptr, lda, (lpf_float16_t *)x_ptr, incx, 1, 1, 1);
+}

@@ -172,3 +172,12 @@ int16_t LPF_GLOBAL(bdot,BDOT)(lpf_blas_int_t *n, lpf_bfloat16_t *sx, lpf_blas_in
     r.value = LPF_GLOBAL(bdot,BDOT)(n, (lpf_bfloat16_t *) sx, incx, (lpf_bfloat16_t *) sy, incy);
     return r;
 }
+
+#include <ISO_Fortran_binding.h>
+
+lpf_fbfloat16_t lpf_blas_bdot_fortran_dyn_rank(lpf_blas_int_t *n, CFI_cdesc_t *_sx, lpf_blas_int_t *incx, CFI_cdesc_t *_sy, lpf_blas_int_t *incy)
+{
+    lpf_bfloat16_t *sx = _sx->base_addr;
+    lpf_bfloat16_t *sy = _sy->base_addr;
+    return lpf_blas_bdot_fortran(n, (lpf_fbfloat16_t *)sx, incx, (lpf_fbfloat16_t *)sy, incy);
+}

@@ -151,3 +151,11 @@ void LPF_GLOBAL(bscal,BSCAL)(lpf_blas_int_t *n, lpf_bfloat16_t *sa, lpf_bfloat16
 {
     LPF_GLOBAL(bscal,BSCAL)(n, (lpf_bfloat16_t *) sa, (lpf_bfloat16_t *) sx, incx);
 }
+
+#include <ISO_Fortran_binding.h>
+
+void lpf_blas_bscal_fortran_dyn_rank(lpf_blas_int_t *n, lpf_fbfloat16_t *sa, CFI_cdesc_t *_sx, lpf_blas_int_t *incx)
+{
+    lpf_bfloat16_t *sx = _sx->base_addr;
+    LPF_GLOBAL(bscal,BSCAL)(n, (lpf_bfloat16_t *) sa, (lpf_bfloat16_t *) sx, incx);
+}

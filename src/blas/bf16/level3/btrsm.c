@@ -581,3 +581,15 @@ void lpf_blas_btrsm_fortran(char *side, char *uplo, char *transa, char *diag,
         ldb, 1, 1, 1, 1);
 }
 
+#include <ISO_Fortran_binding.h>
+
+void lpf_blas_btrsm_fortran_dyn_rank(char *side, char *uplo, char *transa, char *diag,
+        lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_fbfloat16_t *alpha, CFI_cdesc_t *_a, lpf_blas_int_t *lda, CFI_cdesc_t *_b, lpf_blas_int_t *ldb)
+{
+    lpf_bfloat16_t *a = _a->base_addr;
+    lpf_bfloat16_t *b = _b->base_addr;
+    LPF_GLOBAL(btrsm,BTRSM)(side, uplo, transa, diag,
+        m, n, (lpf_bfloat16_t *)alpha, (lpf_bfloat16_t *)a, lda, (lpf_bfloat16_t *)b,
+        ldb, 1, 1, 1, 1);
+}
+

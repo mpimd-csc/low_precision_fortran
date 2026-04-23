@@ -313,3 +313,14 @@ void lpf_blas_bspr_fortran(char *uplo, lpf_blas_int_t *n, lpf_fbfloat16_t *alpha
     LPF_GLOBAL(bspr,BSPR)(uplo, n, (lpf_bfloat16_t *)alpha, (lpf_bfloat16_t *)x,
         incx, (lpf_bfloat16_t *)ap, 1);
 }
+
+#include <ISO_Fortran_binding.h>
+
+void lpf_blas_bspr_fortran_dyn_rank(char *uplo, lpf_blas_int_t *n, lpf_fbfloat16_t *alpha, CFI_cdesc_t *_x,
+        lpf_blas_int_t *incx, CFI_cdesc_t *_ap)
+{
+    lpf_bfloat16_t *x = _x->base_addr;
+    lpf_bfloat16_t *ap = _ap->base_addr;
+    LPF_GLOBAL(bspr,BSPR)(uplo, n, (lpf_bfloat16_t *)alpha, (lpf_bfloat16_t *)x,
+        incx, (lpf_bfloat16_t *)ap, 1);
+}

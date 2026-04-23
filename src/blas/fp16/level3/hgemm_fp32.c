@@ -502,3 +502,20 @@ void lpf_blas_hgemm_fp32_fortran(char *transa, char *transb, lpf_blas_int_t *m, 
         ldb, (float *)beta, (float *)c__, ldc, 1, 1);
 }
 
+
+
+void lpf_blas_hgemm_fp32_fortran_dyn_rank(char *transa, char *transb, lpf_blas_int_t *m, lpf_blas_int_t *
+        n, lpf_blas_int_t *k, lpf_ffloat16_t *alpha, CFI_cdesc_t * _a, lpf_blas_int_t *lda, CFI_cdesc_t *_b, lpf_blas_int_t *
+        ldb, float *beta, CFI_cdesc_t *_c, lpf_blas_int_t *ldc)
+{
+    lpf_float16_t *a = _a -> base_addr;
+    lpf_float16_t *b = _b -> base_addr;
+    float *c = _c -> base_addr;
+
+
+    LPF_GLOBAL(hgemm_fp32,HGEMM_FP32)(transa, transb, m,
+        n, k, (lpf_float16_t *)alpha, (lpf_float16_t *)a, lda, (lpf_float16_t *)b,
+        ldb, beta, c, ldc, 1, 1);
+
+}
+

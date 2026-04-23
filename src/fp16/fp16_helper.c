@@ -148,7 +148,7 @@ HIDDEN void __fp16_helper_div_fp16_real(int16_t *out, int16_t a, float b)
     fp16_handler_t *r = (fp16_handler_t * ) out;
     fp16_handler_t _a = { .i16 = a};
 
-    r->f16 = _a.f16 - (_Float16) b;
+    r->f16 = _a.f16 / (_Float16) b;
 }
 
 HIDDEN void __fp16_helper_div_real_fp16(int16_t *out, float a, int16_t b)

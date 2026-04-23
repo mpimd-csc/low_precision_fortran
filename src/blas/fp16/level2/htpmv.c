@@ -436,3 +436,15 @@ void lpf_blas_htpmv_fortran(char *uplo, char *trans, char *diag, lpf_blas_int_t 
     LPF_GLOBAL(htpmv,HTPMV)(uplo, trans, diag, n,
         (lpf_float16_t *)ap, (lpf_float16_t *)x, incx, 1, 1,1);
 }
+
+#include <ISO_Fortran_binding.h>
+
+void lpf_blas_htpmv_fortran_dyn_rank(char *uplo, char *trans, char *diag, lpf_blas_int_t *n,
+        CFI_cdesc_t *ap, CFI_cdesc_t *x, lpf_blas_int_t *incx)
+{
+    lpf_float16_t *ap_ptr = ap->base_addr;
+    lpf_float16_t *x_ptr = x->base_addr;
+
+    LPF_GLOBAL(htpmv,HTPMV)(uplo, trans, diag, n,
+        (lpf_float16_t *)ap_ptr, (lpf_float16_t *)x_ptr, incx, 1, 1,1);
+}

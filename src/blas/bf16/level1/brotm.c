@@ -264,3 +264,14 @@ void LPF_GLOBAL(brotm,BROTM)(lpf_blas_int_t *n, lpf_bfloat16_t *sx, lpf_blas_int
 {
     LPF_GLOBAL(brotm,BROTM)(n, (lpf_bfloat16_t *) sx, incx, (lpf_bfloat16_t *) sy, incy, (lpf_bfloat16_t *) sparam);
 }
+
+#include <ISO_Fortran_binding.h>
+
+void lpf_blas_brotm_fortran_dyn_rank(lpf_blas_int_t *n, CFI_cdesc_t *_sx, lpf_blas_int_t *incx, CFI_cdesc_t *_sy,
+        lpf_blas_int_t *incy, CFI_cdesc_t *_sparam)
+{
+    lpf_bfloat16_t *sx = _sx->base_addr;
+    lpf_bfloat16_t *sy = _sy->base_addr;
+    lpf_bfloat16_t *sparam = _sparam->base_addr;
+    LPF_GLOBAL(brotm,BROTM)(n, (lpf_bfloat16_t *) sx, incx, (lpf_bfloat16_t *) sy, incy, (lpf_bfloat16_t *) sparam);
+}

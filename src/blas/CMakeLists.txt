@@ -35,10 +35,6 @@ IF (LPF_BLAS_IS_MKL)
 ENDIF()
 ENDIF()
 
-
-
-
-
 SET (SRC )
 if (LPF_HAVE_FP16)
     ADD_SUBDIRECTORY(fp16/level1)
@@ -47,7 +43,51 @@ if (LPF_HAVE_FP16)
     ADD_SUBDIRECTORY(fp16/aux)
     SET(SRC ${SRC}
         fp16/scaling/scale_diag_twoside.f90
-        fp16/lpf_blas_fp16.F90)
+        fp16/scaling/scale_diag_right.f90
+        fp16/lpf_blas_fp16.F90
+
+        fp16/lapack/cholesky/potf2.f90
+        fp16/lapack/cholesky/potrf.f90
+        fp16/lapack/cholesky/potrf2.f90
+        fp16/lapack/cholesky/potrfp.f90
+        fp16/lapack/cholqr/gecholqr.f90
+        fp16/lapack/cholqr/gecholqr_shift.f90
+
+        fp16/lapack/householder/larf.f90
+        fp16/lapack/householder/larfb.f90
+        fp16/lapack/householder/larfbv.f90
+        fp16/lapack/householder/larft.f90
+        fp16/lapack/householder/larftv.f90
+        fp16/lapack/householder/larf1f.f90
+        fp16/lapack/householder/larfg.f90
+        fp16/lapack/householder/larfgv1.f90
+        fp16/lapack/householder/tprfb.f90
+        fp16/lapack/qr/geqr2.f90
+        fp16/lapack/qr/geqr2v.f90
+        fp16/lapack/qr/geqrf.f90
+        fp16/lapack/qr/geqrfv.f90
+        fp16/lapack/qr/geqrt.f90
+        fp16/lapack/qr/geqrt2.f90
+        fp16/lapack/qr/geqrt3.f90
+        fp16/lapack/qr/gemqrt.f90
+        fp16/lapack/qr/geqrtv.f90
+        fp16/lapack/qr/geqrt2v.f90
+        fp16/lapack/qr/geqrt3v.f90
+        fp16/lapack/qr/gemqrtv.f90
+        fp16/lapack/qr/orm2r.f90
+        fp16/lapack/qr/ormqr.f90
+        fp16/lapack/qr/ormqrv.f90
+        fp16/lapack/qr/orm2rv.f90
+        fp16/lapack/qr/latsqr.f90
+        fp16/lapack/qr/lamtsqr.f90
+        fp16/lapack/qr/tpqrt.f90
+        fp16/lapack/qr/tpqrt2.f90
+        fp16/lapack/qr/tpmqrt.f90
+        fp16/lapack/lange.f90
+        fp16/lpf_lapack_fp16.F90
+
+
+    )
 endif()
 
 if (LPF_HAVE_BF16)
@@ -57,12 +97,14 @@ if (LPF_HAVE_BF16)
     ADD_SUBDIRECTORY(bf16/aux)
     SET(SRC ${SRC}
         bf16/scaling/scale_diag_twoside.f90
+        bf16/scaling/scale_diag_right.f90
         bf16/lpf_blas_bf16.F90)
 endif()
 
 
 SET(SRC ${SRC}
     highprecision/scale_diag_twoside.f90
+    highprecision/scale_diag_right.f90
 )
 
 ADD_LIBRARY(lpf_blas
