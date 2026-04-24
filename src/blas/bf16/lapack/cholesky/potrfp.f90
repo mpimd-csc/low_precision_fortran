@@ -1,4 +1,4 @@
-submodule(lpf_lapack_fp16) lpf_lapack_potrfp_fp16
+submodule(lpf_lapack_bf16) lpf_lapack_potrfp_bf16
 
 contains
     module subroutine potrfp(uplo, n, a, lda, ipiv, info)
@@ -6,13 +6,13 @@ contains
         integer(lpf_default_int_kind), intent(in) :: n, lda
         integer(lpf_default_int_kind), intent(inout) :: info
         integer(lpf_default_int_kind), intent(inout) :: ipiv(*)
-        type(fp16), intent(inout) :: a(lda, *)
+        type(bf16), intent(inout) :: a(lda, *)
 
         ! locals
-        type(fp16) :: one, mone
+        type(bf16) :: one, mone
         logical  ::          upper
         integer(lpf_default_int_kind)  ::          maxj, k, j
-        type(fp16) :: max_val, tmp
+        type(bf16) :: max_val, tmp
 
         !     ..
         !     ..
@@ -51,7 +51,7 @@ contains
                     end if
                 end do
 
-                if ( max_val .le. fp16(0.0)) then
+                if ( max_val .le. bf16(0.0)) then
                     info = k
                     return
                 end if
@@ -85,7 +85,7 @@ contains
                     end if
                 end do
 
-                if ( max_val .le. fp16(0.0)) then
+                if ( max_val .le. bf16(0.0)) then
                     info = k
                     return
                 end if

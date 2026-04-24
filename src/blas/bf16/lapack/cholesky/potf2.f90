@@ -1,7 +1,7 @@
-submodule(lpf_lapack_fp16) lpf_lapack_potf2_fp16
+submodule(lpf_lapack_bf16) lpf_lapack_potf2_bf16
 
 contains
-    !> \brief \b SPOTF2 computes the Cholesky factorization of a symmetric/H
+    !> \brief \b SPOTF2 computes the Cholesky factorization of a symmetric/B
     !
     !  =========== DOCUMENTATION ===========
     !
@@ -114,20 +114,18 @@ contains
         integer(lpf_default_int_kind), intent(inout) :: info
         !     ..
         !     .. array arguments ..
-        type(fp16), intent(inout) :: a( lda, * )
+        type(bf16), intent(inout) :: a( lda, * )
         !     ..
         !
         !  =====================================================================
         !
         !     .. parameters ..
-        type(fp16)               :: one, zero
+        type(bf16)               :: one, zero
         !     ..
         !     .. local scalars ..
         logical            :: upper
         integer(lpf_default_int_kind)            :: j
-        type(fp16)         :: ajj
-        !     ..
-        external           :: hpblas_xerbla
+        type(bf16)         :: ajj
         !     ..
         !
         !     test the input parameters.
@@ -163,7 +161,7 @@ contains
                 !
                 !           compute u(j,j) and test for non-positive-definiteness.
                 !
-                ajj = a( j, j ) - hdot( j-1, a( 1, j ), 1_lpf_default_int_kind, a( 1, j ), 1_lpf_default_int_kind )
+                ajj = a( j, j ) - dot( j-1, a( 1, j ), 1_lpf_default_int_kind, a( 1, j ), 1_lpf_default_int_kind )
                 if( ajj.le.zero.or.isnan( ajj ) ) then
                     a( j, j ) = ajj
                     info = j
@@ -188,7 +186,7 @@ contains
                 !
                 !           compute l(j,j) and test for non-positive-definiteness.
                 !
-                ajj = a( j, j ) - hdot( j-1, a( j, 1 ), lda, a( j, 1 ), lda )
+                ajj = a( j, j ) - dot( j-1, a( j, 1 ), lda, a( j, 1 ), lda )
                 if( ajj.le.zero.or.isnan( ajj ) ) then
                     a( j, j ) = ajj
                     info = j
@@ -209,7 +207,7 @@ contains
         !
         return
         !
-        !     end of hpotf2
+        !     end of bpotf2
         !
     end subroutine
 end submodule

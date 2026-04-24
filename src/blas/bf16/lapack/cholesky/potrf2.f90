@@ -1,6 +1,6 @@
-submodule(lpf_lapack_fp16) lpf_lapack_potrf2_fp16
+submodule(lpf_lapack_bf16) lpf_lapack_potrf2_bf16
 contains
-    !> \brief \b hpoTRF2
+    !> \brief \b bpoTRF2
     !
     !  =========== DOCUMENTATION ===========
     !
@@ -10,7 +10,7 @@ contains
     !  Definition:
     !  ===========
     !
-    !       RECURSIVE SUBROUTINE hpoTRF2( UPLO, N, A, LDA, INFO )
+    !       RECURSIVE SUBROUTINE bpoTRF2( UPLO, N, A, LDA, INFO )
     !
     !       .. Scalar Arguments ..
     !       CHARACTER          UPLO
@@ -26,7 +26,7 @@ contains
     !>
     !> \verbatim
     !>
-    !> hpoTRF2 computes the Cholesky factorization of a real symmetric
+    !> bpoTRF2 computes the Cholesky factorization of a real symmetric
     !> positive definite matrix A using the recursive algorithm.
     !>
     !> The factorization has the form
@@ -111,13 +111,13 @@ contains
         integer(lpf_default_int_kind), intent(inout) :: info
         !     ..
         !     .. array arguments ..
-        type(fp16), intent(inout) ::               a( lda, * )
+        type(bf16), intent(inout) ::               a( lda, * )
         !     ..
         !
         !  =====================================================================
         !
         !     .. parameters ..
-        type(fp16)   ::            one, zero
+        type(bf16)   ::            one, zero
         !     ..
         !     .. local scalars ..
         logical ::           upper
@@ -214,7 +214,7 @@ contains
         end if
         return
         !
-        !     end of hpotrf2
+        !     end of bpotrf2
         !
     end subroutine
 end submodule

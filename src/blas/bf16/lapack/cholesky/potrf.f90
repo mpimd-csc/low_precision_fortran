@@ -1,13 +1,13 @@
-submodule(lpf_lapack_fp16) lpf_lapack_potrf_fp16
+submodule(lpf_lapack_bf16) lpf_lapack_potrf_bf16
 contains
-    !> \brief \b hpoTRF
+    !> \brief \b bpoTRF
     !
     !  =========== DOCUMENTATION ===========
     !
     ! Online html documentation available at
     !            http://www.netlib.org/lapack/explore-html/
     !
-    !> Download hpoTRF + dependencies
+    !> Download bpoTRF + dependencies
     !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.tgz?format=tgz&fil
     !> [TGZ]</a>
     !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.zip?format=zip&fil
@@ -18,7 +18,7 @@ contains
     !  Definition:
     !  ===========
     !
-    !       SUBROUTINE hpoTRF( UPLO, N, A, LDA, INFO )
+    !       SUBROUTINE bpoTRF( UPLO, N, A, LDA, INFO )
     !
     !       .. Scalar Arguments ..
     !       CHARACTER          UPLO
@@ -34,7 +34,7 @@ contains
     !>
     !> \verbatim
     !>
-    !> hpoTRF computes the Cholesky factorization of a real symmetric
+    !> bpoTRF computes the Cholesky factorization of a real symmetric
     !> positive definite matrix A.
     !>
     !> The factorization has the form
@@ -109,13 +109,13 @@ contains
         integer(lpf_default_int_kind), intent(inout) :: info
         !     ..
         !     .. array arguments ..
-        type(fp16), intent(inout) ::  a( lda, * )
+        type(bf16), intent(inout) ::  a( lda, * )
         !     ..
         !
         !  =====================================================================
         !
         !     .. parameters ..
-        type(fp16)  ::              one
+        type(bf16)  ::              one
         !     ..
         !     .. local scalars ..
         logical  ::          upper
@@ -148,7 +148,7 @@ contains
         !
         !     determine the block size for this environment.
         !
-        ! nb = ilaenv( 1, 'hpotrf', uplo, n, -1, -1, -1 )
+        ! nb = ilaenv( 1, 'bpotrf', uplo, n, -1, -1, -1 )
         ! @todo Better block size handling
         nb = 192
 
@@ -231,7 +231,7 @@ contains
 
         return
         !
-        !     end of hpotrf
+        !     end of bpotrf
         !
     end subroutine
 end submodule

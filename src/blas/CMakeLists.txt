@@ -66,7 +66,16 @@ if (LPF_HAVE_BF16)
     SET(SRC ${SRC}
         bf16/scaling/scale_diag_twoside.f90
         bf16/scaling/scale_diag_right.f90
-        bf16/lpf_blas_bf16.F90)
+        bf16/lpf_blas_bf16.F90
+
+        bf16/lapack/cholesky/potf2.f90
+        bf16/lapack/cholesky/potrf.f90
+        bf16/lapack/cholesky/potrf2.f90
+        bf16/lapack/cholesky/potrfp.f90
+
+        bf16/lapack/lange.f90
+        bf16/lpf_lapack_bf16.F90
+    )
 endif()
 
 
