@@ -14,6 +14,8 @@ OPTION(LPF_DEBUG "Enable Debug Symbol generation" OFF)
 OPTION(LPF_NATIVE "Enable Native Build" OFF)
 OPTION(LPF_BLAS "Enable BLAS and LAPACK" ON)
 OPTION(LPF_INTEGER8 "Build Fortran integer of size 8" OFF)
+OPTION(LPF_FP8_E4M3 "Support for FP8_E4M3" ON )
+OPTION(LPF_FP8_E5M2 "Support for FP8_E5M2" ON )
 
 # Enable Testing
 IF(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)

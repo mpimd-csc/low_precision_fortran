@@ -46,11 +46,17 @@ being merged into the main codebase.
 
 ## Code Style Guide
 
-To maintain consistency across the codebase, please adhere to the code style guidelines specified
+To maintain consistency across the code-base, please adhere to the code style guidelines specified
 in the `.editorconfig` file located in the root directory of the repository. This file contains
 settings for indentation, line endings, and other code style preferences. Most modern code editors
 support `.editorconfig` and will automatically apply these settings. For more details, we refer To
-[https://editorconfig.org/](https://editorconfig.org/)
+[https://editorconfig.org/](https://editorconfig.org/).
+
+The project provides an `.clang-format` file to ensure the correct style for the
+C and C++ files. This can be invoked using
+```shell
+git ls-files '*.c' '*.h' '*.cpp' | xargs clang-format
+```
 
 ## Copyright and Licensing
 

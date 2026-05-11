@@ -298,7 +298,7 @@ contains
 
     module elemental function precision_fp16(x) result(out)
         type(FP16), intent(in) :: x
-        integer(lpf_default_int_kind) :: out
+        integer :: out
 
         integer(c_int) :: outt
         ! dummy to avoid compiler warnings
@@ -307,12 +307,12 @@ contains
         end if
 
         call helper_precision_fp16(outt)
-        out = INT(outt, kind = lpf_default_int_kind)
+        out = INT(outt)
     end function precision_fp16
 
     module elemental function range_fp16(x) result(out)
         type(FP16), intent(in) :: x
-        integer(lpf_default_int_kind) :: out
+        integer :: out
         integer(c_int) :: lout
 
         ! dummy to avoid compiler warnings

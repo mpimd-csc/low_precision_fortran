@@ -298,7 +298,7 @@ contains
 
     module elemental function precision_bf16(x) result(out)
         type(BF16), intent(in) :: x
-        integer(lpf_default_int_kind) :: out
+        integer :: out
 
         integer(c_int) :: outt
         ! dummy to avoid compiler warnings
@@ -312,7 +312,7 @@ contains
 
     module elemental function range_bf16(x) result(out)
         type(BF16), intent(in) :: x
-        integer(lpf_default_int_kind) :: out
+        integer :: out
         integer(c_int) :: lout
 
         ! dummy to avoid compiler warnings

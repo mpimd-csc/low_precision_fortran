@@ -97,7 +97,7 @@ HIDDEN void __fp16_helper_sub_real_fp16(int16_t *out, float a, int16_t b)
     fp16_handler_t *r = (fp16_handler_t * ) out;
     fp16_handler_t _b = { .i16 = b};
 
-    r->f16 = (_Float16 ) a + _b.f16;
+    r->f16 = (_Float16 ) a - _b.f16;
 }
 
 HIDDEN void __fp16_helper_unitary_minus(int16_t *out, int16_t a)

@@ -109,7 +109,7 @@ contains
     ! Overall Max in 1D but with dim argument.
     module pure function maxval_bf16_1d_dim(array, dim) result(max_value)
         type(bf16), dimension(:), intent(in) :: array
-        integer(lpf_default_int_kind), intent(in) :: dim
+        integer, intent(in) :: dim
         type(bf16) :: max_value
 
         if (dim .ne. 1) then
@@ -122,7 +122,7 @@ contains
     ! Max along dim in 2D
     module pure function maxval_bf16_2d_dim(array, dim) result(max_value)
         type(bf16), dimension(:,:), intent(in) :: array
-        integer(lpf_default_int_kind), intent(in) :: dim
+        integer, intent(in) :: dim
         type(bf16), dimension(size(array, merge(2, 1, dim == 1))) :: max_value
         integer(lpf_default_int_kind) :: i, j
 
@@ -155,7 +155,7 @@ contains
     ! Max along dim in 3D
     module pure function maxval_bf16_3d_dim(array, dim) result(max_value)
         type(bf16), dimension(:,:,:), intent(in) :: array
-        integer(lpf_default_int_kind), intent(in) :: dim
+        integer, intent(in) :: dim
         !
         ! The input is a m x n x k array.
         ! if dim == 1, the output is n x k, we need dimension 2 and 3
@@ -213,7 +213,7 @@ contains
     ! Max along dim in 4D
     module pure function maxval_bf16_4d_dim(array, dim) result(max_value)
         type(bf16), dimension(:,:,:,:), intent(in) :: array
-        integer(lpf_default_int_kind), intent(in) :: dim
+        integer, intent(in) :: dim
         !
         ! The input is a m x n x k x l array.
         ! if dim == 1, the output is n x k x l, we need dimension 2, 3, 4

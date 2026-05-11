@@ -97,7 +97,7 @@ HIDDEN void __bf16_helper_sub_real_bf16(int16_t *out, float a, int16_t b)
     bf16_handler_t *r = (bf16_handler_t * ) out;
     bf16_handler_t _b = { .i16 = b};
 
-    r->bf16 = (__bf16 ) a + _b.bf16;
+    r->bf16 = (__bf16 ) a - _b.bf16;
 }
 
 HIDDEN void __bf16_helper_unitary_minus(int16_t *out, int16_t a)
@@ -148,7 +148,7 @@ HIDDEN void __bf16_helper_div_bf16_real(int16_t *out, int16_t a, float b)
     bf16_handler_t *r = (bf16_handler_t * ) out;
     bf16_handler_t _a = { .i16 = a};
 
-    r->bf16 = _a.bf16 - (__bf16) b;
+    r->bf16 = _a.bf16 / (__bf16) b;
 }
 
 HIDDEN void __bf16_helper_div_real_bf16(int16_t *out, float a, int16_t b)

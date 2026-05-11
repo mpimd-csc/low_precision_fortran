@@ -29,7 +29,7 @@ contains
     ! Overall max in 1D
     module pure function maxloc_fp16_1d(array) result(max_loc)
         type(fp16), dimension(:), intent(in) :: array
-        integer(lpf_default_int_kind) :: max_loc
+        integer :: max_loc
 
         type(fp16):: max_value
         integer(lpf_default_int_kind) :: i
@@ -48,7 +48,7 @@ contains
     ! Overall max in 2D
     module pure function maxloc_fp16_2d(array) result(max_loc)
         type(fp16), dimension(:,:), intent(in) :: array
-        integer(lpf_default_int_kind), dimension(2) :: max_loc
+        integer, dimension(2) :: max_loc
 
         type(fp16) :: max_value
         integer :: i, j
@@ -70,7 +70,7 @@ contains
     ! Overall max in 3D
     module pure function maxloc_fp16_3d(array) result(max_loc)
         type(fp16), dimension(:,:,:), intent(in) :: array
-        integer(lpf_default_int_kind), dimension(3) :: max_loc
+        integer, dimension(3) :: max_loc
         type(fp16) :: max_value
         integer(lpf_default_int_kind) :: i, j, k
 
@@ -94,7 +94,7 @@ contains
     ! Overall max in 4D
     module pure function maxloc_fp16_4d(array) result(max_loc)
         type(fp16), dimension(:,:,:,:), intent(in) :: array
-        integer(lpf_default_int_kind), dimension(4) :: max_loc
+        integer, dimension(4) :: max_loc
         type(fp16) :: max_value
         integer(lpf_default_int_kind) :: i, j, k, l
 
@@ -122,8 +122,8 @@ contains
     ! Overall Max in 1D but with dim argument.
     module pure function maxloc_fp16_1d_dim(array, dim) result(max_loc)
         type(fp16), dimension(:), intent(in) :: array
-        integer(lpf_default_int_kind) :: max_loc
-        integer(lpf_default_int_kind), intent(in) :: dim
+        integer :: max_loc
+        integer, intent(in) :: dim
 
         if (dim .ne. 1) then
             error stop 'Invalid dimension for 1D array'
@@ -135,8 +135,8 @@ contains
     ! Max along dim in 2D
     module pure function maxloc_fp16_2d_dim(array, dim) result(max_loc)
         type(fp16), dimension(:,:), intent(in) :: array
-        integer(lpf_default_int_kind), intent(in) :: dim
-        integer(lpf_default_int_kind), dimension(size(array, merge(2, 1, dim == 1))) :: max_loc
+        integer, intent(in) :: dim
+        integer, dimension(size(array, merge(2, 1, dim == 1))) :: max_loc
         type(fp16), dimension(size(array, merge(2, 1, dim == 1))) :: max_value
         integer(lpf_default_int_kind) :: i, j
 
@@ -173,14 +173,14 @@ contains
     ! Max along dim in 3D
     module pure function maxloc_fp16_3d_dim(array, dim) result(max_loc)
         type(fp16), dimension(:,:,:), intent(in) :: array
-        integer(lpf_default_int_kind), intent(in) :: dim
+        integer, intent(in) :: dim
         !
         ! The input is a m x n x k array.
         ! if dim == 1, the output is n x k, we need dimension 2 and 3
         ! if dim == 2, the output is m x k, we need dimension 1 and 3
         ! if dim == 3, the output is m x n, we need dimension 1 and 2
         !
-        integer(lpf_default_int_kind), dimension( size(array, merge(2, 1, dim == 1)), &
+        integer, dimension( size(array, merge(2, 1, dim == 1)), &
             & size(array, merge(2, 3, dim == 3))) :: max_loc
         type(fp16), dimension( size(array, merge(2, 1, dim == 1)), &
             & size(array, merge(2, 3, dim == 3))) :: max_value
@@ -239,7 +239,7 @@ contains
     ! Max along dim in 4D
     module pure function maxloc_fp16_4d_dim(array, dim) result(max_loc)
         type(fp16), dimension(:,:,:,:), intent(in) :: array
-        integer(lpf_default_int_kind), intent(in) :: dim
+        integer, intent(in) :: dim
         !
         ! The input is a m x n x k x l array.
         ! if dim == 1, the output is n x k x l, we need dimension 2, 3, 4
@@ -248,7 +248,7 @@ contains
         ! if dim == 4, the output is m x n x k, we need dimension 1, 2, 3
         !
 
-        integer(lpf_default_int_kind), dimension( size(array, merge(2, 1, dim == 1)), &
+        integer, dimension( size(array, merge(2, 1, dim == 1)), &
             & size(array, merge(3, 2, dim < 3)), &
             & size(array, merge(4, 3, dim == 4))) :: max_loc
         type(fp16), dimension( size(array, merge(2, 1, dim == 1)), &

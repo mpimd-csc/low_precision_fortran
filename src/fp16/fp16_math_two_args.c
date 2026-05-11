@@ -39,23 +39,21 @@ HIDDEN void __fp16_helper_atan2(int16_t *out, int16_t in1, int16_t in2)
 /*
  * Function: bessel_jn ( C: jnf )
  */
-HIDDEN void __fp16_helper_bessel_jn(int16_t *out, int16_t in1, int16_t in2)
+HIDDEN void __fp16_helper_bessel_jn(int16_t *out, int in1, int16_t in2)
 {
     fp16_handler_t *r = (fp16_handler_t * ) out;
-    fp16_handler_t _a = { .i16 = in1};
     fp16_handler_t _b = { .i16 = in2};
-    r->f16 = (_Float16) jnf ((float) _a.f16, (float) _b.f16);
+    r->f16 = (_Float16) jnf (in1, (float) _b.f16);
 }
 
 /*
  * Function: bessel_yn ( C: ynf )
  */
-HIDDEN void __fp16_helper_bessel_yn(int16_t *out, int16_t in1, int16_t in2)
+HIDDEN void __fp16_helper_bessel_yn(int16_t *out, int in1, int16_t in2)
 {
     fp16_handler_t *r = (fp16_handler_t * ) out;
-    fp16_handler_t _a = { .i16 = in1};
     fp16_handler_t _b = { .i16 = in2};
-    r->f16 = (_Float16) ynf ((float) _a.f16, (float) _b.f16);
+    r->f16 = (_Float16) ynf(in1,  (float) _b.f16);
 }
 
 /*
