@@ -33,13 +33,13 @@ submodule (lpf_bf16) lpf_bf16_math_two_args
         pure subroutine helper_bf16_bessel_jn(out, in1, in2) bind(c, name="__bf16_helper_bessel_jn")
             use, intrinsic :: iso_c_binding
             integer(c_int16_t), intent(out) :: out
-            integer(c_int16_t), intent(in), value :: in1
+            integer(c_int), intent(in), value :: in1
             integer(c_int16_t), intent(in), value :: in2
         end subroutine
         pure subroutine helper_bf16_bessel_yn(out, in1, in2) bind(c, name="__bf16_helper_bessel_yn")
             use, intrinsic :: iso_c_binding
             integer(c_int16_t), intent(out) :: out
-            integer(c_int16_t), intent(in), value :: in1
+            integer(c_int), intent(in), value :: in1
             integer(c_int16_t), intent(in), value :: in2
         end subroutine
         pure subroutine helper_bf16_hypot(out, in1, in2) bind(c, name="__bf16_helper_hypot")
@@ -59,18 +59,23 @@ contains
     end function
     module elemental function bessel_jn_bf16(in1, in2) result(out)
             type(BF16) :: out
-            type(BF16), intent(in) :: in1
+            integer, intent(in) :: in1
             type(BF16), intent(in) :: in2
+            integer(c_int) :: cin1
 
-            call helper_bf16_bessel_jn(out%value, in1%value, in2%value)
+            cin1 = int(in1, c_int)
+            call helper_bf16_bessel_jn(out%value, cin1, in2%value)
     end function
+
     module elemental function bessel_yn_bf16(in1, in2) result(out)
             type(BF16) :: out
-            type(BF16), intent(in) :: in1
+            integer, intent(in) :: in1
             type(BF16), intent(in) :: in2
-
-            call helper_bf16_bessel_yn(out%value, in1%value, in2%value)
+            integer(c_int) :: cin1
+            cin1 = int(in1, c_int)
+            call helper_bf16_bessel_yn(out%value, cin1, in2%value)
     end function
+
     module elemental function hypot_bf16(in1, in2) result(out)
             type(BF16) :: out
             type(BF16), intent(in) :: in1

@@ -36,10 +36,58 @@ SET (BF16_SRC
     bf16/bf16_math_trig.c
 )
 
+SET(FP8_E4M3_SRC
+    fp8_e4m3/emu/classify.c
+    fp8_e4m3/emu/conversion.c
+    fp8_e4m3/emu/base_arithmetic.c
+    fp8_e4m3/emu/debug.c
+    fp8_e4m3/emu/fp8_e4m3_math_lut.c
+    fp8_e4m3/emu/fp8_e4m3_abs.c
+    fp8_e4m3/fp8_e4m3.F90
+    fp8_e4m3/fp8_e4m3_generic.c
+    fp8_e4m3/fp8_e4m3_helper.c
+    fp8_e4m3/fp8_e4m3_math_generic.f90
+    fp8_e4m3/fp8_e4m3_math_one_arg.c
+    fp8_e4m3/fp8_e4m3_math_one_arg.f90
+    fp8_e4m3/fp8_e4m3_math_two_args.c
+    fp8_e4m3/fp8_e4m3_math_two_args.f90
+    fp8_e4m3/fp8_e4m3_math_trig.c
+    fp8_e4m3/fp8_e4m3_math_trig.f90
+    fp8_e4m3/fp8_e4m3_maxval.f90
+    fp8_e4m3/fp8_e4m3_maxloc.f90
+    fp8_e4m3/fp8_e4m3_minloc.f90
+    fp8_e4m3/fp8_e4m3_minval.f90
+)
+
+SET(FP8_E5M2_SRC
+    fp8_e5m2/emu/classify.c
+    fp8_e5m2/emu/conversion.c
+    fp8_e5m2/emu/base_arithmetic.c
+    fp8_e5m2/emu/debug.c
+    fp8_e5m2/emu/abs.c
+    fp8_e5m2/emu/fp8_e5m2_math_lut.c
+    fp8_e5m2/fp8_e5m2.F90
+    fp8_e5m2/fp8_e5m2_generic.c
+    fp8_e5m2/fp8_e5m2_helper.c
+    fp8_e5m2/fp8_e5m2_math_generic.f90
+    fp8_e5m2/fp8_e5m2_math_one_arg.c
+    fp8_e5m2/fp8_e5m2_math_one_arg.f90
+    fp8_e5m2/fp8_e5m2_math_two_args.c
+    fp8_e5m2/fp8_e5m2_math_two_args.f90
+    fp8_e5m2/fp8_e5m2_math_trig.c
+    fp8_e5m2/fp8_e5m2_math_trig.f90
+    fp8_e5m2/fp8_e5m2_maxval.f90
+    fp8_e5m2/fp8_e5m2_maxloc.f90
+    fp8_e5m2/fp8_e5m2_minloc.f90
+    fp8_e5m2/fp8_e5m2_minval.f90
+)
+
 
 ADD_LIBRARY(lpf
     $<$<BOOL:${LPF_HAVE_FP16}>:${FP16_SRC}>
     $<$<BOOL:${LPF_HAVE_BF16}>:${BF16_SRC}>
+    $<$<BOOL:${LPF_FP8_E4M3}>:${FP8_E4M3_SRC}>
+    $<$<BOOL:${LPF_FP8_E5M2}>:${FP8_E5M2_SRC}>
     aux/get_wtime.c
     aux/xerbla.c
     aux/xerbla.f90
@@ -49,9 +97,10 @@ ADD_LIBRARY(lpf
 )
 
 TARGET_LINK_LIBRARIES(lpf
-    PRIVATE
+    PUBLIC
         $<$<BOOL:NEED_LINKING_AGAINST_LIBM>:${LIBM_NAME}>
 )
+
 
 TARGET_INCLUDE_DIRECTORIES(lpf
     PRIVATE
@@ -88,4 +137,32 @@ INSTALL(TARGETS lpf
 
 if(LPF_BLAS)
     ADD_SUBDIRECTORY(blas)
+endif()
+
+enable_testing()
+#
+# Tests
+#
+if (LPF_FP8_E4M3)
+    add_executable(test_fp8_e4m3 fp8_e4m3/emu/tests.c)
+    target_link_libraries(test_fp8_e4m3 PRIVATE lpf)
+    add_test(NAME test_fp8_e4m3 COMMAND test_fp8_e4m3 )
+
+    # Lookup table generator (developer tool)
+    add_executable(gen_fp8_e4m3_lut fp8_e4m3/emu/gen_lookup_tables.c
+        fp8_e4m3/emu/conversion.c fp8_e4m3/emu/classify.c)
+    target_include_directories(gen_fp8_e4m3_lut PRIVATE ${PROJECT_SOURCE_DIR}/src)
+    target_link_libraries(gen_fp8_e4m3_lut PRIVATE m)
+endif()
+
+if (LPF_FP8_E5M2)
+    add_executable(test_fp8_e5m2 fp8_e5m2/emu/tests.c)
+    target_link_libraries(test_fp8_e5m2 PRIVATE lpf)
+    add_test(NAME test_fp8_e5m2 COMMAND test_fp8_e5m2 )
+
+    # Lookup table generator (developer tool)
+    add_executable(gen_fp8_e5m2_lut fp8_e5m2/emu/gen_lookup_tables.c
+        fp8_e5m2/emu/conversion.c fp8_e5m2/emu/classify.c)
+    target_include_directories(gen_fp8_e5m2_lut PRIVATE ${PROJECT_SOURCE_DIR}/src)
+    target_link_libraries(gen_fp8_e5m2_lut PRIVATE m)
 endif()

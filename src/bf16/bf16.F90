@@ -306,14 +306,14 @@ MODULE LPF_BF16
     interface precision
         module elemental function precision_bf16(x) result(out)
             type(BF16), intent(in) :: x
-            integer(lpf_default_int_kind) :: out
+            integer :: out
         end function precision_bf16
     end interface
 
     interface range
         module elemental function range_bf16(x) result(out)
             type(BF16), intent(in) :: x
-            integer(lpf_default_int_kind) :: out
+            integer :: out
         end function range_bf16
     end interface
 
@@ -529,14 +529,14 @@ MODULE LPF_BF16
     end interface
     interface bessel_jn
         module elemental function bessel_jn_bf16(in1, in2) result(out)
-            type(BF16), intent(in) :: in1
+            integer, intent(in) :: in1
             type(BF16), intent(in) :: in2
             type(BF16) :: out
         end function bessel_jn_bf16
     end interface
     interface bessel_yn
         module elemental function bessel_yn_bf16(in1, in2) result(out)
-            type(BF16), intent(in) :: in1
+            integer, intent(in) :: in1
             type(BF16), intent(in) :: in2
             type(BF16) :: out
         end function bessel_yn_bf16
@@ -632,23 +632,23 @@ MODULE LPF_BF16
         end function
         module pure function maxval_bf16_1d_dim(array, dim) result(max_value)
             type(bf16), dimension(:), intent(in) :: array
-            integer(lpf_default_int_kind), intent(in) :: dim
+            integer, intent(in) :: dim
             type(bf16) :: max_value
         end function
         module pure function maxval_bf16_2d_dim(array, dim) result(max_value)
             type(bf16), dimension(:,:), intent(in) :: array
-            integer(lpf_default_int_kind), intent(in) :: dim
+            integer, intent(in) :: dim
             type(bf16), dimension(size(array, merge(2, 1, dim == 1))) :: max_value
         end function
         module pure function maxval_bf16_3d_dim(array, dim) result(max_value)
             type(bf16), dimension(:,:,:), intent(in) :: array
-            integer(lpf_default_int_kind), intent(in) :: dim
+            integer, intent(in) :: dim
             type(bf16), dimension( size(array, merge(2, 1, dim == 1)), &
                 & size(array, merge(2, 3, dim == 3))) :: max_value
         end function
         module pure function maxval_bf16_4d_dim(array, dim) result(max_value)
             type(bf16), dimension(:,:,:,:), intent(in) :: array
-            integer(lpf_default_int_kind), intent(in) :: dim
+            integer, intent(in) :: dim
             type(bf16), dimension( size(array, merge(2, 1, dim == 1)), &
                 & size(array, merge(3, 2, dim < 3)), &
                 & size(array, merge(4, 3, dim == 4))) :: max_value
@@ -674,23 +674,23 @@ MODULE LPF_BF16
         end function
         module pure function minval_bf16_1d_dim(array, dim) result(min_value)
             type(bf16), dimension(:), intent(in) :: array
-            integer(lpf_default_int_kind), intent(in) :: dim
+            integer, intent(in) :: dim
             type(bf16) :: min_value
         end function
         module pure function minval_bf16_2d_dim(array, dim) result(min_value)
             type(bf16), dimension(:,:), intent(in) :: array
-            integer(lpf_default_int_kind), intent(in) :: dim
+            integer, intent(in) :: dim
             type(bf16), dimension(size(array, merge(2, 1, dim == 1))) :: min_value
         end function
         module pure function minval_bf16_3d_dim(array, dim) result(min_value)
             type(bf16), dimension(:,:,:), intent(in) :: array
-            integer(lpf_default_int_kind), intent(in) :: dim
+            integer, intent(in) :: dim
             type(bf16), dimension( size(array, merge(2, 1, dim == 1)), &
                 & size(array, merge(2, 3, dim == 3))) :: min_value
         end function
         module pure function minval_bf16_4d_dim(array, dim) result(min_value)
             type(bf16), dimension(:,:,:,:), intent(in) :: array
-            integer(lpf_default_int_kind), intent(in) :: dim
+            integer, intent(in) :: dim
             type(bf16), dimension( size(array, merge(2, 1, dim == 1)), &
                 & size(array, merge(3, 2, dim < 3)), &
                 & size(array, merge(4, 3, dim == 4))) :: min_value
@@ -701,40 +701,40 @@ MODULE LPF_BF16
     interface maxloc
         module pure function maxloc_bf16_1d(array) result(max_loc)
             type(bf16), dimension(:), intent(in) :: array
-            integer(lpf_default_int_kind) :: max_loc
+            integer :: max_loc
         end function
         module pure function maxloc_bf16_2d(array) result(max_loc)
             type(bf16), dimension(:,:), intent(in) :: array
-            integer(lpf_default_int_kind), dimension(2) :: max_loc
+            integer, dimension(2) :: max_loc
         end function
         module pure function maxloc_bf16_3d(array) result(max_loc)
             type(bf16), dimension(:,:,:), intent(in) :: array
-            integer(lpf_default_int_kind), dimension(3) :: max_loc
+            integer, dimension(3) :: max_loc
         end function
         module pure function maxloc_bf16_4d(array) result(max_loc)
             type(bf16), dimension(:,:,:,:), intent(in) :: array
-            integer(lpf_default_int_kind), dimension(4) :: max_loc
+            integer, dimension(4) :: max_loc
         end function
         module pure function maxloc_bf16_1d_dim(array, dim) result(max_loc)
             type(bf16), dimension(:), intent(in) :: array
-            integer(lpf_default_int_kind), intent(in) :: dim
-            integer(lpf_default_int_kind) :: max_loc
+            integer, intent(in) :: dim
+            integer :: max_loc
         end function
         module pure function maxloc_bf16_2d_dim(array, dim) result(max_loc)
             type(bf16), dimension(:,:), intent(in) :: array
-            integer(lpf_default_int_kind), intent(in) :: dim
-            integer(lpf_default_int_kind), dimension(size(array, merge(2, 1, dim == 1))) :: max_loc
+            integer, intent(in) :: dim
+            integer, dimension(size(array, merge(2, 1, dim == 1))) :: max_loc
         end function
         module pure function maxloc_bf16_3d_dim(array, dim) result(max_loc)
             type(bf16), dimension(:,:,:), intent(in) :: array
-            integer(lpf_default_int_kind), intent(in) :: dim
-            integer(lpf_default_int_kind), dimension( size(array, merge(2, 1, dim == 1)), &
+            integer, intent(in) :: dim
+            integer, dimension( size(array, merge(2, 1, dim == 1)), &
                 & size(array, merge(2, 3, dim == 3))) :: max_loc
         end function
         module pure function maxloc_bf16_4d_dim(array, dim) result(max_loc)
             type(bf16), dimension(:,:,:,:), intent(in) :: array
-            integer(lpf_default_int_kind), intent(in) :: dim
-            integer(lpf_default_int_kind), dimension( size(array, merge(2, 1, dim == 1)), &
+            integer, intent(in) :: dim
+            integer, dimension( size(array, merge(2, 1, dim == 1)), &
                 & size(array, merge(3, 2, dim < 3)), &
                 & size(array, merge(4, 3, dim == 4))) :: max_loc
         end function
@@ -744,40 +744,40 @@ MODULE LPF_BF16
     interface minloc
         module pure function minloc_bf16_1d(array) result(min_loc)
             type(bf16), dimension(:), intent(in) :: array
-            integer(lpf_default_int_kind) :: min_loc
+            integer :: min_loc
         end function
         module pure function minloc_bf16_2d(array) result(min_loc)
             type(bf16), dimension(:,:), intent(in) :: array
-            integer(lpf_default_int_kind), dimension(2) :: min_loc
+            integer, dimension(2) :: min_loc
         end function
         module pure function minloc_bf16_3d(array) result(min_loc)
             type(bf16), dimension(:,:,:), intent(in) :: array
-            integer(lpf_default_int_kind), dimension(3) :: min_loc
+            integer, dimension(3) :: min_loc
         end function
         module pure function minloc_bf16_4d(array) result(min_loc)
             type(bf16), dimension(:,:,:,:), intent(in) :: array
-            integer(lpf_default_int_kind), dimension(4) :: min_loc
+            integer, dimension(4) :: min_loc
         end function
         module pure function minloc_bf16_1d_dim(array, dim) result(min_loc)
             type(bf16), dimension(:), intent(in) :: array
-            integer(lpf_default_int_kind), intent(in) :: dim
-            integer(lpf_default_int_kind) :: min_loc
+            integer, intent(in) :: dim
+            integer :: min_loc
         end function
         module pure function minloc_bf16_2d_dim(array, dim) result(min_loc)
             type(bf16), dimension(:,:), intent(in) :: array
-            integer(lpf_default_int_kind), intent(in) :: dim
-            integer(lpf_default_int_kind), dimension(size(array, merge(2, 1, dim == 1))) :: min_loc
+            integer, intent(in) :: dim
+            integer, dimension(size(array, merge(2, 1, dim == 1))) :: min_loc
         end function
         module pure function minloc_bf16_3d_dim(array, dim) result(min_loc)
             type(bf16), dimension(:,:,:), intent(in) :: array
-            integer(lpf_default_int_kind), intent(in) :: dim
-            integer(lpf_default_int_kind), dimension( size(array, merge(2, 1, dim == 1)), &
+            integer, intent(in) :: dim
+            integer, dimension( size(array, merge(2, 1, dim == 1)), &
                 & size(array, merge(2, 3, dim == 3))) :: min_loc
         end function
         module pure function minloc_bf16_4d_dim(array, dim) result(min_loc)
             type(bf16), dimension(:,:,:,:), intent(in) :: array
-            integer(lpf_default_int_kind), intent(in) :: dim
-            integer(lpf_default_int_kind), dimension( size(array, merge(2, 1, dim == 1)), &
+            integer, intent(in) :: dim
+            integer, dimension( size(array, merge(2, 1, dim == 1)), &
                 & size(array, merge(3, 2, dim < 3)), &
                 & size(array, merge(4, 3, dim == 4))) :: min_loc
         end function
@@ -1418,9 +1418,9 @@ CONTAINS
         type(bf16), intent(in) :: x, y, z
         type(bf16) :: out
 
-        if ( x .gt. y .and. x .gt. y) then
+        if ( x .gt. y .and. x .gt. z) then
             out = x
-        else if ( y.gt. x .and. y.gt.z) then
+        else if ( y .gt. x .and. y .gt. z) then
             out = y
         else
             out = z
