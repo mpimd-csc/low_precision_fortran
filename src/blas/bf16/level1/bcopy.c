@@ -73,14 +73,14 @@
 /* > \endverbatim */
 /* > */
 /*  ===================================================================== */
-void LPF_GLOBAL(bcopy,BCOPY)(lpf_blas_int_t *n, lpf_bfloat16_t *sx, lpf_blas_int_t *incx, lpf_bfloat16_t *sy,
-        lpf_blas_int_t *incy)
+void LPF_GLOBAL(bcopy,BCOPY)(int64_t *n, lpf_bfloat16_t *sx, int64_t *incx, lpf_bfloat16_t *sy,
+        int64_t *incy)
 {
     /* System generated locals */
-    lpf_blas_int_t i__1;
+    int64_t i__1;
 
     /* Local variables */
-    lpf_blas_int_t i__, m, ix, iy, mp1;
+    int64_t i__, m, ix, iy, mp1;
 
 
     /*  -- Reference BLAS level1 routine (version 3.4.0) -- */
@@ -158,17 +158,21 @@ void LPF_GLOBAL(bcopy,BCOPY)(lpf_blas_int_t *n, lpf_bfloat16_t *sx, lpf_blas_int
     return;
 } /* bcopy_ */
 
- void lpf_blas_bcopy_fortran(lpf_blas_int_t *n, lpf_fbfloat16_t *sx, lpf_blas_int_t *incx, lpf_fbfloat16_t *sy,
-        lpf_blas_int_t *incy)
-{
-    LPF_GLOBAL(bcopy,BCOPY)(n, (lpf_bfloat16_t *) sx, incx, (lpf_bfloat16_t *) sy, incy);
-}
-
 #include <ISO_Fortran_binding.h>
 
-void lpf_blas_bcopy_fortran_dyn_rank(lpf_blas_int_t *n, CFI_cdesc_t *_sx, lpf_blas_int_t *incx, CFI_cdesc_t *_sy, lpf_blas_int_t *incy)
+void lpf_blas_bcopy_fortran_dyn_rank_64(int64_t *n, CFI_cdesc_t *_sx, int64_t *incx, CFI_cdesc_t *_sy, int64_t *incy)
 {
     lpf_bfloat16_t *sx = _sx->base_addr;
     lpf_bfloat16_t *sy = _sy->base_addr;
-    LPF_GLOBAL(bcopy,BCOPY)(n, (lpf_bfloat16_t *) sx, incx, (lpf_bfloat16_t *) sy, incy);
+    LPF_GLOBAL(bcopy,BCOPY)(n, sx, incx, sy, incy);
+}
+
+void lpf_blas_bcopy_fortran_dyn_rank_32(int32_t *n, CFI_cdesc_t *_sx, int32_t *incx, CFI_cdesc_t *_sy, int32_t *incy)
+{
+    lpf_bfloat16_t *sx = _sx->base_addr;
+    lpf_bfloat16_t *sy = _sy->base_addr;
+    int64_t _n = *n;
+    int64_t _incx = *incx;
+    int64_t _incy = *incy;
+    LPF_GLOBAL(bcopy,BCOPY)(&_n, sx, &_incx, sy, &_incy);
 }

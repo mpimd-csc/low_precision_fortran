@@ -17,7 +17,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "fp8_e5m2.h"
+#include "lpf_fp8_e5m2_emu.h"
 #include "fp8_e5m2_bits.h"
 
 /**

@@ -34,7 +34,7 @@
 #include <math.h>
 #include <stdint.h>
 
-#include "fp8_e4m3.h"
+#include "lpf_fp8_e4m3_emu.h"
 #include "fp8_e4m3_bits.h"
 
 typedef float (*math_func_t)(float);
@@ -75,6 +75,7 @@ static func_entry_t supported_functions[] = {
     {"floor",      "floorf",   floorf},
     {"gamma",      "tgammaf",  tgammaf},
     {"log",        "logf",     logf},
+    {"log2",        "log2f",     log2f},
     {"log10",      "log10f",   log10f},
     {"log_gamma",  "lgammaf",  lgammaf},
     {"sin",        "sinf",     sinf},
@@ -100,12 +101,14 @@ static func2_entry_t supported_functions2[] = {
 #define NUM_FUNCTIONS ((int)(sizeof(supported_functions) / sizeof(supported_functions[0])))
 #define NUM_FUNCTIONS2 ((int)(sizeof(supported_functions2) / sizeof(supported_functions2[0])))
 
+#if 0
 static void print_list(void)
 {
     for (int i = 0; i < NUM_FUNCTIONS; i++) {
         printf("%-12s (%s)\n", supported_functions[i].name, supported_functions[i].cname);
     }
 }
+#endif
 
 static void generate_table(FILE *out, const func_entry_t *entry)
 {

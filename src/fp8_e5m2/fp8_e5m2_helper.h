@@ -23,7 +23,7 @@
 #define BF16_HELPER_H_P7LSSW6X
 
 #include <stdint.h>
-#include "emu/fp8_e5m2.h"
+#include "emu/lpf_fp8_e5m2_emu.h"
 #include "lpf_internal.h"
 #include <math.h>
 #include "constants.h"

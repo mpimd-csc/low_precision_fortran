@@ -18,7 +18,7 @@
  */
 
 
-#include "fp8_e4m3.h"
+#include "lpf_fp8_e4m3_emu.h"
 #include "fp8_e4m3_bits.h"
 
 fp8_e4m3_t fp8_e4m3_abs(fp8_e4m3_t x)

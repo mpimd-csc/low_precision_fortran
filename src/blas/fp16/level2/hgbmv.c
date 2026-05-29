@@ -45,7 +45,6 @@
 /*       REAL A(LDA,*),X(*),Y(*) */
 /*       .. */
 
-
 /* > \par Purpose: */
 /*  ============= */
 /* > */
@@ -87,7 +86,7 @@
 /* >          N is INTEGER */
 /* >           On entry, N specifies the number of columns of the matrix A. */
 /* >           N must be at least zero. */
-/* > \endverbatim */
+/* > \endver verbatim */
 /* > */
 /* > \param[in] KL */
 /* > \verbatim */
@@ -209,17 +208,17 @@
 /* > \endverbatim */
 /* > */
 /*  ===================================================================== */
-void LPF_GLOBAL(hgbmv,HGBMV)(char *trans, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_blas_int_t *kl,
-        lpf_blas_int_t *ku, lpf_float16_t *alpha, lpf_float16_t *a, lpf_blas_int_t *lda, lpf_float16_t *x, lpf_blas_int_t *
-        incx, lpf_float16_t *beta, lpf_float16_t *y, lpf_blas_int_t *incy, lpf_fortran_strlen_t trans_len)
+void LPF_GLOBAL(hgbmv,HGBMV)(char *trans, int64_t *m, int64_t *n, int64_t *kl,
+        int64_t *ku, lpf_float16_t *alpha, lpf_float16_t *a, int64_t *lda, lpf_float16_t *x, int64_t *
+        incx, lpf_float16_t *beta, lpf_float16_t *y, int64_t *incy, lpf_fortran_strlen_t trans_len)
 {
     /* System generated locals */
-    lpf_blas_int_t a_dim1, a_offset, i__1, i__2, i__3, i__4, i__5, i__6;
+    int64_t a_dim1, a_offset, i__1, i__2, i__3, i__4, i__5, i__6;
 
     /* Local variables */
-    lpf_blas_int_t i__, j, k, ix, iy, jx, jy, kx, ky, kup1, info;
+    int64_t i__, j, k, ix, iy, jx, jy, kx, ky, kup1, info;
     lpf_float16_t temp;
-    lpf_blas_int_t lenx, leny;
+    int64_t lenx, leny;
 
     /*  -- Reference BLAS level2 routine (version 3.6.0) -- */
     /*  -- Reference BLAS is a software package provided by Univ. of Tennessee,    -- */
@@ -276,7 +275,8 @@ void LPF_GLOBAL(hgbmv,HGBMV)(char *trans, lpf_blas_int_t *m, lpf_blas_int_t *n, 
         info = 13;
     }
     if (info != 0) {
-        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("HGBMV ", &info, (lpf_fortran_strlen_t)6);
+        int32_t infox = info;
+        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("HGBMV ", &infox, (lpf_fortran_strlen_t)6);
         return;
     }
 
@@ -450,20 +450,11 @@ void LPF_GLOBAL(hgbmv,HGBMV)(char *trans, lpf_blas_int_t *m, lpf_blas_int_t *n, 
 
 } /* hgbmv_ */
 
-void lpf_blas_hgbmv_fortran(char *trans, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_blas_int_t *kl,
-        lpf_blas_int_t *ku, lpf_ffloat16_t *alpha, lpf_ffloat16_t *a, lpf_blas_int_t *lda, lpf_ffloat16_t *x, lpf_blas_int_t *
-        incx, lpf_ffloat16_t *beta, lpf_ffloat16_t *y, lpf_blas_int_t *incy)
-{
-    LPF_GLOBAL(hgbmv,HGBMV)(trans, m, n, kl,
-        ku, (lpf_float16_t *)alpha, (lpf_float16_t *)a, lda, (lpf_float16_t *)x,
-        incx, (lpf_float16_t *)beta, (lpf_float16_t *)y, incy, 1);
-}
-
 #include <ISO_Fortran_binding.h>
 
-void lpf_blas_hgbmv_fortran_dyn_rank(char *trans, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_blas_int_t *kl,
-        lpf_blas_int_t *ku, lpf_ffloat16_t *alpha, CFI_cdesc_t *a, lpf_blas_int_t *lda, CFI_cdesc_t *x, lpf_blas_int_t *
-        incx, lpf_ffloat16_t *beta, CFI_cdesc_t *y, lpf_blas_int_t *incy)
+void lpf_blas_hgbmv_fortran_dyn_rank_64(char *trans, int64_t *m, int64_t *n, int64_t *kl,
+        int64_t *ku, lpf_ffloat16_t *alpha, CFI_cdesc_t *a, int64_t *lda, CFI_cdesc_t *x, int64_t *
+        incx, lpf_ffloat16_t *beta, CFI_cdesc_t *y, int64_t *incy)
 {
     lpf_float16_t *a_ptr = a->base_addr;
     lpf_float16_t *x_ptr = x->base_addr;
@@ -472,4 +463,24 @@ void lpf_blas_hgbmv_fortran_dyn_rank(char *trans, lpf_blas_int_t *m, lpf_blas_in
     LPF_GLOBAL(hgbmv,HGBMV)(trans, m, n, kl,
         ku, (lpf_float16_t *)alpha, (lpf_float16_t *)a_ptr, lda, (lpf_float16_t *)x_ptr,
         incx, (lpf_float16_t *)beta, (lpf_float16_t *)y_ptr, incy, 1);
+}
+
+void lpf_blas_hgbmv_fortran_dyn_rank_32(char *trans, int32_t *m, int32_t *n, int32_t *kl,
+        int32_t *ku, lpf_ffloat16_t *alpha, CFI_cdesc_t *a, int32_t *lda, CFI_cdesc_t *x, int32_t *
+        incx, lpf_ffloat16_t *beta, CFI_cdesc_t *y, int32_t *incy)
+{
+    lpf_float16_t *a_ptr = a->base_addr;
+    lpf_float16_t *x_ptr = x->base_addr;
+    lpf_float16_t *y_ptr = y->base_addr;
+    int64_t _m = *m;
+    int64_t _n = *n;
+    int64_t _kl = *kl;
+    int64_t _ku = *ku;
+    int64_t _lda = *lda;
+    int64_t _incx = *incx;
+    int64_t _incy = *incy;
+
+    LPF_GLOBAL(hgbmv,HGBMV)(trans, &_m, &_n, &_kl,
+        &_ku, (lpf_float16_t *)alpha, (lpf_float16_t *)a_ptr, &_lda, (lpf_float16_t *)x_ptr,
+        &_incx, (lpf_float16_t *)beta, (lpf_float16_t *)y_ptr, &_incy, 1);
 }

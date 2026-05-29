@@ -79,14 +79,14 @@
 /*  ===================================================================== */
 
 
-int16_t LPF_GLOBAL(hasum,HASUM)(lpf_blas_int_t *n, lpf_float16_t *sx, lpf_blas_int_t *incx)
+int16_t LPF_GLOBAL(hasum,HASUM)(int64_t *n, lpf_float16_t *sx, int64_t *incx)
 {
     /* System generated locals */
-    lpf_blas_int_t i__1, i__2;
+    int64_t i__1, i__2;
     lpf_float16_t ret_val;
 
     /* Local variables */
-    lpf_blas_int_t i__, m, mp1, nincx;
+    int64_t i__, m, mp1, nincx;
     lpf_float16_t stemp;
 
 
@@ -158,18 +158,23 @@ int16_t LPF_GLOBAL(hasum,HASUM)(lpf_blas_int_t *n, lpf_float16_t *sx, lpf_blas_i
     RETURN_FP16(ret_val);
 } /* hasum_ */
 
-lpf_ffloat16_t lpf_blas_hasum_fortran(lpf_blas_int_t *n, lpf_ffloat16_t *sx, lpf_blas_int_t *incx)
+#include <ISO_Fortran_binding.h>
+
+lpf_ffloat16_t lpf_blas_hasum_fortran_dyn_rank_64(int64_t *n, CFI_cdesc_t *_sx, int64_t *incx)
 {
+    lpf_float16_t *sx = _sx->base_addr;
     lpf_ffloat16_t r;
-    r.value = LPF_GLOBAL(hasum,HASUM)(n, (lpf_float16_t*) sx, incx);
+    r.value = LPF_GLOBAL(hasum,HASUM)(n, sx, incx);
     return r;
 }
 
-#include <ISO_Fortran_binding.h>
-
-lpf_ffloat16_t lpf_blas_hasum_fortran_dyn_rank(lpf_blas_int_t *n, CFI_cdesc_t *_sx, lpf_blas_int_t *incx)
+lpf_ffloat16_t lpf_blas_hasum_fortran_dyn_rank_32(int32_t *n, CFI_cdesc_t *_sx, int32_t *incx)
 {
     lpf_float16_t *sx = _sx->base_addr;
-    return lpf_blas_hasum_fortran(n, (lpf_ffloat16_t *)sx, incx);
+    int64_t _n = *n;
+    int64_t _incx = *incx;
+    lpf_ffloat16_t r;
+    r.value = LPF_GLOBAL(hasum,HASUM)(&_n, sx, &_incx);
+    return r;
 }
 

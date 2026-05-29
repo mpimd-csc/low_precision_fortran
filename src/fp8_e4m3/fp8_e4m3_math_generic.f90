@@ -210,7 +210,7 @@ contains
 
         ! dummy to avoid compiler warnings
         if ( 0 .eq. 1) then
-            out%value = INT(x%value, 2)
+            out%value = INT(x%value, 1)
         end if
 
         call helper_huge_fp8_e4m3(out%value)
@@ -222,7 +222,7 @@ contains
 
         ! dummy to avoid compiler warnings
         if ( 0 .eq. 1) then
-            out%value = INT(x%value, 2)
+            out%value = INT(x%value, 1)
         end if
 
         call helper_tiny_fp8_e4m3(out%value)
@@ -236,7 +236,7 @@ contains
 
         ! dummy to avoid compiler warnings
         if ( 0 .eq. 1) then
-            out = INT(x%value)
+            out = INT(x%value, 1)
         end if
 
         call helper_minexponent_fp8_e4m3(outt)

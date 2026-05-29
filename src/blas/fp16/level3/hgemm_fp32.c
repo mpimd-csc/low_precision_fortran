@@ -50,7 +50,6 @@
 /*       REAL A(LDA,*),B(LDB,*),C(LDC,*) */
 /*       .. */
 
-
 /* > \par Purpose: */
 /*  ============= */
 /* > */
@@ -216,20 +215,20 @@
 /* > \endverbatim */
 /* > */
 /*  ===================================================================== */
-void LPF_GLOBAL(hgemm_fp32,HGEMM_FP32)(char *transa, char *transb, lpf_blas_int_t *m, lpf_blas_int_t *
-        n, lpf_blas_int_t *k, lpf_float16_t *alpha, lpf_float16_t *a, lpf_blas_int_t *lda, lpf_float16_t *b, lpf_blas_int_t *
-        ldb, float *beta, float *c__, lpf_blas_int_t *ldc, lpf_fortran_strlen_t transa_len, lpf_fortran_strlen_t
+void LPF_GLOBAL(hgemm_fp32,HGEMM_FP32)(char *transa, char *transb, int64_t *m, int64_t *
+        n, int64_t *k, lpf_float16_t *alpha, lpf_float16_t *a, int64_t *lda, lpf_float16_t *b, int64_t *
+        ldb, float *beta, float *c__, int64_t *ldc, lpf_fortran_strlen_t transa_len, lpf_fortran_strlen_t
         transb_len)
 {
     /* System generated locals */
-    lpf_blas_int_t a_dim1, a_offset, b_dim1, b_offset, c_dim1, c_offset, i__1, i__2,
+    int64_t a_dim1, a_offset, b_dim1, b_offset, c_dim1, c_offset, i__1, i__2,
                  i__3;
 
     /* Local variables */
-    lpf_blas_int_t i__, j, l, info;
+    int64_t i__, j, l, info;
     lpf_logical_t nota, notb;
     float temp;
-    lpf_blas_int_t nrowa, nrowb;
+    int64_t nrowa, nrowb;
 
     /*  -- Reference BLAS level3 routine (version 3.6.0) -- */
     /*  -- Reference BLAS is a software package provided by Univ. of Tennessee,    -- */
@@ -309,7 +308,8 @@ void LPF_GLOBAL(hgemm_fp32,HGEMM_FP32)(char *transa, char *transb, lpf_blas_int_
         info = 13;
     }
     if (info != 0) {
-        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("HGEMM ", &info, (lpf_fortran_strlen_t)6);
+        int32_t infox = info;
+        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("HGEMM ", &infox, (lpf_fortran_strlen_t)6);
         return;
     }
 
@@ -334,12 +334,27 @@ void LPF_GLOBAL(hgemm_fp32,HGEMM_FP32)(char *transa, char *transb, lpf_blas_int_
         tb = CblasTrans;
     }
 
-    cblas_gemm_f16f16f32 (CblasColMajor, ta, tb, *m, *n, *k, falpha, (MKL_F16*) a, *lda, (MKL_F16*) b, *ldb, fbeta, c__, *ldc);
+#ifdef LPF_BLAS_IS_MKL
+    MKL_INT _m = *m;
+    MKL_INT _n = *n;
+    MKL_INT _k = *k;
+    MKL_INT _lda = *lda;
+    MKL_INT _ldb = *ldb;
+    MKL_INT _ldc = *ldc;
+#else
+    int _m = *m;
+    int _n = *n;
+    int _k = *k;
+    int _lda = *lda;
+    int _ldb = *ldb;
+    int _ldc = *ldc;
+#endif
+
+    cblas_gemm_f16f16f32 ((CBLAS_LAYOUT)CblasColMajor, ta, tb, _m, _n, _k, falpha, (MKL_F16*) a, _lda, (MKL_F16*) b, _ldb, fbeta, c__, _ldc);
 
     return;
 
 #else
-
 
     /*     And if  alpha.eq.zero. */
 
@@ -392,7 +407,7 @@ void LPF_GLOBAL(hgemm_fp32,HGEMM_FP32)(char *transa, char *transb, lpf_blas_int_
                 }
                 i__2 = *k;
                 for (l = 1; l <= i__2; ++l) {
-                    temp = *alpha * b[l + j * b_dim1];
+                    temp = (float)(*alpha) * b[l + j * b_dim1];
                     i__3 = *m;
                     for (i__ = 1; i__ <= i__3; ++i__) {
                         c__[i__ + j * c_dim1] += temp * a[i__ + l * a_dim1];
@@ -413,13 +428,13 @@ void LPF_GLOBAL(hgemm_fp32,HGEMM_FP32)(char *transa, char *transb, lpf_blas_int_
                     temp = 0.f;
                     i__3 = *k;
                     for (l = 1; l <= i__3; ++l) {
-                        temp += a[l + i__ * a_dim1] * b[l + j * b_dim1];
+                        temp += (float)a[l + i__ * a_dim1] * b[l + j * b_dim1];
                         /* L100: */
                     }
                     if (*beta == 0.f) {
-                        c__[i__ + j * c_dim1] = *alpha * temp;
+                        c__[i__ + j * c_dim1] = (float)(*alpha) * temp;
                     } else {
-                        c__[i__ + j * c_dim1] = *alpha * temp + *beta * c__[
+                        c__[i__ + j * c_dim1] = (float)(*alpha) * temp + *beta * c__[
                             i__ + j * c_dim1];
                     }
                     /* L110: */
@@ -449,7 +464,7 @@ void LPF_GLOBAL(hgemm_fp32,HGEMM_FP32)(char *transa, char *transb, lpf_blas_int_
                 }
                 i__2 = *k;
                 for (l = 1; l <= i__2; ++l) {
-                    temp = *alpha * b[j + l * b_dim1];
+                    temp = (float)(*alpha) * b[j + l * b_dim1];
                     i__3 = *m;
                     for (i__ = 1; i__ <= i__3; ++i__) {
                         c__[i__ + j * c_dim1] += temp * a[i__ + l * a_dim1];
@@ -470,13 +485,13 @@ void LPF_GLOBAL(hgemm_fp32,HGEMM_FP32)(char *transa, char *transb, lpf_blas_int_
                     temp = 0.f;
                     i__3 = *k;
                     for (l = 1; l <= i__3; ++l) {
-                        temp += a[l + i__ * a_dim1] * b[j + l * b_dim1];
+                        temp += (float)a[l + i__ * a_dim1] * b[j + l * b_dim1];
                         /* L180: */
                     }
                     if (*beta == 0.f) {
-                        c__[i__ + j * c_dim1] = *alpha * temp;
+                        c__[i__ + j * c_dim1] = (float)(*alpha) * temp;
                     } else {
-                        c__[i__ + j * c_dim1] = *alpha * temp + *beta * c__[
+                        c__[i__ + j * c_dim1] = (float)(*alpha) * temp + *beta * c__[
                             i__ + j * c_dim1];
                     }
                     /* L190: */
@@ -489,20 +504,11 @@ void LPF_GLOBAL(hgemm_fp32,HGEMM_FP32)(char *transa, char *transb, lpf_blas_int_
     return;
 
 #endif
-    /*     End of HGEMM . */
+    /*     End of HGEMM_FP32 . */
 
-} /* hgemm_ */
+} /* hgemm_fp32_ */
 
-void lpf_blas_hgemm_fp32_fortran(char *transa, char *transb, lpf_blas_int_t *m, lpf_blas_int_t *
-        n, lpf_blas_int_t *k, lpf_ffloat16_t *alpha, lpf_ffloat16_t *a, lpf_blas_int_t *lda, lpf_ffloat16_t *b, lpf_blas_int_t *
-        ldb, float *beta, float *c__, lpf_blas_int_t *ldc)
-{
-    LPF_GLOBAL(hgemm_fp32,HGEMM_FP32)(transa, transb, m,
-        n, k, (lpf_float16_t *)alpha, (lpf_float16_t *)a, lda, (lpf_float16_t *)b,
-        ldb, (float *)beta, (float *)c__, ldc, 1, 1);
-}
-
-
+#include <ISO_Fortran_binding.h>
 
 void lpf_blas_hgemm_fp32_fortran_dyn_rank(char *transa, char *transb, lpf_blas_int_t *m, lpf_blas_int_t *
         n, lpf_blas_int_t *k, lpf_ffloat16_t *alpha, CFI_cdesc_t * _a, lpf_blas_int_t *lda, CFI_cdesc_t *_b, lpf_blas_int_t *
@@ -512,10 +518,46 @@ void lpf_blas_hgemm_fp32_fortran_dyn_rank(char *transa, char *transb, lpf_blas_i
     lpf_float16_t *b = _b -> base_addr;
     float *c = _c -> base_addr;
 
+    int64_t _m = *m;
+    int64_t _n = *n;
+    int64_t _k = *k;
+    int64_t _lda = *lda;
+    int64_t _ldb = *ldb;
+    int64_t _ldc = *ldc;
 
-    LPF_GLOBAL(hgemm_fp32,HGEMM_FP32)(transa, transb, m,
-        n, k, (lpf_float16_t *)alpha, (lpf_float16_t *)a, lda, (lpf_float16_t *)b,
-        ldb, beta, c, ldc, 1, 1);
 
+    LPF_GLOBAL(hgemm_fp32,HGEMM_FP32)(transa, transb, &_m,
+        &_n, &_k, (lpf_float16_t *)alpha, (lpf_float16_t *)a, &_lda, (lpf_float16_t *)b,
+        &_ldb, beta, c, &_ldc, 1, 1);
 }
 
+void lpf_blas_hgemm_fp32_fortran_dyn_rank_64(char *transa, char *transb, int64_t *m, int64_t *
+        n, int64_t *k, lpf_ffloat16_t *alpha, CFI_cdesc_t * _a, int64_t *lda, CFI_cdesc_t *_b, int64_t *
+        ldb, float *beta, CFI_cdesc_t *_c, int64_t *ldc)
+{
+    lpf_float16_t *a = _a -> base_addr;
+    lpf_float16_t *b = _b -> base_addr;
+    float *c = _c -> base_addr;
+    LPF_GLOBAL(hgemm_fp32,HGEMM_FP32)(transa, transb, m,
+        n, k, (lpf_float16_t *)alpha, (lpf_float16_t *)a, lda, (lpf_float16_t *)b,
+        ldb, beta, (float *)c, ldc, 1, 1);
+}
+
+void lpf_blas_hgemm_fp32_fortran_dyn_rank_32(char *transa, char *transb, int32_t *m, int32_t *
+        n, int32_t *k, lpf_ffloat16_t *alpha, CFI_cdesc_t * _a, int32_t *lda, CFI_cdesc_t *_b, int32_t *
+        ldb, float *beta, CFI_cdesc_t *_c, int32_t *ldc)
+{
+    lpf_float16_t *a = _a -> base_addr;
+    lpf_float16_t *b = _b -> base_addr;
+    float *c = _c -> base_addr;
+    int64_t _m = *m;
+    int64_t _n = *n;
+    int64_t _k = *k;
+    int64_t _lda = *lda;
+    int64_t _ldb = *ldb;
+    int64_t _ldc = *ldc;
+
+    LPF_GLOBAL(hgemm_fp32,HGEMM_FP32)(transa, transb, &_m,
+        &_n, &_k, (lpf_float16_t *)alpha, (lpf_float16_t *)a, &_lda, (lpf_float16_t *)b,
+        &_ldb, beta, (float *)c, &_ldc, 1, 1);
+}

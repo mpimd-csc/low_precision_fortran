@@ -26,7 +26,7 @@
 #undef NDEBUG
 #endif
 
-#include "fp8_e5m2.h"
+#include "lpf_fp8_e5m2_emu.h"
 #include "fp8_e5m2_bits.h"
 #include <stdio.h>
 #include <assert.h>
@@ -55,7 +55,7 @@ void test_roundtrip_exhaustive() {
             printf("Roundtrip failed: 0x%02x -> %20.16f -> 0x%02x\n", a, f, b);
             err++;
         }
-        printf("0x%02x -> %20.16f -> 0x%02x %s\n", a, f, b, ( (fp8_e5m2_isnan(a) && fp8_e5m2_isnan(b)) || a == b) ? "OK" : "ERROR");
+        /** printf("0x%02x -> %20.16f -> 0x%02x %s\n", a, f, b, ( (fp8_e5m2_isnan(a) && fp8_e5m2_isnan(b)) || a == b) ? "OK" : "ERROR"); */
     }
 
     if (err) {
@@ -116,8 +116,8 @@ void test_add() {
             fp8_e5m2_t cc = fp8_e5m2_from_float(aa + bb);
             float d = fabsf(fp8_e5m2_to_float(c) - fp8_e5m2_to_float(cc));
             int is_ok = (d == 0.0f || isnanf(d));
-            printf("%20.16f (0x%02x) + %20.16f (0x%02x) = %20.16f (0x%02x) \t ref: %20.16f (0x%02x) \t diff = %20.16f %s\n",
-                   aa, a, bb, b, fp8_e5m2_to_float(c), c, fp8_e5m2_to_float(cc), cc, d, is_ok ? "OK" : "ERROR");
+            /** printf("%20.16f (0x%02x) + %20.16f (0x%02x) = %20.16f (0x%02x) \t ref: %20.16f (0x%02x) \t diff = %20.16f %s\n", */
+                   /** aa, a, bb, b, fp8_e5m2_to_float(c), c, fp8_e5m2_to_float(cc), cc, d, is_ok ? "OK" : "ERROR"); */
             if (!is_ok) err++;
         }
     }
@@ -138,8 +138,8 @@ void test_sub() {
             fp8_e5m2_t cc = fp8_e5m2_from_float(aa - bb);
             float d = fabsf(fp8_e5m2_to_float(c) - fp8_e5m2_to_float(cc));
             int is_ok = (d == 0.0f || isnanf(d));
-            printf("%20.16f (0x%02x) - %20.16f (0x%02x) = %20.16f (0x%02x) \t ref: %20.16f (0x%02x) \t diff = %20.16f %s\n",
-                   aa, a, bb, b, fp8_e5m2_to_float(c), c, fp8_e5m2_to_float(cc), cc, d, is_ok ? "OK" : "ERROR");
+            /** printf("%20.16f (0x%02x) - %20.16f (0x%02x) = %20.16f (0x%02x) \t ref: %20.16f (0x%02x) \t diff = %20.16f %s\n", */
+                   /** aa, a, bb, b, fp8_e5m2_to_float(c), c, fp8_e5m2_to_float(cc), cc, d, is_ok ? "OK" : "ERROR"); */
             if (!is_ok) err++;
         }
     }
@@ -160,8 +160,8 @@ void test_mul() {
             fp8_e5m2_t cc = fp8_e5m2_from_float(aa * bb);
             float d = fabsf(fp8_e5m2_to_float(c) - fp8_e5m2_to_float(cc));
             int is_ok = (d == 0.0f || isnanf(d));
-            printf("%20.16f (0x%02x) * %20.16f (0x%02x) = %20.16f (0x%02x) \t ref: %20.16f (0x%02x) \t diff = %20.16f %s\n",
-                   aa, a, bb, b, fp8_e5m2_to_float(c), c, fp8_e5m2_to_float(cc), cc, d, is_ok ? "OK" : "ERROR");
+            /** printf("%20.16f (0x%02x) * %20.16f (0x%02x) = %20.16f (0x%02x) \t ref: %20.16f (0x%02x) \t diff = %20.16f %s\n", */
+                   /** aa, a, bb, b, fp8_e5m2_to_float(c), c, fp8_e5m2_to_float(cc), cc, d, is_ok ? "OK" : "ERROR"); */
             if (!is_ok) err++;
         }
     }
@@ -182,8 +182,8 @@ void test_div() {
             fp8_e5m2_t cc = fp8_e5m2_from_float(aa / bb);
             float d = fabsf(fp8_e5m2_to_float(c) - fp8_e5m2_to_float(cc));
             int is_ok = (d == 0.0f || isnanf(d));
-            printf("%20.16f (0x%02x) / %20.16f (0x%02x) = %20.16f (0x%02x) \t ref: %20.16f (0x%02x) \t diff = %20.16f %s\n",
-                   aa, a, bb, b, fp8_e5m2_to_float(c), c, fp8_e5m2_to_float(cc), cc, d, is_ok ? "OK" : "ERROR");
+            /** printf("%20.16f (0x%02x) / %20.16f (0x%02x) = %20.16f (0x%02x) \t ref: %20.16f (0x%02x) \t diff = %20.16f %s\n", */
+                   /** aa, a, bb, b, fp8_e5m2_to_float(c), c, fp8_e5m2_to_float(cc), cc, d, is_ok ? "OK" : "ERROR"); */
             if (!is_ok) err++;
         }
     }
@@ -202,8 +202,8 @@ void test_abs() {
         fp8_e5m2_t cc = fp8_e5m2_from_float(fabsf(aa));
         float d = fabsf(fp8_e5m2_to_float(c) - fp8_e5m2_to_float(cc));
         int is_ok = (d == 0.0f || isnanf(d));
-        printf("%20.16f (0x%02x) abs = %20.16f (0x%02x) \t ref: %20.16f (0x%02x) \t diff = %20.16f %s\n",
-               aa, a, fp8_e5m2_to_float(c), c, fp8_e5m2_to_float(cc), cc, d, is_ok ? "OK" : "ERROR");
+        /** printf("%20.16f (0x%02x) abs = %20.16f (0x%02x) \t ref: %20.16f (0x%02x) \t diff = %20.16f %s\n", */
+               /** aa, a, fp8_e5m2_to_float(c), c, fp8_e5m2_to_float(cc), cc, d, is_ok ? "OK" : "ERROR"); */
         if (!is_ok) err++;
     }
     if (err) { printf("Abs tests failed.\n"); abort(); }
@@ -329,7 +329,7 @@ int main(int argc, char **argv) {
     test_div();
 
     printf("\n==== Full Encoding Dump ====\n");
-    fp8_e5m2_dump_all();
+    /** fp8_e5m2_dump_all(); */
 
     printf("\nAll conversion and arithmetic tests passed!\n");
     return 0;

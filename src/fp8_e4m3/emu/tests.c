@@ -33,7 +33,7 @@
 #undef NDEBUG
 #endif
 
-#include "fp8_e4m3.h"
+#include "lpf_fp8_e4m3_emu.h"
 #include "fp8_e4m3_bits.h"
 #include <stdio.h>
 #include <assert.h>

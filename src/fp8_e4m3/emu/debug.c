@@ -18,10 +18,11 @@
  */
 
 
-#include "fp8_e4m3.h"
+#include "lpf_fp8_e4m3_emu.h"
 #include "fp8_e4m3_bits.h"
 #include <stdio.h>
 
+#if 0
 /**
  * Format a 32-bit value as a space-separated binary string (groups of 4 bits, MSB first).
  *
@@ -77,6 +78,7 @@ static const char * str_bit_16(uint16_t x) {
     ret[pos] = 0;
     return ret;
 }
+#endif
 
 /**
  * Format an 8-bit value as a space-separated binary string (groups of 4 bits, MSB first).

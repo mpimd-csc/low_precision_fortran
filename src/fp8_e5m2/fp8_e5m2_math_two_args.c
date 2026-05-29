@@ -23,7 +23,7 @@
 #include <stdint.h>
 #include <math.h>
 
-#include "fp8_e5m2/emu/fp8_e5m2.h"
+#include "fp8_e5m2/emu/lpf_fp8_e5m2_emu.h"
 #include "fp8_e5m2_helper.h"
 
 /*

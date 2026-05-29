@@ -73,14 +73,14 @@
 /* > \endverbatim */
 /* > */
 /*  ===================================================================== */
-lpf_blas_int_t LPF_GLOBAL(ibamax,IBAMAX)(lpf_blas_int_t *n, lpf_bfloat16_t *sx, lpf_blas_int_t *incx)
+int64_t LPF_GLOBAL(ibamax,IBAMAX)(int64_t *n, lpf_bfloat16_t *sx, int64_t *incx)
 {
     /* System generated locals */
-    lpf_blas_int_t ret_val, i__1;
+    int64_t ret_val, i__1;
     lpf_bfloat16_t r__1;
 
     /* Local variables */
-    lpf_blas_int_t i__, ix;
+    int64_t i__, ix;
     lpf_bfloat16_t smax;
 
 
@@ -145,15 +145,19 @@ lpf_blas_int_t LPF_GLOBAL(ibamax,IBAMAX)(lpf_blas_int_t *n, lpf_bfloat16_t *sx, 
     return ret_val;
 } /* ibamax_ */
 
-lpf_blas_int_t lpf_blas_ibamax_fortran(lpf_blas_int_t *n, lpf_fbfloat16_t *sx, lpf_blas_int_t *incx)
-{
-    return LPF_GLOBAL(ibamax,IBAMAX)(n, (lpf_bfloat16_t *) sx, incx);
-}
-
 #include <ISO_Fortran_binding.h>
 
-lpf_blas_int_t lpf_blas_ibamax_fortran_dyn_rank(lpf_blas_int_t *n, CFI_cdesc_t *_sx, lpf_blas_int_t *incx)
+int64_t lpf_blas_ibamax_fortran_dyn_rank_64(int64_t *n, CFI_cdesc_t *_sx, int64_t *incx)
 {
     lpf_bfloat16_t *sx = _sx->base_addr;
-    return LPF_GLOBAL(ibamax,IBAMAX)(n, (lpf_bfloat16_t *) sx, incx);
+    return LPF_GLOBAL(ibamax,IBAMAX)(n, sx, incx);
+}
+
+int32_t lpf_blas_ibamax_fortran_dyn_rank_32(int32_t *n, CFI_cdesc_t *_sx, int32_t *incx)
+{
+    lpf_bfloat16_t *sx = _sx->base_addr;
+    int64_t _n = *n;
+    int64_t _incx = *incx;
+    int64_t res = LPF_GLOBAL(ibamax,IBAMAX)(&_n, sx, &_incx);
+    return (int32_t)res;
 }

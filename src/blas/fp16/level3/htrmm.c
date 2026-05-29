@@ -49,7 +49,6 @@
 /*       REAL A(LDA,*),B(LDB,*) */
 /*       .. */
 
-
 /* > \par Purpose: */
 /*  ============= */
 /* > */
@@ -176,7 +175,7 @@
 /* >           On entry, LDB specifies the first dimension of B as declared */
 /* >           in  the  calling  (sub)  program.   LDB  must  be  at  least */
 /* >           LPF_MAX( 1, m ). */
-/* > \endverbatim */
+/* > \endver verbatim */
 
 /*  Authors: */
 /*  ======== */
@@ -206,21 +205,20 @@
 /* > */
 /*  ===================================================================== */
 void LPF_GLOBAL(htrmm,HTRMM)(char *side, char *uplo, char *transa, char *diag,
-        lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_float16_t *alpha, lpf_float16_t *a, lpf_blas_int_t *lda, lpf_float16_t *b,
-        lpf_blas_int_t *ldb, lpf_fortran_strlen_t side_len, lpf_fortran_strlen_t uplo_len, lpf_fortran_strlen_t transa_len,
+        int64_t *m, int64_t *n, lpf_float16_t *alpha, lpf_float16_t *a, int64_t *lda, lpf_float16_t *b,
+        int64_t *ldb, lpf_fortran_strlen_t side_len, lpf_fortran_strlen_t uplo_len, lpf_fortran_strlen_t transa_len,
         lpf_fortran_strlen_t diag_len)
 {
     /* System generated locals */
-    lpf_blas_int_t a_dim1, a_offset, b_dim1, b_offset, i__1, i__2, i__3;
+    int64_t a_dim1, a_offset, b_dim1, b_offset, i__1, i__2, i__3;
 
     /* Local variables */
-    lpf_blas_int_t i__, j, k, info;
+    int64_t i__, j, k, info;
     lpf_float16_t temp;
     lpf_logical_t lside;
-    lpf_blas_int_t nrowa;
+    int64_t nrowa;
     lpf_logical_t upper;
     lpf_logical_t nounit;
-
 
     /*  -- Reference BLAS level3 routine (version 3.4.0) -- */
     /*  -- Reference BLAS is a software package provided by Univ. of Tennessee,    -- */
@@ -289,7 +287,8 @@ void LPF_GLOBAL(htrmm,HTRMM)(char *side, char *uplo, char *transa, char *diag,
         info = 11;
     }
     if (info != 0) {
-        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("HTRMM ", &info, (lpf_fortran_strlen_t)6);
+        int32_t infox = info ;
+        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("HTRMM ", &infox, (lpf_fortran_strlen_t)6);
         return;
     }
 
@@ -539,19 +538,10 @@ void LPF_GLOBAL(htrmm,HTRMM)(char *side, char *uplo, char *transa, char *diag,
 
 } /* htrmm_ */
 
-void lpf_blas_htrmm_fortran(char *side, char *uplo, char *transa, char *diag,
-        lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_ffloat16_t *alpha, lpf_ffloat16_t *a, lpf_blas_int_t *lda, lpf_ffloat16_t *b,
-        lpf_blas_int_t *ldb)
-{
-    LPF_GLOBAL(htrmm,HTRMM)(side, uplo, transa, diag,
-        m, n, (lpf_float16_t *)alpha, (lpf_float16_t *)a, lda, (lpf_float16_t *)b,
-        ldb, 1, 1, 1, 1);
-}
-
 #include <ISO_Fortran_binding.h>
 
-void lpf_blas_htrmm_fortran_dyn_rank(char *side, char *uplo, char *transa, char *diag,
-        lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_ffloat16_t *alpha, CFI_cdesc_t *_a, lpf_blas_int_t *lda, CFI_cdesc_t *_b, lpf_blas_int_t *ldb)
+void lpf_blas_htrmm_fortran_dyn_rank_64(char *side, char *uplo, char *transa, char *diag,
+        int64_t *m, int64_t *n, lpf_ffloat16_t *alpha, CFI_cdesc_t *_a, int64_t *lda, CFI_cdesc_t *_b, int64_t *ldb)
 {
     lpf_float16_t *a = _a->base_addr;
     lpf_float16_t *b = _b->base_addr;
@@ -559,4 +549,20 @@ void lpf_blas_htrmm_fortran_dyn_rank(char *side, char *uplo, char *transa, char 
     LPF_GLOBAL(htrmm,HTRMM)(side, uplo, transa, diag,
         m, n, (lpf_float16_t *)alpha, (lpf_float16_t *)a, lda, (lpf_float16_t *)b,
         ldb, 1, 1, 1, 1);
+}
+
+void lpf_blas_htrmm_fortran_dyn_rank_32(char *side, char *uplo, char *transa, char *diag,
+        int32_t *m, int32_t *n, lpf_ffloat16_t *alpha, CFI_cdesc_t *_a, int32_t *lda, CFI_cdesc_t *_b, int32_t *ldb)
+{
+    int64_t _m = *m;
+    int64_t _n = *n;
+    int64_t _lda = *lda;
+    int64_t _ldb = *ldb;
+
+    lpf_float16_t *a = _a->base_addr;
+    lpf_float16_t *b = _b->base_addr;
+
+    LPF_GLOBAL(htrmm,HTRMM)(side, uplo, transa, diag,
+        &_m, &_n, (lpf_float16_t *)alpha, (lpf_float16_t *)a, &_lda, (lpf_float16_t *)b,
+        &_ldb, 1, 1, 1, 1);
 }

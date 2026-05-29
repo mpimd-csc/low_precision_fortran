@@ -44,7 +44,6 @@
 /*       REAL AP(*),X(*) */
 /*       .. */
 
-
 /* > \par Purpose: */
 /*  ============= */
 /* > */
@@ -166,18 +165,17 @@
 /* > \endverbatim */
 /* > */
 /*  ===================================================================== */
-void LPF_GLOBAL(htpmv,HTPMV)(char *uplo, char *trans, char *diag, lpf_blas_int_t *n,
-        lpf_float16_t *ap, lpf_float16_t *x, lpf_blas_int_t *incx, lpf_fortran_strlen_t uplo_len, lpf_fortran_strlen_t trans_len,
+void LPF_GLOBAL(htpmv,HTPMV)(char *uplo, char *trans, char *diag, int64_t *n,
+        lpf_float16_t *ap, lpf_float16_t *x, int64_t *incx, lpf_fortran_strlen_t uplo_len, lpf_fortran_strlen_t trans_len,
         lpf_fortran_strlen_t diag_len)
 {
     /* System generated locals */
-    lpf_blas_int_t i__1, i__2;
+    int64_t i__1, i__2;
 
     /* Local variables */
-    lpf_blas_int_t i__, j, k, kk, ix, jx, kx, info;
+    int64_t i__, j, k, kk, ix, jx, kx, info;
     lpf_float16_t temp;
     lpf_logical_t nounit;
-
 
     /*  -- Reference BLAS level2 routine (version 3.4.0) -- */
     /*  -- Reference BLAS is a software package provided by Univ. of Tennessee,    -- */
@@ -198,6 +196,8 @@ void LPF_GLOBAL(htpmv,HTPMV)(char *uplo, char *trans, char *diag, lpf_blas_int_t
     /*     .. External Functions .. */
     /*     .. */
     /*     .. External Subroutines .. */
+    /*     .. */
+    /*     .. Intrinsic Functions .. */
     /*     .. */
 
     /*     Test the input parameters. */
@@ -224,7 +224,8 @@ void LPF_GLOBAL(htpmv,HTPMV)(char *uplo, char *trans, char *diag, lpf_blas_int_t
         info = 7;
     }
     if (info != 0) {
-        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("HTPMV ", &info, (lpf_fortran_strlen_t)6);
+        int32_t infox = info;
+        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("HTPMV ", &infox, (lpf_fortran_strlen_t)6);
         return;
     }
 
@@ -429,22 +430,26 @@ void LPF_GLOBAL(htpmv,HTPMV)(char *uplo, char *trans, char *diag, lpf_blas_int_t
     /*     End of HTPMV . */
 
 } /* htpmv_ */
-
-void lpf_blas_htpmv_fortran(char *uplo, char *trans, char *diag, lpf_blas_int_t *n,
-        lpf_ffloat16_t *ap, lpf_ffloat16_t *x, lpf_blas_int_t *incx)
-{
-    LPF_GLOBAL(htpmv,HTPMV)(uplo, trans, diag, n,
-        (lpf_float16_t *)ap, (lpf_float16_t *)x, incx, 1, 1,1);
-}
-
 #include <ISO_Fortran_binding.h>
 
-void lpf_blas_htpmv_fortran_dyn_rank(char *uplo, char *trans, char *diag, lpf_blas_int_t *n,
-        CFI_cdesc_t *ap, CFI_cdesc_t *x, lpf_blas_int_t *incx)
+void lpf_blas_htpmv_fortran_dyn_rank_64(char *uplo, char *trans, char *diag, int64_t *n,
+        CFI_cdesc_t *ap, CFI_cdesc_t *x, int64_t *incx)
 {
     lpf_float16_t *ap_ptr = ap->base_addr;
     lpf_float16_t *x_ptr = x->base_addr;
 
     LPF_GLOBAL(htpmv,HTPMV)(uplo, trans, diag, n,
         (lpf_float16_t *)ap_ptr, (lpf_float16_t *)x_ptr, incx, 1, 1,1);
+}
+
+void lpf_blas_htpmv_fortran_dyn_rank_32(char *uplo, char *trans, char *diag, int32_t *n,
+        CFI_cdesc_t *ap, CFI_cdesc_t *x, int32_t *incx)
+{
+    lpf_float16_t *ap_ptr = ap->base_addr;
+    lpf_float16_t *x_ptr = x->base_addr;
+    int64_t _n = *n;
+    int64_t _incx = *incx;
+
+    LPF_GLOBAL(htpmv,HTPMV)(uplo, trans, diag, &_n,
+        (lpf_float16_t *)ap_ptr, (lpf_float16_t *)x_ptr, &_incx, 1, 1,1);
 }

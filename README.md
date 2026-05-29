@@ -117,9 +117,19 @@ support of `fp16`, a CPU with `AVX512FP16` is required.
 FP8 support is implemented via emulation and lookup tables, and therefore does not require specific hardware flags for basic functionality.
 
 ### Building
-You can control FP8 support via the following CMake options (enabled by default):
-- `-DLPF_FP8_E4M3=ON/OFF`: Support for FP8_E4M3.
-- `-DLPF_FP8_E5M2=ON/OFF`: Support for FP8_E5M2.
+The build process is controlled via the following CMake options:
+
+| Option | Default | Description |
+| :--- | :--- | :--- |
+| `LPF_DEBUG` | `OFF` | Enable Debug Symbol generation |
+| `LPF_NATIVE` | `OFF` | Enable Native Build |
+| `LPF_BLAS` | `ON` | Enable BLAS and LAPACK |
+| `LPF_INTEGER8` | `OFF` | Build Fortran integer of size 8 |
+| `LPF_FP8_E4M3` | `ON` | Support for FP8_E4M3 |
+| `LPF_FP8_E5M2` | `ON` | Support for FP8_E5M2 |
+| `LPF_EXAMPLES_TLAPACK` | `OFF` | Build TLAPACK examples |
+| `LPF_TESTING` | `ON` | Build the LPF example programs and tests |
+| `CMAKE_BUILD_TYPE` | `Release` | Choose the type of build (e.g., Debug, Release) |
 
 ```shell
 cmake -S . -B build-dir -DCMAKE_INSTALL_PREFIX=INSTALL-LOCATION

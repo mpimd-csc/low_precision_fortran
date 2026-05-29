@@ -18,17 +18,20 @@ linux-gcc:
   parallel:
     matrix:
       - OS: [ "ubuntu" ]
-        OSVERSION: [ 'noble' ]
+        OSVERSION: [ 'noble', 'resolute' ]
         BLAS: ['BLAS_ON', 'BLAS_OFF']
-        INTEGER8: [ 'INTEGER8_ON', 'INTEGER8_OFF' ]
+      - OS: [ "ubuntu" ]
+        OSVERSION: [ "noble" ]
+        BLAS: [ 'BLAS_ON']
+        TLAPACK: ["ON"]
   script:
+    - export TLAPACK=${TLAPACK:-OFF}
     - export BLAS=${BLAS##BLAS_}
-    - export INTEGER8=${INTEGER8##INTEGER8_}
-    - cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLPF_BLAS=${BLAS} -DLPF_INTEGER8=${INTEGER8}
+    - cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLPF_BLAS=${BLAS} -DLPF_EXAMPLES_TLAPACK=${TLAPACK}
     - cmake --build build-dir 2>&1 | tee build.log
     - cmake --build build-dir --target install
     - (cd build-dir; OMP_NUM_THREADS=1 ctest -V)
-    - cat build.log | grep -- \\[-W | sed 's/.*\[//; s/\]//' | sort | uniq -c | sort -nr
+    - cat build.log | (grep -- '\[-W' || true) | sed 's/.*\[//; s/\]//' | sort | uniq -c | sort -nr
 
 linux-clang:
   stage: build
@@ -39,11 +42,9 @@ linux-clang:
   parallel:
     matrix:
       - LLVM_VERSION: [ "20", "21", "22" ]
-        INTEGER8: [ 'INTEGER8_ON', 'INTEGER8_OFF' ]
   script:
     - apt update && apt install -y libblas-dev libblas64-dev liblapack-dev liblapack64-dev
-    - export INTEGER8=${INTEGER8##INTEGER8_}
-    - cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLPF_INTEGER8=${INTEGER8}
+    - cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=RelWithDebInfo
     - cmake --build build-dir 2>&1 | tee build.log
     - cmake --build build-dir --target install
       # - (cd build-dir; OMP_NUM_THREADS=1 ctest -V)
@@ -58,13 +59,9 @@ linux-intel:
     - haswell
   parallel:
     matrix:
-      - INTEL_VERSION: [ "2025.1" ]
-        INTEGER8: [ 'INTEGER8_ON', 'INTEGER8_OFF' ]
-
-
+      - INTEL_VERSION: [ "2025" ]
   script:
-    - export INTEGER8=${INTEGER8##INTEGER8_}
-    - CC=icx FC=ifx cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLPF_INTEGER8=${INTEGER8}
+    - CC=icx FC=ifx cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=RelWithDebInfo
     - cmake --build build-dir 2>&1 | tee build.log
     - cmake --build build-dir --target install
     # - (cd build-dir; OMP_NUM_THREADS=1 ctest -V)

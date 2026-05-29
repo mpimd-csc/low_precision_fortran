@@ -45,7 +45,6 @@
 /*       REAL A(LDA,*),X(*) */
 /*       .. */
 
-
 /* > \par Purpose: */
 /*  ============= */
 /* > */
@@ -156,14 +155,14 @@
 /* > \endverbatim */
 /* > */
 /*  ===================================================================== */
-void LPF_GLOBAL(hsyr,HSYR)(char *uplo, lpf_blas_int_t *n, lpf_float16_t *alpha, lpf_float16_t *x,
-        lpf_blas_int_t *incx, lpf_float16_t *a, lpf_blas_int_t *lda, lpf_fortran_strlen_t uplo_len)
+void LPF_GLOBAL(hsyr,HSYR)(char *uplo, int64_t *n, lpf_float16_t *alpha, lpf_float16_t *x,
+        int64_t *incx, lpf_float16_t *a, int64_t *lda, lpf_fortran_strlen_t uplo_len)
 {
     /* System generated locals */
-    lpf_blas_int_t a_dim1, a_offset, i__1, i__2;
+    int64_t a_dim1, a_offset, i__1, i__2;
 
     /* Local variables */
-    lpf_blas_int_t i__, j, ix, jx, kx, info;
+    int64_t i__, j, ix, jx, kx, info;
     lpf_float16_t temp;
 
     /*  -- Reference BLAS level2 routine (version 3.4.0) -- */
@@ -209,7 +208,8 @@ void LPF_GLOBAL(hsyr,HSYR)(char *uplo, lpf_blas_int_t *n, lpf_float16_t *alpha, 
             info = 7;
         }
         if (info != 0) {
-            LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("HSYR  ", &info, (lpf_fortran_strlen_t)6);
+            int32_t infox = info ;
+            LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("HSYR  ", &infox, (lpf_fortran_strlen_t)6);
             return;
         }
 
@@ -309,21 +309,27 @@ void LPF_GLOBAL(hsyr,HSYR)(char *uplo, lpf_blas_int_t *n, lpf_float16_t *alpha, 
 
     } /* hsyr_ */
 
-void lpf_blas_hsyr_fortran(char *uplo, lpf_blas_int_t *n, lpf_ffloat16_t *alpha, lpf_ffloat16_t *x,
-        lpf_blas_int_t *incx, lpf_ffloat16_t *a, lpf_blas_int_t *lda)
-{
-    LPF_GLOBAL(hsyr,HSYR)(uplo, n, (lpf_float16_t *)alpha, (lpf_float16_t *)x,
-        incx, (lpf_float16_t *)a, lda, 1);
-}
-
 #include <ISO_Fortran_binding.h>
 
-void lpf_blas_hsyr_fortran_dyn_rank(char *uplo, lpf_blas_int_t *n, lpf_ffloat16_t *alpha, CFI_cdesc_t *x,
-        lpf_blas_int_t *incx, CFI_cdesc_t *a, lpf_blas_int_t *lda)
+void lpf_blas_hsyr_fortran_dyn_rank_64(char *uplo, int64_t *n, lpf_ffloat16_t *alpha, CFI_cdesc_t *x,
+        int64_t *incx, CFI_cdesc_t *a, int64_t *lda)
 {
     lpf_float16_t *x_ptr = x->base_addr;
     lpf_float16_t *a_ptr = a->base_addr;
 
     LPF_GLOBAL(hsyr,HSYR)(uplo, n, (lpf_float16_t *)alpha, (lpf_float16_t *)x_ptr,
         incx, (lpf_float16_t *)a_ptr, lda, 1);
+}
+
+void lpf_blas_hsyr_fortran_dyn_rank_32(char *uplo, int32_t *n, lpf_ffloat16_t *alpha, CFI_cdesc_t *x,
+        int32_t *incx, CFI_cdesc_t *a, int32_t *lda)
+{
+    lpf_float16_t *x_ptr = x->base_addr;
+    lpf_float16_t *a_ptr = a->base_addr;
+    int64_t _n = *n;
+    int64_t _incx = *incx;
+    int64_t _lda = *lda;
+
+    LPF_GLOBAL(hsyr,HSYR)(uplo, &_n, (lpf_float16_t *)alpha, (lpf_float16_t *)x_ptr,
+        &_incx, (lpf_float16_t *)a_ptr, &_lda, 1);
 }

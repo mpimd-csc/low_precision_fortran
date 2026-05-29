@@ -50,7 +50,6 @@
 /*       REAL A(LDA,*),B(LDB,*),C(LDC,*) */
 /*       .. */
 
-
 /* > \par Purpose: */
 /*  ============= */
 /* > */
@@ -216,20 +215,20 @@
 /* > \endverbatim */
 /* > */
 /*  ===================================================================== */
-void LPF_GLOBAL(hgemm,HGEMM)(char *transa, char *transb, lpf_blas_int_t *m, lpf_blas_int_t *
-        n, lpf_blas_int_t *k, lpf_float16_t *alpha, lpf_float16_t *a, lpf_blas_int_t *lda, lpf_float16_t *b, lpf_blas_int_t *
-        ldb, lpf_float16_t *beta, lpf_float16_t *c__, lpf_blas_int_t *ldc, lpf_fortran_strlen_t transa_len, lpf_fortran_strlen_t
+void LPF_GLOBAL(hgemm,HGEMM)(char *transa, char *transb, int64_t *m, int64_t *
+        n, int64_t *k, lpf_float16_t *alpha, lpf_float16_t *a, int64_t *lda, lpf_float16_t *b, int64_t *
+        ldb, lpf_float16_t *beta, lpf_float16_t *c__, int64_t *ldc, lpf_fortran_strlen_t transa_len, lpf_fortran_strlen_t
         transb_len)
 {
     /* System generated locals */
-    lpf_blas_int_t a_dim1, a_offset, b_dim1, b_offset, c_dim1, c_offset, i__1, i__2,
+    int64_t a_dim1, a_offset, b_dim1, b_offset, c_dim1, c_offset, i__1, i__2,
                  i__3;
 
     /* Local variables */
-    lpf_blas_int_t i__, j, l, info;
+    int64_t i__, j, l, info;
     lpf_logical_t nota, notb;
     lpf_float16_t temp;
-    lpf_blas_int_t nrowa, nrowb;
+    int64_t nrowa, nrowb;
 
     /*  -- Reference BLAS level3 routine (version 3.6.0) -- */
     /*  -- Reference BLAS is a software package provided by Univ. of Tennessee,    -- */
@@ -309,7 +308,8 @@ void LPF_GLOBAL(hgemm,HGEMM)(char *transa, char *transb, lpf_blas_int_t *m, lpf_
         info = 13;
     }
     if (info != 0) {
-        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("HGEMM ", &info, (lpf_fortran_strlen_t)6);
+        int32_t infox = info;
+        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("HGEMM ", &infox, (lpf_fortran_strlen_t)6);
         return;
     }
 
@@ -340,13 +340,27 @@ void LPF_GLOBAL(hgemm,HGEMM)(char *transa, char *transb, lpf_blas_int_t *m, lpf_
     malpha.f = *alpha;
     mbeta.f = *beta;
 
-    cblas_hgemm (CblasColMajor, ta, tb, *m, *n, *k, malpha.i, (MKL_F16*) a, *lda, (MKL_F16*) b, *ldb, mbeta.i, (MKL_F16 *) c__, *ldc);
+#ifdef LPF_BLAS_IS_MKL
+    MKL_INT _m = *m;
+    MKL_INT _n = *n;
+    MKL_INT _k = *k;
+    MKL_INT _lda = *lda;
+    MKL_INT _ldb = *ldb;
+    MKL_INT _ldc = *ldc;
+#else
+    int _m = *m;
+    int _n = *n;
+    int _k = *k;
+    int _lda = *lda;
+    int _ldb = *ldb;
+    int _ldc = *ldc;
+#endif
 
+    cblas_hgemm ((CBLAS_LAYOUT)CblasColMajor, ta, tb, _m, _n, _k, malpha.i, (MKL_F16*) a, _lda, (MKL_F16*) b, _ldb, mbeta.i, (MKL_F16 *) c__, _ldc);
 
     return;
 
 #else
-
 
     /*     And if  alpha.eq.zero. */
 
@@ -500,58 +514,36 @@ void LPF_GLOBAL(hgemm,HGEMM)(char *transa, char *transb, lpf_blas_int_t *m, lpf_
 
 } /* hgemm_ */
 
-void lpf_blas_hgemm_fortran(char *transa, char *transb, lpf_blas_int_t *m, lpf_blas_int_t *
-        n, lpf_blas_int_t *k, lpf_ffloat16_t *alpha, lpf_ffloat16_t *a, lpf_blas_int_t *lda, lpf_ffloat16_t *b, lpf_blas_int_t *
-        ldb, lpf_ffloat16_t *beta, lpf_ffloat16_t *c__, lpf_blas_int_t *ldc)
-{
-    LPF_GLOBAL(hgemm,HGEMM)(transa, transb, m,
-        n, k, (lpf_float16_t *)alpha, (lpf_float16_t *)a, lda, (lpf_float16_t *)b,
-        ldb, (lpf_float16_t *)beta, (lpf_float16_t *)c__, ldc, 1, 1);
-}
-
-#include <stdio.h>
 #include <ISO_Fortran_binding.h>
 
-#if 0
-void dump_cfi_desc(const char * s , const CFI_cdesc_t *d)
-{
-    int i;
-
-    if (!d) {
-        printf("CFI_desc_t = NULL\n");
-        return;
-    }
-
-
-    printf("CFI_desc_t(%s) @ %p\n", s, (const void*)d);
-    printf("  base_addr      = %p\n", d->base_addr);
-    printf("  elem_len       = %zu\n", d->elem_len);
-    printf("  rank           = %d\n", d->rank);
-    printf("  type           = %d\n", d->type);
-    printf("  attribute      = %d\n", d->attribute);
-
-    for (i = 0; i < d->rank; ++i) {
-        printf("  dim[%d]:\n", i);
-        printf("    lower_bound  = %td\n", d->dim[i].lower_bound);
-        printf("    extent       = %td\n", d->dim[i].extent);
-        printf("    sm           = %td\n", d->dim[i].sm);
-    }
-}
-#endif
-
-
-void lpf_blas_hgemm_fortran_dyn_rank(char *transa, char *transb, lpf_blas_int_t *m, lpf_blas_int_t *
-        n, lpf_blas_int_t *k, lpf_ffloat16_t *alpha, CFI_cdesc_t * _a, lpf_blas_int_t *lda, CFI_cdesc_t *_b, lpf_blas_int_t *
-        ldb, lpf_ffloat16_t *beta, CFI_cdesc_t *_c, lpf_blas_int_t *ldc)
+void lpf_blas_hgemm_fortran_dyn_rank_64(char *transa, char *transb, int64_t *m, int64_t *
+        n, int64_t *k, lpf_ffloat16_t *alpha, CFI_cdesc_t * _a, int64_t *lda, CFI_cdesc_t *_b, int64_t *
+        ldb, lpf_ffloat16_t *beta, CFI_cdesc_t *_c, int64_t *ldc)
 {
     lpf_float16_t *a = _a -> base_addr;
     lpf_float16_t *b = _b -> base_addr;
     lpf_float16_t *c = _c -> base_addr;
 
-
     LPF_GLOBAL(hgemm,HGEMM)(transa, transb, m,
         n, k, (lpf_float16_t *)alpha, (lpf_float16_t *)a, lda, (lpf_float16_t *)b,
         ldb, (lpf_float16_t *)beta, (lpf_float16_t *)c, ldc, 1, 1);
-
 }
 
+void lpf_blas_hgemm_fortran_dyn_rank_32(char *transa, char *transb, int32_t *m, int32_t *
+        n, int32_t *k, lpf_ffloat16_t *alpha, CFI_cdesc_t * _a, int32_t *lda, CFI_cdesc_t *_b, int32_t *
+        ldb, lpf_ffloat16_t *beta, CFI_cdesc_t *_c, int32_t *ldc)
+{
+    lpf_float16_t *a = _a -> base_addr;
+    lpf_float16_t *b = _b -> base_addr;
+    lpf_float16_t *c = _c -> base_addr;
+    int64_t _m = *m;
+    int64_t _n = *n;
+    int64_t _k = *k;
+    int64_t _lda = *lda;
+    int64_t _ldb = *ldb;
+    int64_t _ldc = *ldc;
+
+    LPF_GLOBAL(hgemm,HGEMM)(transa, transb, &_m,
+        &_n, &_k, (lpf_float16_t *)alpha, (lpf_float16_t *)a, &_lda, (lpf_float16_t *)b,
+        &_ldb, (lpf_float16_t *)beta, (lpf_float16_t *)c, &_ldc, 1, 1);
+}
