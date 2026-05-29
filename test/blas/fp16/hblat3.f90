@@ -577,7 +577,7 @@
      &                        BETA, LDC
                            IF( REWI )                                   &
      &                        REWIND NTRA
-                           CALL HGEMM( TRANSA, TRANSB, M, N, K, ALPHA,  &
+                           CALL GEMM( TRANSA, TRANSB, M, N, K, ALPHA,  &
      &                                 AA, LDA, BB, LDB, BETA, CC, LDC )
 !
 !                          Check if error-exit was taken incorrectly.
@@ -846,7 +846,7 @@
      &                     UPLO, M, N, ALPHA, LDA, LDB, BETA, LDC
                         IF( REWI )                                      &
      &                     REWIND NTRA
-                        CALL HSYMM( SIDE, UPLO, M, N, ALPHA, AA, LDA,   &
+                        CALL SYMM( SIDE, UPLO, M, N, ALPHA, AA, LDA,   &
      &                              BB, LDB, BETA, CC, LDC )
 !
 !                       Check if error-exit was taken incorrectly.
@@ -1114,7 +1114,7 @@
      &                           LDA, LDB
                               IF( REWI )                                &
      &                           REWIND NTRA
-                              CALL HTRMM( SIDE, UPLO, TRANSA, DIAG, M,  &
+                              CALL TRMM( SIDE, UPLO, TRANSA, DIAG, M,  &
      &                                    N, ALPHA, AA, LDA, BB, LDB )
                            ELSE IF( SNAME( 4: 5 ).EQ.'SM' )THEN
                               IF( TRACE )                               &
@@ -1123,7 +1123,7 @@
      &                           LDA, LDB
                               IF( REWI )                                &
      &                           REWIND NTRA
-                              CALL HTRSM( SIDE, UPLO, TRANSA, DIAG, M,  &
+                              CALL TRSM( SIDE, UPLO, TRANSA, DIAG, M,  &
      &                                    N, ALPHA, AA, LDA, BB, LDB )
                            END IF
 !
@@ -1412,7 +1412,7 @@
      &                     TRANS, N, K, ALPHA, LDA, BETA, LDC
                         IF( REWI )                                      &
      &                     REWIND NTRA
-                        CALL HSYRK( UPLO, TRANS, N, K, ALPHA, AA, LDA,  &
+                        CALL SYRK( UPLO, TRANS, N, K, ALPHA, AA, LDA,  &
      &                              BETA, CC, LDC )
 !
 !                       Check if error-exit was taken incorrectly.
@@ -1711,7 +1711,7 @@
      &                     TRANS, N, K, ALPHA, LDA, LDB, BETA, LDC
                         IF( REWI )                                      &
      &                     REWIND NTRA
-                        CALL HSYR2K( UPLO, TRANS, N, K, ALPHA, AA, LDA, &
+                        CALL SYR2K( UPLO, TRANS, N, K, ALPHA, AA, LDA, &
      &                               BB, LDB, BETA, CC, LDC )
 !
 !                       Check if error-exit was taken incorrectly.
@@ -1918,574 +1918,574 @@
 !
       GO TO ( 10, 20, 30, 40, 50, 60, 70 )ISNUM
    10 INFOT = 1
-      CALL HGEMM( '/', 'N', 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( '/', 'N', 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 1
-      CALL HGEMM( '/', 'T', 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( '/', 'T', 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HGEMM( 'N', '/', 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'N', '/', 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HGEMM( 'T', '/', 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'T', '/', 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HGEMM( 'N', 'N', -1_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'N', 'N', -1_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HGEMM( 'N', 'T', -1_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'N', 'T', -1_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HGEMM( 'T', 'N', -1_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'T', 'N', -1_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HGEMM( 'T', 'T', -1_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'T', 'T', -1_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HGEMM( 'N', 'N', 0_dik, -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'N', 'N', 0_dik, -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HGEMM( 'N', 'T', 0_dik, -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'N', 'T', 0_dik, -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HGEMM( 'T', 'N', 0_dik, -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'T', 'N', 0_dik, -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HGEMM( 'T', 'T', 0_dik, -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'T', 'T', 0_dik, -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HGEMM( 'N', 'N', 0_dik, 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'N', 'N', 0_dik, 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HGEMM( 'N', 'T', 0_dik, 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'N', 'T', 0_dik, 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HGEMM( 'T', 'N', 0_dik, 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'T', 'N', 0_dik, 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HGEMM( 'T', 'T', 0_dik, 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'T', 'T', 0_dik, 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL HGEMM( 'N', 'N', 2_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 2_dik )
+      CALL GEMM( 'N', 'N', 2_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL HGEMM( 'N', 'T', 2_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 2_dik )
+      CALL GEMM( 'N', 'T', 2_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL HGEMM( 'T', 'N', 0_dik, 0_dik, 2_dik, ALPHA, A, 1_dik, B, 2_dik, BETA, C, 1_dik )
+      CALL GEMM( 'T', 'N', 0_dik, 0_dik, 2_dik, ALPHA, A, 1_dik, B, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL HGEMM( 'T', 'T', 0_dik, 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'T', 'T', 0_dik, 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL HGEMM( 'N', 'N', 0_dik, 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'N', 'N', 0_dik, 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL HGEMM( 'T', 'N', 0_dik, 0_dik, 2_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'T', 'N', 0_dik, 0_dik, 2_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL HGEMM( 'N', 'T', 0_dik, 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'N', 'T', 0_dik, 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL HGEMM( 'T', 'T', 0_dik, 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'T', 'T', 0_dik, 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 13
-      CALL HGEMM( 'N', 'N', 2_dik, 0_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'N', 'N', 2_dik, 0_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 13
-      CALL HGEMM( 'N', 'T', 2_dik, 0_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'N', 'T', 2_dik, 0_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 13
-      CALL HGEMM( 'T', 'N', 2_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'T', 'N', 2_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 13
-      CALL HGEMM( 'T', 'T', 2_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMM( 'T', 'T', 2_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 80
    20 INFOT = 1
-      CALL HSYMM( '/', 'U', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYMM( '/', 'U', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HSYMM( 'L', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYMM( 'L', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HSYMM( 'L', 'U', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYMM( 'L', 'U', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HSYMM( 'R', 'U', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYMM( 'R', 'U', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HSYMM( 'L', 'L', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYMM( 'L', 'L', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HSYMM( 'R', 'L', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYMM( 'R', 'L', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HSYMM( 'L', 'U', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYMM( 'L', 'U', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HSYMM( 'R', 'U', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYMM( 'R', 'U', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HSYMM( 'L', 'L', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYMM( 'L', 'L', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HSYMM( 'R', 'L', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYMM( 'R', 'L', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HSYMM( 'L', 'U', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik, BETA, C, 2_dik )
+      CALL SYMM( 'L', 'U', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HSYMM( 'R', 'U', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYMM( 'R', 'U', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HSYMM( 'L', 'L', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik, BETA, C, 2_dik )
+      CALL SYMM( 'L', 'L', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HSYMM( 'R', 'L', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYMM( 'R', 'L', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HSYMM( 'L', 'U', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 2_dik )
+      CALL SYMM( 'L', 'U', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HSYMM( 'R', 'U', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 2_dik )
+      CALL SYMM( 'R', 'U', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HSYMM( 'L', 'L', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 2_dik )
+      CALL SYMM( 'L', 'L', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HSYMM( 'R', 'L', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 2_dik )
+      CALL SYMM( 'R', 'L', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 12
-      CALL HSYMM( 'L', 'U', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 2_dik, BETA, C, 1_dik )
+      CALL SYMM( 'L', 'U', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 12
-      CALL HSYMM( 'R', 'U', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik, BETA, C, 1_dik )
+      CALL SYMM( 'R', 'U', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 12
-      CALL HSYMM( 'L', 'L', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 2_dik, BETA, C, 1_dik )
+      CALL SYMM( 'L', 'L', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 12
-      CALL HSYMM( 'R', 'L', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik, BETA, C, 1_dik )
+      CALL SYMM( 'R', 'L', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 80
    30 INFOT = 1
-      CALL HTRMM( '/', 'U', 'N', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( '/', 'U', 'N', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HTRMM( 'L', '/', 'N', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'L', '/', 'N', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HTRMM( 'L', 'U', '/', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'L', 'U', '/', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HTRMM( 'L', 'U', 'N', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'L', 'U', 'N', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HTRMM( 'L', 'U', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'L', 'U', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HTRMM( 'L', 'U', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'L', 'U', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HTRMM( 'R', 'U', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'R', 'U', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HTRMM( 'R', 'U', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'R', 'U', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HTRMM( 'L', 'L', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'L', 'L', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HTRMM( 'L', 'L', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'L', 'L', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HTRMM( 'R', 'L', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'R', 'L', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HTRMM( 'R', 'L', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'R', 'L', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HTRMM( 'L', 'U', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'L', 'U', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HTRMM( 'L', 'U', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'L', 'U', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HTRMM( 'R', 'U', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'R', 'U', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HTRMM( 'R', 'U', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'R', 'U', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HTRMM( 'L', 'L', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'L', 'L', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HTRMM( 'L', 'L', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'L', 'L', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HTRMM( 'R', 'L', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'R', 'L', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HTRMM( 'R', 'L', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'R', 'L', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HTRMM( 'L', 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
+      CALL TRMM( 'L', 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HTRMM( 'L', 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
+      CALL TRMM( 'L', 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HTRMM( 'R', 'U', 'N', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'R', 'U', 'N', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HTRMM( 'R', 'U', 'T', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'R', 'U', 'T', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HTRMM( 'L', 'L', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
+      CALL TRMM( 'L', 'L', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HTRMM( 'L', 'L', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
+      CALL TRMM( 'L', 'L', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HTRMM( 'R', 'L', 'N', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'R', 'L', 'N', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HTRMM( 'R', 'L', 'T', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'R', 'L', 'T', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL HTRMM( 'L', 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
+      CALL TRMM( 'L', 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL HTRMM( 'L', 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
+      CALL TRMM( 'L', 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL HTRMM( 'R', 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'R', 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL HTRMM( 'R', 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'R', 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL HTRMM( 'L', 'L', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
+      CALL TRMM( 'L', 'L', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL HTRMM( 'L', 'L', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
+      CALL TRMM( 'L', 'L', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL HTRMM( 'R', 'L', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'R', 'L', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL HTRMM( 'R', 'L', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRMM( 'R', 'L', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 80
    40 INFOT = 1
-      CALL HTRSM( '/', 'U', 'N', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( '/', 'U', 'N', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HTRSM( 'L', '/', 'N', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'L', '/', 'N', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HTRSM( 'L', 'U', '/', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'L', 'U', '/', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HTRSM( 'L', 'U', 'N', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'L', 'U', 'N', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HTRSM( 'L', 'U', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'L', 'U', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HTRSM( 'L', 'U', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'L', 'U', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HTRSM( 'R', 'U', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'R', 'U', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HTRSM( 'R', 'U', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'R', 'U', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HTRSM( 'L', 'L', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'L', 'L', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HTRSM( 'L', 'L', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'L', 'L', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HTRSM( 'R', 'L', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'R', 'L', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HTRSM( 'R', 'L', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'R', 'L', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HTRSM( 'L', 'U', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'L', 'U', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HTRSM( 'L', 'U', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'L', 'U', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HTRSM( 'R', 'U', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'R', 'U', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HTRSM( 'R', 'U', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'R', 'U', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HTRSM( 'L', 'L', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'L', 'L', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HTRSM( 'L', 'L', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'L', 'L', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HTRSM( 'R', 'L', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'R', 'L', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HTRSM( 'R', 'L', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'R', 'L', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HTRSM( 'L', 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
+      CALL TRSM( 'L', 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HTRSM( 'L', 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
+      CALL TRSM( 'L', 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HTRSM( 'R', 'U', 'N', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'R', 'U', 'N', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HTRSM( 'R', 'U', 'T', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'R', 'U', 'T', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HTRSM( 'L', 'L', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
+      CALL TRSM( 'L', 'L', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HTRSM( 'L', 'L', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
+      CALL TRSM( 'L', 'L', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HTRSM( 'R', 'L', 'N', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'R', 'L', 'N', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HTRSM( 'R', 'L', 'T', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'R', 'L', 'T', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL HTRSM( 'L', 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
+      CALL TRSM( 'L', 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL HTRSM( 'L', 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
+      CALL TRSM( 'L', 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL HTRSM( 'R', 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'R', 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL HTRSM( 'R', 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'R', 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL HTRSM( 'L', 'L', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
+      CALL TRSM( 'L', 'L', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL HTRSM( 'L', 'L', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
+      CALL TRSM( 'L', 'L', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL HTRSM( 'R', 'L', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'R', 'L', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL HTRSM( 'R', 'L', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
+      CALL TRSM( 'R', 'L', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 80
    50 INFOT = 1
-      CALL HSYRK( '/', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
+      CALL SYRK( '/', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HSYRK( 'U', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
+      CALL SYRK( 'U', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HSYRK( 'U', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
+      CALL SYRK( 'U', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HSYRK( 'U', 'T', -1_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
+      CALL SYRK( 'U', 'T', -1_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HSYRK( 'L', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
+      CALL SYRK( 'L', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HSYRK( 'L', 'T', -1_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
+      CALL SYRK( 'L', 'T', -1_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HSYRK( 'U', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
+      CALL SYRK( 'U', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HSYRK( 'U', 'T', 0_dik, -1_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
+      CALL SYRK( 'U', 'T', 0_dik, -1_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HSYRK( 'L', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
+      CALL SYRK( 'L', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HSYRK( 'L', 'T', 0_dik, -1_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
+      CALL SYRK( 'L', 'T', 0_dik, -1_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HSYRK( 'U', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 2_dik )
+      CALL SYRK( 'U', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HSYRK( 'U', 'T', 0_dik, 2_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
+      CALL SYRK( 'U', 'T', 0_dik, 2_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HSYRK( 'L', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 2_dik )
+      CALL SYRK( 'L', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HSYRK( 'L', 'T', 0_dik, 2_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
+      CALL SYRK( 'L', 'T', 0_dik, 2_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL HSYRK( 'U', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, BETA, C, 1_dik )
+      CALL SYRK( 'U', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL HSYRK( 'U', 'T', 2_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
+      CALL SYRK( 'U', 'T', 2_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL HSYRK( 'L', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, BETA, C, 1_dik )
+      CALL SYRK( 'L', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL HSYRK( 'L', 'T', 2_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
+      CALL SYRK( 'L', 'T', 2_dik, 0_dik, ALPHA, A, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 80
    60 INFOT = 1
-      CALL HSYR2K( '/', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYR2K( '/', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HSYR2K( 'U', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYR2K( 'U', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HSYR2K( 'U', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYR2K( 'U', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HSYR2K( 'U', 'T', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYR2K( 'U', 'T', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HSYR2K( 'L', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYR2K( 'L', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HSYR2K( 'L', 'T', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYR2K( 'L', 'T', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HSYR2K( 'U', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYR2K( 'U', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HSYR2K( 'U', 'T', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYR2K( 'U', 'T', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HSYR2K( 'L', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYR2K( 'L', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HSYR2K( 'L', 'T', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYR2K( 'L', 'T', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HSYR2K( 'U', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 2_dik )
+      CALL SYR2K( 'U', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HSYR2K( 'U', 'T', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYR2K( 'U', 'T', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HSYR2K( 'L', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 2_dik )
+      CALL SYR2K( 'L', 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HSYR2K( 'L', 'T', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYR2K( 'L', 'T', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HSYR2K( 'U', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 2_dik )
+      CALL SYR2K( 'U', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HSYR2K( 'U', 'T', 0_dik, 2_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYR2K( 'U', 'T', 0_dik, 2_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HSYR2K( 'L', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 2_dik )
+      CALL SYR2K( 'L', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HSYR2K( 'L', 'T', 0_dik, 2_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYR2K( 'L', 'T', 0_dik, 2_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 12
-      CALL HSYR2K( 'U', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 2_dik, BETA, C, 1_dik )
+      CALL SYR2K( 'U', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 12
-      CALL HSYR2K( 'U', 'T', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYR2K( 'U', 'T', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 12
-      CALL HSYR2K( 'L', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 2_dik, BETA, C, 1_dik )
+      CALL SYR2K( 'L', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 12
-      CALL HSYR2K( 'L', 'T', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL SYR2K( 'L', 'T', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 80
    70 INFOT = 1
-      CALL HGEMMTR( '/', 'N', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMMTR( '/', 'N', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HGEMMTR( 'U', '/', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMMTR( 'U', '/', 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HGEMMTR( 'U', '/', 'T', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMMTR( 'U', '/', 'T', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HGEMMTR( 'U', 'N', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMMTR( 'U', 'N', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HGEMMTR( 'U', 'T', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMMTR( 'U', 'T', '/', 0_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HGEMMTR( 'U', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
-     &              1_dik )
-      CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
-      INFOT = 4
-      CALL HGEMMTR( 'U', 'N', 'T', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
+      CALL GEMMTR( 'U', 'N', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
      &              1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HGEMMTR( 'U', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
+      CALL GEMMTR( 'U', 'N', 'T', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
      &              1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HGEMMTR( 'U', 'T', 'T', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
+      CALL GEMMTR( 'U', 'T', 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
+     &              1_dik )
+      CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
+      INFOT = 4
+      CALL GEMMTR( 'U', 'T', 'T', -1_dik, 0_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
      &              1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HGEMMTR( 'U', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
+      CALL GEMMTR( 'U', 'N', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
      &              1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HGEMMTR( 'U', 'N', 'T', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
+      CALL GEMMTR( 'U', 'N', 'T', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
      &              1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HGEMMTR( 'U', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
+      CALL GEMMTR( 'U', 'T', 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
      &              1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HGEMMTR( 'U', 'T', 'T', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
+      CALL GEMMTR( 'U', 'T', 'T', 0_dik, -1_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C,   &
      &              1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL HGEMMTR( 'U', 'N', 'N', 2_dik, 0_dik,  ALPHA, A, 1_dik, B, 2_dik, BETA, C,   &
+      CALL GEMMTR( 'U', 'N', 'N', 2_dik, 0_dik,  ALPHA, A, 1_dik, B, 2_dik, BETA, C,   &
      &              2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL HGEMMTR( 'U', 'N', 'T', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik, BETA, C, 2_dik )
+      CALL GEMMTR( 'U', 'N', 'T', 2_dik, 0_dik, ALPHA, A, 1_dik, B, 2_dik, BETA, C, 2_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL HGEMMTR( 'U', 'N', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMMTR( 'U', 'N', 'N', 0_dik, 2_dik, ALPHA, A, 1_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL HGEMMTR( 'U', 'T', 'N', 0_dik, 2_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMMTR( 'U', 'T', 'N', 0_dik, 2_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL HGEMMTR( 'U', 'N', 'T', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMMTR( 'U', 'N', 'T', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL HGEMMTR( 'U', 'T', 'T', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMMTR( 'U', 'T', 'T', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 13
-      CALL HGEMMTR( 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMMTR( 'U', 'N', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 13
-      CALL HGEMMTR( 'U', 'N', 'T', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 2_dik, BETA, C, 1_dik )
+      CALL GEMMTR( 'U', 'N', 'T', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 13
-      CALL HGEMMTR( 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
+      CALL GEMMTR( 'U', 'T', 'N', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 1_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 13
-      CALL HGEMMTR( 'U', 'T', 'T', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 2_dik, BETA, C, 1_dik )
+      CALL GEMMTR( 'U', 'T', 'T', 2_dik, 0_dik, ALPHA, A, 2_dik, B, 2_dik, BETA, C, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
 !
    80 IF( OK )THEN
@@ -3194,7 +3194,7 @@
      &                        LDB, BETA, LDC
                            IF( REWI )                                   &
      &                        REWIND NTRA
-                           CALL HGEMMTR( UPLO, TRANSA, TRANSB, N,       &
+                           CALL GEMMTR( UPLO, TRANSA, TRANSB, N,       &
      &                                  K, ALPHA, AA, LDA, BB, LDB,     &
      &                                  BETA, CC, LDC )
 !

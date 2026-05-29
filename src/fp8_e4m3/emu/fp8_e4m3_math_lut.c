@@ -18,7 +18,7 @@
  */
 
 #include <stddef.h>
-#include "fp8_e4m3.h"
+#include "lpf_fp8_e4m3_emu.h"
 #include "fp8_e4m3_lut.h"
 
 fp8_e4m3_t fp8_e4m3_acos(fp8_e4m3_t x)      { return fp8_e4m3_acos_table[x]; }
@@ -36,6 +36,7 @@ fp8_e4m3_t fp8_e4m3_exp(fp8_e4m3_t x)       { return fp8_e4m3_exp_table[x]; }
 fp8_e4m3_t fp8_e4m3_floor(fp8_e4m3_t x)     { return fp8_e4m3_floor_table[x]; }
 fp8_e4m3_t fp8_e4m3_gamma(fp8_e4m3_t x)     { return fp8_e4m3_gamma_table[x]; }
 fp8_e4m3_t fp8_e4m3_log(fp8_e4m3_t x)       { return fp8_e4m3_log_table[x]; }
+fp8_e4m3_t fp8_e4m3_log2(fp8_e4m3_t x)       { return fp8_e4m3_log2_table[x]; }
 fp8_e4m3_t fp8_e4m3_log10(fp8_e4m3_t x)     { return fp8_e4m3_log10_table[x]; }
 fp8_e4m3_t fp8_e4m3_log_gamma(fp8_e4m3_t x) { return fp8_e4m3_log_gamma_table[x]; }
 fp8_e4m3_t fp8_e4m3_sin(fp8_e4m3_t x)       { return fp8_e4m3_sin_table[x]; }

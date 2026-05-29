@@ -21,7 +21,7 @@
 #include <stdint.h>
 
 #include "fp8_e4m3_helper.h"
-#include "fp8_e4m3/emu/fp8_e4m3.h"
+#include "fp8_e4m3/emu/lpf_fp8_e4m3_emu.h"
 /*
  * Assignment and Constructors
  */

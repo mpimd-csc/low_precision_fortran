@@ -215,20 +215,20 @@
 /* > \endverbatim */
 /* > */
 /*  ===================================================================== */
-void LPF_GLOBAL(bgemm_fp32,BGEMM_FP32)(char *transa, char *transb, lpf_blas_int_t *m, lpf_blas_int_t *
-        n, lpf_blas_int_t *k, lpf_bfloat16_t *alpha, lpf_bfloat16_t *a, lpf_blas_int_t *lda, lpf_bfloat16_t *b, lpf_blas_int_t *
-        ldb, float *beta, float *c__, lpf_blas_int_t *ldc, lpf_fortran_strlen_t transa_len, lpf_fortran_strlen_t
+void LPF_GLOBAL(bgemm_fp32,BGEMM_FP32)(char *transa, char *transb, int64_t *m, int64_t *
+        n, int64_t *k, lpf_bfloat16_t *alpha, lpf_bfloat16_t *a, int64_t *lda, lpf_bfloat16_t *b, int64_t *
+        ldb, float *beta, float *c__, int64_t *ldc, lpf_fortran_strlen_t transa_len, lpf_fortran_strlen_t
         transb_len)
 {
     /* System generated locals */
-    lpf_blas_int_t a_dim1, a_offset, b_dim1, b_offset, c_dim1, c_offset, i__1, i__2,
+    int64_t a_dim1, a_offset, b_dim1, b_offset, c_dim1, c_offset, i__1, i__2,
                  i__3;
 
     /* Local variables */
-    lpf_blas_int_t i__, j, l, info;
+    int64_t i__, j, l, info;
     lpf_logical_t nota, notb;
     float temp;
-    lpf_blas_int_t nrowa, nrowb;
+    int64_t nrowa, nrowb;
 
     /*  -- Reference BLAS level3 routine (version 3.6.0) -- */
     /*  -- Reference BLAS is a software package provided by Univ. of Tennessee,    -- */
@@ -308,7 +308,8 @@ void LPF_GLOBAL(bgemm_fp32,BGEMM_FP32)(char *transa, char *transb, lpf_blas_int_
         info = 13;
     }
     if (info != 0) {
-        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("BGEMM ", &info, (lpf_fortran_strlen_t)6);
+        int32_t infox = (int32_t)info;
+        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("BGEMM ", &infox, (lpf_fortran_strlen_t)6);
         return;
     }
 
@@ -493,19 +494,8 @@ void LPF_GLOBAL(bgemm_fp32,BGEMM_FP32)(char *transa, char *transb, lpf_blas_int_
 
 } /* bgemm_ */
 
-void lpf_blas_bgemm_fp32_fortran(char *transa, char *transb, lpf_blas_int_t *m, lpf_blas_int_t *
-        n, lpf_blas_int_t *k, lpf_fbfloat16_t *alpha, lpf_fbfloat16_t *a, lpf_blas_int_t *lda, lpf_fbfloat16_t *b, lpf_blas_int_t *
-        ldb, float *beta, float *c__, lpf_blas_int_t *ldc)
-{
-    LPF_GLOBAL(bgemm_fp32,BGEMM_FP32)(transa, transb, m,
-        n, k, (lpf_bfloat16_t *)alpha, (lpf_bfloat16_t *)a, lda, (lpf_bfloat16_t *)b,
-        ldb, (float *)beta, (float *)c__, ldc, 1, 1);
-}
-
-#include <ISO_Fortran_binding.h>
-
-void lpf_blas_bgemm_fp32_fortran_dyn_rank(char *transa, char *transb, lpf_blas_int_t *m, lpf_blas_int_t *
-        n, lpf_blas_int_t *k, lpf_fbfloat16_t *alpha, CFI_cdesc_t *_a, lpf_blas_int_t *lda, CFI_cdesc_t *_b, lpf_blas_int_t *ldb, float *beta, CFI_cdesc_t *_c, lpf_blas_int_t *ldc)
+void lpf_blas_bgemm_fp32_fortran_dyn_rank_64(char *transa, char *transb, int64_t *m, int64_t *
+        n, int64_t *k, lpf_fbfloat16_t *alpha, CFI_cdesc_t *_a, int64_t *lda, CFI_cdesc_t *_b, int64_t *ldb, float *beta, CFI_cdesc_t *_c, int64_t *ldc)
 {
     lpf_bfloat16_t *a = _a->base_addr;
     lpf_bfloat16_t *b = _b->base_addr;
@@ -513,5 +503,22 @@ void lpf_blas_bgemm_fp32_fortran_dyn_rank(char *transa, char *transb, lpf_blas_i
     LPF_GLOBAL(bgemm_fp32,BGEMM_FP32)(transa, transb, m,
         n, k, (lpf_bfloat16_t *)alpha, (lpf_bfloat16_t *)a, lda, (lpf_bfloat16_t *)b,
         ldb, beta, c, ldc, 1, 1);
+}
+
+void lpf_blas_bgemm_fp32_fortran_dyn_rank_32(char *transa, char *transb, int32_t *m, int32_t *
+        n, int32_t *k, lpf_fbfloat16_t *alpha, CFI_cdesc_t *_a, int32_t *lda, CFI_cdesc_t *_b, int32_t *ldb, float *beta, CFI_cdesc_t *_c, int32_t *ldc)
+{
+    lpf_bfloat16_t *a = _a->base_addr;
+    lpf_bfloat16_t *b = _b->base_addr;
+    float *c = _c->base_addr;
+    int64_t _m = *m;
+    int64_t _n = *n;
+    int64_t _k = *k;
+    int64_t _lda = *lda;
+    int64_t _ldb = *ldb;
+    int64_t _ldc = *ldc;
+    LPF_GLOBAL(bgemm_fp32,BGEMM_FP32)(transa, transb, &_m,
+        &_n, &_k, (lpf_bfloat16_t *)alpha, (lpf_bfloat16_t *)a, &_lda, (lpf_bfloat16_t *)b,
+        &_ldb, beta, c, &_ldc, 1, 1);
 }
 

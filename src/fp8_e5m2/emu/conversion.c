@@ -17,7 +17,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "fp8_e5m2.h"
+#include "lpf_fp8_e5m2_emu.h"
 #include "fp8_e5m2_bits.h"
 #include "fp32.h"
 
@@ -54,7 +54,6 @@ fp8_e5m2_t fp8_e5m2_from_components(uint8_t sign, int8_t expi, uint8_t mant)
  * @return     Equivalent float value.
  */
 float fp8_e5m2_to_float(fp8_e5m2_t fp8) {
-    float result = 0.0f;
     int8_t expo = FP8_E5M2_GET_EXP(fp8);
     uint8_t sign = FP8_E5M2_GET_SIGN(fp8);
     uint8_t mantinssa = FP8_E5M2_GET_MANT(fp8);

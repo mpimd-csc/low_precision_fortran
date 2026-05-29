@@ -77,16 +77,16 @@
 /* > \endverbatim */
 /* > */
 /*  ===================================================================== */
-int16_t LPF_GLOBAL(bnrm2_fp32,BNRM2_FP32)(lpf_blas_int_t *n, lpf_bfloat16_t *x, lpf_blas_int_t *incx)
+int16_t LPF_GLOBAL(bnrm2_fp32,BNRM2_FP32)(int64_t *n, lpf_bfloat16_t *x, int64_t *incx)
 {
     /* System generated locals */
-    lpf_blas_int_t i__1, i__2;
+    int64_t i__1, i__2;
     lpf_bfloat16_t ret_val;
     float r__1;
 
     /* Builtin functions */
     /* Local variables */
-    lpf_blas_int_t ix;
+    int64_t ix;
     float ssq, norm, scale, absxi;
 
 
@@ -153,18 +153,23 @@ int16_t LPF_GLOBAL(bnrm2_fp32,BNRM2_FP32)(lpf_blas_int_t *n, lpf_bfloat16_t *x, 
 } /* bnrm2_ */
 
 
- lpf_fbfloat16_t lpf_blas_bnrm2_fp32_fortran(lpf_blas_int_t *n, lpf_fbfloat16_t *x, lpf_blas_int_t *incx)
+#include <ISO_Fortran_binding.h>
+
+lpf_fbfloat16_t lpf_blas_bnrm2_fp32_fortran_dyn_rank_64(int64_t *n, CFI_cdesc_t *_x, int64_t *incx)
 {
+    lpf_bfloat16_t *x = _x->base_addr;
     lpf_fbfloat16_t r;
-    r.value = LPF_GLOBAL(bnrm2_fp32,BNRM2_FP32)(n, (lpf_bfloat16_t *)x, incx);
+    r.value = LPF_GLOBAL(bnrm2_fp32,BNRM2_FP32)(n, x, incx);
     return r;
 }
 
-#include <ISO_Fortran_binding.h>
-
-lpf_fbfloat16_t lpf_blas_bnrm2_fp32_fortran_dyn_rank(lpf_blas_int_t *n, CFI_cdesc_t *_x, lpf_blas_int_t *incx)
+lpf_fbfloat16_t lpf_blas_bnrm2_fp32_fortran_dyn_rank_32(int32_t *n, CFI_cdesc_t *_x, int32_t *incx)
 {
     lpf_bfloat16_t *x = _x->base_addr;
-    return lpf_blas_bnrm2_fp32_fortran(n, (lpf_fbfloat16_t *)x, incx);
+    int64_t _n = *n;
+    int64_t _incx = *incx;
+    lpf_fbfloat16_t r;
+    r.value = LPF_GLOBAL(bnrm2_fp32,BNRM2_FP32)(&_n, x, &_incx);
+    return r;
 }
 

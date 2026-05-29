@@ -164,15 +164,15 @@
 /* > \ingroup single_blas_level1 */
 
 /*  ===================================================================== */
-int16_t LPF_GLOBAL(bsbdot,BSBDOT)(lpf_blas_int_t *n, lpf_bfloat16_t *sb, lpf_bfloat16_t *sx, lpf_blas_int_t *incx, lpf_bfloat16_t *sy,
-        lpf_blas_int_t *incy)
+int16_t LPF_GLOBAL(bsbdot,BSBDOT)(int64_t *n, lpf_bfloat16_t *sb, lpf_bfloat16_t *sx, int64_t *incx, lpf_bfloat16_t *sy,
+        int64_t *incy)
 {
     /* System generated locals */
-    lpf_blas_int_t i__1, i__2;
+    int64_t i__1, i__2;
     lpf_bfloat16_t ret_val;
 
     /* Local variables */
-    lpf_blas_int_t i__, ns, kx, ky;
+    int64_t i__, ns, kx, ky;
     float dbdot;
 
 
@@ -297,20 +297,26 @@ int16_t LPF_GLOBAL(bsbdot,BSBDOT)(lpf_blas_int_t *n, lpf_bfloat16_t *sb, lpf_bfl
     RETURN_BF16(ret_val);
 } /* sdbdot_ */
 
- lpf_fbfloat16_t lpf_blas_bsbdot_fortran(lpf_blas_int_t *n, lpf_fbfloat16_t *sb, lpf_fbfloat16_t *sx, lpf_blas_int_t *incx, lpf_fbfloat16_t *sy,
-        lpf_blas_int_t *incy)
-{
-    lpf_fbfloat16_t r;
-    r.value = LPF_GLOBAL(bsbdot,BSBDOT)(n,(lpf_bfloat16_t *) sb, (lpf_bfloat16_t *) sx, incx, (lpf_bfloat16_t *) sy, incy);
-    return r;
-}
+ #include <ISO_Fortran_binding.h>
 
-#include <ISO_Fortran_binding.h>
-
-lpf_fbfloat16_t lpf_blas_bsbdot_fortran_dyn_rank(lpf_blas_int_t *n, lpf_fbfloat16_t *sb, CFI_cdesc_t *_sx, lpf_blas_int_t *incx, CFI_cdesc_t *_sy, lpf_blas_int_t *incy)
+lpf_fbfloat16_t lpf_blas_bsbdot_fortran_dyn_rank_64(int64_t *n, lpf_fbfloat16_t *sb, CFI_cdesc_t *_sx, int64_t *incx, CFI_cdesc_t *_sy, int64_t *incy)
 {
     lpf_bfloat16_t *sx = _sx->base_addr;
     lpf_bfloat16_t *sy = _sy->base_addr;
-    return lpf_blas_bsbdot_fortran(n, sb, (lpf_fbfloat16_t *)sx, incx, (lpf_fbfloat16_t *)sy, incy);
+    lpf_fbfloat16_t r;
+    r.value = LPF_GLOBAL(bsbdot,BSBDOT)(n,(lpf_bfloat16_t *) sb, sx, incx, sy, incy);
+    return r;
+}
+
+lpf_fbfloat16_t lpf_blas_bsbdot_fortran_dyn_rank_32(int32_t *n, lpf_fbfloat16_t *sb, CFI_cdesc_t *_sx, int32_t *incx, CFI_cdesc_t *_sy, int32_t *incy)
+{
+    lpf_bfloat16_t *sx = _sx->base_addr;
+    lpf_bfloat16_t *sy = _sy->base_addr;
+    int64_t _n = *n;
+    int64_t _incx = *incx;
+    int64_t _incy = *incy;
+    lpf_fbfloat16_t r;
+    r.value = LPF_GLOBAL(bsbdot,BSBDOT)(&_n,(lpf_bfloat16_t *) sb, sx, &_incx, sy, &_incy);
+    return r;
 }
 

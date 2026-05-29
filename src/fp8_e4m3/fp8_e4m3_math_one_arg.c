@@ -23,7 +23,7 @@
 #include <math.h>
 
 #include "fp8_e4m3_helper.h"
-#include "emu/fp8_e4m3.h"
+#include "emu/lpf_fp8_e4m3_emu.h"
 #include "lpf_internal.h"
 
 /*

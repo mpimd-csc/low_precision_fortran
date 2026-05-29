@@ -52,7 +52,7 @@ if (LPF_HAVE_FP16)
         fp16/lapack/cholesky/potrfp.f90
 
        fp16/lapack/lange.f90
-        fp16/lpf_lapack_fp16.F90
+       fp16/lpf_lapack_fp16.F90
 
 
     )
@@ -84,6 +84,70 @@ SET(SRC ${SRC}
     highprecision/scale_diag_right.f90
 )
 
+SET(SRC_GENERIC
+    generic/lpf_blas_generic.F90
+    generic/level1/asum.F90
+    generic/level1/axpy.F90
+    generic/level1/axpby.F90
+    generic/level1/copy.F90
+    generic/level1/dot.F90
+    generic/level1/nrm2.F90
+    generic/level1/nrm2_fp32.F90
+    generic/level1/rot.F90
+    generic/level1/rotg.F90
+    generic/level1/rotmg.F90
+    generic/level1/rotm.F90
+    generic/level1/iamax.F90
+    generic/level1/sbdot.F90
+    generic/level1/scal.F90
+    generic/level1/swap.F90
+
+    generic/level2/gbmv.F90
+    generic/level2/gemv.F90
+    generic/level2/ger.F90
+    generic/level2/sbmv.F90
+    generic/level2/spmv.F90
+    generic/level2/spr.F90
+    generic/level2/spr2.F90
+    generic/level2/symv.F90
+    generic/level2/tbmv.F90
+    generic/level2/tbsv.F90
+    generic/level2/tpmv.F90
+    generic/level2/tpsv.F90
+    generic/level2/trmv.F90
+    generic/level2/trsv.F90
+
+    generic/level3/gemm.F90
+    generic/level3/gemm_fp32.F90
+    generic/level3/gemmtr.F90
+    generic/level3/symm.F90
+    generic/level3/syr2.F90
+    generic/level3/syr2k.F90
+    generic/level3/syrk.F90
+    generic/level3/trmm.F90
+    generic/level3/trsm.F90
+
+)
+
+if (LPF_FP8_E5M2)
+    ADD_LIBRARY(lpf_blas_fp8_e5m2 OBJECT ${SRC_GENERIC})
+    target_compile_definitions(lpf_blas_fp8_e5m2 PRIVATE LPF_FP8_E5M2 DT=fp8_e5m2 )
+    set_target_properties(lpf_blas_fp8_e5m2 PROPERTIES  Fortran_PREPROCESS  ON )
+    target_link_libraries(lpf_blas_fp8_e5m2 PRIVATE lpf)
+    set_target_properties(lpf_blas_fp8_e5m2 PROPERTIES Fortran_MODULE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fortran-modules")
+endif()
+
+if (LPF_FP8_E4M3)
+    ADD_LIBRARY(lpf_blas_fp8_e4m3 OBJECT ${SRC_GENERIC})
+    target_compile_definitions(lpf_blas_fp8_e4m3 PRIVATE LPF_FP8_E4M3 DT=fp8_e4m3 )
+    set_target_properties(lpf_blas_fp8_e4m3 PROPERTIES  Fortran_PREPROCESS  ON )
+    target_link_libraries(lpf_blas_fp8_e4m3 PRIVATE lpf)
+    set_target_properties(lpf_blas_fp8_e4m3 PROPERTIES Fortran_MODULE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fortran-modules")
+endif()
+
+
+
+
 ADD_LIBRARY(lpf_blas
     $<$<BOOL:${LPF_HAVE_FP16}>:$<TARGET_OBJECTS:fp16_level1>>
     $<$<BOOL:${LPF_HAVE_FP16}>:$<TARGET_OBJECTS:fp16_level2>>
@@ -95,6 +159,9 @@ ADD_LIBRARY(lpf_blas
     $<$<BOOL:${LPF_HAVE_BF16}>:$<TARGET_OBJECTS:bf16_level3>>
     $<$<BOOL:${LPF_HAVE_BF16}>:$<TARGET_OBJECTS:bf16_aux>>
 
+    $<$<BOOL:${LPF_FP8_E5M2}>:$<TARGET_OBJECTS:lpf_blas_fp8_e5m2>>
+    $<$<BOOL:${LPF_FP8_E4M3}>:$<TARGET_OBJECTS:lpf_blas_fp8_e4m3>>
+
     ${SRC}
 )
 
@@ -102,7 +169,7 @@ TARGET_LINK_LIBRARIES(lpf_blas
     PRIVATE
     $<$<BOOL:NEED_LINKING_AGAINST_LIBM>:${LIBM_NAME}>
     PUBLIC
-    LPF::LPF
+    LPF::lpf
     $<$<BOOL:${BLAS_FOUND}>:BLAS::BLAS>
     $<$<BOOL:${LAPACK_FOUND}>:LAPACK::LAPACK>
 )
@@ -127,7 +194,7 @@ SET_PROPERTY(TARGET lpf_blas PROPERTY SOVERSION ${PROJECT_VERSION_MAJOR})
 SET_TARGET_PROPERTIES(lpf_blas PROPERTIES Fortran_MODULE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fortran-modules")
 INSTALL(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fortran-modules/" DESTINATION ${CMAKE_INSTALL_FULL_MODULEDIR} )
 
-ADD_LIBRARY(LPF::BLAS ALIAS lpf_blas)
+ADD_LIBRARY(LPF::lpf_blas ALIAS lpf_blas)
 
 INSTALL(TARGETS lpf_blas
     EXPORT  lpf_targets

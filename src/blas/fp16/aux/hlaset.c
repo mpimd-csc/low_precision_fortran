@@ -25,12 +25,12 @@
 #include <stdio.h>
 #include <string.h>
 
-void LPF_GLOBAL(hlaset,HLASET)(const char * uplo, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_float16_t *alpha,
-        lpf_float16_t *beta,lpf_float16_t *a , lpf_blas_int_t *lda, lpf_fortran_strlen_t uplo_len)
+void LPF_GLOBAL(hlaset,HLASET)(const char * uplo, int64_t *m, int64_t *n, lpf_float16_t *alpha,
+        lpf_float16_t *beta, lpf_float16_t *a, int64_t *lda, lpf_fortran_strlen_t uplo_len)
 {
     (void) uplo_len;
-    lpf_blas_int_t i,j;
-    lpf_blas_int_t LDA  = *lda;
+    int64_t i,j;
+    int64_t LDA  = *lda;
     lpf_float16_t fa = *alpha;
     lpf_float16_t fb = *beta;
 
@@ -39,7 +39,7 @@ void LPF_GLOBAL(hlaset,HLASET)(const char * uplo, lpf_blas_int_t *m, lpf_blas_in
         // UPLO = U
         for ( j = 0; j < *n; j++) {
             lpf_float16_t *aa = a + j * LDA;
-            lpf_blas_int_t bound = LPF_MIN(j, *m-1);
+            int64_t bound = LPF_MIN(j, *m-1);
             for ( i = 0; i <= bound; i++ ) {
                 aa[i] = fa ;
             }
@@ -49,7 +49,7 @@ void LPF_GLOBAL(hlaset,HLASET)(const char * uplo, lpf_blas_int_t *m, lpf_blas_in
         // UPLO = L
         for ( j = 0; j < *n; j++) {
             lpf_float16_t *aa = a + j * LDA;
-            lpf_blas_int_t bound = *m-1;
+            int64_t bound = *m-1;
             for ( i = j; i <= bound; i++ ) {
                 aa[i] = fa;
             }
@@ -58,7 +58,7 @@ void LPF_GLOBAL(hlaset,HLASET)(const char * uplo, lpf_blas_int_t *m, lpf_blas_in
     } else {
        for ( j = 0; j < *n; j++) {
             lpf_float16_t *aa = a + j * LDA;
-            lpf_blas_int_t bound = *m-1;
+            int64_t bound = *m-1;
             for ( i = 0; i <= bound; i++ ) {
                 aa[i] = fa;
                 if ( i == j ) aa[i] = fb;
@@ -68,15 +68,20 @@ void LPF_GLOBAL(hlaset,HLASET)(const char * uplo, lpf_blas_int_t *m, lpf_blas_in
     }
 }
 
-void lpf_blas_hlaset_fortran(char * uplo, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_ffloat16_t *alpha, lpf_ffloat16_t *beta, lpf_ffloat16_t *a, lpf_blas_int_t *lda)
-{
-    LPF_GLOBAL(hlaset,HLASET)( uplo, m, n, (lpf_float16_t *)alpha, (lpf_float16_t*) beta, (lpf_float16_t *)a, lda, 1);
-}
-
 #include <ISO_Fortran_binding.h>
 
-void lpf_blas_hlaset_fortran_dyn_rank(char *uplo, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_ffloat16_t *alpha, lpf_ffloat16_t *beta, CFI_cdesc_t *_a, lpf_blas_int_t *lda)
+void lpf_blas_hlaset_fortran_dyn_rank_64(char *uplo, int64_t *m, int64_t *n, lpf_ffloat16_t *alpha, lpf_ffloat16_t *beta, CFI_cdesc_t *_a, int64_t *lda)
 {
     lpf_float16_t *a = _a->base_addr;
     LPF_GLOBAL(hlaset,HLASET)( uplo, m, n, (lpf_float16_t *)alpha, (lpf_float16_t*) beta, (lpf_float16_t *)a, lda, 1);
+}
+
+void lpf_blas_hlaset_fortran_dyn_rank_32(char *uplo, int32_t *m, int32_t *n, lpf_ffloat16_t *alpha, lpf_ffloat16_t *beta, CFI_cdesc_t *_a, int32_t *lda)
+{
+    int64_t _m = *m;
+    int64_t _n = *n;
+    int64_t _lda = *lda;
+
+    lpf_float16_t *a = _a->base_addr;
+    LPF_GLOBAL(hlaset,HLASET)( uplo, &_m, &_n, (lpf_float16_t *)alpha, (lpf_float16_t*) beta, (lpf_float16_t *)a, &_lda, 1);
 }

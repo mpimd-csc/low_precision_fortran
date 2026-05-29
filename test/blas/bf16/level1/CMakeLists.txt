@@ -1,19 +1,19 @@
 SET (SRC
-    check_basum.c
-    check_baxpy.c
-    check_baxpby.c
-    check_bcopy.c
-    check_bdot.c
-    check_bsbdot.c
-    check_bnrm2.c
-    check_bnrm2_fp32.c
-    check_brot.c
-    check_brotg.c
-    check_brotm.c
-    check_brotmg.c
-    check_bscal.c
-    check_bswap.c
-    check_ibamax.c
+    check_basum.f90
+    check_baxpy.f90
+    check_baxpby.f90
+    check_bcopy.f90
+    check_bdot.f90
+    check_bsbdot.f90
+    check_bnrm2.f90
+    check_bnrm2_fp32.f90
+    check_brot.f90
+    check_brotg.f90
+    check_brotm.f90
+    check_brotmg.f90
+    check_bscal.f90
+    check_bswap.f90
+    check_ibamax.f90
 )
 
 FOREACH( S IN LISTS SRC)
@@ -22,7 +22,7 @@ FOREACH( S IN LISTS SRC)
 
     TARGET_LINK_LIBRARIES(${check_name}
         PRIVATE
-            LPF::BLAS
+            LPF::lpf_blas
             $<$<BOOL:NEED_LINKING_AGAINST_LIBM>:${LIBM_NAME}>
     )
 

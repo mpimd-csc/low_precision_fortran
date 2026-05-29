@@ -163,7 +163,7 @@ contains
                 !
                 !           compute u(j,j) and test for non-positive-definiteness.
                 !
-                ajj = a( j, j ) - hdot( j-1, a( 1, j ), 1_lpf_default_int_kind, a( 1, j ), 1_lpf_default_int_kind )
+                ajj = a( j, j ) - dot( j-1, a( 1, j ), 1_lpf_default_int_kind, a( 1, j ), 1_lpf_default_int_kind )
                 if( ajj.le.zero.or.isnan( ajj ) ) then
                     a( j, j ) = ajj
                     info = j
@@ -188,7 +188,7 @@ contains
                 !
                 !           compute l(j,j) and test for non-positive-definiteness.
                 !
-                ajj = a( j, j ) - hdot( j-1, a( j, 1 ), lda, a( j, 1 ), lda )
+                ajj = a( j, j ) - dot( j-1, a( j, 1 ), lda, a( j, 1 ), lda )
                 if( ajj.le.zero.or.isnan( ajj ) ) then
                     a( j, j ) = ajj
                     info = j

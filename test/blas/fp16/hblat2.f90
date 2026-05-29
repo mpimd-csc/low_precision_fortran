@@ -630,7 +630,7 @@
      &                              INCY
                                  IF( REWI )                             &
      &                              REWIND NTRA
-                                 CALL HGEMV( TRANS, M, N, ALPHA, AA,    &
+                                 CALL GEMV( TRANS, M, N, ALPHA, AA,    &
      &                                       LDA, XX, INCX, BETA, YY,   &
      &                                       INCY )
                               ELSE IF( BANDED )THEN
@@ -640,7 +640,7 @@
      &                              INCX, BETA, INCY
                                  IF( REWI )                             &
      &                              REWIND NTRA
-                                 CALL HGBMV( TRANS, M, N, KL, KU, ALPHA,&
+                                 CALL GBMV( TRANS, M, N, KL, KU, ALPHA,&
      &                                       AA, LDA, XX, INCX, BETA,   &
      &                                       YY, INCY )
                               END IF
@@ -752,7 +752,7 @@
      &      INCX, BETA, INCY
          IF( REWI )                                                     &
      &      REWIND NTRA
-         CALL HGEMV( TRANS, M, N, ALPHA, AA, LDA, XX, INCX, BETA, YY,   &
+         CALL GEMV( TRANS, M, N, ALPHA, AA, LDA, XX, INCX, BETA, YY,   &
      &      INCY )
       ELSE IF( BANDED )THEN
          IF( TRACE )                                                    &
@@ -760,7 +760,7 @@
      &      ALPHA, LDA, INCX, BETA, INCY
          IF( REWI )                                                     &
      &      REWIND NTRA
-         CALL HGBMV( TRANS, M, N, KL, KU, ALPHA, AA, LDA, XX, INCX,     &
+         CALL GBMV( TRANS, M, N, KL, KU, ALPHA, AA, LDA, XX, INCX,     &
      &      BETA, YY, INCY )
       END IF
       NC = NC + 1
@@ -989,7 +989,7 @@
      &                           UPLO, N, ALPHA, LDA, INCX, BETA, INCY
                               IF( REWI )                                &
      &                           REWIND NTRA
-                              CALL HSYMV( UPLO, N, ALPHA, AA, LDA, XX,  &
+                              CALL SYMV( UPLO, N, ALPHA, AA, LDA, XX,  &
      &                                    INCX, BETA, YY, INCY )
                            ELSE IF( BANDED )THEN
                               IF( TRACE )                               &
@@ -998,7 +998,7 @@
      &                           INCY
                               IF( REWI )                                &
      &                           REWIND NTRA
-                              CALL HSBMV( UPLO, N, K, ALPHA, AA, LDA,   &
+                              CALL SBMV( UPLO, N, K, ALPHA, AA, LDA,   &
      &                                    XX, INCX, BETA, YY, INCY )
                            ELSE IF( PACKED )THEN
                               IF( TRACE )                               &
@@ -1006,7 +1006,7 @@
      &                           UPLO, N, ALPHA, INCX, BETA, INCY
                               IF( REWI )                                &
      &                           REWIND NTRA
-                              CALL HSPMV( UPLO, N, ALPHA, AA, XX, INCX, &
+                              CALL SPMV( UPLO, N, ALPHA, AA, XX, INCX, &
      &                                    BETA, YY, INCY )
                            END IF
 !
@@ -1324,7 +1324,7 @@
      &                           UPLO, TRANS, DIAG, N, LDA, INCX
                               IF( REWI )                                &
      &                           REWIND NTRA
-                              CALL HTRMV( UPLO, TRANS, DIAG, N, AA, LDA,&
+                              CALL TRMV( UPLO, TRANS, DIAG, N, AA, LDA,&
      &                                    XX, INCX )
                            ELSE IF( BANDED )THEN
                               IF( TRACE )                               &
@@ -1332,7 +1332,7 @@
      &                           UPLO, TRANS, DIAG, N, K, LDA, INCX
                               IF( REWI )                                &
      &                           REWIND NTRA
-                              CALL HTBMV( UPLO, TRANS, DIAG, N, K, AA,  &
+                              CALL TBMV( UPLO, TRANS, DIAG, N, K, AA,  &
      &                                    LDA, XX, INCX )
                            ELSE IF( PACKED )THEN
                               IF( TRACE )                               &
@@ -1340,7 +1340,7 @@
      &                           UPLO, TRANS, DIAG, N, INCX
                               IF( REWI )                                &
      &                           REWIND NTRA
-                              CALL HTPMV( UPLO, TRANS, DIAG, N, AA, XX, &
+                              CALL TPMV( UPLO, TRANS, DIAG, N, AA, XX, &
      &                                    INCX )
                            END IF
                         ELSE IF( SNAME( 4: 5 ).EQ.'SV' )THEN
@@ -1350,7 +1350,7 @@
      &                           UPLO, TRANS, DIAG, N, LDA, INCX
                               IF( REWI )                                &
      &                           REWIND NTRA
-                              CALL HTRSV( UPLO, TRANS, DIAG, N, AA, LDA,&
+                              CALL TRSV( UPLO, TRANS, DIAG, N, AA, LDA,&
      &                                    XX, INCX )
                            ELSE IF( BANDED )THEN
                               IF( TRACE )                               &
@@ -1358,7 +1358,7 @@
      &                           UPLO, TRANS, DIAG, N, K, LDA, INCX
                               IF( REWI )                                &
      &                           REWIND NTRA
-                              CALL HTBSV( UPLO, TRANS, DIAG, N, K, AA,  &
+                              CALL TBSV( UPLO, TRANS, DIAG, N, K, AA,  &
      &                                    LDA, XX, INCX )
                            ELSE IF( PACKED )THEN
                               IF( TRACE )                               &
@@ -1366,7 +1366,7 @@
      &                           UPLO, TRANS, DIAG, N, INCX
                               IF( REWI )                                &
      &                           REWIND NTRA
-                              CALL HTPSV( UPLO, TRANS, DIAG, N, AA, XX, &
+                              CALL TPSV( UPLO, TRANS, DIAG, N, AA, XX, &
      &                                    INCX )
                            END IF
                         END IF
@@ -1667,7 +1667,7 @@
      &                  ALPHA, INCX, INCY, LDA
                      IF( REWI )                                         &
      &                  REWIND NTRA
-                     CALL HGER( M, N, ALPHA, XX, INCX, YY, INCY, AA,    &
+                     CALL GER( M, N, ALPHA, XX, INCX, YY, INCY, AA,    &
      &                          LDA )
 !
 !                    Check if error-exit was taken incorrectly.
@@ -1926,14 +1926,14 @@
      &                  ALPHA, INCX, LDA
                      IF( REWI )                                         &
      &                  REWIND NTRA
-                     CALL HSYR( UPLO, N, ALPHA, XX, INCX, AA, LDA )
+                     CALL SYR( UPLO, N, ALPHA, XX, INCX, AA, LDA )
                   ELSE IF( PACKED )THEN
                      IF( TRACE )                                        &
      &                  WRITE( NTRA, FMT = 9994 )NC, SNAME, UPLO, N,    &
      &                  ALPHA, INCX
                      IF( REWI )                                         &
      &                  REWIND NTRA
-                     CALL HSPR( UPLO, N, ALPHA, XX, INCX, AA )
+                     CALL SPR( UPLO, N, ALPHA, XX, INCX, AA )
                   END IF
 !
 !                 Check if error-exit was taken incorrectly.
@@ -2230,7 +2230,7 @@
      &                     ALPHA, INCX, INCY, LDA
                         IF( REWI )                                      &
      &                     REWIND NTRA
-                        CALL HSYR2( UPLO, N, ALPHA, XX, INCX, YY, INCY, &
+                        CALL SYR2( UPLO, N, ALPHA, XX, INCX, YY, INCY, &
      &                              AA, LDA )
                      ELSE IF( PACKED )THEN
                         IF( TRACE )                                     &
@@ -2238,7 +2238,7 @@
      &                     ALPHA, INCX, INCY
                         IF( REWI )                                      &
      &                     REWIND NTRA
-                        CALL HSPR2( UPLO, N, ALPHA, XX, INCX, YY, INCY, &
+                        CALL SPR2( UPLO, N, ALPHA, XX, INCX, YY, INCY, &
      &                              AA )
                      END IF
 !
@@ -2433,277 +2433,277 @@
      &        90, 100, 110, 120, 130, 140, 150,                         &
      &        160 )ISNUM
    10 INFOT = 1
-      CALL HGEMV( '/', 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
+      CALL GEMV( '/', 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HGEMV( 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
+      CALL GEMV( 'N', -1_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HGEMV( 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
+      CALL GEMV( 'N', 0_dik, -1_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HGEMV( 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
+      CALL GEMV( 'N', 2_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL HGEMV( 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, X, 0_dik, BETA, Y, 1_dik )
+      CALL GEMV( 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, X, 0_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL HGEMV( 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 0_dik )
+      CALL GEMV( 'N', 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
    20 INFOT = 1
-      CALL HGBMV( '/', 0_dik, 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
+      CALL GBMV( '/', 0_dik, 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HGBMV( 'N', -1_dik, 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
+      CALL GBMV( 'N', -1_dik, 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HGBMV( 'N', 0_dik, -1_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
+      CALL GBMV( 'N', 0_dik, -1_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HGBMV( 'N', 0_dik, 0_dik, -1_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
+      CALL GBMV( 'N', 0_dik, 0_dik, -1_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HGBMV( 'N', 2_dik, 0_dik, 0_dik, -1_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
+      CALL GBMV( 'N', 2_dik, 0_dik, 0_dik, -1_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL HGBMV( 'N', 0_dik, 0_dik, 1_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
+      CALL GBMV( 'N', 0_dik, 0_dik, 1_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL HGBMV( 'N', 0_dik, 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, X, 0_dik, BETA, Y, 1_dik )
+      CALL GBMV( 'N', 0_dik, 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, X, 0_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 13
-      CALL HGBMV( 'N', 0_dik, 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 0_dik )
+      CALL GBMV( 'N', 0_dik, 0_dik, 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
    30 INFOT = 1
-      CALL HSYMV( '/', 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
+      CALL SYMV( '/', 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HSYMV( 'U', -1_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
+      CALL SYMV( 'U', -1_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HSYMV( 'U', 2_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
+      CALL SYMV( 'U', 2_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HSYMV( 'U', 0_dik, ALPHA, A, 1_dik, X, 0_dik, BETA, Y, 1_dik )
+      CALL SYMV( 'U', 0_dik, ALPHA, A, 1_dik, X, 0_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 10
-      CALL HSYMV( 'U', 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 0_dik )
+      CALL SYMV( 'U', 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
    40 INFOT = 1
-      CALL HSBMV( '/', 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
+      CALL SBMV( '/', 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HSBMV( 'U', -1_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
+      CALL SBMV( 'U', -1_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HSBMV( 'U', 0_dik, -1_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
+      CALL SBMV( 'U', 0_dik, -1_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HSBMV( 'U', 0_dik, 1_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
+      CALL SBMV( 'U', 0_dik, 1_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL HSBMV( 'U', 0_dik, 0_dik, ALPHA, A, 1_dik, X, 0_dik, BETA, Y, 1_dik )
+      CALL SBMV( 'U', 0_dik, 0_dik, ALPHA, A, 1_dik, X, 0_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 11
-      CALL HSBMV( 'U', 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 0_dik )
+      CALL SBMV( 'U', 0_dik, 0_dik, ALPHA, A, 1_dik, X, 1_dik, BETA, Y, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
    50 INFOT = 1
-      CALL HSPMV( '/', 0_dik, ALPHA, A, X, 1_dik, BETA, Y, 1_dik )
+      CALL SPMV( '/', 0_dik, ALPHA, A, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HSPMV( 'U', -1_dik, ALPHA, A, X, 1_dik, BETA, Y, 1_dik )
+      CALL SPMV( 'U', -1_dik, ALPHA, A, X, 1_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HSPMV( 'U', 0_dik, ALPHA, A, X, 0_dik, BETA, Y, 1_dik )
+      CALL SPMV( 'U', 0_dik, ALPHA, A, X, 0_dik, BETA, Y, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HSPMV( 'U', 0_dik, ALPHA, A, X, 1_dik, BETA, Y, 0_dik )
+      CALL SPMV( 'U', 0_dik, ALPHA, A, X, 1_dik, BETA, Y, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
    60 INFOT = 1
-      CALL HTRMV( '/', 'N', 'N', 0_dik, A, 1_dik, X, 1_dik )
+      CALL TRMV( '/', 'N', 'N', 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HTRMV( 'U', '/', 'N', 0_dik, A, 1_dik, X, 1_dik )
+      CALL TRMV( 'U', '/', 'N', 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HTRMV( 'U', 'N', '/', 0_dik, A, 1_dik, X, 1_dik )
+      CALL TRMV( 'U', 'N', '/', 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HTRMV( 'U', 'N', 'N', -1_dik, A, 1_dik, X, 1_dik )
+      CALL TRMV( 'U', 'N', 'N', -1_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HTRMV( 'U', 'N', 'N', 2_dik, A, 1_dik, X, 1_dik )
+      CALL TRMV( 'U', 'N', 'N', 2_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL HTRMV( 'U', 'N', 'N', 0_dik, A, 1_dik, X, 0_dik )
+      CALL TRMV( 'U', 'N', 'N', 0_dik, A, 1_dik, X, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
    70 INFOT = 1
-      CALL HTBMV( '/', 'N', 'N', 0_dik, 0_dik, A, 1_dik, X, 1_dik )
+      CALL TBMV( '/', 'N', 'N', 0_dik, 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HTBMV( 'U', '/', 'N', 0_dik, 0_dik, A, 1_dik, X, 1_dik )
+      CALL TBMV( 'U', '/', 'N', 0_dik, 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HTBMV( 'U', 'N', '/', 0_dik, 0_dik, A, 1_dik, X, 1_dik )
+      CALL TBMV( 'U', 'N', '/', 0_dik, 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HTBMV( 'U', 'N', 'N', -1_dik, 0_dik, A, 1_dik, X, 1_dik )
+      CALL TBMV( 'U', 'N', 'N', -1_dik, 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HTBMV( 'U', 'N', 'N', 0_dik, -1_dik, A, 1_dik, X, 1_dik )
+      CALL TBMV( 'U', 'N', 'N', 0_dik, -1_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HTBMV( 'U', 'N', 'N', 0_dik, 1_dik, A, 1_dik, X, 1_dik )
+      CALL TBMV( 'U', 'N', 'N', 0_dik, 1_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HTBMV( 'U', 'N', 'N', 0_dik, 0_dik, A, 1_dik, X, 0_dik )
+      CALL TBMV( 'U', 'N', 'N', 0_dik, 0_dik, A, 1_dik, X, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
    80 INFOT = 1
-      CALL HTPMV( '/', 'N', 'N', 0_dik, A, X, 1_dik )
+      CALL TPMV( '/', 'N', 'N', 0_dik, A, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HTPMV( 'U', '/', 'N', 0_dik, A, X, 1_dik )
+      CALL TPMV( 'U', '/', 'N', 0_dik, A, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HTPMV( 'U', 'N', '/', 0_dik, A, X, 1_dik )
+      CALL TPMV( 'U', 'N', '/', 0_dik, A, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HTPMV( 'U', 'N', 'N', -1_dik, A, X, 1_dik )
+      CALL TPMV( 'U', 'N', 'N', -1_dik, A, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HTPMV( 'U', 'N', 'N', 0_dik, A, X, 0_dik )
+      CALL TPMV( 'U', 'N', 'N', 0_dik, A, X, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
    90 INFOT = 1
-      CALL HTRSV( '/', 'N', 'N', 0_dik, A, 1_dik, X, 1_dik )
+      CALL TRSV( '/', 'N', 'N', 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HTRSV( 'U', '/', 'N', 0_dik, A, 1_dik, X, 1_dik )
+      CALL TRSV( 'U', '/', 'N', 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HTRSV( 'U', 'N', '/', 0_dik, A, 1_dik, X, 1_dik )
+      CALL TRSV( 'U', 'N', '/', 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HTRSV( 'U', 'N', 'N', -1_dik, A, 1_dik, X, 1_dik )
+      CALL TRSV( 'U', 'N', 'N', -1_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 6
-      CALL HTRSV( 'U', 'N', 'N', 2_dik, A, 1_dik, X, 1_dik )
+      CALL TRSV( 'U', 'N', 'N', 2_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 8
-      CALL HTRSV( 'U', 'N', 'N', 0_dik, A, 1_dik, X, 0_dik )
+      CALL TRSV( 'U', 'N', 'N', 0_dik, A, 1_dik, X, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
   100 INFOT = 1
-      CALL HTBSV( '/', 'N', 'N', 0_dik, 0_dik, A, 1_dik, X, 1_dik )
+      CALL TBSV( '/', 'N', 'N', 0_dik, 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HTBSV( 'U', '/', 'N', 0_dik, 0_dik, A, 1_dik, X, 1_dik )
+      CALL TBSV( 'U', '/', 'N', 0_dik, 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HTBSV( 'U', 'N', '/', 0_dik, 0_dik, A, 1_dik, X, 1_dik )
+      CALL TBSV( 'U', 'N', '/', 0_dik, 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HTBSV( 'U', 'N', 'N', -1_dik, 0_dik, A, 1_dik, X, 1_dik )
+      CALL TBSV( 'U', 'N', 'N', -1_dik, 0_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HTBSV( 'U', 'N', 'N', 0_dik, -1_dik, A, 1_dik, X, 1_dik )
+      CALL TBSV( 'U', 'N', 'N', 0_dik, -1_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HTBSV( 'U', 'N', 'N', 0_dik, 1_dik, A, 1_dik, X, 1_dik )
+      CALL TBSV( 'U', 'N', 'N', 0_dik, 1_dik, A, 1_dik, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HTBSV( 'U', 'N', 'N', 0_dik, 0_dik, A, 1_dik, X, 0_dik )
+      CALL TBSV( 'U', 'N', 'N', 0_dik, 0_dik, A, 1_dik, X, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
   110 INFOT = 1
-      CALL HTPSV( '/', 'N', 'N', 0_dik, A, X, 1_dik )
+      CALL TPSV( '/', 'N', 'N', 0_dik, A, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HTPSV( 'U', '/', 'N', 0_dik, A, X, 1_dik )
+      CALL TPSV( 'U', '/', 'N', 0_dik, A, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 3
-      CALL HTPSV( 'U', 'N', '/', 0_dik, A, X, 1_dik )
+      CALL TPSV( 'U', 'N', '/', 0_dik, A, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 4
-      CALL HTPSV( 'U', 'N', 'N', -1_dik, A, X, 1_dik )
+      CALL TPSV( 'U', 'N', 'N', -1_dik, A, X, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HTPSV( 'U', 'N', 'N', 0_dik, A, X, 0_dik )
+      CALL TPSV( 'U', 'N', 'N', 0_dik, A, X, 0_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
   120 INFOT = 1
-      CALL HGER( -1_dik, 0_dik, ALPHA, X, 1_dik, Y, 1_dik, A, 1_dik )
+      CALL GER( -1_dik, 0_dik, ALPHA, X, 1_dik, Y, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HGER( 0_dik, -1_dik, ALPHA, X, 1_dik, Y, 1_dik, A, 1_dik )
+      CALL GER( 0_dik, -1_dik, ALPHA, X, 1_dik, Y, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HGER( 0_dik, 0_dik, ALPHA, X, 0_dik, Y, 1_dik, A, 1_dik )
+      CALL GER( 0_dik, 0_dik, ALPHA, X, 0_dik, Y, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HGER( 0_dik, 0_dik, ALPHA, X, 1_dik, Y, 0_dik, A, 1_dik )
+      CALL GER( 0_dik, 0_dik, ALPHA, X, 1_dik, Y, 0_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HGER( 2_dik, 0_dik, ALPHA, X, 1_dik, Y, 1_dik, A, 1_dik )
+      CALL GER( 2_dik, 0_dik, ALPHA, X, 1_dik, Y, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
   130 INFOT = 1
-      CALL HSYR( '/', 0_dik, ALPHA, X, 1_dik, A, 1_dik )
+      CALL SYR( '/', 0_dik, ALPHA, X, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HSYR( 'U', -1_dik, ALPHA, X, 1_dik, A, 1_dik )
+      CALL SYR( 'U', -1_dik, ALPHA, X, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HSYR( 'U', 0_dik, ALPHA, X, 0_dik, A, 1_dik )
+      CALL SYR( 'U', 0_dik, ALPHA, X, 0_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HSYR( 'U', 2_dik, ALPHA, X, 1_dik, A, 1_dik )
+      CALL SYR( 'U', 2_dik, ALPHA, X, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
   140 INFOT = 1
-      CALL HSPR( '/', 0_dik, ALPHA, X, 1_dik, A )
+      CALL SPR( '/', 0_dik, ALPHA, X, 1_dik, A )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HSPR( 'U', -1_dik, ALPHA, X, 1_dik, A )
+      CALL SPR( 'U', -1_dik, ALPHA, X, 1_dik, A )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HSPR( 'U', 0_dik, ALPHA, X, 0_dik, A )
+      CALL SPR( 'U', 0_dik, ALPHA, X, 0_dik, A )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
   150 INFOT = 1
-      CALL HSYR2( '/', 0_dik, ALPHA, X, 1_dik, Y, 1_dik, A, 1_dik )
+      CALL SYR2( '/', 0_dik, ALPHA, X, 1_dik, Y, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HSYR2( 'U', -1_dik, ALPHA, X, 1_dik, Y, 1_dik, A, 1_dik )
+      CALL SYR2( 'U', -1_dik, ALPHA, X, 1_dik, Y, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HSYR2( 'U', 0_dik, ALPHA, X, 0_dik, Y, 1_dik, A, 1_dik )
+      CALL SYR2( 'U', 0_dik, ALPHA, X, 0_dik, Y, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HSYR2( 'U', 0_dik, ALPHA, X, 1_dik, Y, 0_dik, A, 1_dik )
+      CALL SYR2( 'U', 0_dik, ALPHA, X, 1_dik, Y, 0_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 9
-      CALL HSYR2( 'U', 2_dik, ALPHA, X, 1_dik, Y, 1_dik, A, 1_dik )
+      CALL SYR2( 'U', 2_dik, ALPHA, X, 1_dik, Y, 1_dik, A, 1_dik )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       GO TO 170
   160 INFOT = 1
-      CALL HSPR2( '/', 0_dik, ALPHA, X, 1_dik, Y, 1_dik, A )
+      CALL SPR2( '/', 0_dik, ALPHA, X, 1_dik, Y, 1_dik, A )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 2
-      CALL HSPR2( 'U', -1_dik, ALPHA, X, 1_dik, Y, 1_dik, A )
+      CALL SPR2( 'U', -1_dik, ALPHA, X, 1_dik, Y, 1_dik, A )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 5
-      CALL HSPR2( 'U', 0_dik, ALPHA, X, 0_dik, Y, 1_dik, A )
+      CALL SPR2( 'U', 0_dik, ALPHA, X, 0_dik, Y, 1_dik, A )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
       INFOT = 7
-      CALL HSPR2( 'U', 0_dik, ALPHA, X, 1_dik, Y, 0_dik, A )
+      CALL SPR2( 'U', 0_dik, ALPHA, X, 1_dik, Y, 0_dik, A )
       CALL CHKXER( SRNAMT, INFOT, NOUT, LERR, OK )
 !
   170 IF( OK )THEN

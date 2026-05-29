@@ -23,7 +23,6 @@
 #include "lpf_internal.h"
 
 
-
 /* > \brief \b SDHDOT */
 
 /*  =========== DOCUMENTATION =========== */
@@ -43,7 +42,6 @@
 /*       .. Array Arguments .. */
 /*       REAL SX(*),SY(*) */
 /*       .. */
-
 /*    PURPOSE */
 /*    ======= */
 
@@ -57,7 +55,7 @@
 
 /*    AUTHOR */
 /*    ====== */
-/*    Lawson, C. L., (JPL), Hanson, R. J., (SNLA), */
+/*    Lawson, C. L., (JPL), Hanson, R. J. (SNLA), */
 /*    Kincaid, D. R., (U. of Texas), Krogh, F. T., (JPL) */
 
 /*    ARGUMENTS */
@@ -164,15 +162,15 @@
 /* > \ingroup single_blas_level1 */
 
 /*  ===================================================================== */
-int16_t LPF_GLOBAL(hshdot,HSHDOT)(lpf_blas_int_t *n, lpf_float16_t *sb, lpf_float16_t *sx, lpf_blas_int_t *incx, lpf_float16_t *sy,
-        lpf_blas_int_t *incy)
+int16_t LPF_GLOBAL(hshdot,HSHDOT)(int64_t *n, lpf_float16_t *sb, lpf_float16_t *sx, int64_t *incx, lpf_float16_t *sy,
+        int64_t *incy)
 {
     /* System generated locals */
-    lpf_blas_int_t i__1, i__2;
+    int64_t i__1, i__2;
     lpf_float16_t ret_val;
 
     /* Local variables */
-    lpf_blas_int_t i__, ns, kx, ky;
+    int64_t i__, ns, kx, ky;
     float dhdot;
 
 
@@ -185,7 +183,6 @@ int16_t LPF_GLOBAL(hshdot,HSHDOT)(lpf_blas_int_t *n, lpf_float16_t *sb, lpf_floa
     /*     .. */
     /*     .. Array Arguments .. */
     /*     .. */
-
     /*  PURPOSE */
     /*  ======= */
 
@@ -199,7 +196,7 @@ int16_t LPF_GLOBAL(hshdot,HSHDOT)(lpf_blas_int_t *n, lpf_float16_t *sb, lpf_floa
 
     /*  AUTHOR */
     /*  ====== */
-    /*  Lawson, C. L., (JPL), Hanson, R. J., (SNLA), */
+    /*  Lawson, C. L., (JPL), Hanson, R. J. (SNLA), */
     /*  Kincaid, D. R., (U. of Texas), Krogh, F. T., (JPL) */
 
     /*  ARGUMENTS */
@@ -293,25 +290,30 @@ int16_t LPF_GLOBAL(hshdot,HSHDOT)(lpf_blas_int_t *n, lpf_float16_t *sb, lpf_floa
         }
     }
     ret_val = dhdot;
-    /** return (lpf_float16_t) ret_val; */
     RETURN_FP16(ret_val);
 } /* sdhdot_ */
 
- lpf_ffloat16_t lpf_blas_hshdot_fortran(lpf_blas_int_t *n, lpf_ffloat16_t *sb, lpf_ffloat16_t *sx, lpf_blas_int_t *incx, lpf_ffloat16_t *sy,
-        lpf_blas_int_t *incy)
-{
-    lpf_ffloat16_t r;
-    r.value = LPF_GLOBAL(hshdot,HSHDOT)(n,(lpf_float16_t *) sb, (lpf_float16_t *) sx, incx, (lpf_float16_t *) sy, incy);
-    return r;
-}
-
 #include <ISO_Fortran_binding.h>
 
-lpf_ffloat16_t lpf_blas_hshdot_fortran_dyn_rank(lpf_blas_int_t *n, lpf_ffloat16_t *sb, CFI_cdesc_t *_sx, lpf_blas_int_t *incx, CFI_cdesc_t *_sy,
-        lpf_blas_int_t *incy)
+lpf_ffloat16_t lpf_blas_hshdot_fortran_dyn_rank_64(int64_t *n, lpf_ffloat16_t *sb, CFI_cdesc_t *_sx, int64_t *incx, CFI_cdesc_t *_sy,
+        int64_t *incy)
 {
     lpf_float16_t *sx = _sx->base_addr;
     lpf_float16_t *sy = _sy->base_addr;
-    return lpf_blas_hshdot_fortran(n, sb, (lpf_ffloat16_t *)sx, incx, (lpf_ffloat16_t *)sy, incy);
+    lpf_ffloat16_t r;
+    r.value = LPF_GLOBAL(hshdot,HSHDOT)(n, (lpf_float16_t *) sb, sx, incx, sy, incy);
+    return r;
 }
 
+lpf_ffloat16_t lpf_blas_hshdot_fortran_dyn_rank_32(int32_t *n, lpf_ffloat16_t *sb, CFI_cdesc_t *_sx, int32_t *incx, CFI_cdesc_t *_sy,
+        int32_t *incy)
+{
+    lpf_float16_t *sx = _sx->base_addr;
+    lpf_float16_t *sy = _sy->base_addr;
+    int64_t _n = *n;
+    int64_t _incx = *incx;
+    int64_t _incy = *incy;
+    lpf_ffloat16_t r;
+    r.value = LPF_GLOBAL(hshdot,HSHDOT)(&_n, (lpf_float16_t *) sb, sx, &_incx, sy, &_incy);
+    return r;
+}

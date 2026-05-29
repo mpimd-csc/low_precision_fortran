@@ -285,13 +285,6 @@ void LPF_GLOBAL(brotmg,BROTMG)(lpf_bfloat16_t *sd1, lpf_bfloat16_t *sd2, lpf_bfl
     return;
 } /* brotmg_ */
 
- void lpf_blas_brotmg_fortran(lpf_fbfloat16_t *sd1, lpf_fbfloat16_t *sd2, lpf_fbfloat16_t *sx1, lpf_fbfloat16_t *sy1, lpf_fbfloat16_t
-        *sparam)
-{
-    LPF_GLOBAL(brotmg,BROTMG)((lpf_bfloat16_t *)sd1, (lpf_bfloat16_t *)sd2, (lpf_bfloat16_t *) sx1, (lpf_bfloat16_t *)sy1,
-            (lpf_bfloat16_t *) sparam);
-}
-
 #include <ISO_Fortran_binding.h>
 
 void lpf_blas_brotmg_fortran_dyn_rank(lpf_fbfloat16_t *sd1, lpf_fbfloat16_t *sd2, lpf_fbfloat16_t *sx1, lpf_fbfloat16_t *sy1, CFI_cdesc_t *_sparam)

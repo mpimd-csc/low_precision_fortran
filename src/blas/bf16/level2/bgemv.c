@@ -178,17 +178,17 @@
 /* > \endverbatim */
 /* > */
 /*  ===================================================================== */
-void LPF_GLOBAL(bgemv,BGEMV)(char *trans, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_bfloat16_t *alpha,
-        lpf_bfloat16_t *a, lpf_blas_int_t *lda, lpf_bfloat16_t *x, lpf_blas_int_t *incx, lpf_bfloat16_t *beta, lpf_bfloat16_t *y,
-        lpf_blas_int_t *incy, lpf_fortran_strlen_t trans_len)
+void LPF_GLOBAL(bgemv,BGEMV)(char *trans, int64_t *m, int64_t *n, lpf_bfloat16_t *alpha,
+        lpf_bfloat16_t *a, int64_t *lda, lpf_bfloat16_t *x, int64_t *incx, lpf_bfloat16_t *beta, lpf_bfloat16_t *y,
+        int64_t *incy, lpf_fortran_strlen_t trans_len)
 {
     /* System generated locals */
-    lpf_blas_int_t a_dim1, a_offset, i__1, i__2;
+    int64_t a_dim1, a_offset, i__1, i__2;
 
     /* Local variables */
-    lpf_blas_int_t i__, j, ix, iy, jx, jy, kx, ky, info;
+    int64_t i__, j, ix, iy, jx, jy, kx, ky, info;
     lpf_bfloat16_t temp;
-    lpf_blas_int_t lenx, leny;
+    int64_t lenx, leny;
 
     /*  -- Reference BLAS level2 routine (version 3.6.0) -- */
     /*  -- Reference BLAS is a software package provided by Univ. of Tennessee,    -- */
@@ -240,7 +240,8 @@ void LPF_GLOBAL(bgemv,BGEMV)(char *trans, lpf_blas_int_t *m, lpf_blas_int_t *n, 
         info = 11;
     }
     if (info != 0) {
-        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("BGEMV ", &info, (lpf_fortran_strlen_t)6);
+        int32_t infox = info;
+        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("BGEMV ", &infox, (lpf_fortran_strlen_t)6);
         return;
     }
 
@@ -387,19 +388,10 @@ void LPF_GLOBAL(bgemv,BGEMV)(char *trans, lpf_blas_int_t *m, lpf_blas_int_t *n, 
 
 } /* bgemv_ */
 
-void lpf_blas_bgemv_fortran(char *trans, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_fbfloat16_t *alpha,
-        lpf_fbfloat16_t *a, lpf_blas_int_t *lda, lpf_fbfloat16_t *x, lpf_blas_int_t *incx, lpf_fbfloat16_t *beta, lpf_fbfloat16_t *y,
-        lpf_blas_int_t *incy)
-{
-    LPF_GLOBAL(bgemv,BGEMV)(trans, m, n, (lpf_bfloat16_t *)alpha,
-        (lpf_bfloat16_t *)a, lda, (lpf_bfloat16_t *)x, incx, (lpf_bfloat16_t *)beta, (lpf_bfloat16_t *)y,
-        incy, 1);
-}
-
 #include <ISO_Fortran_binding.h>
 
-void lpf_blas_bgemv_fortran_dyn_rank(char *trans, lpf_blas_int_t *m, lpf_blas_int_t *n, lpf_fbfloat16_t *alpha,
-        CFI_cdesc_t *_a, lpf_blas_int_t *lda, CFI_cdesc_t *_x, lpf_blas_int_t *incx, lpf_fbfloat16_t *beta, CFI_cdesc_t *_y, lpf_blas_int_t *incy)
+void lpf_blas_bgemv_fortran_dyn_rank_64(char *trans, int64_t *m, int64_t *n, lpf_fbfloat16_t *alpha,
+        CFI_cdesc_t *_a, int64_t *lda, CFI_cdesc_t *_x, int64_t *incx, lpf_fbfloat16_t *beta, CFI_cdesc_t *_y, int64_t *incy)
 {
     lpf_bfloat16_t *a = _a->base_addr;
     lpf_bfloat16_t *x = _x->base_addr;
@@ -407,4 +399,20 @@ void lpf_blas_bgemv_fortran_dyn_rank(char *trans, lpf_blas_int_t *m, lpf_blas_in
     LPF_GLOBAL(bgemv,BGEMV)(trans, m, n, (lpf_bfloat16_t *)alpha,
         (lpf_bfloat16_t *)a, lda, (lpf_bfloat16_t *)x, incx, (lpf_bfloat16_t *)beta, (lpf_bfloat16_t *)y,
         incy, 1);
+}
+
+void lpf_blas_bgemv_fortran_dyn_rank_32(char *trans, int32_t *m, int32_t *n, lpf_fbfloat16_t *alpha,
+        CFI_cdesc_t *_a, int32_t *lda, CFI_cdesc_t *_x, int32_t *incx, lpf_fbfloat16_t *beta, CFI_cdesc_t *_y, int32_t *incy)
+{
+    lpf_bfloat16_t *a = _a->base_addr;
+    lpf_bfloat16_t *x = _x->base_addr;
+    lpf_bfloat16_t *y = _y->base_addr;
+    int64_t _m = *m;
+    int64_t _n = *n;
+    int64_t _lda = *lda;
+    int64_t _incx = *incx;
+    int64_t _incy = *incy;
+    LPF_GLOBAL(bgemv,BGEMV)(trans, &_m, &_n, (lpf_bfloat16_t *)alpha,
+        (lpf_bfloat16_t *)a, &_lda, (lpf_bfloat16_t *)x, &_incx, (lpf_bfloat16_t *)beta, (lpf_bfloat16_t *)y,
+        &_incy, 1);
 }

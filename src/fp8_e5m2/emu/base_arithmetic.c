@@ -18,7 +18,7 @@
  */
 
 #include "fp8_e4m3/emu/fp8_e4m3_bits.h"
-#include "fp8_e5m2.h"
+#include "lpf_fp8_e5m2_emu.h"
 #include "fp8_e5m2_bits.h"
 
 /**
@@ -366,3 +366,13 @@ fp8_e5m2_t fp8_e5m2_unitary_minus(fp8_e5m2_t x)
 {
     return x ^ (1 << FP8_E5M2_S_SHIFT);
 }
+
+
+fp8_e5m2_t fp8_e5m2_pow(fp8_e5m2_t a, fp8_e5m2_t b)
+{
+    float _a = fp8_e5m2_to_float(a);
+    float _b = fp8_e5m2_to_float(b);
+    float _c = powf(_a, _b);
+    return fp8_e5m2_from_float(_c);
+}
+
