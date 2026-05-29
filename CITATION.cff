@@ -5,9 +5,9 @@ authors:
     given-names: "Martin"
     orcid: "https://orcid.org/00000-0003-2338-9904"
 title: "Low Precision Fortran"
-version: TBA
-doi: TBA
-date-released: 2025-10-14
+version: 0.1.0
+doi: 10.5281/zenodo.20442279
+date-released: 2026-05-31
 url: "https://gitlab.mpi-magdeburg.mpg.de/software/lpf"
 license: LGPL-3.0-or-later
 keywords:

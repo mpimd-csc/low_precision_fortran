@@ -1,12 +1,8 @@
-# include(CMakeFindDependencyMacro)
-#
-# # Same syntax as find_package
-# find_dependency(BLAS REQUIRED)
-# find_dependency(LAPACK REQUIRED)
-
-# Add the targets file
 set(LPF_HAVE_FP16 @LPF_HAVE_FP16@)
 set(LPF_HAVE_BF16 @LPF_HAVE_BF16@)
+set(LPF_HAVE_FP8_E4M3 @LPF_FP8_E4M3@)
+set(LPF_HAVE_FP8_E5M2 @LPF_FP8_E5M2@)
+
 set(LPF_BLAS @LPF_BLAS@)
 
 include("${CMAKE_CURRENT_LIST_DIR}/LPFTargets.cmake")

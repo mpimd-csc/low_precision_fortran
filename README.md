@@ -2,7 +2,9 @@
 
 Low Precision Float types in Fortran.
 
-Copyright 2025 by Martin Köhler
+Version: 0.1.0
+
+Copyright 2026 by Martin Köhler
 
 ## Usage
 
@@ -76,7 +78,7 @@ write(*, '(DT"E"(10,4))') x
 
 ### Math-Function
 
-The low precision datatypes support all standard Fortran Math functions. 
+The low precision datatypes support all standard Fortran Math functions.
 - **Core Arithmetic**: Support for `+`, `-`, `*`, `/`, and `**`.
 - **Math Functions**: Comprehensive support for single-argument functions (`abs`, `sin`, `cos`, `exp`, `log`, `sqrt`, etc.), two-argument functions (`atan2`, `hypot`), and specialized trigonometric functions.
 - **Array Reductions**: Support for `maxval`, `minval`, `maxloc`, and `minloc`.
@@ -86,7 +88,6 @@ For `fp16` and `bf16`, these functions currently use their `REAL(real32)` counte
 ### ToDo
 
 * Support for unformatted IO
-* Lookup tables instead of type-casting
 * AXV512FP16 and emulation support at once, but dispatching causes an overhead.
 
 ### Issue / Missing Functionallity
@@ -111,7 +112,7 @@ For this reason, we do not support the AMD compiler suite.
 
 The library currently works with gcc compilers supporting the `_Float16`
 datatype and the `-mf16c` switch (starting with GCC 11). For proper hardware
-support of `fp16`, a CPU with `AVX512FP16` is required. 
+support of `fp16`, a CPU with `AVX512FP16` is required.
 
 FP8 support is implemented via emulation and lookup tables, and therefore does not require specific hardware flags for basic functionality.
 
