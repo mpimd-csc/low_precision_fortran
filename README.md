@@ -4,6 +4,8 @@ Low Precision Float types in Fortran.
 
 Version: 0.1.0
 
+DOI: 10.5281/zenodo.20442279
+
 Copyright 2026 by Martin Köhler
 
 ## Usage

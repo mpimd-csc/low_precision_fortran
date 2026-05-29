@@ -3,33 +3,6 @@ submodule(lpf_lapack_bf16) lpf_lapack_potf2_bf16
 contains
     !> \brief \b SPOTF2 computes the Cholesky factorization of a symmetric/B
     !
-    !  =========== DOCUMENTATION ===========
-    !
-    ! Online html documentation available at
-    !            http://www.netlib.org/lapack/explore-html/
-    !
-    !> Download SPOTF2 + dependencies
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.tgz?format=tgz&fil
-    !> [TGZ]</a>
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.zip?format=zip&fil
-    !> [ZIP]</a>
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.txt?format=txt&fil
-    !> [TXT]</a>
-    !
-    !  Definition:
-    !  ===========
-    !
-    !       SUBROUTINE SPOTF2( UPLO, N, A, LDA, INFO )
-    !
-    !       .. Scalar Arguments ..
-    !       CHARACTER          UPLO
-    !       INTEGER            INFO, LDA, N
-    !       ..
-    !       .. Array Arguments ..
-    !       REAL               A( LDA, * )
-    !       ..
-    !
-    !
     !> \par Purpose:
     !  =============
     !>
@@ -95,17 +68,6 @@ contains
     !>               completed.
     !> \endverbatim
     !
-    !  Authors:
-    !  ========
-    !
-    !> \author Univ. of Tennessee
-    !> \author Univ. of California Berkeley
-    !> \author Univ. of Colorado Denver
-    !> \author NAG Ltd.
-    !
-    !> \ingroup potf2
-    !
-    !  =====================================================================
     module subroutine potf2( uplo, n, a, lda, info )
         implicit none
 

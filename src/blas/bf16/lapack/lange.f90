@@ -7,18 +7,6 @@ contains
 
     !> \brief \b SLANGE returns the value of the 1-norm, Frobenius norm, inf
     !
-    !  =========== DOCUMENTATION ===========
-    !
-    ! Online html documentation available at
-    !            http://www.netlib.org/lapack/explore-html/
-    !
-    !> Download SLANGE + dependencies
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.tgz?format=tgz&fil
-    !> [TGZ]</a>
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.zip?format=zip&fil
-    !> [ZIP]</a>
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.txt?format=txt&fil
-    !> [TXT]</a>
     !
     !  Definition:
     !  ===========
@@ -104,17 +92,6 @@ contains
     !>          referenced.
     !> \endverbatim
     !
-    !  Authors:
-    !  ========
-    !
-    !> \author Univ. of Tennessee
-    !> \author Univ. of California Berkeley
-    !> \author Univ. of Colorado Denver
-    !> \author NAG Ltd.
-    !
-    !> \ingroup lange
-    !
-    !  =====================================================================
     module function lange( norm, m, n, a, lda, work ) result(nrm)
         character, intent(in) :: norm
         integer(lpf_default_int_kind), intent(in)   :: lda, m, n
@@ -196,20 +173,6 @@ contains
 
     !> \brief \b SLASSQ updates a sum of squares represented in scaled form.
     !
-    !  =========== DOCUMENTATION ===========
-    !
-    ! Online html documentation available at
-    !            http://www.netlib.org/lapack/explore-html/
-    !
-    !> \htmlonly
-    !> Download SLASSQ + dependencies
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.tgz?format=tgz&fil
-    !> [TGZ]</a>
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.zip?format=zip&fil
-    !> [ZIP]</a>
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.txt?format=txt&fil
-    !> [TXT]</a>
-    !> \endhtmlonly
     !
     !  Definition:
     !  ===========
@@ -284,19 +247,6 @@ contains
     !>          squares from which  scl  has been factored out.
     !> \endverbatim
     !
-    !  Authors:
-    !  ========
-    !
-    !> \author Univ. of Tennessee
-    !> \author Univ. of California Berkeley
-    !> \author Univ. of Colorado Denver
-    !> \author NAG Ltd.
-    !
-    !> \date September 2012
-    !
-    !> \ingroup auxOTHERauxiliary
-    !
-    !  =====================================================================
     module subroutine lassq( n, x, incx, sca, sumsq )
         integer(lpf_default_int_kind), intent(in) ::   incx, n
         real(real32), intent(inout) :: sca, sumsq

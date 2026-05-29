@@ -1,19 +1,6 @@
 submodule(lpf_lapack_bf16) lpf_lapack_potrf_bf16
 contains
-    !> \brief \b bpoTRF
-    !
-    !  =========== DOCUMENTATION ===========
-    !
-    ! Online html documentation available at
-    !            http://www.netlib.org/lapack/explore-html/
-    !
-    !> Download bpoTRF + dependencies
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.tgz?format=tgz&fil
-    !> [TGZ]</a>
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.zip?format=zip&fil
-    !> [ZIP]</a>
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.txt?format=txt&fil
-    !> [TXT]</a>
+    !> \brief \b POTRF
     !
     !  Definition:
     !  ===========
@@ -91,16 +78,6 @@ contains
     !>                is not positive, and the factorization could not be
     !>                completed.
     !> \endverbatim
-    !
-    !  Authors:
-    !  ========
-    !
-    !> \author Univ. of Tennessee
-    !> \author Univ. of California Berkeley
-    !> \author Univ. of Colorado Denver
-    !> \author NAG Ltd.
-    !
-    !> \ingroup potrf
     !
     !  =====================================================================
     module subroutine potrf( uplo, n, a, lda, info )

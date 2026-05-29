@@ -1,11 +1,6 @@
 submodule(lpf_lapack_bf16) lpf_lapack_potrf2_bf16
 contains
-    !> \brief \b bpoTRF2
-    !
-    !  =========== DOCUMENTATION ===========
-    !
-    ! Online html documentation available at
-    !            http://www.netlib.org/lapack/explore-html/
+    !> \brief \b POTRF2
     !
     !  Definition:
     !  ===========
@@ -93,17 +88,6 @@ contains
     !>                completed.
     !> \endverbatim
     !
-    !  Authors:
-    !  ========
-    !
-    !> \author Univ. of Tennessee
-    !> \author Univ. of California Berkeley
-    !> \author Univ. of Colorado Denver
-    !> \author NAG Ltd.
-    !
-    !> \ingroup potrf2
-    !
-    !  =====================================================================
     module recursive subroutine potrf2( uplo, n, a, lda, info )
         !     .. scalar arguments ..
         character, intent(in) ::          uplo

@@ -22,57 +22,6 @@
 #include <stdint.h>
 #include "lpf_internal.h"
 
-/* > \brief \b BCOPY */
-
-/*  =========== DOCUMENTATION =========== */
-
-/* Online html documentation available at */
-/*            http://www.netlib.org/lapack/explore-html/ */
-
-/*  Definition: */
-/*  =========== */
-
-/*       SUBROUTINE BCOPY(N,SX,INCX,SY,INCY) */
-
-/*       .. Scalar Arguments .. */
-/*       INTEGER INCX,INCY,N */
-/*       .. */
-/*       .. Array Arguments .. */
-/*       REAL SX(*),SY(*) */
-/*       .. */
-
-
-/* > \par Purpose: */
-/*  ============= */
-/* > */
-/* > \verbatim */
-/* > */
-/* >    BCOPY copies a vector, x, to a vector, y. */
-/* >    uses unrolled loops for increments equal to 1. */
-/* > \endverbatim */
-
-/*  Authors: */
-/*  ======== */
-
-/* > \author Univ. of Tennessee */
-/* > \author Univ. of California Berkeley */
-/* > \author Univ. of Colorado Denver */
-/* > \author NAG Ltd. */
-
-/* > \date November 2011 */
-
-/* > \ingroup single_blas_level1 */
-
-/* > \par Further Details: */
-/*  ===================== */
-/* > */
-/* > \verbatim */
-/* > */
-/* >     jack dongarra, linpack, 3/11/78. */
-/* >     modified 12/3/93, array(1) declarations changed to array(*) */
-/* > \endverbatim */
-/* > */
-/*  ===================================================================== */
 void LPF_GLOBAL(b2scopy,B2SCOPY)(int64_t *n, lpf_bfloat16_t *sx, int64_t *incx, float *sy,
         int64_t *incy)
 {
@@ -82,23 +31,6 @@ void LPF_GLOBAL(b2scopy,B2SCOPY)(int64_t *n, lpf_bfloat16_t *sx, int64_t *incx, 
     /* Local variables */
     int64_t i__, m, ix, iy, mp1;
 
-
-    /*  -- Reference BLAS level1 routine (version 3.4.0) -- */
-    /*  -- Reference BLAS is a software package provided by Univ. of Tennessee,    -- */
-    /*  -- Univ. of California Berkeley, Univ. of Colorado Denver and NAG Ltd..-- */
-    /*     November 2011 */
-
-    /*     .. Scalar Arguments .. */
-    /*     .. */
-    /*     .. Array Arguments .. */
-    /*     .. */
-
-    /*  ===================================================================== */
-
-    /*     .. Local Scalars .. */
-    /*     .. */
-    /*     .. Intrinsic Functions .. */
-    /*     .. */
     /* Parameter adjustments */
     --sy;
     --sx;
