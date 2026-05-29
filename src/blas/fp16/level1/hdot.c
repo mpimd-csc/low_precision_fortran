@@ -17,140 +17,72 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
    */
-
+#include "lpf_internal.h"
 #include <math.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "lpf_internal.h"
 
-/* > \brief \b HDOT */
-
-/*  =========== DOCUMENTATION =========== */
-
-/* Online html documentation available at */
-/*            http://www.netlib.org/lapack/explore-html/ */
-
-/*  Definition: */
-/*  =========== */
-
-/*       REAL FUNCTION HDOT(N,SX,INCX,SY,INCY) */
-
-/*       .. Scalar Arguments .. */
-/*       INTEGER INCX,INCY,N */
-/*       .. */
-/*       .. Array Arguments .. */
-/*       REAL SX(*),SY(*) */
-/*       .. */
-
-
-/* > \par Purpose: */
-/*  ============= */
-/* > */
-/* > \verbatim */
-/* > */
-/* >    HDOT forms the dot product of two vectors. */
-/* >    uses unrolled loops for increments equal to one. */
-/* > \endverbatim */
-
-/*  Authors: */
-/*  ======== */
-
-/* > \author Univ. of Tennessee */
-/* > \author Univ. of California Berkeley */
-/* > \author Univ. of Colorado Denver */
-/* > \author NAG Ltd. */
-
-/* > \date November 2011 */
-
-/* > \ingroup single_blas_level1 */
-
-/* > \par Further Details: */
-/*  ===================== */
-/* > */
-/* > \verbatim */
-/* > */
-/* >     jack dongarra, linpack, 3/11/78. */
-/* >     modified 12/3/93, array(1) declarations changed to array(*) */
-/* > \endverbatim */
-/* > */
-/*  ===================================================================== */
-int16_t LPF_GLOBAL(hdot,HDOT)(int64_t *n, lpf_float16_t *sx, int64_t *incx, lpf_float16_t *sy, int64_t *incy)
+int16_t LPF_GLOBAL(hdot, HDOT)(int64_t* n, lpf_float16_t* sx, int64_t* incx,
+                               lpf_float16_t* sy, int64_t* incy)
 {
-    /* System generated locals */
+
     int64_t i__1;
     lpf_float16_t ret_val;
 
-    /* Local variables */
     int64_t i__, m, ix, iy, mp1;
     lpf_float16_t stemp;
 
-
-    /*  -- Reference BLAS level1 routine (version 3.4.0) -- */
-    /*  -- Reference BLAS is a software package provided by Univ. of Tennessee,    -- */
-    /*  -- Univ. of California Berkeley, Univ. of Colorado Denver and NAG Ltd..-- */
-    /*     November 2011 */
-
-    /*     .. Scalar Arguments .. */
-    /*     .. */
-    /*     .. Array Arguments .. */
-    /*     .. */
-
-    /*  ===================================================================== */
-
-    /*     .. Local Scalars .. */
-    /*     .. */
-    /*     .. Intrinsic Functions .. */
-    /*     .. */
-    /* Parameter adjustments */
     --sy;
     --sx;
 
-    /* Function Body */
     stemp = 0.f;
     ret_val = 0.f;
-    if (*n <= 0) {
+    if (*n <= 0)
+    {
         RETURN_FP16(ret_val);
     }
-    if (*incx == 1 && *incy == 1) {
-
-        /*        code for both increments equal to 1 */
-
-
-        /*        clean-up loop */
+    if (*incx == 1 && *incy == 1)
+    {
 
         m = *n % 5;
-        if (m != 0) {
+        if (m != 0)
+        {
             i__1 = m;
-            for (i__ = 1; i__ <= i__1; ++i__) {
+            for (i__ = 1; i__ <= i__1; ++i__)
+            {
                 stemp += sx[i__] * sy[i__];
             }
-            if (*n < 5) {
+            if (*n < 5)
+            {
                 ret_val = stemp;
                 RETURN_FP16(ret_val);
             }
         }
         mp1 = m + 1;
         i__1 = *n;
-        for (i__ = mp1; i__ <= i__1; i__ += 5) {
+        for (i__ = mp1; i__ <= i__1; i__ += 5)
+        {
             stemp = stemp + sx[i__] * sy[i__] + sx[i__ + 1] * sy[i__ + 1] +
-                sx[i__ + 2] * sy[i__ + 2] + sx[i__ + 3] * sy[i__ + 3] +
-                sx[i__ + 4] * sy[i__ + 4];
+                    sx[i__ + 2] * sy[i__ + 2] + sx[i__ + 3] * sy[i__ + 3] +
+                    sx[i__ + 4] * sy[i__ + 4];
         }
-    } else {
-
-        /*        code for unequal increments or equal increments */
-        /*          not equal to 1 */
+    }
+    else
+    {
 
         ix = 1;
         iy = 1;
-        if (*incx < 0) {
+        if (*incx < 0)
+        {
             ix = (-(*n) + 1) * *incx + 1;
         }
-        if (*incy < 0) {
+        if (*incy < 0)
+        {
             iy = (-(*n) + 1) * *incy + 1;
         }
         i__1 = *n;
-        for (i__ = 1; i__ <= i__1; ++i__) {
+        for (i__ = 1; i__ <= i__1; ++i__)
+        {
             stemp += sx[ix] * sy[iy];
             ix += *incx;
             iy += *incy;
@@ -159,28 +91,33 @@ int16_t LPF_GLOBAL(hdot,HDOT)(int64_t *n, lpf_float16_t *sx, int64_t *incx, lpf_
     ret_val = stemp;
 
     RETURN_FP16(ret_val);
-} /* hdot_ */
-
+}
 
 #include <ISO_Fortran_binding.h>
 
-lpf_ffloat16_t lpf_blas_hdot_fortran_dyn_rank_64(int64_t *n, CFI_cdesc_t *_sx, int64_t *incx, CFI_cdesc_t *_sy, int64_t *incy)
+lpf_ffloat16_t lpf_blas_hdot_fortran_dyn_rank_64(int64_t* n, CFI_cdesc_t* _sx,
+                                                 int64_t* incx,
+                                                 CFI_cdesc_t* _sy,
+                                                 int64_t* incy)
 {
-    lpf_float16_t *sx = _sx->base_addr;
-    lpf_float16_t *sy = _sy->base_addr;
+    lpf_float16_t* sx = _sx->base_addr;
+    lpf_float16_t* sy = _sy->base_addr;
     lpf_ffloat16_t r;
-    r.value = LPF_GLOBAL(hdot,HDOT)(n, sx, incx, sy, incy);
+    r.value = LPF_GLOBAL(hdot, HDOT)(n, sx, incx, sy, incy);
     return r;
 }
 
-lpf_ffloat16_t lpf_blas_hdot_fortran_dyn_rank_32(int32_t *n, CFI_cdesc_t *_sx, int32_t *incx, CFI_cdesc_t *_sy, int32_t *incy)
+lpf_ffloat16_t lpf_blas_hdot_fortran_dyn_rank_32(int32_t* n, CFI_cdesc_t* _sx,
+                                                 int32_t* incx,
+                                                 CFI_cdesc_t* _sy,
+                                                 int32_t* incy)
 {
-    lpf_float16_t *sx = _sx->base_addr;
-    lpf_float16_t *sy = _sy->base_addr;
+    lpf_float16_t* sx = _sx->base_addr;
+    lpf_float16_t* sy = _sy->base_addr;
     int64_t _n = *n;
     int64_t _incx = *incx;
     int64_t _incy = *incy;
     lpf_ffloat16_t r;
-    r.value = LPF_GLOBAL(hdot,HDOT)(&_n, sx, &_incx, sy, &_incy);
+    r.value = LPF_GLOBAL(hdot, HDOT)(&_n, sx, &_incx, sy, &_incy);
     return r;
 }

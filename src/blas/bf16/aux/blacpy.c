@@ -17,49 +17,59 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
    */
-
+#include "lpf_internal.h"
 #include <math.h>
 #include <stdint.h>
-#include "lpf_internal.h"
 
 #include <stdio.h>
 #include <string.h>
 
-void LPF_GLOBAL(blacpy,BLACPY)(const char * uplo, int64_t *m, int64_t *n, lpf_bfloat16_t *a, int64_t *lda, lpf_bfloat16_t *b, int64_t *ldb,
-                                  lpf_fortran_strlen_t uplo_len)
+void LPF_GLOBAL(blacpy, BLACPY)(const char* uplo, int64_t* m, int64_t* n,
+                                lpf_bfloat16_t* a, int64_t* lda,
+                                lpf_bfloat16_t* b, int64_t* ldb,
+                                lpf_fortran_strlen_t uplo_len)
 {
-    (void) uplo_len;
-    int64_t i,j;
-    int64_t LDA  = *lda;
-    int64_t LDB  = *ldb;
+    (void)uplo_len;
+    int64_t i, j;
+    int64_t LDA = *lda;
+    int64_t LDB = *ldb;
 
-    if (strncasecmp(uplo, "U", 1) == 0) {
-        // UPLO = U
-        for ( j = 0; j < *n; j++) {
-            lpf_bfloat16_t *aa = a + j * LDA;
-            lpf_bfloat16_t *bb = b + j * LDB;
-            int64_t bound = LPF_MIN(j, *m-1);
-            for ( i = 0; i <= bound; i++ ) {
-                bb [ i ] = (lpf_bfloat16_t) aa[i];
+    if (strncasecmp(uplo, "U", 1) == 0)
+    {
+        for (j = 0; j < *n; j++)
+        {
+            lpf_bfloat16_t* aa = a + j * LDA;
+            lpf_bfloat16_t* bb = b + j * LDB;
+            int64_t bound = LPF_MIN(j, *m - 1);
+            for (i = 0; i <= bound; i++)
+            {
+                bb[i] = (lpf_bfloat16_t)aa[i];
             }
         }
-    } else if (strncasecmp(uplo, "L", 1) == 0) {
-        // UPLO = L
-        for ( j = 0; j < *n; j++) {
-            lpf_bfloat16_t *aa = a + j * LDA;
-            lpf_bfloat16_t *bb = b + j * LDB;
-            int64_t bound = *m-1;
-            for ( i = j; i <= bound; i++ ) {
-                bb [ i ] = (lpf_bfloat16_t) aa[i];
+    }
+    else if (strncasecmp(uplo, "L", 1) == 0)
+    {
+        for (j = 0; j < *n; j++)
+        {
+            lpf_bfloat16_t* aa = a + j * LDA;
+            lpf_bfloat16_t* bb = b + j * LDB;
+            int64_t bound = *m - 1;
+            for (i = j; i <= bound; i++)
+            {
+                bb[i] = (lpf_bfloat16_t)aa[i];
             }
         }
-    } else {
-       for ( j = 0; j < *n; j++) {
-            lpf_bfloat16_t *aa = a + j * LDA;
-            lpf_bfloat16_t *bb = b + j * LDB;
-            int64_t bound = *m-1;
-            for ( i = 0; i <= bound; i++ ) {
-                bb [ i ] = (lpf_bfloat16_t) aa[i];
+    }
+    else
+    {
+        for (j = 0; j < *n; j++)
+        {
+            lpf_bfloat16_t* aa = a + j * LDA;
+            lpf_bfloat16_t* bb = b + j * LDB;
+            int64_t bound = *m - 1;
+            for (i = 0; i <= bound; i++)
+            {
+                bb[i] = (lpf_bfloat16_t)aa[i];
             }
         }
     }
@@ -67,20 +77,24 @@ void LPF_GLOBAL(blacpy,BLACPY)(const char * uplo, int64_t *m, int64_t *n, lpf_bf
 
 #include <ISO_Fortran_binding.h>
 
-void lpf_blas_blacpy_fortran_dyn_rank_64(char * uplo, int64_t *m, int64_t *n, CFI_cdesc_t *_a, int64_t *lda, CFI_cdesc_t *_b, int64_t *ldb)
+void lpf_blas_blacpy_fortran_dyn_rank_64(char* uplo, int64_t* m, int64_t* n,
+                                         CFI_cdesc_t* _a, int64_t* lda,
+                                         CFI_cdesc_t* _b, int64_t* ldb)
 {
-    lpf_bfloat16_t *a = _a->base_addr;
-    lpf_bfloat16_t *b = _b->base_addr;
-    LPF_GLOBAL(blacpy,BLACPY)( uplo, m, n, a, lda, b, ldb, 1);
+    lpf_bfloat16_t* a = _a->base_addr;
+    lpf_bfloat16_t* b = _b->base_addr;
+    LPF_GLOBAL(blacpy, BLACPY)(uplo, m, n, a, lda, b, ldb, 1);
 }
 
-void lpf_blas_blacpy_fortran_dyn_rank_32(char * uplo, int32_t *m, int32_t *n, CFI_cdesc_t *_a, int32_t *lda, CFI_cdesc_t *_b, int32_t *ldb)
+void lpf_blas_blacpy_fortran_dyn_rank_32(char* uplo, int32_t* m, int32_t* n,
+                                         CFI_cdesc_t* _a, int32_t* lda,
+                                         CFI_cdesc_t* _b, int32_t* ldb)
 {
-    lpf_bfloat16_t *a = _a->base_addr;
-    lpf_bfloat16_t *b = _b->base_addr;
+    lpf_bfloat16_t* a = _a->base_addr;
+    lpf_bfloat16_t* b = _b->base_addr;
     int64_t _m = *m;
     int64_t _n = *n;
     int64_t _lda = *lda;
     int64_t _ldb = *ldb;
-    LPF_GLOBAL(blacpy,BLACPY)( uplo, &_m, &_n, a, &_lda, b, &_ldb, 1);
+    LPF_GLOBAL(blacpy, BLACPY)(uplo, &_m, &_n, a, &_lda, b, &_ldb, 1);
 }

@@ -17,409 +17,258 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
    */
-
+#include "lpf_internal.h"
 #include <math.h>
 #include <stdint.h>
-#include "lpf_internal.h"
 
 #include <string.h>
 
-/* > \brief \b HSYMV */
-
-/*  =========== DOCUMENTATION =========== */
-
-/* Online html documentation available at */
-/*            http://www.netlib.org/lapack/explore-html/ */
-
-/*  Definition: */
-/*  =========== */
-
-/*       SUBROUTINE HSYMV(UPLO,N,ALPHA,A,LDA,X,INCX,BETA,Y,INCY) */
-
-/*       .. Scalar Arguments .. */
-/*       REAL ALPHA,BETA */
-/*       INTEGER INCX,INCY,LDA,N */
-/*       CHARACTER UPLO */
-/*       .. */
-/*       .. Array Arguments .. */
-/*       REAL A(LDA,*),X(*),Y(*) */
-/*       .. */
-
-/* > \par Purpose: */
-/*  ============= */
-/* > */
-/* > \verbatim */
-/* > */
-/* > HSYMV  performs the matrix-vector  operation */
-/* > */
-/* >    y := alpha*A*x + beta*y, */
-/* > */
-/* > where alpha and beta are scalars, x and y are n element vectors and */
-/* > A is an n by n symmetric matrix. */
-/* > \endverbatim */
-
-/*  Arguments: */
-/*  ========== */
-
-/* > \param[in] UPLO */
-/* > \verbatim */
-/* >          UPLO is CHARACTER*1 */
-/* >           On entry, UPLO specifies whether the upper or lower */
-/* >           triangular part of the array A is to be referenced as */
-/* >           follows: */
-/* > */
-/* >              UPLO = 'U' or 'u'   Only the upper triangular part of A */
-/* >                                  is to be referenced. */
-/* > */
-/* >              UPLO = 'L' or 'l'   Only the lower triangular part of A */
-/* >                                  is to be referenced. */
-/* > \endverbatim */
-/* > */
-/* > \param[in] N */
-/* > \verbatim */
-/* >          N is INTEGER */
-/* >           On entry, N specifies the order of the matrix A. */
-/* >           N must be at least zero. */
-/* > \endverbatim */
-/* > */
-/* > \param[in] ALPHA */
-/* > \verbatim */
-/* >          ALPHA is REAL */
-/* >           On entry, ALPHA specifies the scalar alpha. */
-/* > \endverbatim */
-/* > */
-/* > \param[in] A */
-/* > \verbatim */
-/* >          A is REAL array of DIMENSION ( LDA, n ). */
-/* >           Before entry with  UPLO = 'U' or 'u', the leading n by n */
-/* >           upper triangular part of the array A must contain the upper */
-/* >           triangular part of the symmetric matrix and the strictly */
-/* >           lower triangular part of A is not referenced. */
-/* >           Before entry with UPLO = 'L' or 'l', the leading n by n */
-/* >           lower triangular part of the array A must contain the lower */
-/* >           triangular part of the symmetric matrix and the strictly */
-/* >           upper triangular part of A is not referenced. */
-/* > \endverbatim */
-/* > */
-/* > \param[in] LDA */
-/* > \verbatim */
-/* >          LDA is INTEGER */
-/* >           On entry, LDA specifies the first dimension of A as declared */
-/* >           in the calling (sub) program. LDA must be at least */
-/* >           LPF_MAX( 1, n ). */
-/* > \endverbatim */
-/* > */
-/* > \param[in] X */
-/* > \verbatim */
-/* >          X is REAL array of dimension at least */
-/* >           ( 1 + ( n - 1 )*abs( INCX ) ). */
-/* >           Before entry, the incremented array X must contain the n */
-/* >           element vector x. */
-/* > \endverbatim */
-/* > */
-/* > \param[in] INCX */
-/* > \verbatim */
-/* >          INCX is INTEGER */
-/* >           On entry, INCX specifies the increment for the elements of */
-/* >           X. INCX must not be zero. */
-/* > \endverbatim */
-/* > */
-/* > \param[in] BETA */
-/* > \verbatim */
-/* >          BETA is REAL */
-/* >           On entry, BETA specifies the scalar beta. When BETA is */
-/* >           supplied as zero then Y need not be set on input. */
-/* > \endverbatim */
-/* > */
-/* > \param[in,out] Y */
-/* > \verbatim */
-/* >          Y is REAL array of dimension at least */
-/* >           ( 1 + ( n - 1 )*abs( INCY ) ). */
-/* >           Before entry, the incremented array Y must contain the n */
-/* >           element vector y. On exit, Y is overwritten by the updated */
-/* >           vector y. */
-/* > \endverbatim */
-/* > */
-/* > \param[in] INCY */
-/* > \verbatim */
-/* >          INCY is INTEGER */
-/* >           On entry, INCY specifies the increment for the elements of */
-/* >           Y. INCY must not be zero. */
-/* > \endverbatim */
-
-/*  Authors: */
-/*  ======== */
-
-/* > \author Univ. of Tennessee */
-/* > \author Univ. of California Berkeley */
-/* > \author Univ. of Colorado Denver */
-/* > \author NAG Ltd. */
-
-/* > \date November 2011 */
-
-/* > \ingroup single_blas_level2 */
-
-/* > \par Further Details: */
-/*  ===================== */
-/* > */
-/* > \verbatim */
-/* > */
-/* >  Level 2 Blas routine. */
-/* >  The vector and matrix arguments are not referenced when N = 0, or M = 0 */
-/* > */
-/* >  -- Written on 22-October-1986. */
-/* >     Jack Dongarra, Argonne National Lab. */
-/* >     Jeremy Du Croz, Nag Central Office. */
-/* >     Sven Hammarling, Nag Central Office. */
-/* >     Richard Hanson, Sandia National Labs. */
-/* > \endverbatim */
-/* > */
-/*  ===================================================================== */
-void LPF_GLOBAL(hsymv,HSYMV)(char *uplo, int64_t *n, lpf_float16_t *alpha, lpf_float16_t *a,
-        int64_t *lda, lpf_float16_t *x, int64_t *incx, lpf_float16_t *beta, lpf_float16_t *y, int64_t *
-        incy, lpf_fortran_strlen_t uplo_len)
+void LPF_GLOBAL(hsymv, HSYMV)(char* uplo, int64_t* n, lpf_float16_t* alpha,
+                              lpf_float16_t* a, int64_t* lda, lpf_float16_t* x,
+                              int64_t* incx, lpf_float16_t* beta,
+                              lpf_float16_t* y, int64_t* incy,
+                              lpf_fortran_strlen_t uplo_len)
 {
-    /* System generated locals */
+
     int64_t a_dim1, a_offset, i__1, i__2;
 
-    /* Local variables */
     int64_t i__, j, ix, iy, jx, jy, kx, ky, info;
     lpf_float16_t temp1, temp2;
 
-    /*  -- Reference BLAS level2 routine (version 3.4.0) -- */
-    /*  -- Reference BLAS is a software package provided by Univ. of Tennessee,    -- */
-    /*  -- Univ. of California Berkeley, Univ. of Colorado Denver and NAG Ltd..-- */
-    /*     November 2011 */
-
-    /*     .. Scalar Arguments .. */
-    /*     .. */
-    /*     .. Array Arguments .. */
-    /*     .. */
-
-    /*  ===================================================================== */
-
-    /*     .. Parameters .. */
-    /*     .. */
-    /*     .. Local Scalars .. */
-    /*     .. */
-    /*     .. External Functions .. */
-    /*     .. */
-    /*     .. External Subroutines .. */
-    /*     .. */
-    /*     .. Intrinsic Functions .. */
-    /*     .. */
-
-    /*     Test the input parameters. */
-
-    /* Parameter adjustments */
     a_dim1 = *lda;
     a_offset = 1 + a_dim1;
     a -= a_offset;
     --x;
     --y;
-    (void) uplo_len;
+    (void)uplo_len;
 
-    /* Function Body */
     info = 0;
-    if (! ( strncasecmp(uplo, "U", 1 ) == 0) && ! (strncasecmp(uplo, "L", 1) == 0 )) {
+    if (!(strncasecmp(uplo, "U", 1) == 0) && !(strncasecmp(uplo, "L", 1) == 0))
+    {
         info = 1;
-    } else if (*n < 0) {
+    }
+    else if (*n < 0)
+    {
         info = 2;
-    } else if (*lda < LPF_MAX(1,*n)) {
+    }
+    else if (*lda < LPF_MAX(1, *n))
+    {
         info = 5;
-    } else if (*incx == 0) {
+    }
+    else if (*incx == 0)
+    {
         info = 7;
-    } else if (*incy == 0) {
+    }
+    else if (*incy == 0)
+    {
         info = 10;
     }
-    if (info != 0) {
+    if (info != 0)
+    {
         int32_t infox = info;
-        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("HSYMV ", &infox, (lpf_fortran_strlen_t)6);
+        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("HSYMV ", &infox,
+                                                     (lpf_fortran_strlen_t)6);
         return;
     }
 
-    /*     Quick return if possible. */
-
-    if (*n == 0 || (*alpha == 0.f && *beta == 1.f)) {
+    if (*n == 0 || (*alpha == 0.f && *beta == 1.f))
+    {
         return;
     }
 
-    /*     Set up the start points in  X  and  Y. */
-
-    if (*incx > 0) {
+    if (*incx > 0)
+    {
         kx = 1;
-    } else {
+    }
+    else
+    {
         kx = 1 - (*n - 1) * *incx;
     }
-    if (*incy > 0) {
+    if (*incy > 0)
+    {
         ky = 1;
-    } else {
+    }
+    else
+    {
         ky = 1 - (*n - 1) * *incy;
     }
 
-    /*     Start the operations. In this version the elements of A are */
-    /*     accessed sequentially with one pass through the triangular part */
-    /*     of A. */
-
-    /*     First form  y := beta*y. */
-
-    if (*beta != 1.f) {
-        if (*incy == 1) {
-            if (*beta == 0.f) {
+    if (*beta != 1.f)
+    {
+        if (*incy == 1)
+        {
+            if (*beta == 0.f)
+            {
                 i__1 = *n;
-                for (i__ = 1; i__ <= i__1; ++i__) {
+                for (i__ = 1; i__ <= i__1; ++i__)
+                {
                     y[i__] = 0.f;
-                    /* L10: */
-                }
-            } else {
-                i__1 = *n;
-                for (i__ = 1; i__ <= i__1; ++i__) {
-                    y[i__] = *beta * y[i__];
-                    /* L20: */
                 }
             }
-        } else {
-            iy = ky;
-            if (*beta == 0.f) {
+            else
+            {
                 i__1 = *n;
-                for (i__ = 1; i__ <= i__1; ++i__) {
+                for (i__ = 1; i__ <= i__1; ++i__)
+                {
+                    y[i__] = *beta * y[i__];
+                }
+            }
+        }
+        else
+        {
+            iy = ky;
+            if (*beta == 0.f)
+            {
+                i__1 = *n;
+                for (i__ = 1; i__ <= i__1; ++i__)
+                {
                     y[iy] = 0.f;
                     iy += *incy;
-                    /* L30: */
                 }
-            } else {
+            }
+            else
+            {
                 i__1 = *n;
-                for (i__ = 1; i__ <= i__1; ++i__) {
+                for (i__ = 1; i__ <= i__1; ++i__)
+                {
                     y[iy] = *beta * y[iy];
                     iy += *incy;
-                    /* L40: */
                 }
             }
         }
     }
-    if (*alpha == 0.f) {
+    if (*alpha == 0.f)
+    {
         return;
     }
-    if ( strncasecmp(uplo, "U", 1) == 0 ) {
+    if (strncasecmp(uplo, "U", 1) == 0)
+    {
 
-        /*        Form  y  when A is stored in upper triangle. */
-
-        if (*incx == 1 && *incy == 1) {
+        if (*incx == 1 && *incy == 1)
+        {
             i__1 = *n;
-            for (j = 1; j <= i__1; ++j) {
+            for (j = 1; j <= i__1; ++j)
+            {
                 temp1 = *alpha * x[j];
                 temp2 = 0.f;
                 i__2 = j - 1;
-                for (i__ = 1; i__ <= i__2; ++i__) {
+                for (i__ = 1; i__ <= i__2; ++i__)
+                {
                     y[i__] += temp1 * a[i__ + j * a_dim1];
                     temp2 += a[i__ + j * a_dim1] * x[i__];
-                    /* L50: */
                 }
                 y[j] = y[j] + temp1 * a[j + j * a_dim1] + *alpha * temp2;
-                /* L60: */
             }
-        } else {
+        }
+        else
+        {
             jx = kx;
             jy = ky;
             i__1 = *n;
-            for (j = 1; j <= i__1; ++j) {
+            for (j = 1; j <= i__1; ++j)
+            {
                 temp1 = *alpha * x[jx];
                 temp2 = 0.f;
                 ix = kx;
                 iy = ky;
                 i__2 = j - 1;
-                for (i__ = 1; i__ <= i__2; ++i__) {
+                for (i__ = 1; i__ <= i__2; ++i__)
+                {
                     y[iy] += temp1 * a[i__ + j * a_dim1];
                     temp2 += a[i__ + j * a_dim1] * x[ix];
                     ix += *incx;
                     iy += *incy;
-                    /* L70: */
                 }
                 y[jy] = y[jy] + temp1 * a[j + j * a_dim1] + *alpha * temp2;
                 jx += *incx;
                 jy += *incy;
-                /* L80: */
             }
         }
-    } else {
+    }
+    else
+    {
 
-        /*        Form  y  when A is stored in lower triangle. */
-
-        if (*incx == 1 && *incy == 1) {
+        if (*incx == 1 && *incy == 1)
+        {
             i__1 = *n;
-            for (j = 1; j <= i__1; ++j) {
+            for (j = 1; j <= i__1; ++j)
+            {
                 temp1 = *alpha * x[j];
                 temp2 = 0.f;
                 y[j] += temp1 * a[j + j * a_dim1];
                 i__2 = *n;
-                for (i__ = j + 1; i__ <= i__2; ++i__) {
+                for (i__ = j + 1; i__ <= i__2; ++i__)
+                {
                     y[i__] += temp1 * a[i__ + j * a_dim1];
                     temp2 += a[i__ + j * a_dim1] * x[i__];
-                    /* L90: */
                 }
                 y[j] += *alpha * temp2;
-                /* L100: */
             }
-        } else {
+        }
+        else
+        {
             jx = kx;
             jy = ky;
             i__1 = *n;
-            for (j = 1; j <= i__1; ++j) {
+            for (j = 1; j <= i__1; ++j)
+            {
                 temp1 = *alpha * x[jx];
                 temp2 = 0.f;
                 y[jy] += temp1 * a[j + j * a_dim1];
                 ix = jx;
                 iy = jy;
                 i__2 = *n;
-                for (i__ = j + 1; i__ <= i__2; ++i__) {
+                for (i__ = j + 1; i__ <= i__2; ++i__)
+                {
                     ix += *incx;
                     iy += *incy;
                     y[iy] += temp1 * a[i__ + j * a_dim1];
                     temp2 += a[i__ + j * a_dim1] * x[ix];
-                    /* L110: */
                 }
                 y[jy] += *alpha * temp2;
                 jx += *incx;
                 jy += *incy;
-                /* L120: */
             }
         }
     }
 
     return;
-
-    /*     End of HSYMV . */
-
-} /* hsymv_ */
+}
 
 #include <ISO_Fortran_binding.h>
 
-void lpf_blas_hsymv_fortran_dyn_rank_64(char *uplo, int64_t *n, lpf_ffloat16_t *alpha, CFI_cdesc_t *a,
-        int64_t *lda, CFI_cdesc_t *x, int64_t *incx, lpf_ffloat16_t *beta, CFI_cdesc_t *y, int64_t *
-        incy)
+void lpf_blas_hsymv_fortran_dyn_rank_64(char* uplo, int64_t* n,
+                                        lpf_ffloat16_t* alpha, CFI_cdesc_t* a,
+                                        int64_t* lda, CFI_cdesc_t* x,
+                                        int64_t* incx, lpf_ffloat16_t* beta,
+                                        CFI_cdesc_t* y, int64_t* incy)
 {
-    lpf_float16_t *a_ptr = a->base_addr;
-    lpf_float16_t *x_ptr = x->base_addr;
-    lpf_float16_t *y_ptr = y->base_addr;
+    lpf_float16_t* a_ptr = a->base_addr;
+    lpf_float16_t* x_ptr = x->base_addr;
+    lpf_float16_t* y_ptr = y->base_addr;
 
-    LPF_GLOBAL(hsymv,HSYMV)(uplo, n, (lpf_float16_t *)alpha, (lpf_float16_t *)a_ptr,
-        lda, (lpf_float16_t *)x_ptr, incx, (lpf_float16_t *)beta, (lpf_float16_t *)y_ptr,
-        incy, 1);
+    LPF_GLOBAL(hsymv, HSYMV)(uplo, n, (lpf_float16_t*)alpha,
+                             (lpf_float16_t*)a_ptr, lda, (lpf_float16_t*)x_ptr,
+                             incx, (lpf_float16_t*)beta, (lpf_float16_t*)y_ptr,
+                             incy, 1);
 }
 
-void lpf_blas_hsymv_fortran_dyn_rank_32(char *uplo, int32_t *n, lpf_ffloat16_t *alpha, CFI_cdesc_t *a,
-        int32_t *lda, CFI_cdesc_t *x, int32_t *incx, lpf_ffloat16_t *beta, CFI_cdesc_t *y, int32_t *
-        incy)
+void lpf_blas_hsymv_fortran_dyn_rank_32(char* uplo, int32_t* n,
+                                        lpf_ffloat16_t* alpha, CFI_cdesc_t* a,
+                                        int32_t* lda, CFI_cdesc_t* x,
+                                        int32_t* incx, lpf_ffloat16_t* beta,
+                                        CFI_cdesc_t* y, int32_t* incy)
 {
-    lpf_float16_t *a_ptr = a->base_addr;
-    lpf_float16_t *x_ptr = x->base_addr;
-    lpf_float16_t *y_ptr = y->base_addr;
+    lpf_float16_t* a_ptr = a->base_addr;
+    lpf_float16_t* x_ptr = x->base_addr;
+    lpf_float16_t* y_ptr = y->base_addr;
     int64_t _n = *n;
     int64_t _lda = *lda;
     int64_t _incx = *incx;
     int64_t _incy = *incy;
 
-    LPF_GLOBAL(hsymv,HSYMV)(uplo, &_n, (lpf_float16_t *)alpha, (lpf_float16_t *)a_ptr,
-        &_lda, (lpf_float16_t *)x_ptr, &_incx, (lpf_float16_t *)beta, (lpf_float16_t *)y_ptr,
-        &_incy, 1);
+    LPF_GLOBAL(hsymv,
+               HSYMV)(uplo, &_n, (lpf_float16_t*)alpha, (lpf_float16_t*)a_ptr,
+                      &_lda, (lpf_float16_t*)x_ptr, &_incx,
+                      (lpf_float16_t*)beta, (lpf_float16_t*)y_ptr, &_incy, 1);
 }

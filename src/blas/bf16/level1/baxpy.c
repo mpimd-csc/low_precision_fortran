@@ -17,167 +17,103 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
    */
-
+#include "lpf_internal.h"
 #include <math.h>
 #include <stdint.h>
-#include "lpf_internal.h"
 
-/* > \brief \b BAXPY */
-
-/*  =========== DOCUMENTATION =========== */
-
-/* Online html documentation available at */
-/*            http://www.netlib.org/lapack/explore-html/ */
-
-/*  Definition: */
-/*  =========== */
-
-/*       SUBROUTINE BAXPY(N,SA,SX,INCX,SY,INCY) */
-
-/*       .. Scalar Arguments .. */
-/*       REAL SA */
-/*       INTEGER INCX,INCY,N */
-/*       .. */
-/*       .. Array Arguments .. */
-/*       REAL SX(*),SY(*) */
-/*       .. */
-
-
-/* > \par Purpose: */
-/*  ============= */
-/* > */
-/* > \verbatim */
-/* > */
-/* >    BAXPY constant times a vector plus a vector. */
-/* >    uses unrolled loops for increments equal to one. */
-/* > \endverbatim */
-
-/*  Authors: */
-/*  ======== */
-
-/* > \author Univ. of Tennessee */
-/* > \author Univ. of California Berkeley */
-/* > \author Univ. of Colorado Denver */
-/* > \author NAG Ltd. */
-
-/* > \date November 2011 */
-
-/* > \ingroup single_blas_level1 */
-
-/* > \par Further Details: */
-/*  ===================== */
-/* > */
-/* > \verbatim */
-/* > */
-/* >     jack dongarra, linpack, 3/11/78. */
-/* >     modified 12/3/93, array(1) declarations changed to array(*) */
-/* > \endverbatim */
-/* > */
-/*  ===================================================================== */
 #include <stdio.h>
 
-void LPF_GLOBAL(baxpy,BAXPY)(int64_t *n, lpf_bfloat16_t *sa, lpf_bfloat16_t *sx, int64_t *incx,
-        lpf_bfloat16_t *sy, int64_t *incy)
+void LPF_GLOBAL(baxpy, BAXPY)(int64_t* n, lpf_bfloat16_t* sa,
+                              lpf_bfloat16_t* sx, int64_t* incx,
+                              lpf_bfloat16_t* sy, int64_t* incy)
 {
-    /* System generated locals */
+
     int64_t i__1;
 
-    /* Local variables */
     int64_t i__, m, ix, iy, mp1;
 
-
-    /*  -- Reference BLAS level1 routine (version 3.4.0) -- */
-    /*  -- Reference BLAS is a software package provided by Univ. of Tennessee,    -- */
-    /*  -- Univ. of California Berkeley, Univ. of Colorado Denver and NAG Ltd..-- */
-    /*     November 2011 */
-
-    /*     .. Scalar Arguments .. */
-    /*     .. */
-    /*     .. Array Arguments .. */
-    /*     .. */
-
-    /*  ===================================================================== */
-
-    /*     .. Local Scalars .. */
-    /*     .. */
-    /*     .. Intrinsic Functions .. */
-    /*     .. */
-    /* Parameter adjustments */
     --sy;
     --sx;
 
-    /* Function Body */
-    if (*n <= 0) {
+    if (*n <= 0)
+    {
         return;
     }
-    if (*sa == 0.f) {
+    if (*sa == 0.f)
+    {
         return;
     }
-    if (*incx == 1 && *incy == 1) {
-
-        /*        code for both increments equal to 1 */
-
-
-        /*        clean-up loop */
+    if (*incx == 1 && *incy == 1)
+    {
 
         m = *n % 4;
-        if (m != 0) {
+        if (m != 0)
+        {
             i__1 = m;
-            for (i__ = 1; i__ <= i__1; ++i__) {
+            for (i__ = 1; i__ <= i__1; ++i__)
+            {
                 sy[i__] += *sa * sx[i__];
             }
         }
-        if (*n < 4) {
+        if (*n < 4)
+        {
             return;
         }
         mp1 = m + 1;
         i__1 = *n;
-        for (i__ = mp1; i__ <= i__1; i__ += 4) {
+        for (i__ = mp1; i__ <= i__1; i__ += 4)
+        {
             sy[i__] += *sa * sx[i__];
             sy[i__ + 1] += *sa * sx[i__ + 1];
             sy[i__ + 2] += *sa * sx[i__ + 2];
             sy[i__ + 3] += *sa * sx[i__ + 3];
         }
-    } else {
-
-        /*        code for unequal increments or equal increments */
-        /*          not equal to 1 */
+    }
+    else
+    {
 
         ix = 1;
         iy = 1;
-        if (*incx < 0) {
+        if (*incx < 0)
+        {
             ix = (-(*n) + 1) * *incx + 1;
         }
-        if (*incy < 0) {
+        if (*incy < 0)
+        {
             iy = (-(*n) + 1) * *incy + 1;
         }
         i__1 = *n;
-        for (i__ = 1; i__ <= i__1; ++i__) {
+        for (i__ = 1; i__ <= i__1; ++i__)
+        {
             sy[iy] += *sa * sx[ix];
             ix += *incx;
             iy += *incy;
         }
     }
     return;
-} /* baxpy_ */
+}
 
 #include <ISO_Fortran_binding.h>
 
-void lpf_blas_baxpy_fortran_dyn_rank_64(int64_t *n, lpf_fbfloat16_t *sa, CFI_cdesc_t *_sx, int64_t *incx, CFI_cdesc_t *_sy, int64_t *incy)
+void lpf_blas_baxpy_fortran_dyn_rank_64(int64_t* n, lpf_fbfloat16_t* sa,
+                                        CFI_cdesc_t* _sx, int64_t* incx,
+                                        CFI_cdesc_t* _sy, int64_t* incy)
 {
-    lpf_bfloat16_t *sx = _sx->base_addr;
-    lpf_bfloat16_t *sy = _sy->base_addr;
-    LPF_GLOBAL(baxpy,BAXPY)(n, (lpf_bfloat16_t *)sa, (lpf_bfloat16_t *)sx, incx, (lpf_bfloat16_t *)sy, incy);
+    lpf_bfloat16_t* sx = _sx->base_addr;
+    lpf_bfloat16_t* sy = _sy->base_addr;
+    LPF_GLOBAL(baxpy, BAXPY)(n, (lpf_bfloat16_t*)sa, (lpf_bfloat16_t*)sx, incx,
+                             (lpf_bfloat16_t*)sy, incy);
 }
 
-void lpf_blas_baxpy_fortran_dyn_rank_32(int32_t *n, lpf_fbfloat16_t *sa, CFI_cdesc_t *_sx, int32_t *incx, CFI_cdesc_t *_sy, int32_t *incy)
+void lpf_blas_baxpy_fortran_dyn_rank_32(int32_t* n, lpf_fbfloat16_t* sa,
+                                        CFI_cdesc_t* _sx, int32_t* incx,
+                                        CFI_cdesc_t* _sy, int32_t* incy)
 {
-    lpf_bfloat16_t *sx = _sx->base_addr;
-    lpf_bfloat16_t *sy = _sy->base_addr;
+    lpf_bfloat16_t* sx = _sx->base_addr;
+    lpf_bfloat16_t* sy = _sy->base_addr;
     int64_t _n = *n;
     int64_t _incx = *incx;
     int64_t _incy = *incy;
-    LPF_GLOBAL(baxpy,BAXPY)(&_n, (lpf_bfloat16_t *)sa, (lpf_bfloat16_t *)sx, &_incx, (lpf_bfloat16_t *)sy, &_incy);
+    LPF_GLOBAL(baxpy, BAXPY)(&_n, (lpf_bfloat16_t*)sa, (lpf_bfloat16_t*)sx,
+                             &_incx, (lpf_bfloat16_t*)sy, &_incy);
 }
-
-

@@ -17,148 +17,79 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
    */
-
+#include "lpf_internal.h"
 #include <math.h>
 #include <stdint.h>
-#include "lpf_internal.h"
 
-/* > \brief \b HSCAL */
-
-/*  =========== DOCUMENTATION =========== */
-
-/* Online html documentation available at */
-/*            http://www.netlib.org/lapack/explore-html/ */
-
-/*  Definition: */
-/*  =========== */
-
-/*       SUBROUTINE HSCAL(N,SA,SX,INCX) */
-
-/*       .. Scalar Arguments .. */
-/*       REAL SA */
-/*       INTEGER INCX,N */
-/*       .. */
-/*       .. Array Arguments .. */
-/*       REAL SX(*) */
-/*       .. */
-
-
-/* > \par Purpose: */
-/*  ============= */
-/* > */
-/* > \verbatim */
-/* > */
-/* >    scales a vector by a constant. */
-/* >    uses unrolled loops for increment equal to 1. */
-/* > \endverbatim */
-
-/*  Authors: */
-/*  ======== */
-
-/* > \author Univ. of Tennessee */
-/* > \author Univ. of California Berkeley */
-/* > \author Univ. of Colorado Denver */
-/* > \author NAG Ltd. */
-
-/* > \date November 2011 */
-
-/* > \ingroup single_blas_level1 */
-
-/* > \par Further Details: */
-/*  ===================== */
-/* > */
-/* > \verbatim */
-/* > */
-/* >     jack dongarra, linpack, 3/11/78. */
-/* >     modified 3/93 to return if incx .le. 0. */
-/* >     modified 12/3/93, array(1) declarations changed to array(*) */
-/* > \endverbatim */
-/* > */
-/*  ===================================================================== */
-void LPF_GLOBAL(hscal,HSCAL)(int64_t *n, lpf_float16_t *sa, lpf_float16_t *sx, int64_t *incx)
+void LPF_GLOBAL(hscal, HSCAL)(int64_t* n, lpf_float16_t* sa, lpf_float16_t* sx,
+                              int64_t* incx)
 {
-    /* System generated locals */
+
     int64_t i__1, i__2;
 
-    /* Local variables */
     int64_t i__, m, mp1, nincx;
 
-
-    /*  -- Reference BLAS level1 routine (version 3.4.0) -- */
-    /*  -- Reference BLAS is a software package provided by Univ. of Tennessee,    -- */
-    /*  -- Univ. of California Berkeley, Univ. of Colorado Denver and NAG Ltd..-- */
-    /*     November 2011 */
-
-    /*     .. Scalar Arguments .. */
-    /*     .. */
-    /*     .. Array Arguments .. */
-    /*     .. */
-
-    /*  ===================================================================== */
-
-    /*     .. Local Scalars .. */
-    /*     .. */
-    /*     .. Intrinsic Functions .. */
-    /*     .. */
-    /* Parameter adjustments */
     --sx;
 
-    /* Function Body */
-    if (*n <= 0 || *incx <= 0) {
+    if (*n <= 0 || *incx <= 0)
+    {
         return;
     }
-    if (*incx == 1) {
-
-        /*        code for increment equal to 1 */
-
-
-        /*        clean-up loop */
+    if (*incx == 1)
+    {
 
         m = *n % 5;
-        if (m != 0) {
+        if (m != 0)
+        {
             i__1 = m;
-            for (i__ = 1; i__ <= i__1; ++i__) {
+            for (i__ = 1; i__ <= i__1; ++i__)
+            {
                 sx[i__] = *sa * sx[i__];
             }
-            if (*n < 5) {
+            if (*n < 5)
+            {
                 return;
             }
         }
         mp1 = m + 1;
         i__1 = *n;
-        for (i__ = mp1; i__ <= i__1; i__ += 5) {
+        for (i__ = mp1; i__ <= i__1; i__ += 5)
+        {
             sx[i__] = *sa * sx[i__];
             sx[i__ + 1] = *sa * sx[i__ + 1];
             sx[i__ + 2] = *sa * sx[i__ + 2];
             sx[i__ + 3] = *sa * sx[i__ + 3];
             sx[i__ + 4] = *sa * sx[i__ + 4];
         }
-    } else {
-
-        /*        code for increment not equal to 1 */
+    }
+    else
+    {
 
         nincx = *n * *incx;
         i__1 = nincx;
         i__2 = *incx;
-        for (i__ = 1; i__2 < 0 ? i__ >= i__1 : i__ <= i__1; i__ += i__2) {
+        for (i__ = 1; i__2 < 0 ? i__ >= i__1 : i__ <= i__1; i__ += i__2)
+        {
             sx[i__] = *sa * sx[i__];
         }
     }
     return;
-} /* hscal_ */
+}
 
 #include <ISO_Fortran_binding.h>
 
-void lpf_blas_hscal_fortran_dyn_rank_64(int64_t *n, lpf_ffloat16_t *sa, CFI_cdesc_t *_sx, int64_t *incx)
+void lpf_blas_hscal_fortran_dyn_rank_64(int64_t* n, lpf_ffloat16_t* sa,
+                                        CFI_cdesc_t* _sx, int64_t* incx)
 {
-    lpf_float16_t *sx = _sx->base_addr;
-    LPF_GLOBAL(hscal,HSCAL)(n, (lpf_float16_t *) sa, sx, incx);
+    lpf_float16_t* sx = _sx->base_addr;
+    LPF_GLOBAL(hscal, HSCAL)(n, (lpf_float16_t*)sa, sx, incx);
 }
 
-void lpf_blas_hscal_fortran_dyn_rank_32(int32_t *n, lpf_ffloat16_t *sa, CFI_cdesc_t *_sx, int32_t *incx)
+void lpf_blas_hscal_fortran_dyn_rank_32(int32_t* n, lpf_ffloat16_t* sa,
+                                        CFI_cdesc_t* _sx, int32_t* incx)
 {
-    lpf_float16_t *sx = _sx->base_addr;
+    lpf_float16_t* sx = _sx->base_addr;
     int64_t _n = *n;
     int64_t _incx = *incx;
-    LPF_GLOBAL(hscal,HSCAL)(&_n, (lpf_float16_t *) sa, sx, &_incx);
+    LPF_GLOBAL(hscal, HSCAL)(&_n, (lpf_float16_t*)sa, sx, &_incx);
 }

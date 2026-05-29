@@ -17,94 +17,95 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
    */
-
+#include "lpf_internal.h"
 #include <math.h>
 #include <stdint.h>
-#include "lpf_internal.h"
 
-void LPF_GLOBAL(b2scopy,B2SCOPY)(int64_t *n, lpf_bfloat16_t *sx, int64_t *incx, float *sy,
-        int64_t *incy)
+void LPF_GLOBAL(b2scopy, B2SCOPY)(int64_t* n, lpf_bfloat16_t* sx, int64_t* incx,
+                                  float* sy, int64_t* incy)
 {
-    /* System generated locals */
+
     int64_t i__1;
 
-    /* Local variables */
     int64_t i__, m, ix, iy, mp1;
 
-    /* Parameter adjustments */
     --sy;
     --sx;
 
-    /* Function Body */
-    if (*n <= 0) {
-        return ;
+    if (*n <= 0)
+    {
+        return;
     }
-    if (*incx == 1 && *incy == 1) {
-
-        /*        code for both increments equal to 1 */
-
-
-        /*        clean-up loop */
+    if (*incx == 1 && *incy == 1)
+    {
 
         m = *n % 7;
-        if (m != 0) {
+        if (m != 0)
+        {
             i__1 = m;
-            for (i__ = 1; i__ <= i__1; ++i__) {
-                sy[i__] = (float) sx[i__];
+            for (i__ = 1; i__ <= i__1; ++i__)
+            {
+                sy[i__] = (float)sx[i__];
             }
-            if (*n < 7) {
+            if (*n < 7)
+            {
                 return;
             }
         }
         mp1 = m + 1;
         i__1 = *n;
-        for (i__ = mp1; i__ <= i__1; i__ += 7) {
-            sy[i__]     = (float) sx[i__];
-            sy[i__ + 1] = (float) sx[i__ + 1];
-            sy[i__ + 2] = (float) sx[i__ + 2];
-            sy[i__ + 3] = (float) sx[i__ + 3];
-            sy[i__ + 4] = (float) sx[i__ + 4];
-            sy[i__ + 5] = (float) sx[i__ + 5];
-            sy[i__ + 6] = (float) sx[i__ + 6];
+        for (i__ = mp1; i__ <= i__1; i__ += 7)
+        {
+            sy[i__] = (float)sx[i__];
+            sy[i__ + 1] = (float)sx[i__ + 1];
+            sy[i__ + 2] = (float)sx[i__ + 2];
+            sy[i__ + 3] = (float)sx[i__ + 3];
+            sy[i__ + 4] = (float)sx[i__ + 4];
+            sy[i__ + 5] = (float)sx[i__ + 5];
+            sy[i__ + 6] = (float)sx[i__ + 6];
         }
-    } else {
-
-        /*        code for unequal increments or equal increments */
-        /*          not equal to 1 */
+    }
+    else
+    {
 
         ix = 1;
         iy = 1;
-        if (*incx < 0) {
+        if (*incx < 0)
+        {
             ix = (-(*n) + 1) * *incx + 1;
         }
-        if (*incy < 0) {
+        if (*incy < 0)
+        {
             iy = (-(*n) + 1) * *incy + 1;
         }
         i__1 = *n;
-        for (i__ = 1; i__ <= i__1; ++i__) {
-            sy[iy] = (float) sx[ix];
+        for (i__ = 1; i__ <= i__1; ++i__)
+        {
+            sy[iy] = (float)sx[ix];
             ix += *incx;
             iy += *incy;
         }
     }
     return;
-} /* bcopy_ */
+}
 
 #include <ISO_Fortran_binding.h>
 
-void lpf_blas_b2scopy_fortran_dyn_rank_64(int64_t *n, CFI_cdesc_t *_sx, int64_t *incx, float *sy,
-        int64_t *incy)
+void lpf_blas_b2scopy_fortran_dyn_rank_64(int64_t* n, CFI_cdesc_t* _sx,
+                                          int64_t* incx, float* sy,
+                                          int64_t* incy)
 {
-    lpf_bfloat16_t *sx = _sx->base_addr;
-    LPF_GLOBAL(b2scopy,B2SCOPY)(n, sx, incx, sy, incy);
+    lpf_bfloat16_t* sx = _sx->base_addr;
+    LPF_GLOBAL(b2scopy, B2SCOPY)(n, sx, incx, sy, incy);
 }
 
-void lpf_blas_b2scopy_fortran_dyn_rank_32(int32_t *n, CFI_cdesc_t *_sx, int32_t *incx, float *sy,
-        int32_t *incy)
+void lpf_blas_b2scopy_fortran_dyn_rank_32(int32_t* n, CFI_cdesc_t* _sx,
+                                          int32_t* incx, float* sy,
+                                          int32_t* incy)
 {
-    lpf_bfloat16_t *sx = _sx->base_addr;
+    lpf_bfloat16_t* sx = _sx->base_addr;
     int64_t _n = *n;
     int64_t _incx = *incx;
     int64_t _incy = *incy;
-    LPF_GLOBAL(b2scopy,B2SCOPY)(&_n, sx, &_incx, sy, &_incy);
+    LPF_GLOBAL(b2scopy, B2SCOPY)(&_n, sx, &_incx, sy, &_incy);
 }
