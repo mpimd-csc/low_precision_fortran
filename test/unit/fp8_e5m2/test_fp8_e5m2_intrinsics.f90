@@ -71,6 +71,8 @@ CONTAINS
         call check_integer('exponent_1', exponent(FP8_E5M2(1.0_real32)), 1)
         call check_integer('exponent_2', exponent(FP8_E5M2(2.0_real32)), 2)
         call check_integer('exponent_4', exponent(FP8_E5M2(4.0_real32)), 3)
+        call check_integer('exponent_subnormal_small', exponent(FP8_E5M2(1.5258789E-5_real32)), -14)
+        call check_integer('exponent_subnormal_large', exponent(FP8_E5M2(4.577638E-5_real32)), -14)
     end subroutine
 
     subroutine test_fraction()
@@ -80,6 +82,9 @@ CONTAINS
         call check_fp8_e5m2_real64('fraction_2', fraction(FP8_E5M2(2.0_real32)), 0.5_real64, FP8_E5M2_TOL)
         call check_fp8_e5m2_real64('fraction_3', fraction(FP8_E5M2(3.0_real32)), 0.75_real64, FP8_E5M2_TOL)
         call check_fp8_e5m2_real64('fraction_4', fraction(FP8_E5M2(4.0_real32)), 0.5_real64, FP8_E5M2_TOL)
+        call check_fp8_e5m2_real64('fraction_subnormal_small', fraction(FP8_E5M2(1.5258789E-5_real32)), 0.25_real64, FP8_E5M2_TOL)
+        call check_fp8_e5m2_real64('fraction_subnormal_mid', fraction(FP8_E5M2(3.0517578E-5_real32)), 0.5_real64, FP8_E5M2_TOL)
+        call check_fp8_e5m2_real64('fraction_subnormal_large', fraction(FP8_E5M2(4.577638E-5_real32)), 0.75_real64, FP8_E5M2_TOL)
     end subroutine
 
     subroutine test_minmax_exponent()
@@ -129,6 +134,20 @@ CONTAINS
         call check_logical('nearest_up_gt_1', dble(x_up) .eq. 1.25_real64, .TRUE.)
         ! nearest down from 1.0 should be < 1.0
         call check_logical('nearest_down_lt_1', dble(x_down) .eq. 0.875_real64, .TRUE.)
+
+        ! Transitions between subnormal and normal
+        x = FP8_E5M2(6.1035156E-5_real32) ! min normal (2^-14)
+        x_down = nearest(x, FP8_E5M2(-1.0_real32))
+        call check_logical('nearest_down_from_min_normal', dble(x_down) .eq. 4.577638E-5_real64, .TRUE.)
+
+        x = FP8_E5M2(4.577638E-5_real32) ! max subnormal
+        x_up = nearest(x, FP8_E5M2(1.0_real32))
+        call check_logical('nearest_up_to_min_normal', dble(x_up) .eq. 6.1035156E-5_real64, .TRUE.)
+
+        ! Transition from zero
+        x = FP8_E5M2(0.0_real32)
+        x_up = nearest(x, FP8_E5M2(1.0_real32))
+        call check_logical('nearest_up_from_zero', dble(x_up) .eq. 1.5258789E-5_real64, .TRUE.)
     end subroutine
 
     subroutine test_nint()
