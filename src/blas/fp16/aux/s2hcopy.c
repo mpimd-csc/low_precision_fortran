@@ -73,14 +73,14 @@
 /* > \endverbatim */
 /* > */
 /*  ===================================================================== */
-void LPF_GLOBAL(s2hcopy,S2HCOPY)(lpf_blas_int_t *n, float *sx, lpf_blas_int_t *incx, lpf_float16_t *sy,
-        lpf_blas_int_t *incy)
+void LPF_GLOBAL(s2hcopy,S2HCOPY)(int64_t *n, float *sx, int64_t *incx, lpf_float16_t *sy,
+        int64_t *incy)
 {
     /* System generated locals */
-    lpf_blas_int_t i__1;
+    int64_t i__1;
 
     /* Local variables */
-    lpf_blas_int_t i__, m, ix, iy, mp1;
+    int64_t i__, m, ix, iy, mp1;
 
 
     /*  -- Reference BLAS level1 routine (version 3.4.0) -- */
@@ -110,7 +110,6 @@ void LPF_GLOBAL(s2hcopy,S2HCOPY)(lpf_blas_int_t *n, float *sx, lpf_blas_int_t *i
     if (*incx == 1 && *incy == 1) {
 
         /*        code for both increments equal to 1 */
-
 
         /*        clean-up loop */
 
@@ -158,18 +157,24 @@ void LPF_GLOBAL(s2hcopy,S2HCOPY)(lpf_blas_int_t *n, float *sx, lpf_blas_int_t *i
     return;
 } /* hcopy_ */
 
-void lpf_blas_s2hcopy_fortran(lpf_blas_int_t *n, float *sx, lpf_blas_int_t *incx, lpf_ffloat16_t *sy,
-        lpf_blas_int_t *incy)
-{
-    LPF_GLOBAL(s2hcopy,S2HCOPY)(n, sx, incx, (lpf_float16_t *)sy, incy);
-}
-
 #include <ISO_Fortran_binding.h>
 
-void lpf_blas_s2hcopy_fortran_dyn_rank(lpf_blas_int_t *n, CFI_cdesc_t *_sx, lpf_blas_int_t *incx, CFI_cdesc_t *_sy,
-        lpf_blas_int_t *incy)
+void lpf_blas_s2hcopy_fortran_dyn_rank_64(int64_t *n, CFI_cdesc_t *_sx, int64_t *incx, CFI_cdesc_t *_sy,
+        int64_t *incy)
 {
     float *sx = _sx->base_addr;
     lpf_float16_t *sy = _sy->base_addr;
     LPF_GLOBAL(s2hcopy,S2HCOPY)(n, sx, incx, (lpf_float16_t *)sy, incy);
+}
+
+void lpf_blas_s2hcopy_fortran_dyn_rank_32(int32_t *n, CFI_cdesc_t *_sx, int32_t *incx, CFI_cdesc_t *_sy,
+        int32_t *incy)
+{
+    int64_t _n = *n;
+    int64_t _incx = *incx;
+    int64_t _incy = *incy;
+
+    float *sx = _sx->base_addr;
+    lpf_float16_t *sy = _sy->base_addr;
+    LPF_GLOBAL(s2hcopy,S2HCOPY)(&_n, sx, &_incx, (lpf_float16_t *)sy, &_incy);
 }

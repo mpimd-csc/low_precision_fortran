@@ -1,0 +1,4 @@
+If:
+  PathMatch: .*\.(cpp|cc|cxx|hpp)
+CompileFlags:
+  Compiler: g++

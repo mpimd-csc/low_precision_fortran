@@ -18,7 +18,7 @@
  */
 
 
-#include "fp8_e5m2.h"
+#include "lpf_fp8_e5m2_emu.h"
 #include "fp8_e5m2_bits.h"
 
 fp8_e5m2_t fp8_e5m2_abs(fp8_e5m2_t x)

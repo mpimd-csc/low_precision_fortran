@@ -166,14 +166,14 @@
 /* > \endverbatim */
 /* > */
 /*  ===================================================================== */
-void LPF_GLOBAL(bspr2,BSPR2)(char *uplo, lpf_blas_int_t *n, lpf_bfloat16_t *alpha, lpf_bfloat16_t *x,
-        lpf_blas_int_t *incx, lpf_bfloat16_t *y, lpf_blas_int_t *incy, lpf_bfloat16_t *ap, lpf_fortran_strlen_t uplo_len)
+void LPF_GLOBAL(bspr2,BSPR2)(char *uplo, int64_t *n, lpf_bfloat16_t *alpha, lpf_bfloat16_t *x,
+        int64_t *incx, lpf_bfloat16_t *y, int64_t *incy, lpf_bfloat16_t *ap, lpf_fortran_strlen_t uplo_len)
 {
     /* System generated locals */
-    lpf_blas_int_t i__1, i__2;
+    int64_t i__1, i__2;
 
     /* Local variables */
-    lpf_blas_int_t i__, j, k, kk, ix, iy, jx, jy, kx, ky, info;
+    int64_t i__, j, k, kk, ix, iy, jx, jy, kx, ky, info;
     lpf_bfloat16_t temp1, temp2;
 
 
@@ -217,7 +217,8 @@ void LPF_GLOBAL(bspr2,BSPR2)(char *uplo, lpf_blas_int_t *n, lpf_bfloat16_t *alph
         info = 7;
     }
     if (info != 0) {
-        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("BSPR2 ", &info, (lpf_fortran_strlen_t)6);
+        int32_t infox = (int32_t)info;
+        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("BSPR2 ", &infox, (lpf_fortran_strlen_t)6);
         return;
     }
 
@@ -343,22 +344,26 @@ void LPF_GLOBAL(bspr2,BSPR2)(char *uplo, lpf_blas_int_t *n, lpf_bfloat16_t *alph
 
 } /* bspr2_ */
 
-void lpf_blas_bspr2_fortran(char *uplo, lpf_blas_int_t *n, lpf_fbfloat16_t *alpha, lpf_fbfloat16_t *x,
-        lpf_blas_int_t *incx, lpf_fbfloat16_t *y, lpf_blas_int_t *incy, lpf_fbfloat16_t *ap)
-{
-    LPF_GLOBAL(bspr2,BSPR2)(uplo, n, (lpf_bfloat16_t *)alpha, (lpf_bfloat16_t *)x,
-        incx, (lpf_bfloat16_t *)y, incy, (lpf_bfloat16_t *)ap, 1);
-}
-
-#include <ISO_Fortran_binding.h>
-
-void lpf_blas_bspr2_fortran_dyn_rank(char *uplo, lpf_blas_int_t *n, lpf_fbfloat16_t *alpha, CFI_cdesc_t *_x,
-        lpf_blas_int_t *incx, CFI_cdesc_t *_y, lpf_blas_int_t *incy, CFI_cdesc_t *_ap)
+void lpf_blas_bspr2_fortran_dyn_rank_64(char *uplo, int64_t *n, lpf_fbfloat16_t *alpha, CFI_cdesc_t *_x,
+        int64_t *incx, CFI_cdesc_t *_y, int64_t *incy, CFI_cdesc_t *_ap)
 {
     lpf_bfloat16_t *x = _x->base_addr;
     lpf_bfloat16_t *y = _y->base_addr;
     lpf_bfloat16_t *ap = _ap->base_addr;
     LPF_GLOBAL(bspr2,BSPR2)(uplo, n, (lpf_bfloat16_t *)alpha, (lpf_bfloat16_t *)x,
         incx, (lpf_bfloat16_t *)y, incy, (lpf_bfloat16_t *)ap, 1);
+}
+
+void lpf_blas_bspr2_fortran_dyn_rank_32(char *uplo, int32_t *n, lpf_fbfloat16_t *alpha, CFI_cdesc_t *_x,
+        int32_t *incx, CFI_cdesc_t *_y, int32_t *incy, CFI_cdesc_t *_ap)
+{
+    lpf_bfloat16_t *x = _x->base_addr;
+    lpf_bfloat16_t *y = _y->base_addr;
+    lpf_bfloat16_t *ap = _ap->base_addr;
+    int64_t _n = *n;
+    int64_t _incx = *incx;
+    int64_t _incy = *incy;
+    LPF_GLOBAL(bspr2,BSPR2)(uplo, &_n, (lpf_bfloat16_t *)alpha, (lpf_bfloat16_t *)x,
+        &_incx, (lpf_bfloat16_t *)y, &_incy, (lpf_bfloat16_t *)ap, 1);
 }
 

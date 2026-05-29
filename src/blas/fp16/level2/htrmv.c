@@ -44,7 +44,6 @@
 /*       REAL A(LDA,*),X(*) */
 /*       .. */
 
-
 /* > \par Purpose: */
 /*  ============= */
 /* > */
@@ -171,18 +170,17 @@
 /* > \endverbatim */
 /* > */
 /*  ===================================================================== */
-void LPF_GLOBAL(htrmv,HTRMV)(char *uplo, char *trans, char *diag, lpf_blas_int_t *n,
-        lpf_float16_t *a, lpf_blas_int_t *lda, lpf_float16_t *x, lpf_blas_int_t *incx, lpf_fortran_strlen_t uplo_len,
+void LPF_GLOBAL(htrmv,HTRMV)(char *uplo, char *trans, char *diag, int64_t *n,
+        lpf_float16_t *a, int64_t *lda, lpf_float16_t *x, int64_t *incx, lpf_fortran_strlen_t uplo_len,
         lpf_fortran_strlen_t trans_len, lpf_fortran_strlen_t diag_len)
 {
     /* System generated locals */
-    lpf_blas_int_t a_dim1, a_offset, i__1, i__2;
+    int64_t a_dim1, a_offset, i__1, i__2;
 
     /* Local variables */
-    lpf_blas_int_t i__, j, ix, jx, kx, info;
+    int64_t i__, j, ix, jx, kx, info;
     lpf_float16_t temp;
     lpf_logical_t nounit;
-
 
     /*  -- Reference BLAS level2 routine (version 3.4.0) -- */
     /*  -- Reference BLAS is a software package provided by Univ. of Tennessee,    -- */
@@ -235,7 +233,8 @@ void LPF_GLOBAL(htrmv,HTRMV)(char *uplo, char *trans, char *diag, lpf_blas_int_t
         info = 8;
     }
     if (info != 0) {
-        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("HTRMV ", &info, (lpf_fortran_strlen_t)6);
+        int32_t infox = info;
+        LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)("HTRMV ", &infox, (lpf_fortran_strlen_t)6);
         return;
     }
 
@@ -420,21 +419,27 @@ void LPF_GLOBAL(htrmv,HTRMV)(char *uplo, char *trans, char *diag, lpf_blas_int_t
 
 } /* htrmv_ */
 
-void lpf_blas_htrmv_fortran(char *uplo, char *trans, char *diag, lpf_blas_int_t *n,
-        lpf_ffloat16_t *a, lpf_blas_int_t *lda, lpf_ffloat16_t *x, lpf_blas_int_t *incx)
-{
-    LPF_GLOBAL(htrmv,HTRMV)(uplo, trans, diag, n,
-        (lpf_float16_t *)a, lda, (lpf_float16_t *)x, incx, 1, 1, 1);
-}
-
 #include <ISO_Fortran_binding.h>
 
-void lpf_blas_htrmv_fortran_dyn_rank(char *uplo, char *trans, char *diag, lpf_blas_int_t *n,
-        CFI_cdesc_t *a, lpf_blas_int_t *lda, CFI_cdesc_t *x, lpf_blas_int_t *incx)
+void lpf_blas_htrmv_fortran_dyn_rank_64(char *uplo, char *trans, char *diag, int64_t *n,
+        CFI_cdesc_t *a, int64_t *lda, CFI_cdesc_t *x, int64_t *incx)
 {
     lpf_float16_t *a_ptr = a->base_addr;
     lpf_float16_t *x_ptr = x->base_addr;
 
     LPF_GLOBAL(htrmv,HTRMV)(uplo, trans, diag, n,
         (lpf_float16_t *)a_ptr, lda, (lpf_float16_t *)x_ptr, incx, 1, 1, 1);
+}
+
+void lpf_blas_htrmv_fortran_dyn_rank_32(char *uplo, char *trans, char *diag, int32_t *n,
+        CFI_cdesc_t *a, int32_t *lda, CFI_cdesc_t *x, int32_t *incx)
+{
+    lpf_float16_t *a_ptr = a->base_addr;
+    lpf_float16_t *x_ptr = x->base_addr;
+    int64_t _n = *n;
+    int64_t _lda = *lda;
+    int64_t _incx = *incx;
+
+    LPF_GLOBAL(htrmv,HTRMV)(uplo, trans, diag, &_n,
+        (lpf_float16_t *)a_ptr, &_lda, (lpf_float16_t *)x_ptr, &_incx, 1, 1, 1);
 }

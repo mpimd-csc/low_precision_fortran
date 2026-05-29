@@ -74,14 +74,14 @@
 /* > \endverbatim */
 /* > */
 /*  ===================================================================== */
-void LPF_GLOBAL(haxpby,HAXPBY)(lpf_blas_int_t *n, lpf_float16_t *sa, lpf_float16_t *sx, lpf_blas_int_t *incx,
-        lpf_float16_t *sb, lpf_float16_t *sy, lpf_blas_int_t *incy)
+void LPF_GLOBAL(haxpby,HAXPBY)(int64_t *n, lpf_float16_t *sa, lpf_float16_t *sx, int64_t *incx,
+        lpf_float16_t *sb, lpf_float16_t *sy, int64_t *incy)
 {
     /* System generated locals */
-    lpf_blas_int_t i__1;
+    int64_t i__1;
 
     /* Local variables */
-    lpf_blas_int_t i__, m, ix, iy, mp1;
+    int64_t i__, m, ix, iy, mp1;
 
 
     /*  -- Reference BLAS level1 routine (version 3.4.0) -- */
@@ -159,17 +159,21 @@ void LPF_GLOBAL(haxpby,HAXPBY)(lpf_blas_int_t *n, lpf_float16_t *sa, lpf_float16
     return;
 } /* saxpby_ */
 
- void lpf_blas_haxpby_fortran( lpf_blas_int_t *n, lpf_ffloat16_t *sa, lpf_ffloat16_t *sx, lpf_blas_int_t *incx, lpf_ffloat16_t * sb, lpf_ffloat16_t *sy, lpf_blas_int_t * incy )
-{
-    LPF_GLOBAL(haxpby,HAXPBY)( n, (lpf_float16_t * ) sa, (lpf_float16_t * ) sx, incx, (lpf_float16_t * ) sb, (lpf_float16_t*) sy, incy);
-}
-
 #include <ISO_Fortran_binding.h>
 
-void lpf_blas_haxpby_fortran_dyn_rank(lpf_blas_int_t *n, lpf_ffloat16_t *sa, CFI_cdesc_t *_sx, lpf_blas_int_t *incx, lpf_ffloat16_t *sb, CFI_cdesc_t *_sy, lpf_blas_int_t *incy)
+void lpf_blas_haxpby_fortran_dyn_rank_64(int64_t *n, lpf_ffloat16_t *sa, CFI_cdesc_t *_sx, int64_t *incx, lpf_ffloat16_t *sb, CFI_cdesc_t *_sy, int64_t *incy)
 {
     lpf_float16_t *sx = _sx->base_addr;
     lpf_float16_t *sy = _sy->base_addr;
-    lpf_blas_haxpby_fortran(n, sa, (lpf_ffloat16_t *)sx, incx, sb, (lpf_ffloat16_t *)sy, incy);
+    LPF_GLOBAL(haxpby,HAXPBY)(n, (lpf_float16_t *) sa, sx, incx, (lpf_float16_t *) sb, sy, incy);
 }
 
+void lpf_blas_haxpby_fortran_dyn_rank_32(int32_t *n, lpf_ffloat16_t *sa, CFI_cdesc_t *_sx, int32_t *incx, lpf_ffloat16_t *sb, CFI_cdesc_t *_sy, int32_t *incy)
+{
+    lpf_float16_t *sx = _sx->base_addr;
+    lpf_float16_t *sy = _sy->base_addr;
+    int64_t _n = *n;
+    int64_t _incx = *incx;
+    int64_t _incy = *incy;
+    LPF_GLOBAL(haxpby,HAXPBY)(&_n, (lpf_float16_t *) sa, sx, &_incx, (lpf_float16_t *) sb, sy, &_incy);
+}

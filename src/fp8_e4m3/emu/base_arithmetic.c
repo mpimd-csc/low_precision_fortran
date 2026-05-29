@@ -17,7 +17,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "fp8_e4m3.h"
+#include "lpf_fp8_e4m3_emu.h"
 #include "fp8_e4m3_bits.h"
 
 /**
@@ -490,3 +490,14 @@ fp8_e4m3_t fp8_e4m3_unitary_minus(fp8_e4m3_t x)
 {
     return x ^ (1 << FP8_E4M3_S_SHIFT);
 }
+
+
+fp8_e4m3_t fp8_e4m3_pow(fp8_e4m3_t a, fp8_e4m3_t b)
+{
+    float _a = fp8_e4m3_to_float(a);
+    float _b = fp8_e4m3_to_float(b);
+    float _c = powf(_a, _b);
+    return fp8_e4m3_from_float(_c);
+}
+
+

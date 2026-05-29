@@ -1,0 +1,111 @@
+!  SPDX-License-Identifier: LGPL-3.0-or-later
+PROGRAM check_hrotmg
+    USE iso_fortran_env, only: real32, real64
+    USE LPF_FP16
+    USE lpf_blas_fp16
+    IMPLICIT NONE
+
+    LOGICAL :: ok
+    ok = .TRUE.
+
+    CALL run_tests(ok)
+
+    IF (.NOT. ok) THEN
+        PRINT *, "HROTMG tests failed!"
+        STOP 1
+    END IF
+
+CONTAINS
+
+    SUBROUTINE run_tests(ok)
+        LOGICAL, INTENT(INOUT) :: ok
+        INTEGER, PARAMETER :: NTEST = 4
+        TYPE(FP16), dimension(4, NTEST) :: dab
+        TYPE(FP16), dimension(9, NTEST) :: dtrue
+        TYPE(FP16), dimension(9) :: dtemp
+        INTEGER :: i, k
+        LOGICAL :: lok
+
+        dab(1, 1) = FP16(0.1_real32)
+        dab(2, 1) = FP16(0.3_real32)
+        dab(3, 1) = FP16(1.2_real32)
+        dab(4, 1) = FP16(0.2_real32)
+        dab(1, 2) = FP16(0.7_real32)
+        dab(2, 2) = FP16(0.2_real32)
+        dab(3, 2) = FP16(0.6_real32)
+        dab(4, 2) = FP16(4.2_real32)
+        dab(:, 3) = 0.0_real32
+        dab(1, 4) = FP16(4.0_real32)
+        dab(2, 4) = FP16(-1.0_real32)
+        dab(3, 4) = FP16(2.0_real32)
+        dab(4, 4) = FP16(4.0_real32)
+
+        dtrue(1, 1) = FP16(0.0_real32)
+        dtrue(2, 1) = FP16(0.0_real32)
+        dtrue(3, 1) = FP16(1.3_real32)
+        dtrue(4, 1) = FP16(0.2_real32)
+        dtrue(5, 1) = FP16(0.0_real32)
+        dtrue(6, 1) = FP16(0.0_real32)
+        dtrue(7, 1) = FP16(0.0_real32)
+        dtrue(8, 1) = FP16(0.5_real32)
+        dtrue(9, 1) = FP16(0.0_real32)
+        dtrue(1, 2) = FP16(0.0_real32)
+        dtrue(2, 2) = FP16(0.0_real32)
+        dtrue(3, 2) = FP16(4.5_real32)
+        dtrue(4, 2) = FP16(4.2_real32)
+        dtrue(5, 2) = FP16(1.0_real32)
+        dtrue(6, 2) = FP16(0.5_real32)
+        dtrue(7, 2) = FP16(0.0_real32)
+        dtrue(8, 2) = FP16(0.0_real32)
+        dtrue(9, 2) = FP16(0.0_real32)
+        dtrue(1, 3) = FP16(0.0_real32)
+        dtrue(2, 3) = FP16(0.0_real32)
+        dtrue(3, 3) = FP16(0.0_real32)
+        dtrue(4, 3) = FP16(0.0_real32)
+        dtrue(5, 3) = FP16(-2.0_real32)
+        dtrue(6, 3) = FP16(0.0_real32)
+        dtrue(7, 3) = FP16(0.0_real32)
+        dtrue(8, 3) = FP16(0.0_real32)
+        dtrue(9, 3) = FP16(0.0_real32)
+        dtrue(1, 4) = FP16(0.0_real32)
+        dtrue(2, 4) = FP16(0.0_real32)
+        dtrue(3, 4) = FP16(0.0_real32)
+        dtrue(4, 4) = FP16(4.0_real32)
+        dtrue(5, 4) = FP16(-1.0_real32)
+        dtrue(6, 4) = FP16(0.0_real32)
+        dtrue(7, 4) = FP16(0.0_real32)
+        dtrue(8, 4) = FP16(0.0_real32)
+        dtrue(9, 4) = FP16(0.0_real32)
+
+        ! Initialize computed values for DTRUE
+        dtrue(1, 1) = FP16(12.0_real32 / 130.0_real32)
+        dtrue(2, 1) = FP16(36.0_real32 / 130.0_real32)
+        dtrue(7, 1) = FP16(-1.0_real32 / 6.0_real32)
+        dtrue(1, 2) = FP16(14.0_real32 / 75.0_real32)
+        dtrue(2, 2) = FP16(49.0_real32 / 75.0_real32)
+        dtrue(9, 2) = FP16(1.0_real32 / 7.0_real32)
+
+        do i = 1, NTEST
+            dtemp = 0.0_real32
+            do k = 1, 4
+                dtemp(k) = dab(k, i)
+            end do
+
+            CALL rotmg(dtemp(1), dtemp(2), dtemp(3), dtemp(4), dtemp(5))
+
+            lok = .TRUE.
+            do k = 1, 9
+                IF (abs(dble(dtemp(k)) - dble(dtrue(k, i))) > 1.0d-2 * max(abs(dble(dtrue(k, i))), 1.0d-5)) THEN
+                    print "(A, I2, A, I2, A, F10.6, A, F10.6)", &
+                          "HROTMG  -- FAIL -- Testcase ", i, ": Value ", k, ": Result = ", dble(dtemp(k)), &
+                          ", Expected = ", dble(dtrue(k, i))
+                    ok = .FALSE.
+                    lok = .FALSE.
+                END IF
+            end do
+            IF (lok) THEN
+                print "(A, I2, A)", "HROTMG  -- PASS -- Testcase ", i, "."
+            END IF
+        end do
+    end SUBROUTINE
+END PROGRAM check_hrotmg

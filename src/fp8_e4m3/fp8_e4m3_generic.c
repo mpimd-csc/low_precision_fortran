@@ -20,7 +20,7 @@
 #include <stdint.h>
 #include <math.h>
 
-#include "emu/fp8_e4m3.h"
+#include "emu/lpf_fp8_e4m3_emu.h"
 #include "emu/fp8_e4m3_bits.h"
 #include "fp8_e4m3_helper.h"
 #include "lpf_internal.h"
@@ -180,17 +180,17 @@ HIDDEN void __fp8_e4m3_helper_nearest(int8_t *out, int8_t in1, int8_t in2)
     fp8_e4m3_handler_t a = {.i8 = in1};
     fp8_e4m3_handler_t b = {.i8 = in2};
     fp8_e4m3_handler_t *rout = (fp8_e4m3_handler_t * ) out;
-
-    if ( a.u8  == 0 && b.fp8_e4m3 < 0) {
-        rout -> fp8_e4m3 = a.fp8_e4m3;
-        return;
-    }
-    if ( a.u8 ==  __UINT8_MAX__ && b.fp8_e4m3 > 0) {
-        rout -> fp8_e4m3 = a.fp8_e4m3;
-        return;
-    }
-
     uint8_t bsign = FP8_E4M3_GET_SIGN(b.u8);
+
+    if ( a.u8  == 0 && bsign > 0) {
+        rout -> fp8_e4m3 = a.fp8_e4m3;
+        return;
+    }
+    if ( a.u8 ==  __UINT8_MAX__ && bsign == 0) {
+        rout -> fp8_e4m3 = a.fp8_e4m3;
+        return;
+    }
+
 
     if ( bsign ) {
         uint8_t s = FP8_E4M3_GET_SIGN(a.u8);

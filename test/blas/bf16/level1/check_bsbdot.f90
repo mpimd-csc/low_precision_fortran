@@ -1,0 +1,205 @@
+!  SPDX-License-Identifier: LGPL-3.0-or-later
+PROGRAM check_hsbdot
+    USE iso_fortran_env, only: real32, real64, int64
+    USE LPF_BF16
+    USE lpf_blas_bf16
+    IMPLICIT NONE
+
+    LOGICAL :: ok
+    INTEGER :: i
+
+    ok = .TRUE.
+
+    CALL run_tests(ok)
+
+    IF (.NOT. ok) THEN
+        PRINT *, "HSHDOT tests failed!"
+        STOP 1
+    END IF
+
+CONTAINS
+
+    SUBROUTINE run_tests(ok)
+        LOGICAL, INTENT(INOUT) :: ok
+        INTEGER, PARAMETER :: NTEST = 8
+        INTEGER(int64), dimension(NTEST) :: n = [5, 3, 4, 4, 4, 3, 3, 0]
+        INTEGER(int64), dimension(NTEST) :: incx = [1, 1, 1, 2, 2, 1, 1, 1]
+        INTEGER(int64), dimension(NTEST) :: incy = [1, 1, 1, 2, 1, 2, 1, 1]
+        TYPE(BF16) :: b
+        TYPE(BF16), dimension(10, NTEST) :: x
+        TYPE(BF16), dimension(10, NTEST) :: y
+        TYPE(BF16), dimension(NTEST) :: expected
+        TYPE(BF16) :: result
+
+        b = BF16(sqrt(2.0_real32))
+
+        ! X data
+        x(1, 1) = BF16(1.0_real32)
+        x(2, 1) = BF16(-2.0_real32)
+        x(3, 1) = BF16(3.0_real32)
+        x(4, 1) = BF16(-4.0_real32)
+        x(5, 1) = BF16(5.0_real32)
+        x(6, 1) = BF16(0.0_real32)
+        x(7, 1) = BF16(0.0_real32)
+        x(8, 1) = BF16(0.0_real32)
+        x(9, 1) = BF16(0.0_real32)
+        x(10, 1) = BF16(0.0_real32)
+        x(1, 2) = BF16(1.5_real32)
+        x(2, 2) = BF16(-2.5_real32)
+        x(3, 2) = BF16(3.5_real32)
+        x(4, 2) = BF16(0.0_real32)
+        x(5, 2) = BF16(0.0_real32)
+        x(6, 2) = BF16(0.0_real32)
+        x(7, 2) = BF16(0.0_real32)
+        x(8, 2) = BF16(0.0_real32)
+        x(9, 2) = BF16(0.0_real32)
+        x(10, 2) = BF16(0.0_real32)
+        x(1, 3) = BF16(3.0_real32)
+        x(2, 3) = BF16(-4.0_real32)
+        x(3, 3) = BF16(0.0_real32)
+        x(4, 3) = BF16(0.0_real32)
+        x(5, 3) = BF16(0.0_real32)
+        x(6, 3) = BF16(0.0_real32)
+        x(7, 3) = BF16(0.0_real32)
+        x(8, 3) = BF16(0.0_real32)
+        x(9, 3) = BF16(0.0_real32)
+        x(10, 3) = BF16(0.0_real32)
+        x(1, 4) = BF16(1.0_real32)
+        x(2, 4) = BF16(2.0_real32)
+        x(3, 4) = BF16(-1.0_real32)
+        x(4, 4) = BF16(2.0_real32)
+        x(5, 4) = BF16(1.0_real32)
+        x(6, 4) = BF16(2.0_real32)
+        x(7, 4) = BF16(-1.0_real32)
+        x(8, 4) = BF16(2.0_real32)
+        x(9, 4) = BF16(1.0_real32)
+        x(10, 4) = BF16(2.0_real32)
+        x(1, 5) = BF16(10.0_real32)
+        x(2, 5) = BF16(4.0_real32)
+        x(3, 5) = BF16(-4.0_real32)
+        x(4, 5) = BF16(-5.0_real32)
+        x(5, 5) = BF16(0.4_real32)
+        x(6, 5) = BF16(12.0_real32)
+        x(7, 5) = BF16(0.0_real32)
+        x(8, 5) = BF16(0.0_real32)
+        x(9, 5) = BF16(0.0_real32)
+        x(10, 5) = BF16(0.0_real32)
+        x(:, 6) = 9.0_real32
+        x(1, 7) = BF16(1.0_real32)
+        x(2, 7) = BF16(2.0_real32)
+        x(3, 7) = BF16(-1.0_real32)
+        x(4, 7) = BF16(2.0_real32)
+        x(5, 7) = BF16(1.0_real32)
+        x(6, 7) = BF16(2.0_real32)
+        x(7, 7) = BF16(-1.0_real32)
+        x(8, 7) = BF16(2.0_real32)
+        x(9, 7) = BF16(1.0_real32)
+        x(10, 7) = BF16(2.0_real32)
+        x(1, 8) = BF16(1.0_real32)
+        x(2, 8) = BF16(2.0_real32)
+        x(3, 8) = BF16(-1.0_real32)
+        x(4, 8) = BF16(2.0_real32)
+        x(5, 8) = BF16(1.0_real32)
+        x(6, 8) = BF16(2.0_real32)
+        x(7, 8) = BF16(-1.0_real32)
+        x(8, 8) = BF16(2.0_real32)
+        x(9, 8) = BF16(1.0_real32)
+        x(10, 8) = BF16(2.0_real32)
+
+        ! Y data
+        y(1, 1) = BF16(1.0_real32)
+        y(2, 1) = BF16(-2.0_real32)
+        y(3, 1) = BF16(3.0_real32)
+        y(4, 1) = BF16(-4.0_real32)
+        y(5, 1) = BF16(5.0_real32)
+        y(6, 1) = BF16(0.0_real32)
+        y(7, 1) = BF16(0.0_real32)
+        y(8, 1) = BF16(0.0_real32)
+        y(9, 1) = BF16(0.0_real32)
+        y(10, 1) = BF16(0.0_real32)
+        y(1, 2) = BF16(1.5_real32)
+        y(2, 2) = BF16(-2.5_real32)
+        y(3, 2) = BF16(3.5_real32)
+        y(4, 2) = BF16(0.0_real32)
+        y(5, 2) = BF16(0.0_real32)
+        y(6, 2) = BF16(0.0_real32)
+        y(7, 2) = BF16(0.0_real32)
+        y(8, 2) = BF16(0.0_real32)
+        y(9, 2) = BF16(0.0_real32)
+        y(10, 2) = BF16(0.0_real32)
+        y(1, 3) = BF16(1.0_real32)
+        y(2, 3) = BF16(2.0_real32)
+        y(3, 3) = BF16(-1.0_real32)
+        y(4, 3) = BF16(2.0_real32)
+        y(5, 3) = BF16(1.0_real32)
+        y(6, 3) = BF16(2.0_real32)
+        y(7, 3) = BF16(-1.0_real32)
+        y(8, 3) = BF16(2.0_real32)
+        y(9, 3) = BF16(1.0_real32)
+        y(10, 3) = BF16(2.0_real32)
+        y(1, 4) = BF16(0.0_real32)
+        y(2, 4) = BF16(3.0_real32)
+        y(3, 4) = BF16(3.0_real32)
+        y(4, 4) = BF16(0.0_real32)
+        y(5, 4) = BF16(0.0_real32)
+        y(6, 4) = BF16(0.0_real32)
+        y(7, 4) = BF16(0.0_real32)
+        y(8, 4) = BF16(0.0_real32)
+        y(9, 4) = BF16(0.0_real32)
+        y(10, 4) = BF16(0.0_real32)
+        y(1, 5) = BF16(1.0_real32)
+        y(2, 5) = BF16(2.0_real32)
+        y(3, 5) = BF16(-1.0_real32)
+        y(4, 5) = BF16(2.0_real32)
+        y(5, 5) = BF16(1.0_real32)
+        y(6, 5) = BF16(2.0_real32)
+        y(7, 5) = BF16(-1.0_real32)
+        y(8, 5) = BF16(2.0_real32)
+        y(9, 5) = BF16(1.0_real32)
+        y(10, 5) = BF16(2.0_real32)
+        y(:, 6) = 9.0_real32
+        y(1, 7) = BF16(1.0_real32)
+        y(2, 7) = BF16(2.0_real32)
+        y(3, 7) = BF16(-1.0_real32)
+        y(4, 7) = BF16(2.0_real32)
+        y(5, 7) = BF16(1.0_real32)
+        y(6, 7) = BF16(2.0_real32)
+        y(7, 7) = BF16(-1.0_real32)
+        y(8, 7) = BF16(2.0_real32)
+        y(9, 7) = BF16(1.0_real32)
+        y(10, 7) = BF16(2.0_real32)
+        y(1, 8) = BF16(10.0_real32)
+        y(2, 8) = BF16(4.0_real32)
+        y(3, 8) = BF16(-4.0_real32)
+        y(4, 8) = BF16(-5.0_real32)
+        y(5, 8) = BF16(0.4_real32)
+        y(6, 8) = BF16(12.0_real32)
+        y(7, 8) = BF16(0.0_real32)
+        y(8, 8) = BF16(0.0_real32)
+        y(9, 8) = BF16(0.0_real32)
+        y(10, 8) = BF16(0.0_real32)
+
+        expected(1) = BF16(55.0_real32) + b
+        expected(2) = BF16(20.75_real32) + b
+        expected(3) = BF16(-5.0_real32) + b
+        expected(4) = BF16(-3.0_real32) + b
+        expected(5) = BF16(1.599609_real32) + b
+        expected(6) = BF16(243.0_real32) + b
+        expected(7) = BF16(6.0_real32) + b
+        expected(8) = b
+
+        do i = 1, NTEST
+            result = dot(n(i), b, x(:, i), incx(i), y(:, i), incy(i))
+            if (abs(dble(result) - dble(expected(i))) < 1.0d-2) then
+                print "(A, I2, A, I3, A, I3, A, I3, A, F10.6, A, F10.6)", &
+                      "HSHDOT -- PASS -- Testcase ", i, ": N = ", n(i), ", INCX = ", incx(i), &
+                      ", INCY = ", incy(i), ", Result = ", dble(result), ", Expected = ", dble(expected(i))
+            else
+                print "(A, I2, A, I3, A, I3, A, I3, A, F10.6, A, F10.6)", &
+                      "HSHDOT -- FAIL -- Testcase ", i, ": N = ", n(i), ", INCX = ", incx(i), &
+                      ", INCY = ", incy(i), ", Result = ", dble(result), ", Expected = ", dble(expected(i))
+                ok = .FALSE.
+            end if
+        end do
+    end SUBROUTINE
+END PROGRAM check_hsbdot
