@@ -113,7 +113,8 @@ MODULE LPF_FP8_E5M2
     end interface
 
     INTERFACE ASSIGNMENT(=)
-        MODULE PROCEDURE assign_int32, assign_int64, assign_real, assign_double, assign_fp8_e5m2, assign_to_real
+        MODULE PROCEDURE assign_int32, assign_int64, assign_real, assign_double, assign_fp8_e5m2
+        MODULE PROCEDURE assign_to_real, assign_to_int, assign_to_double
     END INTERFACE
 
     INTERFACE write(formatted)
@@ -128,57 +129,68 @@ MODULE LPF_FP8_E5M2
     ! Interface für den + Operator
     interface operator(+)
         module procedure add_fp8_e5m2_fp8_e5m2, add_fp8_e5m2_real, add_real_fp8_e5m2
+        module procedure add_fp8_e5m2_real64, add_real64_fp8_e5m2
     end interface operator(+)
 
     ! Interface für den - Operator
     interface operator(-)
         module procedure subtract_fp8_e5m2_fp8_e5m2, subtract_fp8_e5m2_real, subtract_real_fp8_e5m2
+        module procedure subtract_fp8_e5m2_real64, subtract_real64_fp8_e5m2
         module procedure unitary_minus_fp8_e5m2
     end interface operator(-)
 
     ! Interface für den * Operator
     interface operator(*)
         module procedure multiply_fp8_e5m2_fp8_e5m2, multiply_fp8_e5m2_real, multiply_real_fp8_e5m2
+        module procedure multiply_fp8_e5m2_real64, multiply_real64_fp8_e5m2
     end interface operator(*)
 
     ! Interface für den / Operator
     interface operator(/)
         module procedure divide_fp8_e5m2_fp8_e5m2, divide_fp8_e5m2_real, divide_real_fp8_e5m2
+        module procedure divide_fp8_e5m2_real64, divide_real64_fp8_e5m2
     end interface operator(/)
 
     ! Interface für den ** Operator
     interface operator(**)
         module procedure power_fp8_e5m2_fp8_e5m2, power_fp8_e5m2_real, power_fp8_e5m2_int
+        module procedure power_fp8_e5m2_real64
     end interface operator(**)
 
     ! .lt. operator
     interface operator(.lt.)
         module procedure lt_fp8_e5m2_fp8_e5m2, lt_fp8_e5m2_fp32, lt_fp32_fp8_e5m2
+        module procedure lt_fp8_e5m2_real64, lt_real64_fp8_e5m2
     end interface operator(.lt.)
 
     ! .le. operator
     interface operator(.le.)
         module procedure le_fp8_e5m2_fp8_e5m2, le_fp8_e5m2_fp32, le_fp32_fp8_e5m2
+        module procedure le_fp8_e5m2_real64, le_real64_fp8_e5m2
     end interface operator(.le.)
 
     ! .gt. operator
     interface operator(.gt.)
         module procedure gt_fp8_e5m2_fp8_e5m2, gt_fp8_e5m2_fp32, gt_fp32_fp8_e5m2
+        module procedure gt_fp8_e5m2_real64, gt_real64_fp8_e5m2
     end interface operator(.gt.)
 
     ! .ge. operator
     interface operator(.ge.)
         module procedure ge_fp8_e5m2_fp8_e5m2, ge_fp8_e5m2_fp32, ge_fp32_fp8_e5m2
+        module procedure ge_fp8_e5m2_real64, ge_real64_fp8_e5m2
     end interface operator(.ge.)
 
     ! .eq. operator
     interface operator(.eq.)
         module procedure eq_fp8_e5m2_fp8_e5m2, eq_fp8_e5m2_fp32, eq_fp32_fp8_e5m2
+        module procedure eq_fp8_e5m2_real64, eq_real64_fp8_e5m2
     end interface operator(.eq.)
 
     ! .ne. operator
     interface operator(.ne.)
         module procedure ne_fp8_e5m2_fp8_e5m2, ne_fp8_e5m2_fp32, ne_fp32_fp8_e5m2
+        module procedure ne_fp8_e5m2_real64, ne_real64_fp8_e5m2
     end interface operator(.ne.)
 
     ! convert to real
@@ -187,6 +199,9 @@ MODULE LPF_FP8_E5M2
     end interface
     interface dble
         module procedure dble_fp8_e5m2
+    end interface
+    interface int
+        module procedure int_fp8_e5m2
     end interface
 
 
@@ -834,6 +849,13 @@ MODULE LPF_FP8_E5M2
             real(c_float), intent(in), value :: b
         end subroutine
 
+        pure subroutine helper_mul_fp8_e5m2_real64(out, a, b) bind(c, name = "__fp8_e5m2_helper_mul_fp8_e5m2_real64")
+            use, intrinsic :: iso_c_binding
+            integer(c_int8_t), intent(out) :: out
+            integer(c_int8_t), intent(in), value :: a
+            real(c_double), intent(in), value :: b
+        end subroutine
+
         pure subroutine helper_sub_fp8_e5m2_fp8_e5m2(out, a, b) bind(c, name = "__fp8_e5m2_helper_sub_fp8_e5m2_fp8_e5m2")
             use, intrinsic :: iso_c_binding
             integer(c_int8_t), intent(out) :: out
@@ -882,6 +904,42 @@ MODULE LPF_FP8_E5M2
             real(c_float), intent(in), value :: a
             integer(c_int8_t), intent(in), value :: b
         end subroutine
+
+        pure subroutine helper_div_fp8_e5m2_real64(out, a, b) bind(c, name = "__fp8_e5m2_helper_div_fp8_e5m2_real64")
+            use, intrinsic :: iso_c_binding
+            integer(c_int8_t), intent(out) :: out
+            integer(c_int8_t), intent(in), value :: a
+            real(c_double), intent(in), value :: b
+        end subroutine
+
+        pure subroutine helper_div_real64_fp8_e5m2(out, a, b) bind(c, name = "__fp8_e5m2_helper_div_real64_fp8_e5m2")
+            use, intrinsic :: iso_c_binding
+            integer(c_int8_t), intent(out) :: out
+            real(c_double), intent(in), value :: a
+            integer(c_int8_t), intent(in), value :: b
+        end subroutine
+
+        pure subroutine helper_add_fp8_e5m2_real64(out, a, b) bind(c, name = "__fp8_e5m2_helper_add_fp8_e5m2_real64")
+            use, intrinsic :: iso_c_binding
+            integer(c_int8_t), intent(out) :: out
+            integer(c_int8_t), intent(in), value :: a
+            real(c_double), intent(in), value :: b
+        end subroutine
+
+        pure subroutine helper_sub_fp8_e5m2_real64(out, a, b) bind(c, name = "__fp8_e5m2_helper_sub_fp8_e5m2_real64")
+            use, intrinsic :: iso_c_binding
+            integer(c_int8_t), intent(out) :: out
+            integer(c_int8_t), intent(in), value :: a
+            real(c_double), intent(in), value :: b
+        end subroutine
+
+        pure subroutine helper_sub_real64_fp8_e5m2(out, a, b) bind(c, name = "__fp8_e5m2_helper_sub_real64_fp8_e5m2")
+            use, intrinsic :: iso_c_binding
+            integer(c_int8_t), intent(out) :: out
+            real(c_double), intent(in), value :: a
+            integer(c_int8_t), intent(in), value :: b
+        end subroutine
+
 
         pure subroutine helper_power_fp8_e5m2_fp8_e5m2(out, a, b) bind(c, name = "__fp8_e5m2_helper_pow_fp8_e5m2_fp8_e5m2")
             use, intrinsic :: iso_c_binding
@@ -980,7 +1038,19 @@ CONTAINS
     elemental subroutine assign_to_real(this, that)
         real(real32), intent(out) :: this
         type(fp8_e5m2), intent(in) :: that
-        this = get_fp8_e5m2(that%value)
+        this = real(get_fp8_e5m2(that%value), real32)
+    end subroutine
+
+    elemental subroutine assign_to_double(this, that)
+        real(real64), intent(out) :: this
+        type(fp8_e5m2), intent(in) :: that
+        this = real(get_fp8_e5m2(that%value), real64)
+    end subroutine
+
+    elemental subroutine assign_to_int(this, that)
+        integer, intent(out) :: this
+        type(fp8_e5m2), intent(in) :: that
+        this = int(real(get_fp8_e5m2(that%value)))
     end subroutine
 
     elemental function real_fp8_e5m2(x) result (out)
@@ -992,7 +1062,13 @@ CONTAINS
     elemental function dble_fp8_e5m2(x) result (out)
         type(fp8_e5m2), intent(in) :: x
         real(real64) :: out
-        out = dble(get_fp8_e5m2(x%value))
+        out = real(get_fp8_e5m2(x%value), real64)
+    end function
+
+    elemental function int_fp8_e5m2(x) result (out)
+        type(fp8_e5m2), intent(in) :: x
+        integer :: out
+        out = int(real(get_fp8_e5m2(x%value)))
     end function
 
 
@@ -1022,6 +1098,20 @@ CONTAINS
         call helper_add_fp8_e5m2_real(sum%value, that%value, this)
     end function
 
+    elemental function add_fp8_e5m2_real64(this, that) result(sum)
+        type(fp8_e5m2), intent(in) :: this
+        real(real64), intent(in) :: that
+        type(fp8_e5m2) :: sum
+        call helper_add_fp8_e5m2_real64(sum%value, this%value, that)
+    end function
+
+    elemental function add_real64_fp8_e5m2(this, that) result(sum)
+        real(real64), intent(in) :: this
+        type(fp8_e5m2), intent(in) :: that
+        type(fp8_e5m2) :: sum
+        call helper_add_fp8_e5m2_real64(sum%value, that%value, this)
+    end function
+
     !
     ! Operator (-)
     !
@@ -1047,6 +1137,22 @@ CONTAINS
         type(fp8_e5m2) :: diff
 
         call helper_sub_real_fp8_e5m2(diff%value, this, that%value)
+    end function
+
+    elemental function subtract_fp8_e5m2_real64(this, that) result(diff)
+        type(fp8_e5m2), intent(in) :: this
+        real(real64), intent(in) :: that
+        type(fp8_e5m2) :: diff
+
+        call helper_sub_fp8_e5m2_real64(diff%value, this%value, that)
+    end function
+
+    elemental function subtract_real64_fp8_e5m2(this, that) result(diff)
+        real(real64), intent(in) :: this
+        type(fp8_e5m2), intent(in) :: that
+        type(fp8_e5m2) :: diff
+
+        call helper_sub_real64_fp8_e5m2(diff%value, this, that%value)
     end function
 
     elemental function unitary_minus_fp8_e5m2(this) result(out)
@@ -1083,6 +1189,22 @@ CONTAINS
         call helper_mul_fp8_e5m2_real(prod%value, that%value, this)
     end function
 
+    elemental function multiply_fp8_e5m2_real64(this, that) result(prod)
+        type(fp8_e5m2), intent(in) :: this
+        real(real64), intent(in) :: that
+        type(fp8_e5m2) :: prod
+
+        call helper_mul_fp8_e5m2_real64(prod%value, this%value, that)
+    end function
+
+    elemental function multiply_real64_fp8_e5m2(this, that) result(prod)
+        real(real64), intent(in) :: this
+        type(fp8_e5m2), intent(in) :: that
+        type(fp8_e5m2) :: prod
+
+        call helper_mul_fp8_e5m2_real64(prod%value, that%value, this)
+    end function
+
     !
     ! Operator(/)
     !
@@ -1107,6 +1229,22 @@ CONTAINS
         type(fp8_e5m2) :: quot
 
         call helper_div_real_fp8_e5m2(quot%value, this, that%value)
+    end function
+
+    elemental function divide_fp8_e5m2_real64(this, that) result(quot)
+        type(fp8_e5m2), intent(in) :: this
+        real(real64), intent(in) :: that
+        type(fp8_e5m2) :: quot
+
+        call helper_div_fp8_e5m2_real64(quot%value, this%value, that)
+    end function
+
+    elemental function divide_real64_fp8_e5m2(this, that) result(quot)
+        real(real64), intent(in) :: this
+        type(fp8_e5m2), intent(in) :: that
+        type(fp8_e5m2) :: quot
+
+        call helper_div_real64_fp8_e5m2(quot%value, this, that%value)
     end function
 
     !
@@ -1143,6 +1281,30 @@ CONTAINS
         logical :: out
 
         real(real32) :: yr
+
+        yr = GET_FP8_E5M2(y%value)
+
+        out = x .lt. yr
+    end function
+
+    elemental function lt_fp8_e5m2_real64(x, y) result(out)
+        type(fp8_e5m2), intent(in)   :: x
+        real(real64), intent(in) :: y
+        logical :: out
+
+        real(real64) :: xr
+
+        xr = GET_FP8_E5M2(x%value)
+
+        out = xr .lt. y
+    end function
+
+    elemental function lt_real64_fp8_e5m2(x, y) result(out)
+        type(fp8_e5m2), intent(in)  :: y
+        real(real64), intent(in) :: x
+        logical :: out
+
+        real(real64) :: yr
 
         yr = GET_FP8_E5M2(y%value)
 
@@ -1189,6 +1351,31 @@ CONTAINS
         out = x .le. yr
     end function
 
+    elemental function le_fp8_e5m2_real64(x, y) result(out)
+        type(fp8_e5m2), intent(in)   :: x
+        real(real64), intent(in) :: y
+        logical :: out
+
+        real(real64) :: xr
+
+        xr = GET_FP8_E5M2(x%value)
+
+        out = xr .le. y
+    end function
+
+    elemental function le_real64_fp8_e5m2(x, y) result(out)
+        type(fp8_e5m2), intent(in)  :: y
+        real(real64), intent(in) :: x
+        logical :: out
+
+        real(real64) :: yr
+
+        yr = GET_FP8_E5M2(y%value)
+
+        out = x .le. yr
+    end function
+
+
     !
     ! Operator (.gt.)
     !
@@ -1228,6 +1415,31 @@ CONTAINS
 
         out = x .gt. yr
     end function
+
+    elemental function gt_fp8_e5m2_real64(x, y) result(out)
+        type(fp8_e5m2), intent(in)   :: x
+        real(real64), intent(in) :: y
+        logical :: out
+
+        real(real64) :: xr
+
+        xr = GET_FP8_E5M2(x%value)
+
+        out = xr .gt. y
+    end function
+
+    elemental function gt_real64_fp8_e5m2(x, y) result(out)
+        type(fp8_e5m2), intent(in)  :: y
+        real(real64), intent(in) :: x
+        logical :: out
+
+        real(real64) :: yr
+
+        yr = GET_FP8_E5M2(y%value)
+
+        out = x .gt. yr
+    end function
+
 
     !
     ! Operator (.ge.)
@@ -1269,6 +1481,31 @@ CONTAINS
         out = x .ge. yr
     end function
 
+    elemental function ge_fp8_e5m2_real64(x, y) result(out)
+        type(fp8_e5m2), intent(in)   :: x
+        real(real64), intent(in) :: y
+        logical :: out
+
+        real(real64) :: xr
+
+        xr = GET_FP8_E5M2(x%value)
+
+        out = xr .ge. y
+    end function
+
+    elemental function ge_real64_fp8_e5m2(x, y) result(out)
+        type(fp8_e5m2), intent(in)  :: y
+        real(real64), intent(in) :: x
+        logical :: out
+
+        real(real64) :: yr
+
+        yr = GET_FP8_E5M2(y%value)
+
+        out = x .ge. yr
+    end function
+
+
     !
     ! Operator (.eq.)
     !
@@ -1308,6 +1545,31 @@ CONTAINS
 
         out = x .eq. yr
     end function
+
+    elemental function eq_fp8_e5m2_real64(x, y) result(out)
+        type(fp8_e5m2), intent(in)   :: x
+        real(real64), intent(in) :: y
+        logical :: out
+
+        real(real64) :: xr
+
+        xr = GET_FP8_E5M2(x%value)
+
+        out = xr .eq. y
+    end function
+
+    elemental function eq_real64_fp8_e5m2(x, y) result(out)
+        type(fp8_e5m2), intent(in)  :: y
+        real(real64), intent(in) :: x
+        logical :: out
+
+        real(real64) :: yr
+
+        yr = GET_FP8_E5M2(y%value)
+
+        out = x .eq. yr
+    end function
+
 
     !
     ! Operator (.ne.)
@@ -1349,6 +1611,31 @@ CONTAINS
         out = x .ne. yr
     end function
 
+    elemental function ne_fp8_e5m2_real64(x, y) result(out)
+        type(fp8_e5m2), intent(in)   :: x
+        real(real64), intent(in) :: y
+        logical :: out
+
+        real(real64) :: xr
+
+        xr = GET_FP8_E5M2(x%value)
+
+        out = xr .ne. y
+    end function
+
+    elemental function ne_real64_fp8_e5m2(x, y) result(out)
+        type(fp8_e5m2), intent(in)  :: y
+        real(real64), intent(in) :: x
+        logical :: out
+
+        real(real64) :: yr
+
+        yr = GET_FP8_E5M2(y%value)
+
+        out = x .ne. yr
+    end function
+
+
 
     !
     ! Operator(**)
@@ -1377,6 +1664,16 @@ CONTAINS
         tmp = int(that, kind=c_int)
 
         call helper_power_fp8_e5m2_int(power%value, this%value, tmp)
+    end function
+
+    elemental function power_fp8_e5m2_real64(this, that) result(power)
+        type(fp8_e5m2), intent(in) :: this
+        real(real64), intent(in) :: that
+        type(fp8_e5m2) :: power
+        real(real32) :: e
+
+        e = real(that, real32)
+        call helper_power_fp8_e5m2_real(power%value, this%value, e)
     end function
 
     elemental function min_fp8_e5m2(x, y) result(out)

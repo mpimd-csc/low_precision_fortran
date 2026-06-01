@@ -100,6 +100,7 @@ MODULE LPF_BF16
     PUBLIC :: max
     PUBLIC :: real
     PUBLIC :: dble
+    PUBLIC :: int
 
     TYPE, BIND(C) :: BF16
         INTEGER(c_int16_t) :: value
@@ -114,6 +115,7 @@ MODULE LPF_BF16
 
     INTERFACE ASSIGNMENT(=)
         MODULE PROCEDURE assign_int32, assign_int64, assign_real, assign_double, assign_bf16, assign_to_real
+        module procedure assign_to_double, assign_to_int
     END INTERFACE
 
     INTERFACE write(formatted)
@@ -128,57 +130,68 @@ MODULE LPF_BF16
     ! Interface für den + Operator
     interface operator(+)
         module procedure add_bf16_bf16, add_bf16_real, add_real_bf16
+        module procedure add_bf16_real64, add_real64_bf16
     end interface operator(+)
 
     ! Interface für den - Operator
     interface operator(-)
         module procedure subtract_bf16_bf16, subtract_bf16_real, subtract_real_bf16
+        module procedure subtract_bf16_real64, subtract_real64_bf16
         module procedure unitary_minus_bf16
     end interface operator(-)
 
     ! Interface für den * Operator
     interface operator(*)
         module procedure multiply_bf16_bf16, multiply_bf16_real, multiply_real_bf16
+        module procedure multiply_real64_bf16, multiply_bf16_real64
     end interface operator(*)
 
     ! Interface für den / Operator
     interface operator(/)
         module procedure divide_bf16_bf16, divide_bf16_real, divide_real_bf16
+        module procedure divide_bf16_real64, divide_real64_bf16
     end interface operator(/)
 
     ! Interface für den ** Operator
     interface operator(**)
         module procedure power_bf16_bf16, power_bf16_real, power_bf16_int
+        module procedure power_bf16_real64
     end interface operator(**)
 
     ! .lt. operator
     interface operator(.lt.)
-        module procedure lt_bf16_bf16, lt_bf16_fp32, lt_fp32_bf16
+        module procedure lt_bf16_bf16, lt_bf16_real32, lt_real32_bf16
+        module procedure lt_bf16_real64, lt_real64_bf16
     end interface operator(.lt.)
 
     ! .le. operator
     interface operator(.le.)
-        module procedure le_bf16_bf16, le_bf16_fp32, le_fp32_bf16
+        module procedure le_bf16_bf16, le_bf16_real32, le_real32_bf16
+        module procedure le_bf16_real64, le_real64_bf16
     end interface operator(.le.)
 
     ! .gt. operator
     interface operator(.gt.)
-        module procedure gt_bf16_bf16, gt_bf16_fp32, gt_fp32_bf16
+        module procedure gt_bf16_bf16, gt_bf16_real32, gt_real32_bf16
+        module procedure gt_bf16_real64, gt_real64_bf16
     end interface operator(.gt.)
 
     ! .ge. operator
     interface operator(.ge.)
-        module procedure ge_bf16_bf16, ge_bf16_fp32, ge_fp32_bf16
+        module procedure ge_bf16_bf16, ge_bf16_real32, ge_real32_bf16
+        module procedure ge_bf16_real64, ge_real64_bf16
     end interface operator(.ge.)
 
     ! .eq. operator
     interface operator(.eq.)
-        module procedure eq_bf16_bf16, eq_bf16_fp32, eq_fp32_bf16
+        module procedure eq_bf16_bf16, eq_bf16_real32, eq_real32_bf16
+        module procedure eq_bf16_real64, eq_real64_bf16
     end interface operator(.eq.)
 
     ! .ne. operator
     interface operator(.ne.)
-        module procedure ne_bf16_bf16, ne_bf16_fp32, ne_fp32_bf16
+        module procedure ne_bf16_bf16, ne_bf16_real32, ne_real32_bf16
+        module procedure ne_bf16_real64, ne_real64_bf16
     end interface operator(.ne.)
 
     ! convert to real
@@ -188,7 +201,9 @@ MODULE LPF_BF16
     interface dble
         module procedure dble_bf16
     end interface
-
+    interface int
+        module procedure int_bf16
+    end interface
 
 
 
@@ -820,6 +835,14 @@ MODULE LPF_BF16
             real(c_float), intent(in), value :: b
         end subroutine
 
+        pure subroutine helper_add_bf16_real64(out, a, b) bind(c, name = "__bf16_helper_add_bf16_real64")
+            use, intrinsic :: iso_c_binding
+            integer(c_int16_t), intent(out) :: out
+            integer(c_int16_t), intent(in), value :: a
+            real(c_double), intent(in), value :: b
+        end subroutine
+
+
         pure subroutine helper_mul_bf16_bf16(out, a, b) bind(c, name = "__bf16_helper_mul_bf16_bf16")
             use, intrinsic :: iso_c_binding
             integer(c_int16_t), intent(out) :: out
@@ -833,6 +856,14 @@ MODULE LPF_BF16
             integer(c_int16_t), intent(in), value :: a
             real(c_float), intent(in), value :: b
         end subroutine
+
+        pure subroutine helper_mul_bf16_real64(out, a, b) bind(c, name = "__bf16_helper_mul_bf16_real64")
+            use, intrinsic :: iso_c_binding
+            integer(c_int16_t), intent(out) :: out
+            integer(c_int16_t), intent(in), value :: a
+            real(c_double), intent(in), value :: b
+        end subroutine
+
 
         pure subroutine helper_sub_bf16_bf16(out, a, b) bind(c, name = "__bf16_helper_sub_bf16_bf16")
             use, intrinsic :: iso_c_binding
@@ -854,6 +885,21 @@ MODULE LPF_BF16
             real(c_float), intent(in), value :: a
             integer(c_int16_t), intent(in), value :: b
         end subroutine
+
+        pure subroutine helper_sub_bf16_real64(out, a, b) bind(c, name = "__bf16_helper_sub_bf16_real64")
+            use, intrinsic :: iso_c_binding
+            integer(c_int16_t), intent(out) :: out
+            integer(c_int16_t), intent(in), value :: a
+            real(c_double), intent(in), value :: b
+        end subroutine
+
+        pure subroutine helper_sub_real64_bf16(out, a, b) bind(c, name = "__bf16_helper_sub_real64_bf16")
+            use, intrinsic :: iso_c_binding
+            integer(c_int16_t), intent(out) :: out
+            real(c_double), intent(in), value :: a
+            integer(c_int16_t), intent(in), value :: b
+        end subroutine
+
 
         pure subroutine helper_unitary_minus_bf16(out, a) bind(c, name = "__bf16_helper_unitary_minus")
             use, intrinsic :: iso_c_binding
@@ -882,6 +928,21 @@ MODULE LPF_BF16
             real(c_float), intent(in), value :: a
             integer(c_int16_t), intent(in), value :: b
         end subroutine
+
+        pure subroutine helper_div_bf16_real64(out, a, b) bind(c, name = "__bf16_helper_div_bf16_real64")
+            use, intrinsic :: iso_c_binding
+            integer(c_int16_t), intent(out) :: out
+            integer(c_int16_t), intent(in), value :: a
+            real(c_double), intent(in), value :: b
+        end subroutine
+
+        pure subroutine helper_div_real64_bf16(out, a, b) bind(c, name = "__bf16_helper_div_real64_bf16")
+            use, intrinsic :: iso_c_binding
+            integer(c_int16_t), intent(out) :: out
+            real(c_double), intent(in), value :: a
+            integer(c_int16_t), intent(in), value :: b
+        end subroutine
+
 
         pure subroutine helper_power_bf16_bf16(out, a, b) bind(c, name = "__bf16_helper_pow_bf16_bf16")
             use, intrinsic :: iso_c_binding
@@ -983,6 +1044,19 @@ CONTAINS
         this = get_bf16(that%value)
     end subroutine
 
+    elemental subroutine assign_to_double(this, that)
+        real(real64), intent(out) :: this
+        type(bf16), intent(in) :: that
+        this = real(get_bf16(that%value), real64)
+    end subroutine
+
+    elemental subroutine assign_to_int(this, that)
+        integer, intent(out) :: this
+        type(bf16), intent(in) :: that
+        this = int(real(get_bf16(that%value)))
+    end subroutine
+
+
     elemental function real_bf16(x) result (out)
         type(bf16), intent(in) :: x
         real(real32) :: out
@@ -994,6 +1068,13 @@ CONTAINS
         real(real64) :: out
         out = dble(get_bf16(x%value))
     end function
+
+    elemental function int_bf16(x) result (out)
+        type(bf16), intent(in) :: x
+        integer :: out
+        out = int(real(get_bf16(x%value)))
+    end function
+
 
 
 
@@ -1022,6 +1103,21 @@ CONTAINS
         call helper_add_bf16_real(sum%value, that%value, this)
     end function
 
+    elemental function add_bf16_real64(this, that) result(sum)
+        type(bf16), intent(in) :: this
+        real(real64), intent(in) :: that
+        type(bf16) :: sum
+        call helper_add_bf16_real64(sum%value, this%value, that)
+    end function
+
+    elemental function add_real64_bf16(this, that) result(sum)
+        real(real64), intent(in) :: this
+        type(bf16), intent(in) :: that
+        type(bf16) :: sum
+        call helper_add_bf16_real64(sum%value, that%value, this)
+    end function
+
+
     !
     ! Operator (-)
     !
@@ -1048,6 +1144,23 @@ CONTAINS
 
         call helper_sub_real_bf16(diff%value, this, that%value)
     end function
+
+    elemental function subtract_bf16_real64(this, that) result(diff)
+        type(bf16), intent(in) :: this
+        real(real64), intent(in) :: that
+        type(bf16) :: diff
+
+        call helper_sub_bf16_real64(diff%value, this%value, that)
+    end function
+
+    elemental function subtract_real64_bf16(this, that) result(diff)
+        real(real64), intent(in) :: this
+        type(bf16), intent(in) :: that
+        type(bf16) :: diff
+
+        call helper_sub_real64_bf16(diff%value, this, that%value)
+    end function
+
 
     elemental function unitary_minus_bf16(this) result(out)
         type(bf16), intent(in) :: this
@@ -1083,6 +1196,23 @@ CONTAINS
         call helper_mul_bf16_real(prod%value, that%value, this)
     end function
 
+    elemental function multiply_bf16_real64(this, that) result(prod)
+        type(bf16), intent(in) :: this
+        real(real64), intent(in) :: that
+        type(bf16) :: prod
+
+        call helper_mul_bf16_real64(prod%value, this%value, that)
+    end function
+
+    elemental function multiply_real64_bf16(this, that) result(prod)
+        real(real64), intent(in) :: this
+        type(bf16), intent(in) :: that
+        type(bf16) :: prod
+
+        call helper_mul_bf16_real64(prod%value, that%value, this)
+    end function
+
+
     !
     ! Operator(/)
     !
@@ -1109,6 +1239,22 @@ CONTAINS
         call helper_div_real_bf16(quot%value, this, that%value)
     end function
 
+    elemental function divide_bf16_real64(this, that) result(quot)
+        type(bf16), intent(in) :: this
+        real(real64), intent(in) :: that
+        type(bf16) :: quot
+        call helper_div_bf16_real64(quot%value, this%value, that)
+    end function
+
+    elemental function divide_real64_bf16(this, that) result(quot)
+        real(real64), intent(in) :: this
+        type(bf16), intent(in) :: that
+        type(bf16) :: quot
+
+        call helper_div_real64_bf16(quot%value, this, that%value)
+    end function
+
+
     !
     ! Operator (.lt.)
     !
@@ -1125,7 +1271,7 @@ CONTAINS
         out = xr .lt. yr
     end function
 
-    elemental function lt_bf16_fp32(x, y) result(out)
+    elemental function lt_bf16_real32(x, y) result(out)
         type(bf16), intent(in)   :: x
         real(real32), intent(in) :: y
         logical :: out
@@ -1137,7 +1283,7 @@ CONTAINS
         out = xr .lt. y
     end function
 
-    elemental function lt_fp32_bf16(x, y) result(out)
+    elemental function lt_real32_bf16(x, y) result(out)
         type(bf16), intent(in)  :: y
         real(real32), intent(in) :: x
         logical :: out
@@ -1148,6 +1294,31 @@ CONTAINS
 
         out = x .lt. yr
     end function
+
+    elemental function lt_bf16_real64(x, y) result(out)
+        type(bf16), intent(in)   :: x
+        real(real64), intent(in) :: y
+        logical :: out
+
+        real(real64) :: xr
+
+        xr = GET_BF16(x%value)
+
+        out = xr .lt. y
+    end function
+
+    elemental function lt_real64_bf16(x, y) result(out)
+        type(bf16), intent(in)  :: y
+        real(real64), intent(in) :: x
+        logical :: out
+
+        real(real64) :: yr
+
+        yr = GET_BF16(y%value)
+
+        out = x .lt. yr
+    end function
+
 
     !
     ! Operator (.le.)
@@ -1165,7 +1336,7 @@ CONTAINS
         out = xr .le. yr
     end function
 
-    elemental function le_bf16_fp32(x, y) result(out)
+    elemental function le_bf16_real32(x, y) result(out)
         type(bf16), intent(in)   :: x
         real(real32), intent(in) :: y
         logical :: out
@@ -1177,7 +1348,7 @@ CONTAINS
         out = xr .le. y
     end function
 
-    elemental function le_fp32_bf16(x, y) result(out)
+    elemental function le_real32_bf16(x, y) result(out)
         type(bf16), intent(in)  :: y
         real(real32), intent(in) :: x
         logical :: out
@@ -1188,6 +1359,31 @@ CONTAINS
 
         out = x .le. yr
     end function
+
+    elemental function le_bf16_real64(x, y) result(out)
+        type(bf16), intent(in)   :: x
+        real(real64), intent(in) :: y
+        logical :: out
+
+        real(real64) :: xr
+
+        xr = GET_BF16(x%value)
+
+        out = xr .le. y
+    end function
+
+    elemental function le_real64_bf16(x, y) result(out)
+        type(bf16), intent(in)  :: y
+        real(real64), intent(in) :: x
+        logical :: out
+
+        real(real64) :: yr
+
+        yr = GET_BF16(y%value)
+
+        out = x .le. yr
+    end function
+
 
     !
     ! Operator (.gt.)
@@ -1205,7 +1401,7 @@ CONTAINS
         out = xr .gt. yr
     end function
 
-    elemental function gt_bf16_fp32(x, y) result(out)
+    elemental function gt_bf16_real32(x, y) result(out)
         type(bf16), intent(in)   :: x
         real(real32), intent(in) :: y
         logical :: out
@@ -1217,7 +1413,7 @@ CONTAINS
         out = xr .gt. y
     end function
 
-    elemental function gt_fp32_bf16(x, y) result(out)
+    elemental function gt_real32_bf16(x, y) result(out)
         type(bf16), intent(in)  :: y
         real(real32), intent(in) :: x
         logical :: out
@@ -1228,6 +1424,32 @@ CONTAINS
 
         out = x .gt. yr
     end function
+
+
+    elemental function gt_bf16_real64(x, y) result(out)
+        type(bf16), intent(in)   :: x
+        real(real64), intent(in) :: y
+        logical :: out
+
+        real(real64) :: xr
+
+        xr = GET_BF16(x%value)
+
+        out = xr .gt. y
+    end function
+
+    elemental function gt_real64_bf16(x, y) result(out)
+        type(bf16), intent(in)  :: y
+        real(real64), intent(in) :: x
+        logical :: out
+
+        real(real64) :: yr
+
+        yr = GET_BF16(y%value)
+
+        out = x .gt. yr
+    end function
+
 
     !
     ! Operator (.ge.)
@@ -1245,7 +1467,7 @@ CONTAINS
         out = xr .ge. yr
     end function
 
-    elemental function ge_bf16_fp32(x, y) result(out)
+    elemental function ge_bf16_real32(x, y) result(out)
         type(bf16), intent(in)   :: x
         real(real32), intent(in) :: y
         logical :: out
@@ -1257,7 +1479,7 @@ CONTAINS
         out = xr .ge. y
     end function
 
-    elemental function ge_fp32_bf16(x, y) result(out)
+    elemental function ge_real32_bf16(x, y) result(out)
         type(bf16), intent(in)  :: y
         real(real32), intent(in) :: x
         logical :: out
@@ -1268,6 +1490,31 @@ CONTAINS
 
         out = x .ge. yr
     end function
+
+    elemental function ge_bf16_real64(x, y) result(out)
+        type(bf16), intent(in)   :: x
+        real(real64), intent(in) :: y
+        logical :: out
+
+        real(real64) :: xr
+
+        xr = GET_BF16(x%value)
+
+        out = xr .ge. y
+    end function
+
+    elemental function ge_real64_bf16(x, y) result(out)
+        type(bf16), intent(in)  :: y
+        real(real64), intent(in) :: x
+        logical :: out
+
+        real(real64) :: yr
+
+        yr = GET_BF16(y%value)
+
+        out = x .ge. yr
+    end function
+
 
     !
     ! Operator (.eq.)
@@ -1285,7 +1532,7 @@ CONTAINS
         out = xr .eq. yr
     end function
 
-    elemental function eq_bf16_fp32(x, y) result(out)
+    elemental function eq_bf16_real32(x, y) result(out)
         type(bf16), intent(in)   :: x
         real(real32), intent(in) :: y
         logical :: out
@@ -1297,7 +1544,7 @@ CONTAINS
         out = xr .eq. y
     end function
 
-    elemental function eq_fp32_bf16(x, y) result(out)
+    elemental function eq_real32_bf16(x, y) result(out)
         type(bf16), intent(in)  :: y
         real(real32), intent(in) :: x
         logical :: out
@@ -1308,6 +1555,31 @@ CONTAINS
 
         out = x .eq. yr
     end function
+
+    elemental function eq_bf16_real64(x, y) result(out)
+        type(bf16), intent(in)   :: x
+        real(real64), intent(in) :: y
+        logical :: out
+
+        real(real64) :: xr
+
+        xr = GET_BF16(x%value)
+
+        out = xr .eq. y
+    end function
+
+    elemental function eq_real64_bf16(x, y) result(out)
+        type(bf16), intent(in)  :: y
+        real(real64), intent(in) :: x
+        logical :: out
+
+        real(real64) :: yr
+
+        yr = GET_BF16(y%value)
+
+        out = x .eq. yr
+    end function
+
 
     !
     ! Operator (.ne.)
@@ -1325,7 +1597,7 @@ CONTAINS
         out = xr .ne. yr
     end function
 
-    elemental function ne_bf16_fp32(x, y) result(out)
+    elemental function ne_bf16_real32(x, y) result(out)
         type(bf16), intent(in)   :: x
         real(real32), intent(in) :: y
         logical :: out
@@ -1337,12 +1609,36 @@ CONTAINS
         out = xr .ne. y
     end function
 
-    elemental function ne_fp32_bf16(x, y) result(out)
+    elemental function ne_real32_bf16(x, y) result(out)
         type(bf16), intent(in)  :: y
         real(real32), intent(in) :: x
         logical :: out
 
         real(real32) :: yr
+
+        yr = GET_BF16(y%value)
+
+        out = x .ne. yr
+    end function
+
+    elemental function ne_bf16_real64(x, y) result(out)
+        type(bf16), intent(in)   :: x
+        real(real64), intent(in) :: y
+        logical :: out
+
+        real(real64) :: xr
+
+        xr = GET_BF16(x%value)
+
+        out = xr .ne. y
+    end function
+
+    elemental function ne_real64_bf16(x, y) result(out)
+        type(bf16), intent(in)  :: y
+        real(real64), intent(in) :: x
+        logical :: out
+
+        real(real64) :: yr
 
         yr = GET_BF16(y%value)
 
@@ -1368,6 +1664,17 @@ CONTAINS
 
         call helper_power_bf16_real(power%value, this%value, that)
     end function
+
+    elemental function power_bf16_real64(this, that) result(power)
+        type(bf16), intent(in) :: this
+        real(real64), intent(in) :: that
+        type(bf16) :: power
+        real(real32) :: e
+
+        e = real(that, real32)
+        call helper_power_bf16_real(power%value, this%value, e)
+    end function
+
 
     elemental function power_bf16_int(this, that) result(power)
         type(bf16), intent(in) :: this

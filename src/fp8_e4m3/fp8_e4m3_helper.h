@@ -36,4 +36,12 @@ typedef union {
     uint8_t u8;
 } fp8_e4m3_handler_t;
 
+/* Operations with real64 */
+void __fp8_e4m3_helper_add_fp8_e4m3_real64(int8_t *out, int8_t a, double b);
+void __fp8_e4m3_helper_sub_fp8_e4m3_real64(int8_t *out, int8_t a, double b);
+void __fp8_e4m3_helper_sub_real64_fp8_e4m3(int8_t *out, double a, int8_t b);
+void __fp8_e4m3_helper_mul_fp8_e4m3_real64(int8_t *out, int8_t a, double b);
+void __fp8_e4m3_helper_div_fp8_e4m3_real64(int8_t *out, int8_t a, double b);
+void __fp8_e4m3_helper_div_real64_fp8_e4m3(int8_t *out, double a, int8_t b);
+
 #endif /* end of include guard: BF16_HELPER_H_P7LSSW6X */
