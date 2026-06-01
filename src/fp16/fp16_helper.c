@@ -159,6 +159,57 @@ HIDDEN void __fp16_helper_div_real_fp16(int16_t *out, float a, int16_t b)
     r->f16 = (_Float16 ) a / _b.f16;
 }
 
+/*
+ * Operations with real64 (double)
+ */
+HIDDEN void __fp16_helper_add_fp16_real64(int16_t *out, int16_t a, double b)
+{
+    fp16_handler_t *r = (fp16_handler_t * ) out;
+    fp16_handler_t _a = { .i16 = a};
+
+    r->f16 = _a.f16 + (_Float16) b;
+}
+
+HIDDEN void __fp16_helper_sub_fp16_real64(int16_t *out, int16_t a, double b)
+{
+    fp16_handler_t *r = (fp16_handler_t * ) out;
+    fp16_handler_t _a = { .i16 = a};
+
+    r->f16 = _a.f16 - (_Float16) b;
+}
+
+HIDDEN void __fp16_helper_sub_real64_fp16(int16_t *out, double a, int16_t b)
+{
+    fp16_handler_t *r = (fp16_handler_t * ) out;
+    fp16_handler_t _b = { .i16 = b};
+
+    r->f16 = (_Float16) a - _b.f16;
+}
+
+HIDDEN void __fp16_helper_mul_fp16_real64(int16_t *out, int16_t a, double b)
+{
+    fp16_handler_t *r = (fp16_handler_t * ) out;
+    fp16_handler_t _a = { .i16 = a};
+
+    r->f16 = _a.f16 * (_Float16) b;
+}
+
+HIDDEN void __fp16_helper_div_fp16_real64(int16_t *out, int16_t a, double b)
+{
+    fp16_handler_t *r = (fp16_handler_t * ) out;
+    fp16_handler_t _a = { .i16 = a};
+
+    r->f16 = _a.f16 / (_Float16) b;
+}
+
+
+HIDDEN void __fp16_helper_div_real64_fp16(int16_t *out, double a, int16_t b)
+{
+    fp16_handler_t *r = (fp16_handler_t * ) out;
+    fp16_handler_t _b = { .i16 = b};
+
+    r->f16 = (_Float16) a / _b.f16;
+}
 
 /*
  * Operator (**)

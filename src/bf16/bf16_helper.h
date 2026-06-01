@@ -42,4 +42,14 @@ lpf_float16_t sqrt_bf16(lpf_float16_t x);
 lpf_float16_t sign_bf16(lpf_float16_t a, lpf_float16_t b);
 lpf_float16_t diff_bf16(lpf_float16_t a, lpf_float16_t b);
 
+/* Operations with real64 */
+void __bf16_helper_add_bf16_real64(int16_t *out, int16_t a, double b);
+void __bf16_helper_add_real64_bf16(int16_t *out, double a, int16_t b);
+void __bf16_helper_sub_bf16_real64(int16_t *out, int16_t a, double b);
+void __bf16_helper_sub_real64_bf16(int16_t *out, double a, int16_t b);
+void __bf16_helper_mul_bf16_real64(int16_t *out, int16_t a, double b);
+void __bf16_helper_mul_real64_bf16(int16_t *out, double a, int16_t b);
+void __bf16_helper_div_bf16_real64(int16_t *out, int16_t a, double b);
+void __bf16_helper_div_real64_bf16(int16_t *out, double a, int16_t b);
+
 #endif /* end of include guard: BF16_HELPER_H_P7LSSW6X */

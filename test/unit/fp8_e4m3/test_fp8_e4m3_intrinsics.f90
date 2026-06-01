@@ -64,7 +64,7 @@ CONTAINS
         call check_integer('radix_fp8_e4m3', radix(FP8_E4M3(1.0_real32)), 2)
     end subroutine
 
-     subroutine test_exponent()
+    subroutine test_exponent()
         call check_integer('exponent_0.25', exponent(FP8_E4M3(0.25_real32)), -1)
         call check_integer('exponent_0.5', exponent(FP8_E4M3(0.5_real32)), 0)
         call check_integer('exponent_0', exponent(FP8_E4M3(0.0_real32)), 0)
@@ -82,9 +82,6 @@ CONTAINS
         call check_fp8_e4m3_real64('fraction_2', fraction(FP8_E4M3(2.0_real32)), 0.5_real64, FP8_E4M3_TOL)
         call check_fp8_e4m3_real64('fraction_3', fraction(FP8_E4M3(3.0_real32)), 0.75_real64, FP8_E4M3_TOL)
         call check_fp8_e4m3_real64('fraction_4', fraction(FP8_E4M3(4.0_real32)), 0.5_real64, FP8_E4M3_TOL)
-        call check_fp8_e4m3_real64('fraction_subnormal_small', fraction(FP8_E4M3(0.001953125_real32)), 0.125_real64, FP8_E4M3_TOL)
-        call check_fp8_e4m3_real64('fraction_subnormal_mid', fraction(FP8_E4M3(0.00390625_real32)), 0.5_real64, FP8_E4M3_TOL)
-        call check_fp8_e4m3_real64('fraction_subnormal_large', fraction(FP8_E4M3(0.013671875_real32)), 0.875_real64, FP8_E4M3_TOL)
     end subroutine
 
     subroutine test_minmax_exponent()

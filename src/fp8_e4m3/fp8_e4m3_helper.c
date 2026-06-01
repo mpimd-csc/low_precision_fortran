@@ -158,6 +158,81 @@ HIDDEN void __fp8_e4m3_helper_div_real_fp8_e4m3(int8_t *out, float a, int8_t b)
     r->fp8_e4m3 = fp8_e4m3_div(_a, _b.fp8_e4m3);
 }
 
+/*
+ * Operations with real64 (double)
+ */
+HIDDEN void __fp8_e4m3_helper_add_fp8_e4m3_real64(int8_t *out, int8_t a, double b)
+{
+    fp8_e4m3_handler_t *r = (fp8_e4m3_handler_t * ) out;
+    fp8_e4m3_handler_t _a = { .i8 = a};
+    fp8_e4m3_t _b = fp8_e4m3_from_float(b);
+
+    r->fp8_e4m3 = fp8_e4m3_add(_a.fp8_e4m3, _b);
+}
+
+HIDDEN void __fp8_e4m3_helper_add_real64_fp8_e4m3(int8_t *out, double a, int8_t b)
+{
+    fp8_e4m3_handler_t *r = (fp8_e4m3_handler_t * ) out;
+    fp8_e4m3_handler_t _b = { .i8 = b};
+    fp8_e4m3_t _a = fp8_e4m3_from_float(a);
+
+    r->fp8_e4m3 = fp8_e4m3_add(_a, _b.fp8_e4m3);
+}
+
+HIDDEN void __fp8_e4m3_helper_sub_fp8_e4m3_real64(int8_t *out, int8_t a, double b)
+{
+    fp8_e4m3_handler_t *r = (fp8_e4m3_handler_t * ) out;
+    fp8_e4m3_handler_t _a = { .i8 = a};
+    fp8_e4m3_t _b = fp8_e4m3_from_float(b);
+
+    r->fp8_e4m3 = fp8_e4m3_sub(_a.fp8_e4m3, _b);
+}
+
+HIDDEN void __fp8_e4m3_helper_sub_real64_fp8_e4m3(int8_t *out, double a, int8_t b)
+{
+    fp8_e4m3_handler_t *r = (fp8_e4m3_handler_t * ) out;
+    fp8_e4m3_handler_t _b = { .i8 = b};
+    fp8_e4m3_t _a = fp8_e4m3_from_float(a);
+
+    r->fp8_e4m3 = fp8_e4m3_sub(_a, _b.fp8_e4m3);
+}
+
+HIDDEN void __fp8_e4m3_helper_mul_fp8_e4m3_real64(int8_t *out, int8_t a, double b)
+{
+    fp8_e4m3_handler_t *r = (fp8_e4m3_handler_t * ) out;
+    fp8_e4m3_handler_t _a = { .i8 = a};
+    fp8_e4m3_t _b = fp8_e4m3_from_float(b);
+
+    r->fp8_e4m3 = fp8_e4m3_mul(_a.fp8_e4m3, _b);
+}
+
+HIDDEN void __fp8_e4m3_helper_mul_real64_fp8_e4m3(int8_t *out, double a, int8_t b)
+{
+    fp8_e4m3_handler_t *r = (fp8_e4m3_handler_t * ) out;
+    fp8_e4m3_handler_t _b = { .i8 = b};
+    fp8_e4m3_t _a = fp8_e4m3_from_float(a);
+
+    r->fp8_e4m3 = fp8_e4m3_mul(_a, _b.fp8_e4m3);
+}
+
+HIDDEN void __fp8_e4m3_helper_div_fp8_e4m3_real64(int8_t *out, int8_t a, double b)
+{
+    fp8_e4m3_handler_t *r = (fp8_e4m3_handler_t * ) out;
+    fp8_e4m3_handler_t _a = { .i8 = a};
+    fp8_e4m3_t _b = fp8_e4m3_from_float(b);
+
+    r->fp8_e4m3 = fp8_e4m3_div(_a.fp8_e4m3, _b);
+}
+
+HIDDEN void __fp8_e4m3_helper_div_real64_fp8_e4m3(int8_t *out, double a, int8_t b)
+{
+    fp8_e4m3_handler_t *r = (fp8_e4m3_handler_t * ) out;
+    fp8_e4m3_handler_t _b = { .i8 = b};
+    fp8_e4m3_t _a = fp8_e4m3_from_float(a);
+
+    r->fp8_e4m3 = fp8_e4m3_div(_a, _b.fp8_e4m3);
+}
+
 
 /*
  * Operator (**)
