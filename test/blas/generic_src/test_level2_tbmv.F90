@@ -123,6 +123,7 @@ contains
 
 
         ao = 0.0
+        x_old = 0.0
 
         do i = 1, 3
             ao(i,i) = 1.0

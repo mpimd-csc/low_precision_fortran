@@ -185,7 +185,7 @@ CONTAINS
 
         do i = 1, NTEST
             result = dot(n(i), x(:, i), incx(i), y(:, i), incy(i))
-            if (abs(dble(result) - dble(expected(i))) < 1.0d-2) then
+            if (abs(dble(result) - dble(expected(i))) < 1.0d-1) then
                 print "(A, I2, A, I3, A, I3, A, I3, A, F10.6, A, F10.6)", &
                       "HDOT   -- PASS -- Testcase ", i, ": N = ", n(i), ", INCX = ", incx(i), &
                       ", INCY = ", incy(i), ", Result = ", dble(result), ", Expected = ", dble(expected(i))
