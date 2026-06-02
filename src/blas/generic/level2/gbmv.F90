@@ -197,7 +197,7 @@ submodule (lpf_blas_fp8_e4m3) lpf_blas_gbmv_fp8_e4m3
 
 contains
 
-    pure subroutine gbmv_impl(trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y, incy)
+    subroutine gbmv_impl(trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y, incy)
         implicit none
         character, intent(in) :: trans
         integer(int64), intent(in) :: incx, incy, kl, ku, lda, m, n
@@ -237,50 +237,49 @@ contains
         if (beta.ne.one) then
             if (incy.eq.1) then
                 if (beta.eq.zero) then
-                    do i = 1, leny
+                    do i = 1,leny
                         y(i) = zero
                     end do
                 else
-                    do i = 1, leny
+                    do i = 1,leny
                         y(i) = beta*y(i)
                     end do
                 end if
             else
                 iy = ky
                 if (beta.eq.zero) then
-                    do i = 1, leny
+                    do i = 1,leny
                         y(iy) = zero
                         iy = iy + incy
                     end do
                 else
-                    do i = 1, leny
+                    do i = 1,leny
                         y(iy) = beta*y(iy)
                         iy = iy + incy
                     end do
                 end if
             end if
         end if
-
         if (alpha.eq.zero) return
         kup1 = ku + 1
 
-        if (trans == 'N' .or. trans == 'n') then
+        if (trans .eq. 'n') then
             jx = kx
             if (incy.eq.1) then
-                do j = 1, n
+                do j = 1,n
                     temp = alpha*x(jx)
                     k = kup1 - j
-                    do i = max(1, j-ku), min(m, j+kl)
+                    do i = max(1,j-ku),min(m,j+kl)
                         y(i) = y(i) + temp*a(k+i,j)
                     end do
                     jx = jx + incx
                 end do
             else
-                do j = 1, n
+                do j = 1,n
                     temp = alpha*x(jx)
                     iy = ky
                     k = kup1 - j
-                    do i = max(1, j-ku), min(m, j+kl)
+                    do i = max(1,j-ku),min(m,j+kl)
                         y(iy) = y(iy) + temp*a(k+i,j)
                         iy = iy + incy
                     end do
@@ -291,30 +290,32 @@ contains
         else
             jy = ky
             if (incx.eq.1) then
-                do j = 1, n
+                do j = 1,n
                     temp = zero
                     k = kup1 - j
-                    do i = max(1, j-ku), min(m, j+kl)
+                    do i = max(1,j-ku),min(m,j+kl)
                         temp = temp + a(k+i,j)*x(i)
                     end do
                     y(jy) = y(jy) + alpha*temp
                     jy = jy + incy
                 end do
             else
-                do j = 1, n
+                do j = 1,n
                     temp = zero
                     ix = kx
                     k = kup1 - j
-                    do i = max(1, j-ku), min(m, j+kl)
+                    do i = max(1,j-ku),min(m,j+kl)
                         temp = temp + a(k+i,j)*x(ix)
                         ix = ix + incx
                     end do
+
                     y(jy) = y(jy) + alpha*temp
                     jy = jy + incy
                     if (j.gt.ku) kx = kx + incx
                 end do
             end if
         end if
+
     end subroutine
 
     module subroutine gbmv_64(trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y, incy)

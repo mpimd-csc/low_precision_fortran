@@ -21,9 +21,12 @@
 
 #include <math.h>
 #include <ctype.h>
+#ifdef BLAS_IS_ILP64
+#define MKL_ILP64
+#endif
 #include <mkl.h>
 
-#include <lpf_fp8_e4m3_emu.h>
+#include "lpf_fp8_e4m3_emu.h"
 
 void __lpf_blas_gemm_e4m3_fp32 (
         char *_transa, char *_transb, int64_t m, int64_t n, int64_t k,

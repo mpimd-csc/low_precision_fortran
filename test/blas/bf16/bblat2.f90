@@ -998,7 +998,7 @@
      &                           INCY
                               IF( REWI )                                &
      &                           REWIND NTRA
-                              CALL BSBMV( UPLO, N, K, ALPHA, AA, LDA,   &
+                              CALL SBMV( UPLO, N, K, ALPHA, AA, LDA,   &
      &                                    XX, INCX, BETA, YY, INCY )
                            ELSE IF( PACKED )THEN
                               IF( TRACE )                               &

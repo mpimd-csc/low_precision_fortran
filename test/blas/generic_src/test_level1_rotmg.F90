@@ -42,6 +42,7 @@ contains
         sb = 1.0
         sc = 1.0
         sd = 3.0
+        sparam = 0.0
 
         sparam_ref(1) =  1.0000
         sparam_ref(2) = .334
