@@ -9,13 +9,48 @@ submodule (lpf_blas_fp8_e4m3) lpf_blas_gemm_fp32_fp8_e4m3
     use iso_fortran_env
     use iso_c_binding
 
+#ifdef LPF_BLAS_USE_GEMM_E5M2_F32
+    interface
+        subroutine gemm_e5m2_fp32(transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c, ldc) &
+                & bind(C, name = "__lpf_blas_gemm_e5m2_fp32")
+            import DT, c_char, c_int64_t, c_float, real32
+            implicit none
+            character(c_char), intent(in)   :: transa, transb
+            integer(c_int64_t), intent(in), value  :: k, lda, ldb, ldc, m, n
+            real(c_float), intent(in), value  :: alpha
+            real(c_float), intent(in), value  :: beta
+            type(DT), intent(in) :: a(lda,*)
+            type(DT), intent(in) :: b(ldb,*)
+            real(c_float), intent(inout) :: c(ldc,*)
+        end subroutine
+    end interface
+#endif
+
+#ifdef LPF_BLAS_USE_GEMM_E5M2_F32
+    interface
+        subroutine gemm_e4m3_fp32(transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c, ldc) &
+                & bind(C, name = "__lpf_blas_gemm_e4m3_fp32")
+            import DT, c_char, c_int64_t, c_float, real32
+            implicit none
+            character(c_char), intent(in)   :: transa, transb
+            integer(c_int64_t), intent(in), value  :: k, lda, ldb, ldc, m, n
+            real(c_float), intent(in), value  :: alpha
+            real(c_float), intent(in), value  :: beta
+            type(DT), intent(in) :: a(lda,*)
+            type(DT), intent(in) :: b(ldb,*)
+            real(c_float), intent(inout) :: c(ldc,*)
+        end subroutine
+    end interface
+#endif
+
+
 contains
 
     pure subroutine gemm_fp32_impl(transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c, ldc)
         implicit none
         character, intent(in) :: transa, transb
         integer(int64), intent(in) :: k, lda, ldb, ldc, m, n
-        type(DT), intent(in) :: alpha
+        real(real32), intent(in) :: alpha
         real(real32), intent(in) :: beta
         type(DT), intent(in) :: a(lda,*)
         type(DT), intent(in) :: b(ldb,*)
@@ -41,7 +76,7 @@ contains
             nrowb = n
         end if
 
-        if ((m == 0) .or. (n == 0) .or. (((alpha == zero) .or. (k == 0)) .and. (beta == 1.0))) return
+        if ((m == 0) .or. (n == 0) .or. (((alpha == 0.0) .or. (k == 0)) .and. (beta == 1.0))) return
 
         if (alpha == zero) then
             if (beta == zero) then
@@ -135,7 +170,7 @@ contains
         implicit none
         character, intent(in) :: transa, transb
         integer(int64), intent(in) :: k, lda, ldb, ldc, m, n
-        type(DT), intent(in) :: alpha
+        real(real32), intent(in) :: alpha
         real(real32), intent(in) :: beta
         type(DT), target, intent(in) :: a(..)
         type(DT), target, intent(in) :: b(..)
@@ -162,15 +197,20 @@ contains
         lc(1) = total_size
         ptr = c_loc(c)
         call c_f_pointer(ptr, pc, lc)
-
+#if defined(LPF_BLAS_USE_GEMM_E5M2_F32)
+        call gemm_e5m2_fp32(transa, transb, m, n, k, alpha, pa, lda, pb, ldb, beta, pc, ldc)
+#elif defined(LPF_BLAS_USE_GEMM_E5M2_F32)
+        call gemm_e4m3_fp32(transa, transb, m, n, k, alpha, pa, lda, pb, ldb, beta, pc, ldc)
+#else
         call gemm_fp32_impl(transa, transb, m, n, k, alpha, pa, lda, pb, ldb, beta, pc, ldc)
+#endif
     end subroutine
 
     module subroutine gemm_fp32_32(transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c, ldc)
         implicit none
         character, intent(in) :: transa, transb
         integer(int32), intent(in) :: k, lda, ldb, ldc, m, n
-        type(DT), intent(in) :: alpha
+        real(real32), intent(in) :: alpha
         real(real32), intent(in) :: beta
         type(DT), target, intent(in) :: a(..)
         type(DT), target, intent(in) :: b(..)
@@ -198,9 +238,19 @@ contains
         ptr = c_loc(c)
         call c_f_pointer(ptr, pc, lc)
 
+#if defined(LPF_BLAS_USE_GEMM_E5M2_F32)
+        call gemm_e5m2_fp32(transa, transb, int(m, int64), int(n, int64), &
+            & int(k, int64), alpha, pa, int(lda, int64), pb, &
+            & int(ldb, int64), beta, pc, int(ldc, int64))
+#elif defined(LPF_BLAS_USE_GEMM_E5M2_F32)
+        call gemm_e4m3_fp32(transa, transb, int(m, int64), int(n, int64), &
+            & int(k, int64), alpha, pa, int(lda, int64), pb, &
+            & int(ldb, int64), beta, pc, int(ldc, int64))
+#else
         call gemm_fp32_impl(transa, transb, int(m, int64), int(n, int64), &
             & int(k, int64), alpha, pa, int(lda, int64), pb, &
             & int(ldb, int64), beta, pc, int(ldc, int64))
+#endif
     end subroutine
 
 end submodule
