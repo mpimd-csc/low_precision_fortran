@@ -64,6 +64,20 @@ done manually by call `real` or `dble`. The `kind` parameter in the `real` call
 is not supported, since this must be a compile-time constant, which could not be
 evaluated by an overloaded function.
 
+>>> [!caution] Precision Leak
+In order to avoid precision leaks during the usage of Low Precision Fortran,
+there is a difference to other way low precision aroithmetic is implemented in
+other programming languages:
+
+**Every operation, where at least one operand is of a low precision type, is
+performed in the low precision.**
+
+This is necessary to get expressions like ` x + 1.0` working without storing the
+`1.0` in a variable before. If you want this operation to be performed in
+`real32`, one have to use `real(x) + 1.0`.
+
+>>>
+
 
 ### IO
 
