@@ -23,12 +23,15 @@
 #include <string.h>
 
 #ifdef LPF_BLAS_IS_MKL
+#ifdef BLAS_IS_ILP64
+#define MKL_ILP64
+#endif
 #include <mkl.h>
 #endif
 
 void LPF_GLOBAL(bgemm_fp32,
                 BGEMM_FP32)(char* transa, char* transb, int64_t* m, int64_t* n,
-                            int64_t* k, lpf_bfloat16_t* alpha,
+                            int64_t* k, float * alpha,
                             lpf_bfloat16_t* a, int64_t* lda, lpf_bfloat16_t* b,
                             int64_t* ldb, float* beta, float* c__, int64_t* ldc,
                             lpf_fortran_strlen_t transa_len,
@@ -146,8 +149,24 @@ void LPF_GLOBAL(bgemm_fp32,
         tb = CblasTrans;
     }
 
-    cblas_gemm_f16f16f32(CblasColMajor, ta, tb, *m, *n, *k, falpha, (MKL_F16*)a,
-                         *lda, (MKL_F16*)b, *ldb, fbeta, c__, *ldc);
+#ifdef LPF_BLAS_IS_MKL
+    MKL_INT _m = *m;
+    MKL_INT _n = *n;
+    MKL_INT _k = *k;
+    MKL_INT _lda = *lda;
+    MKL_INT _ldb = *ldb;
+    MKL_INT _ldc = *ldc;
+#else
+    int _m = *m;
+    int _n = *n;
+    int _k = *k;
+    int _lda = *lda;
+    int _ldb = *ldb;
+    int _ldc = *ldc;
+#endif
+
+    cblas_gemm_bf16bf16f32(CblasColMajor, ta, tb, _m, _n, _k, falpha, (MKL_F16*)a,
+                         _lda, (MKL_F16*)b, _ldb, fbeta, c__, _ldc);
 
     return;
 
@@ -318,20 +337,20 @@ void LPF_GLOBAL(bgemm_fp32,
 
 void lpf_blas_bgemm_fp32_fortran_dyn_rank_64(
     char* transa, char* transb, int64_t* m, int64_t* n, int64_t* k,
-    lpf_fbfloat16_t* alpha, CFI_cdesc_t* _a, int64_t* lda, CFI_cdesc_t* _b,
+    float *alpha, CFI_cdesc_t* _a, int64_t* lda, CFI_cdesc_t* _b,
     int64_t* ldb, float* beta, CFI_cdesc_t* _c, int64_t* ldc)
 {
     lpf_bfloat16_t* a = _a->base_addr;
     lpf_bfloat16_t* b = _b->base_addr;
     float* c = _c->base_addr;
     LPF_GLOBAL(bgemm_fp32, BGEMM_FP32)(
-        transa, transb, m, n, k, (lpf_bfloat16_t*)alpha, (lpf_bfloat16_t*)a,
+        transa, transb, m, n, k, alpha, (lpf_bfloat16_t*)a,
         lda, (lpf_bfloat16_t*)b, ldb, beta, c, ldc, 1, 1);
 }
 
 void lpf_blas_bgemm_fp32_fortran_dyn_rank_32(
     char* transa, char* transb, int32_t* m, int32_t* n, int32_t* k,
-    lpf_fbfloat16_t* alpha, CFI_cdesc_t* _a, int32_t* lda, CFI_cdesc_t* _b,
+    float * alpha, CFI_cdesc_t* _a, int32_t* lda, CFI_cdesc_t* _b,
     int32_t* ldb, float* beta, CFI_cdesc_t* _c, int32_t* ldc)
 {
     lpf_bfloat16_t* a = _a->base_addr;
@@ -345,6 +364,6 @@ void lpf_blas_bgemm_fp32_fortran_dyn_rank_32(
     int64_t _ldc = *ldc;
     LPF_GLOBAL(bgemm_fp32,
                BGEMM_FP32)(transa, transb, &_m, &_n, &_k,
-                           (lpf_bfloat16_t*)alpha, (lpf_bfloat16_t*)a, &_lda,
+                           alpha, (lpf_bfloat16_t*)a, &_lda,
                            (lpf_bfloat16_t*)b, &_ldb, beta, c, &_ldc, 1, 1);
 }

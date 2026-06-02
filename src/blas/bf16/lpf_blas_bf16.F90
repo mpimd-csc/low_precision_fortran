@@ -769,7 +769,7 @@ module lpf_blas_bf16
             integer(c_int64_t), intent(in) :: m
             integer(c_int64_t), intent(in) :: n
             integer(c_int64_t), intent(in) :: k
-            type(bf16), intent(in) :: alpha
+            real(c_float), intent(in) :: alpha
             type(bf16), intent(in) :: a(..)
             type(bf16), intent(in) :: b(..)
             real(c_float), intent(in) :: beta
@@ -787,7 +787,7 @@ module lpf_blas_bf16
             integer(c_int32_t), intent(in) :: m
             integer(c_int32_t), intent(in) :: n
             integer(c_int32_t), intent(in) :: k
-            type(bf16), intent(in) :: alpha
+            real(c_float), intent(in) :: alpha
             type(bf16), intent(in) :: a(..)
             type(bf16), intent(in) :: b(..)
             real(c_float), intent(in) :: beta

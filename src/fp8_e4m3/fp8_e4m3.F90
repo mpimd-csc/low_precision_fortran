@@ -100,6 +100,7 @@ MODULE LPF_FP8_E4M3
     PUBLIC :: max
     PUBLIC :: real
     PUBLIC :: dble
+    PUBLIC :: int
 
     TYPE, BIND(C) :: FP8_E4M3
         INTEGER(c_int8_t) :: value

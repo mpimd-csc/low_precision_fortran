@@ -754,7 +754,7 @@ module lpf_blas_fp16
     end interface
 
     interface gemm_fp32
-        subroutine gemm_fp32_64(transa,transb,m,n,k,alpha,a,lda,b,ldb,beta,c,ldc) &
+        subroutine hgemm_fp32_64(transa,transb,m,n,k,alpha,a,lda,b,ldb,beta,c,ldc) &
                 bind(C, name = "lpf_blas_hgemm_fp32_fortran_dyn_rank_64")
             use, intrinsic :: iso_c_binding
             use lpf_fp16
@@ -767,13 +767,13 @@ module lpf_blas_fp16
             integer(c_int64_t), intent(in) :: m
             integer(c_int64_t), intent(in) :: n
             integer(c_int64_t), intent(in) :: k
-            type(fp16), intent(in) :: alpha
+            real(c_float), intent(in) :: alpha
             type(fp16), intent(in) :: a(..)
             type(fp16), intent(in) :: b(..)
             real(c_float), intent(in) :: beta
             real(c_float), intent(inout) :: c(..)
-        end subroutine gemm_fp32_64
-        subroutine gemm_fp32_32(transa,transb,m,n,k,alpha,a,lda,b,ldb,beta,c,ldc) &
+        end subroutine hgemm_fp32_64
+        subroutine hgemm_fp32_32(transa,transb,m,n,k,alpha,a,lda,b,ldb,beta,c,ldc) &
                 bind(C, name = "lpf_blas_hgemm_fp32_fortran_dyn_rank_32")
             use, intrinsic :: iso_c_binding
             use lpf_fp16
@@ -786,12 +786,12 @@ module lpf_blas_fp16
             integer(c_int32_t), intent(in) :: m
             integer(c_int32_t), intent(in) :: n
             integer(c_int32_t), intent(in) :: k
-            type(fp16), intent(in) :: alpha
+            real(c_float), intent(in) :: alpha
             type(fp16), intent(in) :: a(..)
             type(fp16), intent(in) :: b(..)
             real(c_float), intent(in) :: beta
             real(c_float), intent(inout) :: c(..)
-        end subroutine gemm_fp32_32
+        end subroutine hgemm_fp32_32
     end interface
 
     interface symm

@@ -24,6 +24,9 @@
 #include <string.h>
 
 #ifdef LPF_BLAS_IS_MKL
+#ifdef BLAS_IS_ILP64
+#define MKL_ILP64
+#endif
 #include <mkl.h>
 #endif
 

@@ -436,7 +436,7 @@
      &                   CS( NMAX*NMAX ), CT( NMAX ), G( NMAX )
       INTEGER(lpf_default_int_kind)            IDIM( NIDIM )
 !     .. Local Scalars ..
-      TYPE(FP16)               ALPHA, ALS, BETA, BLS, ERR, ERRMAX
+      TYPE(FP16)         ALPHA, ALS, BETA, BLS, ERR, ERRMAX
       INTEGER(lpf_default_int_kind)            I, IA, IB, ICA, ICB, IK, IM, IN, K, KS, LAA,   &
      &                   LBB, LCC, LDA, LDAS, LDB, LDBS, LDC, LDCS, M,  &
      &                   MA, MB, MS, N, NA, NARGS, NB, NC, NS

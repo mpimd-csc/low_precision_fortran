@@ -60,9 +60,10 @@ linux-intel:
   parallel:
     matrix:
       - INTEL_VERSION: [ "2025" ]
+        BLA_VENDOR: [ "Generic", "Intel10_64lp", "Intel10_64ilp"]
   script:
     - CC=icx FC=ifx cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=RelWithDebInfo
     - cmake --build build-dir 2>&1 | tee build.log
     - cmake --build build-dir --target install
-    # - (cd build-dir; OMP_NUM_THREADS=1 ctest -V)
+    - (cd build-dir; OMP_NUM_THREADS=1 ctest -V)
 

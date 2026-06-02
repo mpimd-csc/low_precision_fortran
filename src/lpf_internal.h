@@ -118,10 +118,10 @@ extern "C" {
 
     /* Structures to handle the ISO_C_Binding correctly. */
     typedef struct _lpf_ffloat16_t {
-        uint16_t value;
+        int16_t value;
     } lpf_ffloat16_t;
     typedef struct _lpf_fbfloat16_t {
-        uint16_t value;
+        int16_t value;
     } lpf_fbfloat16_t;
 
 

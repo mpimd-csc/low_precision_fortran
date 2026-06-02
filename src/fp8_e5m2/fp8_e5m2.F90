@@ -100,6 +100,7 @@ MODULE LPF_FP8_E5M2
     PUBLIC :: max
     PUBLIC :: real
     PUBLIC :: dble
+    PUBLIC :: int
 
     TYPE, BIND(C) :: FP8_E5M2
         INTEGER(c_int8_t) :: value
@@ -193,13 +194,14 @@ MODULE LPF_FP8_E5M2
         module procedure ne_fp8_e5m2_real64, ne_real64_fp8_e5m2
     end interface operator(.ne.)
 
-    ! convert to real
     interface real
         module procedure real_fp8_e5m2
     end interface
+
     interface dble
         module procedure dble_fp8_e5m2
     end interface
+
     interface int
         module procedure int_fp8_e5m2
     end interface

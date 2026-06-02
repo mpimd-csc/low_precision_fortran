@@ -506,7 +506,7 @@ module lpf_blas_fp8_e5m2
         module subroutine gemm_fp32_32(transa,transb,m,n,k,alpha,a,lda,b,ldb,beta,c,ldc)
             character(c_char), intent(in) :: transa, transb
             integer(int32), intent(in) :: m, n, k, lda, ldb, ldc
-            type(DT), intent(in) :: alpha
+            real(real32), intent(in) :: alpha
             type(DT), target, intent(in) :: a(..), b(..)
             real(real32), intent(in) :: beta
             real(real32), target, intent(inout) :: c(..)
@@ -514,7 +514,7 @@ module lpf_blas_fp8_e5m2
         module subroutine gemm_fp32_64(transa,transb,m,n,k,alpha,a,lda,b,ldb,beta,c,ldc)
             character(c_char), intent(in) :: transa, transb
             integer(int64), intent(in) :: m, n, k, lda, ldb, ldc
-            type(DT), intent(in) :: alpha
+            real(real32), intent(in) :: alpha
             type(DT), target, intent(in) :: a(..), b(..)
             real(real32), intent(in) :: beta
             real(real32), target, intent(inout) :: c(..)

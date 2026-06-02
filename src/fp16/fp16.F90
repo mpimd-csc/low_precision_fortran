@@ -100,6 +100,7 @@ MODULE LPF_FP16
     PUBLIC :: max
     PUBLIC :: real
     PUBLIC :: dble
+    PUBLIC :: int
 
     TYPE, BIND(C) :: FP16
         INTEGER(c_int16_t) :: value

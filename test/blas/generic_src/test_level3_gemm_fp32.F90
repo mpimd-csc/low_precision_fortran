@@ -34,7 +34,7 @@ contains
     subroutine test_combinations()
         integer(int64) :: m, n, k
         integer(int64) :: lda, ldb, ldc
-        type(DT) :: alpha
+        real(real32) :: alpha
         real(real32) :: beta
         type(DT), allocatable :: a(:,:), b(:,:)
         real(real32), allocatable :: c(:,:)
@@ -71,16 +71,16 @@ contains
                     ldb = k
                 else if (transb == 'T') then
                     n = 3
-                    ldb = n
+                    ldb = k
                 else ! 'C'
                     n = 3
-                    ldb = n
+                    ldb = k
                 end if
 
                 ldc = m
 
                 allocate(a(lda, k))
-                allocate(b(ldb, n))
+                allocate(b(ldb, max(n, k)))
                 allocate(c(ldc, n))
 
                 do i = 1, size(a, 1)
