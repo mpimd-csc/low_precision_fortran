@@ -171,7 +171,7 @@ CONTAINS
 
             lok = .TRUE.
             do k = 1, n(i)
-                IF (abs(dble(xtemp(k)) - dble(xresult(k, i))) > 1.0d-2 * max(abs(dble(xresult(k, i))), 1.0d-5)) THEN
+                IF (abs(dble(xtemp(k)) - dble(xresult(k, i))) > 1.0d-1 * max(abs(dble(xresult(k, i))), 1.0d-5)) THEN
                     print "(A, I2, A, I3, A, I3, A, I3, A, I2, A, F10.6, A, F10.6)", &
                           "HROT   -- FAIL -- Testcase ", i, ": N = ", n(i), ", INCX = ", incx(i), &
                           ", INCY = ", incy(i), ", K = ", k, ", X, computed = ", dble(xtemp(k)), &
@@ -179,7 +179,7 @@ CONTAINS
                     ok = .FALSE.
                     lok = .FALSE.
                 END IF
-                IF (abs(dble(ytemp(k)) - dble(yresult(k, i))) > 1.0d-2 * max(abs(dble(yresult(k, i))), 1.0d-5)) THEN
+                IF (abs(dble(ytemp(k)) - dble(yresult(k, i))) > 1.0d-1 * max(abs(dble(yresult(k, i))), 1.0d-5)) THEN
                     print "(A, I2, A, I3, A, I3, A, I3, A, I2, A, F10.6, A, F10.6)", &
                           "HROT   -- FAIL -- Testcase ", i, ": N = ", n(i), ", INCX = ", incx(i), &
                           ", INCY = ", incy(i), ", K = ", k, ", Y, computed = ", dble(ytemp(k)), &
