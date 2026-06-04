@@ -80,20 +80,20 @@ int64_t LPF_GLOBAL(ihamax, IHAMAX)(int64_t* n, lpf_float16_t* sx, int64_t* incx)
 
 #include <ISO_Fortran_binding.h>
 
-lpf_blas_int_t lpf_blas_ihamax_fortran_dyn_rank_64(int64_t* n, CFI_cdesc_t* _sx,
+int64_t lpf_blas_ihamax_fortran_dyn_rank_64(int64_t* n, CFI_cdesc_t* _sx,
                                                    int64_t* incx)
 {
     lpf_float16_t* sx = _sx->base_addr;
     int64_t res = LPF_GLOBAL(ihamax, IHAMAX)(n, sx, incx);
-    return (lpf_blas_int_t)res;
+    return (int64_t)res;
 }
 
-lpf_blas_int_t lpf_blas_ihamax_fortran_dyn_rank_32(int32_t* n, CFI_cdesc_t* _sx,
+int32_t lpf_blas_ihamax_fortran_dyn_rank_32(int32_t* n, CFI_cdesc_t* _sx,
                                                    int32_t* incx)
 {
     lpf_float16_t* sx = _sx->base_addr;
     int64_t _n = *n;
     int64_t _incx = *incx;
     int64_t res = LPF_GLOBAL(ihamax, IHAMAX)(&_n, sx, &_incx);
-    return (lpf_blas_int_t)res;
+    return (int32_t)res;
 }
