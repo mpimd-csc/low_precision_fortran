@@ -339,28 +339,6 @@ void LPF_GLOBAL(hgemm_fp32,
 
 #include <ISO_Fortran_binding.h>
 
-void lpf_blas_hgemm_fp32_fortran_dyn_rank(
-    char* transa, char* transb, lpf_blas_int_t* m, lpf_blas_int_t* n,
-    lpf_blas_int_t* k, float * alpha, CFI_cdesc_t* _a,
-    lpf_blas_int_t* lda, CFI_cdesc_t* _b, lpf_blas_int_t* ldb, float* beta,
-    CFI_cdesc_t* _c, lpf_blas_int_t* ldc)
-{
-    lpf_float16_t* a = _a->base_addr;
-    lpf_float16_t* b = _b->base_addr;
-    float* c = _c->base_addr;
-
-    int64_t _m = *m;
-    int64_t _n = *n;
-    int64_t _k = *k;
-    int64_t _lda = *lda;
-    int64_t _ldb = *ldb;
-    int64_t _ldc = *ldc;
-
-    LPF_GLOBAL(hgemm_fp32, HGEMM_FP32)(
-        transa, transb, &_m, &_n, &_k, alpha, (lpf_float16_t*)a,
-        &_lda, (lpf_float16_t*)b, &_ldb, beta, c, &_ldc, 1, 1);
-}
-
 void lpf_blas_hgemm_fp32_fortran_dyn_rank_64(
     char* transa, char* transb, int64_t* m, int64_t* n, int64_t* k,
     float * alpha, CFI_cdesc_t* _a, int64_t* lda, CFI_cdesc_t* _b,

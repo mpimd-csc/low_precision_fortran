@@ -24,12 +24,7 @@ extern "C" {
 #endif
 
 #include <stdlib.h>
-    /* Integer for interacting with BLAS */
-#ifndef lpf_blas_int_t
 #include <stdint.h>
-#define lpf_blas_int_t int64_t
-#endif
-
     /* Integer for the hidden value */
 #if defined(__INTEL_LLVM_COMPILER) || defined(__ICC)
     /* Intel Compiler (oneAPI and classic) */
