@@ -145,6 +145,7 @@ The build process is controlled via the following CMake options:
 | `LPF_EXAMPLES_TLAPACK` | `OFF` | Build TLAPACK examples |
 | `LPF_TESTING` | `ON` | Build the LPF example programs and tests |
 | `CMAKE_BUILD_TYPE` | `Release` | Choose the type of build (e.g., Debug, Release) |
+| `ENABLE_COVERAGE`  | `OFF` | Enable Coverage Build |
 
 ```shell
 cmake -S . -B build-dir -DCMAKE_INSTALL_PREFIX=INSTALL-LOCATION
