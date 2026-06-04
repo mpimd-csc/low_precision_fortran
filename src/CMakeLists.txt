@@ -92,11 +92,23 @@ SET(PUBLIC_HEADERS
 )
 
 
+SET (SRC )
+IF ( LPF_HAVE_FP16 )
+    SET(SRC ${SRC} ${FP16_SRC})
+ENDIF()
+IF ( LPF_HAVE_BF16 )
+    SET(SRC ${SRC} ${BF16_SRC})
+ENDIF()
+IF ( LPF_FP8_E4M3 )
+    SET(SRC ${SRC} ${FP8_E4M3_SRC})
+ENDIF()
+IF ( LPF_FP8_E5M2 )
+    SET(SRC ${SRC} ${FP8_E5M2_SRC})
+ENDIF()
+
+
 ADD_LIBRARY(lpf
-    $<$<BOOL:${LPF_HAVE_FP16}>:${FP16_SRC}>
-    $<$<BOOL:${LPF_HAVE_BF16}>:${BF16_SRC}>
-    $<$<BOOL:${LPF_FP8_E4M3}>:${FP8_E4M3_SRC}>
-    $<$<BOOL:${LPF_FP8_E5M2}>:${FP8_E5M2_SRC}>
+    ${SRC}
     ${PUBLIC_HEADERS}
     aux/get_wtime.c
     aux/xerbla.c
@@ -105,6 +117,8 @@ ADD_LIBRARY(lpf
     types.F90
     ${SYSINFO_SRC}
 )
+
+add_coverage(lpf)
 
 TARGET_LINK_LIBRARIES(lpf
     PUBLIC

@@ -19,7 +19,7 @@ SET (SRC
 FOREACH( S IN LISTS SRC)
     cmake_path(GET S STEM LAST_ONLY check_name)
     ADD_EXECUTABLE(${check_name} ${S})
-
+    add_coverage(${check_name})
     TARGET_LINK_LIBRARIES(${check_name}
         PRIVATE
             LPF::lpf_blas

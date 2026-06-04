@@ -66,3 +66,21 @@ linux-intel:
     - cmake --build build-dir --target install
     - (cd build-dir; OMP_NUM_THREADS=1 ctest --output-on-failure)
 
+coverage:
+  image: ${CI_REGISTRY_IMAGE}/ubuntu:noble
+  stage: build
+  needs: []
+  tags:
+    - haswell
+  script:
+    - apt update && apt-get install --yes --no-install-recommends doxygen lcov gcovr
+    - cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON
+    - cmake --build build-dir
+    - cd build-dir
+    - make
+    - OMP_NUM_THREADS=1 make test
+    - make gcov
+    - gcovr -r ..
+  coverage: '/^TOTAL.*\s+(\d+\%)$/'
+
+

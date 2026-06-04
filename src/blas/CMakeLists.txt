@@ -266,6 +266,8 @@ if (LPF_FP8_E5M2)
     set_target_properties(lpf_blas_fp8_e5m2 PROPERTIES  Fortran_PREPROCESS  ON )
     target_link_libraries(lpf_blas_fp8_e5m2 PRIVATE lpf)
     set_target_properties(lpf_blas_fp8_e5m2 PROPERTIES Fortran_MODULE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fortran-modules")
+    add_coverage(lpf_blas_fp8_e5m2)
+
 endif()
 
 if (LPF_FP8_E4M3)
@@ -282,6 +284,7 @@ if (LPF_FP8_E4M3)
     set_target_properties(lpf_blas_fp8_e4m3 PROPERTIES  Fortran_PREPROCESS  ON )
     target_link_libraries(lpf_blas_fp8_e4m3 PRIVATE lpf)
     set_target_properties(lpf_blas_fp8_e4m3 PROPERTIES Fortran_MODULE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fortran-modules")
+    add_coverage(lpf_blas_fp8_e4m3)
 endif()
 
 
@@ -293,6 +296,7 @@ ADD_LIBRARY(lpf_blas
 
     ${SRC}
 )
+add_coverage(lpf_blas)
 
 TARGET_LINK_LIBRARIES(lpf_blas
     PRIVATE

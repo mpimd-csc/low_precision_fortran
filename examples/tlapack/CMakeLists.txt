@@ -11,8 +11,10 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(tlapack)
 
 add_executable(lu example_lu.cpp)
+add_coverage(lu)
 target_link_libraries(lu PRIVATE tlapack LPF::lpf LPF::lpf_blas)
 
 add_executable(lu_fortran lu_call.f90 lu_interface.cpp)
+add_coverage(lu_fortran)
 target_link_libraries(lu_fortran PRIVATE tlapack LPF::lpf LPF::lpf_blas)
 

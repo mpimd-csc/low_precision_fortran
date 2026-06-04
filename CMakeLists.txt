@@ -45,6 +45,11 @@ ENDIF()
 
 
 # Configure the Build
+IF(POLICY CMP0051)
+    cmake_policy(SET CMP0051 NEW)
+ENDIF()
+find_package(codecov)
+
 SET(Fortran_MODULE_NAME lpf)
 INCLUDE(FortranCompilerSettings)
 INCLUDE(CCompilerSettings)
@@ -210,3 +215,4 @@ MESSAGE(STATUS "FP8_E4M3 Support: ${LPF_FP8_E4M3}")
 MESSAGE(STATUS "FP8_E5M2 Support: ${LPF_FP8_E5M2}")
 MESSAGE(STATUS "LPF_BLAS Enabled: ${LPF_BLAS}")
 MESSAGE(STATUS "---------------------------------------------")
+coverage_evaluate()

@@ -3,5 +3,5 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt update ; \
     apt install --yes cmake libopenblas-dev libopenblas64-dev git;\
     apt install --yes build-essential;\
-    apt install --yes gfortran
+    apt install --yes gfortran gcovr lcov
 

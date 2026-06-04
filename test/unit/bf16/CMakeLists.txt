@@ -1,5 +1,6 @@
 # Shared test utilities module
 ADD_LIBRARY(bf16_test_utils STATIC lpf_bf16_test_utils.f90)
+add_coverage(bf16_test_utils)
 TARGET_INCLUDE_DIRECTORIES(bf16_test_utils
     PRIVATE
         ${PROJECT_BINARY_DIR}/src
@@ -29,6 +30,7 @@ SET(BF16_UNIT_TESTS
 
 FOREACH(test_name IN LISTS BF16_UNIT_TESTS)
     ADD_EXECUTABLE(${test_name} ${test_name}.f90)
+    add_coverage(${test_name})
     TARGET_LINK_LIBRARIES(${test_name}
         PRIVATE
             lpf

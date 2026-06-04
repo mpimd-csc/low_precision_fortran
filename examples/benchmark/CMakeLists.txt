@@ -9,5 +9,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(nanobench)
 
 ADD_EXECUTABLE(run_benchmark linspace.f90 benchmark.cpp)
-target_link_libraries(run_benchmark PRIVATE LPF::LPF nanobench)
+add_coverage(run_benchmark)
+target_link_libraries(run_benchmark PRIVATE LPF::lpf nanobench)
 

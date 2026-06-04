@@ -2,6 +2,8 @@ ADD_SUBDIRECTORY(level1)
 
 ADD_EXECUTABLE(bblat2 bblat2.f90)
 ADD_EXECUTABLE(bblat3 bblat3.f90)
+add_coverage(bblat2)
+add_coverage(bblat3)
 
 TARGET_LINK_LIBRARIES(bblat2
     PRIVATE
@@ -105,6 +107,7 @@ SET(GENERIC_TESTS ${GENERIC_LEVEL1_TESTS} ${GENERIC_LEVEL2_TESTS} ${GENERIC_LEVE
 
 FOREACH(TEST_NAME ${GENERIC_TESTS})
     ADD_EXECUTABLE(${TEST_NAME}${SUFFIX} ../generic_src/${TEST_NAME}.F90)
+    add_coverage(${TEST_NAME}${SUFFIX})
     TARGET_LINK_LIBRARIES(${TEST_NAME}${SUFFIX} PRIVATE lpf lpf_blas generic_test_utils${SUFFIX})
     target_compile_definitions(${TEST_NAME}${SUFFIX} PRIVATE LPF_BF16 DT=bf16 )
     set_target_properties(${TEST_NAME}${SUFFIX} PROPERTIES  Fortran_PREPROCESS  ON )

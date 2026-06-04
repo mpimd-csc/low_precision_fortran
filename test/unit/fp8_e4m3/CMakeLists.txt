@@ -1,5 +1,6 @@
 # Shared test utilities module
 ADD_LIBRARY(fp8_e4m3_test_utils STATIC lpf_fp8_e4m3_test_utils.f90)
+add_coverage(fp8_e4m3_test_utils)
 TARGET_INCLUDE_DIRECTORIES(fp8_e4m3_test_utils
     PRIVATE
         ${PROJECT_BINARY_DIR}/src
@@ -29,6 +30,7 @@ SET(FP8_E4M3_UNIT_TESTS
 
 FOREACH(test_name IN LISTS FP8_E4M3_UNIT_TESTS)
     ADD_EXECUTABLE(${test_name} ${test_name}.f90)
+    add_coverage(${test_name})
     TARGET_LINK_LIBRARIES(${test_name}
         PRIVATE
             lpf
