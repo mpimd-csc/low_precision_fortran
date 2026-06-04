@@ -3,13 +3,9 @@ module lpf_types
     use iso_c_binding, only: c_int32_t, c_int64_t, c_double
     implicit none
 
-#ifdef LPF_INTEGER8
-    integer, parameter :: lpf_default_int_kind = int64
-    integer, parameter :: lpf_default_c_int_kind = c_int64_t
-#else
     integer, parameter :: lpf_default_int_kind = int32
     integer, parameter :: lpf_default_c_int_kind = c_int32_t
-#endif
+
     integer, parameter :: lpf_int32_kind = int32
     integer, parameter :: lpf_int64_kind = int64
 
