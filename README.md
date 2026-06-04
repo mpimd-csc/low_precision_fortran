@@ -140,7 +140,6 @@ The build process is controlled via the following CMake options:
 | `LPF_DEBUG` | `OFF` | Enable Debug Symbol generation |
 | `LPF_NATIVE` | `OFF` | Enable Native Build |
 | `LPF_BLAS` | `ON` | Enable BLAS and LAPACK |
-| `LPF_INTEGER8` | `OFF` | Build Fortran integer of size 8 |
 | `LPF_FP8_E4M3` | `ON` | Support for FP8_E4M3 |
 | `LPF_FP8_E5M2` | `ON` | Support for FP8_E5M2 |
 | `LPF_EXAMPLES_TLAPACK` | `OFF` | Build TLAPACK examples |

@@ -27,11 +27,7 @@ extern "C" {
     /* Integer for interacting with BLAS */
 #ifndef lpf_blas_int_t
 #include <stdint.h>
-#ifdef LPF_INTEGER8
 #define lpf_blas_int_t int64_t
-#else
-#define lpf_blas_int_t int32_t
-#endif
 #endif
 
     /* Integer for the hidden value */
@@ -57,21 +53,10 @@ extern "C" {
 
     /* Logical */
 #if __GNUC__ >= 5 && !defined (__clang__)
-#ifdef LPF_INTEGER8
-#define lpf_logical_t int_fast64_t
-#else
 #define lpf_logical_t int_least32_t
-#endif
-#else
-#ifdef LPF_INTEGER8
-#include <stdint.h>
-#define lpf_logical_t int64_t
 #else
 #define lpf_logical_t int
 #endif
-
-#endif
-
 
 #ifndef lpf_float16_t
 #define lpf_float16_t _Float16
@@ -89,11 +74,11 @@ extern "C" {
 #include "lpf_mangle.h"
 #include <ISO_Fortran_binding.h>
 
-    typedef void (*lpf_blas_xerbla_func_c_t)(char *str, lpf_blas_int_t *info, lpf_fortran_strlen_t len);
-    typedef void (*lpf_blas_xerbla_func_t)(CFI_cdesc_t *msg_desc, lpf_blas_int_t *info);
+    typedef void (*lpf_blas_xerbla_func_c_t)(char *str, int32_t *info, lpf_fortran_strlen_t len);
+    typedef void (*lpf_blas_xerbla_func_t)(CFI_cdesc_t *msg_desc, int32_t *info);
 
-    void LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)(char *str, lpf_blas_int_t *info, lpf_fortran_strlen_t len);
-    void LPF_GLOBAL(lpf_blas_xerbla_set, LPF_BLAS_XERBLA_SET)(void * func, lpf_blas_int_t *style);
+    void LPF_GLOBAL(lpf_blas_xerbla, LPF_BLAS_XERBLA)(char *str, int32_t *info, lpf_fortran_strlen_t len);
+    void LPF_GLOBAL(lpf_blas_xerbla_set, LPF_BLAS_XERBLA_SET)(void * func, int32_t *style);
 
 
     int lpf_cpu_has_basic_fp16(void);
