@@ -128,32 +128,32 @@ MODULE LPF_FP16
     END INTERFACE
 
 
-    ! Interface für den + Operator
+    ! Interface for the + operator
     interface operator(+)
         module procedure add_fp16_fp16, add_fp16_real, add_real_fp16
         module procedure add_fp16_real64, add_real64_fp16
     end interface operator(+)
 
-    ! Interface für den - Operator
+    ! Interface for the - operator
     interface operator(-)
         module procedure subtract_fp16_fp16, subtract_fp16_real, subtract_real_fp16
         module procedure subtract_fp16_real64, subtract_real64_fp16
         module procedure unitary_minus_fp16
     end interface operator(-)
 
-    ! Interface für den * Operator
+    ! Interface for the * operator
     interface operator(*)
         module procedure multiply_fp16_fp16, multiply_fp16_real, multiply_real_fp16
         module procedure multiply_fp16_real64, multiply_real64_fp16
     end interface operator(*)
 
-    ! Interface für den / Operator
+    ! Interface for the / operator
     interface operator(/)
         module procedure divide_fp16_fp16, divide_fp16_real, divide_real_fp16
         module procedure divide_fp16_real64, divide_real64_fp16
     end interface operator(/)
 
-    ! Interface für den ** Operator
+    ! Interface for the ** operator
     interface operator(**)
         module procedure power_fp16_fp16, power_fp16_real, power_fp16_int
         module procedure power_fp16_real64

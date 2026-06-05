@@ -249,7 +249,7 @@ struct lpf_fp8_e4m3_t {
     }
 
     /*
-       lpf_fp8_e4m3_t& operator++() {  // Präfix
+       lpf_fp8_e4m3_t& operator++() {  // Prefix
        ++value;
        return *this;
        }
@@ -260,7 +260,7 @@ struct lpf_fp8_e4m3_t {
        return temp;
        }
 
-       lpf_fp8_e4m3_t& operator--() {  // Präfix
+       lpf_fp8_e4m3_t& operator--() {  // Prefix
        --value;
        return *this;
        }
