@@ -232,7 +232,7 @@ struct lpf_fp16_t {
     }
 
     /*
-       lpf_fp16_t& operator++() {  // Präfix
+       lpf_fp16_t& operator++() {  // Prefix
        ++value;
        return *this;
        }
@@ -243,7 +243,7 @@ struct lpf_fp16_t {
        return temp;
        }
 
-       lpf_fp16_t& operator--() {  // Präfix
+       lpf_fp16_t& operator--() {  // Prefix
        --value;
        return *this;
        }

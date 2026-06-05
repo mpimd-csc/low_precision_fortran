@@ -7,10 +7,10 @@ IF (BLAS_FOUND AND LAPACK_FOUND)
 SET(CMAKE_REQUIRED_LIBRARIES LAPACK::LAPACK BLAS::BLAS)
 include(CheckCSourceRuns)
 
-# Speicher den aktuellen Linker-Status für den Test
+# Store the current linker status for the test
 set(CMAKE_REQUIRED_LIBRARIES ${BLAS_LIBRARIES})
 
-# Test-Quellcode: Übergibt 64-Bit Integer via Pointer an BLAS
+# Test source code: Passes 64-bit integer via pointer to BLAS
 check_c_source_runs("
 #include <stdint.h>
 #include <stdio.h>

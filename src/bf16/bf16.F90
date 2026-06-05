@@ -130,32 +130,32 @@ MODULE LPF_BF16
     END INTERFACE
 
 
-    ! Interface für den + Operator
+    ! Interface for the + operator
     interface operator(+)
         module procedure add_bf16_bf16, add_bf16_real, add_real_bf16
         module procedure add_bf16_real64, add_real64_bf16
     end interface operator(+)
 
-    ! Interface für den - Operator
+    ! Interface for the - operator
     interface operator(-)
         module procedure subtract_bf16_bf16, subtract_bf16_real, subtract_real_bf16
         module procedure subtract_bf16_real64, subtract_real64_bf16
         module procedure unitary_minus_bf16
     end interface operator(-)
 
-    ! Interface für den * Operator
+    ! Interface for the * operator
     interface operator(*)
         module procedure multiply_bf16_bf16, multiply_bf16_real, multiply_real_bf16
         module procedure multiply_real64_bf16, multiply_bf16_real64
     end interface operator(*)
 
-    ! Interface für den / Operator
+    ! Interface for the / operator
     interface operator(/)
         module procedure divide_bf16_bf16, divide_bf16_real, divide_real_bf16
         module procedure divide_bf16_real64, divide_real64_bf16
     end interface operator(/)
 
-    ! Interface für den ** Operator
+    ! Interface for the ** operator
     interface operator(**)
         module procedure power_bf16_bf16, power_bf16_real, power_bf16_int
         module procedure power_bf16_real64

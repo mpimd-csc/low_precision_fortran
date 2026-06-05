@@ -128,32 +128,32 @@ MODULE LPF_FP8_E5M2
     END INTERFACE
 
 
-    ! Interface für den + Operator
+    ! Interface for the + operator
     interface operator(+)
         module procedure add_fp8_e5m2_fp8_e5m2, add_fp8_e5m2_real, add_real_fp8_e5m2
         module procedure add_fp8_e5m2_real64, add_real64_fp8_e5m2
     end interface operator(+)
 
-    ! Interface für den - Operator
+    ! Interface for the - operator
     interface operator(-)
         module procedure subtract_fp8_e5m2_fp8_e5m2, subtract_fp8_e5m2_real, subtract_real_fp8_e5m2
         module procedure subtract_fp8_e5m2_real64, subtract_real64_fp8_e5m2
         module procedure unitary_minus_fp8_e5m2
     end interface operator(-)
 
-    ! Interface für den * Operator
+    ! Interface for the * operator
     interface operator(*)
         module procedure multiply_fp8_e5m2_fp8_e5m2, multiply_fp8_e5m2_real, multiply_real_fp8_e5m2
         module procedure multiply_fp8_e5m2_real64, multiply_real64_fp8_e5m2
     end interface operator(*)
 
-    ! Interface für den / Operator
+    ! Interface for the / operator
     interface operator(/)
         module procedure divide_fp8_e5m2_fp8_e5m2, divide_fp8_e5m2_real, divide_real_fp8_e5m2
         module procedure divide_fp8_e5m2_real64, divide_real64_fp8_e5m2
     end interface operator(/)
 
-    ! Interface für den ** Operator
+    ! Interface for the ** operator
     interface operator(**)
         module procedure power_fp8_e5m2_fp8_e5m2, power_fp8_e5m2_real, power_fp8_e5m2_int
         module procedure power_fp8_e5m2_real64

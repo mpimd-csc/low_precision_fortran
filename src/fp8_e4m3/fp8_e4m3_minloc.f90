@@ -143,7 +143,7 @@ contains
             error stop 'Invalid dimension for 2D array'
         end if
 
-        ! Initialisierung mit den Elementen des Arrays
+        ! Initialization with the elements of the array
         if (dim == 1) then
             do j = 1, size(array, 2)
                 min_value(j) = array(1, j)
