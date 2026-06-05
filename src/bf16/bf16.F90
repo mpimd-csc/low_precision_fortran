@@ -102,6 +102,9 @@ MODULE LPF_BF16
     PUBLIC :: dble
     PUBLIC :: int
 
+    ! Lin Alg Functions
+    PUBLIC :: norm2
+
     TYPE, BIND(C) :: BF16
         INTEGER(c_int16_t) :: value
     END TYPE
@@ -798,6 +801,43 @@ MODULE LPF_BF16
         end function
     end interface
 
+    ! Lin. Alg. Interfaces
+    interface norm2
+        module pure function bf16_norm2_r1(vec) result(out)
+            type(bf16), intent(in) :: vec(:)
+            type(bf16) :: out
+        end function
+
+        module pure function bf16_norm2_r2(vec) result(out)
+            type(bf16), intent(in) :: vec(:, :)
+            type(bf16) :: out
+        end function
+
+        module pure function bf16_norm2_r3(vec) result(out)
+            type(bf16), intent(in) :: vec(:, :, :)
+            type(bf16) :: out
+        end function
+
+        module pure function bf16_norm2_r1_dim(vec, dim) result(out)
+            type(bf16), intent(in) :: vec(:)
+            integer, intent(in) :: dim
+            type(bf16) :: out
+        end function
+
+        module pure function bf16_norm2_r2_dim(vec, dim) result(out)
+            type(bf16), intent(in) :: vec(:, :)
+            integer, intent(in) :: dim
+            type(bf16), dimension(size(vec,merge(2, 1, dim == 1))) :: out
+        end function
+
+        module pure function bf16_norm2_r3_dim(vec, dim) result(out)
+            type(bf16), intent(in) :: vec(:, :, :)
+            integer, intent(in) :: dim
+            type(bf16), dimension( size(vec, merge(2, 1, dim == 1)), &
+                & size(vec, merge(2, 3, dim == 3))) :: out
+        end function
+
+    end interface
 
 
     ! C Interfaces
