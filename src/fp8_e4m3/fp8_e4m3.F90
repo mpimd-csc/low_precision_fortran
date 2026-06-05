@@ -101,6 +101,7 @@ MODULE LPF_FP8_E4M3
     PUBLIC :: real
     PUBLIC :: dble
     PUBLIC :: int
+    PUBLIC :: norm2
 
     TYPE, BIND(C) :: FP8_E4M3
         INTEGER(c_int8_t) :: value
@@ -799,6 +800,44 @@ MODULE LPF_FP8_E4M3
         end function
     end interface
 
+
+    ! Lin. Alg. Interfaces
+    interface norm2
+        module pure function fp8_e4m3_norm2_r1(vec) result(out)
+            type(fp8_e4m3), intent(in) :: vec(:)
+            type(fp8_e4m3) :: out
+        end function
+
+        module pure function fp8_e4m3_norm2_r2(vec) result(out)
+            type(fp8_e4m3), intent(in) :: vec(:, :)
+            type(fp8_e4m3) :: out
+        end function
+
+        module pure function fp8_e4m3_norm2_r3(vec) result(out)
+            type(fp8_e4m3), intent(in) :: vec(:, :, :)
+            type(fp8_e4m3) :: out
+        end function
+
+        module pure function fp8_e4m3_norm2_r1_dim(vec, dim) result(out)
+            type(fp8_e4m3), intent(in) :: vec(:)
+            integer, intent(in) :: dim
+            type(fp8_e4m3) :: out
+        end function
+
+        module pure function fp8_e4m3_norm2_r2_dim(vec, dim) result(out)
+            type(fp8_e4m3), intent(in) :: vec(:, :)
+            integer, intent(in) :: dim
+            type(fp8_e4m3), dimension(size(vec,merge(2, 1, dim == 1))) :: out
+        end function
+
+        module pure function fp8_e4m3_norm2_r3_dim(vec, dim) result(out)
+            type(fp8_e4m3), intent(in) :: vec(:, :, :)
+            integer, intent(in) :: dim
+            type(fp8_e4m3), dimension( size(vec, merge(2, 1, dim == 1)), &
+                & size(vec, merge(2, 3, dim == 3))) :: out
+        end function
+
+    end interface
 
 
     ! C Interfaces

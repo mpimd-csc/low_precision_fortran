@@ -94,6 +94,7 @@ MODULE LPF_FP16
     PUBLIC :: maxloc
     PUBLIC :: minval
     PUBLIC :: minloc
+    PUBLIC :: norm2
     PUBLIC :: isnan
     PUBLIC :: isinf
     PUBLIC :: min
@@ -802,6 +803,43 @@ MODULE LPF_FP16
     end interface
 
 
+
+    interface norm2
+        module pure function fp16_norm2_r1(vec) result(out)
+            type(fp16), dimension(:), intent(in) :: vec
+            type(fp16) :: out
+        end function
+
+        module pure function fp16_norm2_r2(vec) result(out)
+            type(fp16), dimension(:,:), intent(in) :: vec
+            type(fp16) :: out
+        end function
+
+        module pure function fp16_norm2_r3(vec) result(out)
+            type(fp16), dimension(:,:,:), intent(in) :: vec
+            type(fp16) :: out
+        end function
+
+        module pure function fp16_norm2_r1_dim(vec, dim) result(out)
+            type(fp16), intent(in) :: vec(:)
+            integer, intent(in) :: dim
+            type(fp16) :: out
+        end function
+
+        module pure function fp16_norm2_r2_dim(vec, dim) result(out)
+            type(fp16), intent(in) :: vec(:, :)
+            integer, intent(in) :: dim
+            type(fp16), dimension(size(vec,merge(2, 1, dim == 1))) :: out
+        end function
+
+        module pure function fp16_norm2_r3_dim(vec, dim) result(out)
+            type(fp16), intent(in) :: vec(:, :, :)
+            integer, intent(in) :: dim
+            type(fp16), dimension( size(vec, merge(2, 1, dim == 1)), &
+                & size(vec, merge(2, 3, dim == 3))) :: out
+        end function
+
+    end interface
 
     ! C Interfaces
     INTERFACE

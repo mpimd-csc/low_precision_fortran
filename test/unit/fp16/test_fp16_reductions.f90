@@ -1,7 +1,7 @@
 !  SPDX-License-Identifier LGPL-3.0-or-later
 !
 !  Unit tests for FP16 array reduction functions.
-
+!
 PROGRAM test_fp16_reductions
     USE iso_fortran_env, only: real32, real64, int32
     USE LPF_FP16
@@ -18,6 +18,15 @@ PROGRAM test_fp16_reductions
     CALL test_minloc_1d()
     CALL test_maxval_1d_single()
     CALL test_minval_1d_allneg()
+
+    CALL test_norm2_1d()
+    CALL test_norm2_2d()
+    CALL test_norm2_3d()
+    CALL test_norm2_single()
+    CALL test_norm2_zero()
+    CALL test_norm2_empty()
+    CALL test_norm2_small()
+    CALL test_norm2_dim()
 
     CALL test_summary()
 
@@ -107,6 +116,90 @@ CONTAINS
         arr = [FP16(-1.0_real32), FP16(-5.0_real32), FP16(-3.0_real32)]
         call check_fp16_real64('minval_1d_allneg', minval(arr), -5.0_real64, FP16_TOL_TIGHT)
         call check_fp16_real64('maxval_1d_allneg', maxval(arr), -1.0_real64, FP16_TOL_TIGHT)
+    end subroutine
+
+    subroutine test_norm2_1d()
+        type(FP16), dimension(4) :: arr
+        arr = [FP16(3.0_real32), FP16(4.0_real32), FP16(-12.0_real32), FP16(1.0_real32)]
+        call check_fp16_real64('norm2_1d', norm2(arr), sqrt(170.0_real64), FP16_TOL_TIGHT)
+    end subroutine
+
+    subroutine test_norm2_2d()
+        type(FP16), dimension(2,2) :: arr
+        arr = reshape([FP16(1.0_real32), FP16(2.0_real32), FP16(3.0_real32), FP16(4.0_real32)], [2,2])
+        call check_fp16_real64('norm2_2d', norm2(arr), sqrt(30.0_real64), FP16_TOL_TIGHT)
+    end subroutine
+
+    subroutine test_norm2_3d()
+        type(FP16), dimension(2,2,2) :: arr
+        arr = reshape([FP16(1.0_real32), FP16(2.0_real32), FP16(3.0_real32), FP16(4.0_real32), &
+                       FP16(5.0_real32), FP16(6.0_real32), FP16(7.0_real32), FP16(8.0_real32)], [2,2,2])
+        call check_fp16_real64('norm2_3d', norm2(arr), sqrt(204.0_real64), FP16_TOL_TIGHT)
+    end subroutine
+
+    subroutine test_norm2_single()
+        type(FP16), dimension(1) :: arr
+        arr = [FP16(5.5_real32)]
+        call check_fp16_real64('norm2_single', norm2(arr), 5.5_real64, FP16_TOL_TIGHT)
+    end subroutine
+
+    subroutine test_norm2_zero()
+        type(FP16), dimension(5) :: arr
+        arr = 0.0
+        call check_fp16_real64('norm2_zero', norm2(arr), 0.0_real64, FP16_TOL_TIGHT)
+    end subroutine
+
+    subroutine test_norm2_empty()
+        type(FP16), dimension(0) :: arr
+        call check_fp16_real64('norm2_empty', norm2(arr), 0.0_real64, FP16_TOL_TIGHT)
+    end subroutine
+
+    subroutine test_norm2_small()
+        type(FP16), dimension(2) :: arr
+        type(FP16) :: t
+        t = tiny(FP16(1.0))
+        arr = [t, t]
+        call check_fp16_real64('norm2_small', norm2(arr), dble(t) * sqrt(2.0_real64), FP16_TOL_TIGHT)
+    end subroutine
+
+    subroutine test_norm2_dim()
+        type(FP16), dimension(2) :: arr1
+        type(FP16), dimension(2,2) :: arr2
+        type(FP16), dimension(2,2,2) :: arr3
+        type(FP16), dimension(2) :: out2_d1, out2_d2
+        type(FP16), dimension(2,2) :: out3_d1, out3_d2, out3_d3
+
+        arr1 = [FP16(3.0_real32), FP16(4.0_real32)]
+        call check_fp16_real64('norm2_dim_1d', norm2(arr1, dim=1), 5.0_real64, FP16_TOL)
+
+        arr2 = reshape([FP16(1.0_real32), FP16(2.0_real32), FP16(3.0_real32), FP16(4.0_real32)], [2,2])
+        out2_d1 = norm2(arr2, dim=1)
+        call check_fp16_real64('norm2_dim_2d_d1_c1', out2_d1(1), sqrt(5.0_real64), FP16_TOL)
+        call check_fp16_real64('norm2_dim_2d_d1_c2', out2_d1(2), 5.0_real64, FP16_TOL)
+
+        out2_d2 = norm2(arr2, dim=2)
+        call check_fp16_real64('norm2_dim_2d_d2_r1', out2_d2(1), sqrt(10.0_real64), FP16_TOL)
+        call check_fp16_real64('norm2_dim_2d_d2_r2', out2_d2(2), sqrt(20.0_real64), FP16_TOL)
+
+        arr3 = reshape([FP16(1.0_real32), FP16(2.0_real32), FP16(3.0_real32), FP16(4.0_real32), &
+                       FP16(5.0_real32), FP16(6.0_real32), FP16(7.0_real32), FP16(8.0_real32)], [2,2,2])
+        out3_d1 = norm2(arr3, dim=1)
+        call check_fp16_real64('norm2_dim_3d_d1_11', out3_d1(1,1), sqrt(5.0_real64), FP16_TOL)
+        call check_fp16_real64('norm2_dim_3d_d1_21', out3_d1(2,1), 5.0_real64, FP16_TOL)
+        call check_fp16_real64('norm2_dim_3d_d1_12', out3_d1(1,2), sqrt(61.0_real64), FP16_TOL)
+        call check_fp16_real64('norm2_dim_3d_d1_22', out3_d1(2,2), sqrt(113.0_real64), FP16_TOL)
+
+        out3_d2 = norm2(arr3, dim=2)
+        call check_fp16_real64('norm2_dim_3d_d2_11', out3_d2(1,1), sqrt(10.0_real64), FP16_TOL)
+        call check_fp16_real64('norm2_dim_3d_d2_21', out3_d2(2,1), sqrt(20.0_real64), FP16_TOL)
+        call check_fp16_real64('norm2_dim_3d_d2_12', out3_d2(1,2), sqrt(74.0_real64), FP16_TOL)
+        call check_fp16_real64('norm2_dim_3d_d2_22', out3_d2(2,2), 10.0_real64, FP16_TOL)
+
+        out3_d3 = norm2(arr3, dim=3)
+        call check_fp16_real64('norm2_dim_3d_d3_11', out3_d3(1,1), sqrt(26.0_real64), FP16_TOL)
+        call check_fp16_real64('norm2_dim_3d_d3_21', out3_d3(2,1), sqrt(40.0_real64), FP16_TOL)
+        call check_fp16_real64('norm2_dim_3d_d3_12', out3_d3(1,2), sqrt(58.0_real64), FP16_TOL)
+        call check_fp16_real64('norm2_dim_3d_d3_22', out3_d3(2,2), sqrt(80.0_real64), FP16_TOL)
     end subroutine
 
 END PROGRAM test_fp16_reductions
