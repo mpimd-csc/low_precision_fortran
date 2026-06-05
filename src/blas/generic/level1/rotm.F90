@@ -1,3 +1,4 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
 !> \brief \b SROTM
 !
 !  =========== DOCUMENTATION ===========
@@ -14,7 +15,7 @@
 !       INTEGER INCX,INCY,N
 !       ..
 !       .. Array Arguments ..
-!       REAL SPARAM(5),SX(*),SY(*)
+!       type(DT) SPARAM(5),SX(*),SY(*)
 !       ..
 !
 !
@@ -54,7 +55,7 @@
 !>
 !> \param[in,out] SX
 !> \verbatim
-!>          SX is REAL array, dimension ( 1 + ( N - 1 )*abs( INCX ) )
+!>          SX is type(DT) array, dimension ( 1 + ( N - 1 )*abs( INCX ) )
 !> \endverbatim
 !>
 !> \param[in] INCX
@@ -65,7 +66,7 @@
 !>
 !> \param[in,out] SY
 !> \verbatim
-!>          SY is REAL array, dimension ( 1 + ( N - 1 )*abs( INCY ) )
+!>          SY is type(DT) array, dimension ( 1 + ( N - 1 )*abs( INCY ) )
 !> \endverbatim
 !>
 !> \param[in] INCY
@@ -76,25 +77,13 @@
 !>
 !> \param[in] SPARAM
 !> \verbatim
-!>          SPARAM is REAL array, dimension (5)
+!>          SPARAM is type(DT) array, dimension (5)
 !>     SPARAM(1)=SFLAG
 !>     SPARAM(2)=SH11
 !>     SPARAM(3)=SH21
 !>     SPARAM(4)=SH12
 !>     SPARAM(5)=SH22
 !> \endverbatim
-!
-!  Authors:
-!  ========
-!
-!> \author Univ. of Tennessee
-!> \author Univ. of California Berkeley
-!> \author Univ. of Colorado Denver
-!> \author NAG Ltd.
-!> \author Martin Koehler, MPI Magdeburg
-!
-!> \ingroup rotm
-!
 !  =====================================================================
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_rotm_fp8_e5m2

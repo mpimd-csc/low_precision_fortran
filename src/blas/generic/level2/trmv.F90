@@ -1,3 +1,5 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
+
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_trmv_fp8_e5m2
     use lpf_fp8_e5m2

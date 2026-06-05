@@ -23,6 +23,20 @@
 
 #include <string.h>
 
+/**
+ * @brief Bfloat16 Triangular Matrix-Vector Multiplication (BTRMV).
+ *
+ * Performs the operation: x := alpha * A * x or x := alpha * A^-1 * x
+ *
+ * @param[in] uplo Character specifying the upper or lower triangle of A.
+ * @param[in] trans Character specifying the transpose. 'N' for no transpose, 'T' for transpose.
+ * @param[in] diag Character specifying the diagonal of A. 'U' for unit diagonal, 'N' for non-unit diagonal.
+ * @param[in] n Order of matrix A.
+ * @param[in] a Triangular matrix A.
+ * @param[in] lda Leading dimension of matrix A.
+ * @param[in,out] x Vector X.
+ * @param[in] incx Increment for the elements of x.
+ */
 void LPF_GLOBAL(btrmv, BTRMV)(char* uplo, char* trans, char* diag, int64_t* n,
                               lpf_bfloat16_t* a, int64_t* lda,
                               lpf_bfloat16_t* x, int64_t* incx,

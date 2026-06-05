@@ -1,14 +1,15 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
 submodule(lpf_lapack_fp16) lpf_lapack_potf2_fp16
 
 contains
-    !> \brief \b SPOTF2 computes the Cholesky factorization of a symmetric/H
+    !> \brief \b potf2 computes the Cholesky factorization of a symmetric/H
     !
     !  =========== DOCUMENTATION ===========
     !
     ! Online html documentation available at
     !            http://www.netlib.org/lapack/explore-html/
     !
-    !> Download SPOTF2 + dependencies
+    !> Download potf2 + dependencies
     !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.tgz?format=tgz&fil
     !> [TGZ]</a>
     !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.zip?format=zip&fil
@@ -19,7 +20,7 @@ contains
     !  Definition:
     !  ===========
     !
-    !       SUBROUTINE SPOTF2( UPLO, N, A, LDA, INFO )
+    !       SUBROUTINE potf2( UPLO, N, A, LDA, INFO )
     !
     !       .. Scalar Arguments ..
     !       CHARACTER          UPLO
@@ -35,7 +36,7 @@ contains
     !>
     !> \verbatim
     !>
-    !> SPOTF2 computes the Cholesky factorization of a real symmetric
+    !> potf2 computes the Cholesky factorization of a real symmetric
     !> positive definite matrix A.
     !>
     !> The factorization has the form
@@ -94,17 +95,6 @@ contains
     !>               is not positive, and the factorization could not be
     !>               completed.
     !> \endverbatim
-    !
-    !  Authors:
-    !  ========
-    !
-    !> \author Univ. of Tennessee
-    !> \author Univ. of California Berkeley
-    !> \author Univ. of Colorado Denver
-    !> \author NAG Ltd.
-    !
-    !> \ingroup potf2
-    !
     !  =====================================================================
     module subroutine potf2( uplo, n, a, lda, info )
         implicit none

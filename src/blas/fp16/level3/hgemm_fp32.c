@@ -30,6 +30,26 @@
 #include <mkl.h>
 #endif
 
+/**
+ * @brief Half-precision General Matrix-Matrix Multiplication with FP32 output (HGEMM_FP32).
+ *
+ * Performs the operation: C := alpha * A * B + beta * C
+ * where A and B are in low precision and C is in FP32.
+ *
+ * @param[in] transa Character specifying the transpose of matrix A: 'N' for no transpose, 'T' for transpose.
+ * @param[in] transb Character specifying the transpose of matrix B: 'N' for no transpose, 'T' for transpose.
+ * @param[in] m Number of rows of matrix A.
+ * @param[in] n Number of columns of matrix B.
+ * @param[in] k Common dimension of matrices A and B.
+ * @param[in] alpha Scalar multiplier (FP32).
+ * @param[in] a Matrix A.
+ * @param[in] lda Leading dimension of matrix A.
+ * @param[in] b Matrix B.
+ * @param[in] ldb Leading dimension of matrix B.
+ * @param[in] beta Scalar multiplier for matrix C (FP32).
+ * @param[in,out] c Matrix C (FP32).
+ * @param[in] ldc Leading dimension of matrix C.
+ */
 void LPF_GLOBAL(hgemm_fp32,
                 HGEMM_FP32)(char* transa, char* transb, int64_t* m, int64_t* n,
                             int64_t* k, float * alpha, lpf_float16_t* a,

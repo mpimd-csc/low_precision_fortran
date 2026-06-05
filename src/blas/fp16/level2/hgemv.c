@@ -22,6 +22,23 @@
 #include <stdint.h>
 #include <string.h>
 
+/**
+ * @brief Half-precision General Matrix-Vector Multiplication (HGEMV).
+ *
+ * Performs the operation: y := alpha * A * x + beta * y
+ *
+ * @param[in] trans Character specifying the transpose: 'N' for no transpose, 'T' for transpose.
+ * @param[in] m Number of rows of matrix A.
+ * @param[in] n Number of columns of matrix A.
+ * @param[in] alpha Scalar multiplier.
+ * @param[in] a Matrix A.
+ * @param[in] lda Leading dimension of matrix A.
+ * @param[in] x Vector x.
+ * @param[in] incx Increment for the elements of x.
+ * @param[in] beta Scalar multiplier for vector y.
+ * @param[in,out] y Vector y.
+ * @param[in] incy Increment for the elements of y.
+ */
 void LPF_GLOBAL(hgemv, HGEMV)(char* trans, int64_t* m, int64_t* n,
                               lpf_float16_t* alpha, lpf_float16_t* a,
                               int64_t* lda, lpf_float16_t* x, int64_t* incx,

@@ -21,6 +21,19 @@
 #include <math.h>
 #include <stdint.h>
 
+/**
+ * @brief Bfloat16 AXPY-BY operation (BAXPBY).
+ *
+ * Performs the operation: y := alpha * x + beta * y
+ *
+ * @param[in] n Number of elements in vectors x and y.
+ * @param[in] sa Scalar multiplier alpha.
+ * @param[in] sx Vector x.
+ * @param[in] incx Increment for the elements of x.
+ * @param[in] sb Scalar multiplier beta.
+ * @param[in,out] sy Vector y.
+ * @param[in] incy Increment for the elements of y.
+ */
 void LPF_GLOBAL(baxpby, BAXPBY)(int64_t* n, lpf_bfloat16_t* sa,
                                 lpf_bfloat16_t* sx, int64_t* incx,
                                 lpf_bfloat16_t* sb, lpf_bfloat16_t* sy,

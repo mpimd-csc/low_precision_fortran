@@ -1,3 +1,25 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
+!
+! \brief General Matrix-Matrix Multiplication for FP32 (GEMM_FP32)
+!
+! This routine performs the operation:
+! C := alpha * A * B + beta * C
+! where A and B are in low precision and C is in FP32.
+!
+! \param[in] transa Character specifying the transpose of matrix A: 'N' for no transpose, 'T' for transpose.
+! \param[in] transb Character specifying the transpose of matrix B: 'N' for no transpose, 'T' for transpose.
+! \param[in] m Number of rows of matrix A.
+! \param[in] n Number of columns of matrix B.
+! \param[in] k Common dimension of matrices A and B.
+! \param[in] alpha Scalar multiplier (FP32).
+! \param[in] a The matrix A, stored in column-major order.
+! \param[in] lda Leading dimension of matrix A.
+! \param[in] b The matrix B, stored in column-major order.
+! \param[in] ldb Leading dimension of matrix B.
+! \param[in] beta Scalar multiplier for matrix C (FP32).
+! \param[in,out] c The matrix C, stored in column-major order (FP32).
+! \param[in] ldc Leading dimension of matrix C.
+
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_gemm_fp32_fp8_e5m2
     use lpf_fp8_e5m2

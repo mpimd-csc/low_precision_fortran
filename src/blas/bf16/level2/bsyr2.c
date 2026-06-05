@@ -23,6 +23,21 @@
 
 #include <string.h>
 
+/**
+ * @brief Bfloat16 Symmetric Rank-2 Update (BSYR2).
+ *
+ * Performs the operation: A := A + alpha * (x * y^T + y * x^T)
+ *
+ * @param[in] uplo Character specifying the upper or lower triangle of A.
+ * @param[in] n Order of matrix A.
+ * @param[in] alpha Scalar multiplier.
+ * @param[in] x Vector X.
+ * @param[in] incx Increment for the elements of x.
+ * @param[in] y Vector Y.
+ * @param[in] incy Increment for the elements of y.
+ * @param[in,out] a Symmetric matrix A.
+ * @param[in] lda Leading dimension of matrix A.
+ */
 void LPF_GLOBAL(bsyr2, BSYR2)(char* uplo, int64_t* n, lpf_bfloat16_t* alpha,
                               lpf_bfloat16_t* x, int64_t* incx,
                               lpf_bfloat16_t* y, int64_t* incy,

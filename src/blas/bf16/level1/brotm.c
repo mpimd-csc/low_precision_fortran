@@ -21,6 +21,19 @@
 #include <math.h>
 #include <stdint.h>
 
+/**
+ * @brief Bfloat16 Rotation Matrix Multiplication (BROTM).
+ *
+ * Performs the operation: [x; y] := R * [x; y]
+ * where R is a 2x2 rotation matrix defined by sparam.
+ *
+ * @param[in] n Number of elements in vectors x and y.
+ * @param[in,out] sx Vector x.
+ * @param[in] incx Increment for the elements of x.
+ * @param[in,out] sy Vector y.
+ * @param[in] incy Increment for the elements of y.
+ * @param[in] sparam Parameter defining the rotation matrix.
+ */
 void LPF_GLOBAL(brotm, BROTM)(int64_t* n, lpf_bfloat16_t* sx, int64_t* incx,
                               lpf_bfloat16_t* sy, int64_t* incy,
                               lpf_bfloat16_t* sparam)

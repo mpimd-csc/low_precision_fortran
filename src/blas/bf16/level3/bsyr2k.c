@@ -23,6 +23,24 @@
 
 #include <string.h>
 
+/**
+ * @brief Bfloat16 Symmetric Rank-2k Update (BSYR2K).
+ *
+ * Performs the operation: C := C + alpha * A * Y * A^T
+ *
+ * @param[in] uplo Character specifying the upper or lower triangle of C.
+ * @param[in] trans Character specifying the transpose of matrix B.
+ * @param[in] n Order of matrix C.
+ * @param[in] k Order of matrix B.
+ * @param[in] alpha Scalar multiplier.
+ * @param[in] a Symmetric matrix A.
+ * @param[in] lda Leading dimension of matrix A.
+ * @param[in] b Matrix B.
+ * @param[in] ldb Leading dimension of matrix B.
+ * @param[in] beta Scalar multiplier for matrix C.
+ * @param[in,out] c Symmetric matrix C.
+ * @param[in] ldc Leading dimension of matrix C.
+ */
 void LPF_GLOBAL(bsyr2k, BSYR2K)(char* uplo, char* trans, int64_t* n, int64_t* k,
                                 lpf_bfloat16_t* alpha, lpf_bfloat16_t* a,
                                 int64_t* lda, lpf_bfloat16_t* b, int64_t* ldb,

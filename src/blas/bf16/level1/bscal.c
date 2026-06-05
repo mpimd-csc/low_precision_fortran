@@ -21,6 +21,16 @@
 #include <math.h>
 #include <stdint.h>
 
+/**
+ * @brief Bfloat16 Scaling (BSCAL).
+ *
+ * Performs the operation: x := alpha * x
+ *
+ * @param[in] n Number of elements in vector x.
+ * @param[in] sa Scalar multiplier alpha.
+ * @param[in,out] sx Vector x.
+ * @param[in] incx Increment for the elements of x.
+ */
 void LPF_GLOBAL(bscal, BSCAL)(int64_t* n, lpf_bfloat16_t* sa,
                               lpf_bfloat16_t* sx, int64_t* incx)
 {

@@ -21,6 +21,16 @@
 #include "lpf_internal.h"
 #include <stdint.h>
 
+/**
+ * @brief Bfloat16 Euclidean norm.
+ *
+ * Performs the operation: result := ||x||_2
+ *
+ * @param[in] n Number of elements in vector x.
+ * @param[in] x Vector x.
+ * @param[in] incx Increment for the elements of x.
+ * @return The Euclidean norm of vector x.
+ */
 int16_t LPF_GLOBAL(bnrm2, BNRM2)(int64_t* n, lpf_bfloat16_t* x, int64_t* incx)
 {
 

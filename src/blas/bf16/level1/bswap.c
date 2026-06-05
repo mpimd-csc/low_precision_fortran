@@ -21,6 +21,17 @@
 #include <math.h>
 #include <stdint.h>
 
+/**
+ * @brief Bfloat16 Swap (BSWAP).
+ *
+ * Swaps the elements of vectors x and y.
+ *
+ * @param[in] n Number of elements to swap.
+ * @param[in,out] sx Vector x.
+ * @param[in] incx Increment for the elements of x.
+ * @param[in,out] sy Vector y.
+ * @param[in] incy Increment for the elements of y.
+ */
 void LPF_GLOBAL(bswap, BSWAP)(int64_t* n, lpf_bfloat16_t* sx, int64_t* incx,
                               lpf_bfloat16_t* sy, int64_t* incy)
 {

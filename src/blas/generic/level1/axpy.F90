@@ -1,3 +1,4 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
 !> \brief \b SAXPY
 !
 !  =========== DOCUMENTATION ===========
@@ -15,7 +16,7 @@
 !       INTEGER INCX,INCY,N
 !       ..
 !       .. Array Arguments ..
-!       REAL SX(*),SY(*)
+!       type(DT) SX(*),SY(*)
 !       ..
 !
 !
@@ -45,7 +46,7 @@
 !>
 !> \param[in] SX
 !> \verbatim
-!>          SX is REAL array, dimension ( 1 + ( N - 1 )*abs( INCX ) )
+!>          SX is type(DT) array, dimension ( 1 + ( N - 1 )*abs( INCX ) )
 !> \endverbatim
 !>
 !> \param[in] INCX
@@ -56,7 +57,7 @@
 !>
 !> \param[in,out] SY
 !> \verbatim
-!>          SY is REAL array, dimension ( 1 + ( N - 1 )*abs( INCY ) )
+!>          SY is type(DT) array, dimension ( 1 + ( N - 1 )*abs( INCY ) )
 !> \endverbatim
 !>
 !> \param[in] INCY
@@ -64,17 +65,6 @@
 !>          INCY is INTEGER
 !>         storage spacing between elements of SY
 !> \endverbatim
-!
-!  Authors:
-!  ========
-!
-!> \author Univ. of Tennessee
-!> \author Univ. of California Berkeley
-!> \author Univ. of Colorado Denver
-!> \author NAG Ltd.
-!
-!> \ingroup axpy
-!
 !> \par Further Details:
 !  =====================
 !>

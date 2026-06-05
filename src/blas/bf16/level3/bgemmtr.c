@@ -23,6 +23,25 @@
 
 #include <string.h>
 
+/**
+ * @brief Bfloat16 General Matrix-Matrix Multiplication (BGEMMTR).
+ *
+ * Performs the operation: C := alpha * A * B + beta * C, where C is symmetric.
+ *
+ * @param[in] uplo Character specifying the upper or lower triangle of C.
+ * @param[in] transa Character specifying the transpose of matrix A.
+ * @param[in] transb Character specifying the transpose of matrix B.
+ * @param[in] n Order of matrix C.
+ * @param[in] k Number of columns of matrix A (or rows of A^T) and rows of matrix B (or columns of B^T).
+ * @param[in] alpha Scalar multiplier for the product.
+ * @param[in] a Matrix A.
+ * @param[in] lda Leading dimension of matrix A.
+ * @param[in] b Matrix B.
+ * @param[in] ldb Leading dimension of matrix B.
+ * @param[in] beta Scalar multiplier for matrix C.
+ * @param[in,out] c Symmetric matrix C.
+ * @param[in] ldc Leading dimension of matrix C.
+ */
 void LPF_GLOBAL(bgemmtr, BGEMMTR)(char* uplo, char* transa, char* transb,
                                   int64_t* n, int64_t* k, lpf_bfloat16_t* alpha,
                                   lpf_bfloat16_t* a, int64_t* lda,

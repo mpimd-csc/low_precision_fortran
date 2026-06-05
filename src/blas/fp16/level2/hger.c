@@ -21,6 +21,21 @@
 #include <math.h>
 #include <stdint.h>
 
+/**
+ * @brief Half-precision General Rank-1 Update (HGER).
+ *
+ * Performs the operation: A := alpha * x * y^T + A
+ *
+ * @param[in] m Number of rows of matrix A.
+ * @param[in] n Number of columns of matrix A.
+ * @param[in] alpha Scalar multiplier.
+ * @param[in] x Vector x.
+ * @param[in] incx Increment for the elements of x.
+ * @param[in] y Vector y.
+ * @param[in] incy Increment for the elements of y.
+ * @param[in,out] a Matrix A.
+ * @param[in] lda Leading dimension of matrix A.
+ */
 void LPF_GLOBAL(hger, HGER)(int64_t* m, int64_t* n, lpf_float16_t* alpha,
                             lpf_float16_t* x, int64_t* incx, lpf_float16_t* y,
                             int64_t* incy, lpf_float16_t* a, int64_t* lda)

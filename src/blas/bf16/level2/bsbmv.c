@@ -24,6 +24,24 @@
 
 #include <string.h>
 
+/**
+ * @brief Bfloat16 Symmetric Banded Matrix-Vector Multiplication (BSBMV).
+ *
+ * Performs the operation: y := alpha * A * x + beta * y
+ * where A is a symmetric banded matrix.
+ *
+ * @param[in] uplo Character specifying the triangular part of the symmetric matrix A to be used: 'U' for upper, 'L' for lower.
+ * @param[in] n Order of matrix A.
+ * @param[in] k Number of diagonals.
+ * @param[in] alpha Scalar multiplier.
+ * @param[in] a Symmetric banded matrix A.
+ * @param[in] lda Leading dimension of matrix A.
+ * @param[in] x Vector x.
+ * @param[in] incx Increment for the elements of x.
+ * @param[in] beta Scalar multiplier for vector y.
+ * @param[in,out] y Vector y.
+ * @param[in] incy Increment for the elements of y.
+ */
 void LPF_GLOBAL(bsbmv, BSBMV)(char* uplo, int64_t* n, int64_t* k,
                               lpf_bfloat16_t* alpha, lpf_bfloat16_t* a,
                               int64_t* lda, lpf_bfloat16_t* x, int64_t* incx,

@@ -1,3 +1,24 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
+!
+! \brief Triangular Matrix-Matrix Multiplication (TRMM)
+!
+! This routine performs the operation:
+! B := alpha * A * B  (if side == 'L')
+! B := alpha * B * A  (if side == 'R')
+! where A is a triangular matrix.
+!
+! \param[in] side Character specifying the side on which the triangular matrix A is multiplied: 'L' for left, 'R' for right.
+! \param[in] uplo Character specifying the triangular part of the matrix A to be used: 'U' for upper, 'L' for lower.
+! \param[in] transa Character specifying the transpose of matrix A: 'N' for no transpose, 'T' for transpose.
+! \param[in] diag Character specifying whether the diagonal of A is unit: 'U' for unit, 'N' for non-unit.
+! \param[in] m Number of rows of matrix B.
+! \param[in] n Number of columns of matrix B.
+! \param[in] alpha Scalar multiplier.
+! \param[in] a The triangular matrix A, stored in column-major order.
+! \param[in] lda Leading dimension of matrix A.
+! \param[in,out] b The matrix B, stored in column-major order.
+! \param[in] ldb Leading dimension of matrix B.
+
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_trmm_fp8_e5m2
     use lpf_fp8_e5m2

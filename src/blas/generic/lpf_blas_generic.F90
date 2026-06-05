@@ -1,3 +1,4 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
 #ifdef LPF_FP8_E4M3
 #define DT fp8_e4m3
 #define MODNAME lpf_blas_fp8_e4m3

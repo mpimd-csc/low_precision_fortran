@@ -1,153 +1,22 @@
-!> \brief \b SSYMV
+! SPDX-License-Identifier: LGPL-3.0-or-later
 !
-!  =========== DOCUMENTATION ===========
+! \brief Symmetric Matrix-Vector Multiplication (SYMV)
 !
-! Online html documentation available at
-!            http://www.netlib.org/lapack/explore-html/
+! This routine performs the operation:
+! y := alpha * A * x + beta * y
+! where A is a symmetric matrix.
 !
-!  Definition:
-!  ===========
-!
-!       SUBROUTINE SSYMV(UPLO,N,ALPHA,A,LDA,X,INCX,BETA,Y,INCY)
-!
-!       .. Scalar Arguments ..
-!       REAL ALPHA,BETA
-!       INTEGER INCX,INCY,LDA,N
-!       CHARACTER UPLO
-!       ..
-!       .. Array Arguments ..
-!       REAL A(LDA,*),X(*),Y(*)
-!       ..
-!
-!
-!> \par Purpose:
-!  =============
-!>
-!> \verbatim
-!>L
-!> SSYMV  performs the matrix-vector  operation
-!>
-!>    y := alpha*A*x + beta*y,
-!>
-!> where alpha and beta are scalars, x and y are n element vectors and
-!> A is an n by n symmetric matrix.
-!> \endverbatim
-!
-!  Arguments:
-!  ==========
-!
-!> \param[in] UPLO
-!> \verbatim
-!>          UPLO is CHARACTER*1
-!>           On entry, UPLO specifies whether the upper or lower
-!>           triangular part of the array A is to be referenced as
-!>           follows:
-!>
-!>              UPLO = 'U' or 'u'   Only the upper triangular part of A
-!>                                  is to be referenced.
-!>
-!>              UPLO = 'L' or 'l'   Only the lower triangular part of A
-!>                                  is to be referenced.
-!> \endverbatim
-!>
-!> \param[in] N
-!> \verbatim
-!>          N is INTEGER
-!>           On entry, N specifies the order of the matrix A.
-!>           N must be at least zero.
-!> \endverbatim
-!>
-!> \param[in] ALPHA
-!> \verbatim
-!>          ALPHA is REAL
-!>           On entry, ALPHA specifies the scalar alpha.
-!> \endverbatim
-!>
-!> \param[in] A
-!> \verbatim
-!>          A is REAL array, dimension ( LDA, N )
-!>           Before entry with  UPLO = 'U' or 'u', the leading n by n
-!>           upper triangular part of the array A must contain the upper
-!>           triangular part of the symmetric matrix and the strictly
-!>           lower triangular part of A is not referenced.
-!>           Before entry with UPLO = 'L' or 'l', the leading n by n
-!>           lower triangular part of the array A must contain the lower
-!>           triangular part of the symmetric matrix and the strictly
-!>           upper triangular part of A is not referenced.
-!> \endverbatim
-!>
-!> \param[in] LDA
-!> \verbatim
-!>          LDA is INTEGER
-!>           On entry, LDA specifies the first dimension of A as declare
-!>           in the calling (sub) program. LDA must be at least
-!>           max( 1, n ).
-!> \endverbatim
-!>
-!> \param[in] X
-!> \verbatim
-!>          X is REAL array, dimension at least
-!>           ( 1 + ( n - 1 )*abs( INCX ) ).
-!>           Before entry, the incremented array X must contain the n
-!>           element vector x.
-!> \endverbatim
-!>
-!> \param[in] INCX
-!> \verbatim
-!>          INCX is INTEGER
-!>           On entry, INCX specifies the increment for the elements of
-!>           X. INCX must not be zero.
-!> \endverbatim
-!>
-!> \param[in] BETA
-!> \verbatim
-!>          BETA is REAL
-!>           On entry, BETA specifies the scalar beta. When BETA is
-!>           supplied as zero then Y need not be set on input.
-!> \endverbatim
-!>
-!> \param[in,out] Y
-!> \verbatim
-!>          Y is REAL array, dimension at least
-!>           ( 1 + ( n - 1 )*abs( INCY ) ).
-!>           Before entry, the incremented array Y must contain the n
-!>           element vector y. On exit, Y is overwritten by the updated
-!>           vector y.
-!> \endverbatim
-!>ST
-!> \param[in] INCY
-!> \verbatim
-!>          INCY is INTEGER
-!>           On entry, INCY specifies the increment for the elements of
-!>           Y. INCY must not be zero.
-!> \endverbatim
-!
-!  Authors:
-!  ========
-!
-!> \author Univ. of Tennessee
-!> \author Univ. of California Berkeley
-!> \author Univ. of Colorado Denver
-!> \author NAG Ltd.
-!
-!> \ingroup hemv
-!
-!> \par Further Details:
-!  =====================
-!>
-!> \verbatim
-!>
-!>  Level 2 Blas routine.
-!>  The vector and matrix arguments are not referenced when N = 0, or M
-!>
-!>  -- Written on 22-October-1986.
-!>     Jack Dongarra, Argonne National Lab.
-!>     Jeremy Du Croz, Nag Central Office.
-!>     Sven Hammarling, Nag Central Office.
-!>     Richard Hanson, Sandia National Labs.
-!> \endverbatim
-!>
-!  =====================================================================
+! \param[in] uplo Character specifying the part of the matrix A to be used: 'U' for upper, 'L' for lower.
+! \param[in] n Order of matrix A.
+! \param[in] alpha Scalar multiplier for the matrix-vector product.
+! \param[in] a The symmetric matrix A.
+! \param[in] lda Leading dimension of matrix A.
+! \param[in] x Vector X.
+! \param[in] incx Increment for the elements of x.
+! \param[in] beta Scalar multiplier for vector y.
+! \param[in,out] y Vector Y.
+! \param[in] incy Increment for the elements of y.
+
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_symv_fp8_e5m2
     use lpf_fp8_e5m2

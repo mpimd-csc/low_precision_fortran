@@ -23,6 +23,26 @@
 
 #include <string.h>
 
+/**
+ * @brief Bfloat16 General Banded Matrix-Vector Multiplication (BGBMV).
+ *
+ * Performs the operation: y := alpha * A * x + beta * y
+ * where A is a general banded matrix.
+ *
+ * @param[in] trans Character specifying the transpose: 'N' for no transpose, 'T' for transpose.
+ * @param[in] m Number of rows of matrix A.
+ * @param[in] n Number of columns of matrix A.
+ * @param[in] kl Number of lower diagonals.
+ * @param[in] ku Number of upper diagonals.
+ * @param[in] alpha Scalar multiplier.
+ * @param[in] a General banded matrix A.
+ * @param[in] lda Leading dimension of matrix A.
+ * @param[in] x Vector x.
+ * @param[in] incx Increment for the elements of x.
+ * @param[in] beta Scalar multiplier for vector y.
+ * @param[in,out] y Vector y.
+ * @param[in] incy Increment for the elements of y.
+ */
 void LPF_GLOBAL(bgbmv, BGBMV)(char* trans, int64_t* m, int64_t* n, int64_t* kl,
                               int64_t* ku, lpf_bfloat16_t* alpha,
                               lpf_bfloat16_t* a, int64_t* lda,

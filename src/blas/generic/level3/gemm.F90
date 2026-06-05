@@ -1,3 +1,24 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
+!
+! \brief General Matrix-Matrix Multiplication (GEMM)
+!
+! This routine performs the operation:
+! C := alpha * A * B + beta * C
+!
+! \param[in] transa Character specifying the transpose of matrix A: 'N' for no transpose, 'T' for transpose.
+! \param[in] transb Character specifying the transpose of matrix B: 'N' for no transpose, 'T' for transpose.
+! \param[in] m Number of rows of matrix A.
+! \param[in] n Number of columns of matrix B.
+! \param[in] k Number of columns of matrix A (or rows of matrix B).
+! \param[in] alpha Scalar multiplier for the matrix product.
+! \param[in] a The matrix A, stored in column-major order.
+! \param[in] lda Leading dimension of matrix A.
+! \param[in] b The matrix B, stored in column-major order.
+! \param[in] ldb Leading dimension of matrix B.
+! \param[in] beta Scalar multiplier for matrix C.
+! \param[in,out] c The matrix C, stored in column-major order.
+! \param[in] ldc Leading dimension of matrix C.
+
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_gemm_fp8_e5m2
     use lpf_fp8_e5m2

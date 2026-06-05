@@ -21,6 +21,16 @@
 #include "lpf_internal.h"
 #include <stdint.h>
 
+/**
+ * @brief Bfloat16 Index of Maximum Absolute Value (BAMAX).
+ *
+ * Finds the index of the element with the maximum absolute value in vector x.
+ *
+ * @param[in] n Number of elements in vector x.
+ * @param[in] sx Vector x.
+ * @param[in] incx Increment for the elements of x.
+ * @return The index of the element with the maximum absolute value.
+ */
 int64_t LPF_GLOBAL(ibamax, IBAMAX)(int64_t* n, lpf_bfloat16_t* sx,
                                    int64_t* incx)
 {

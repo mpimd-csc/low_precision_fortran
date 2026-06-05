@@ -1,159 +1,22 @@
-!> \brief \b SGEMV
+! SPDX-License-Identifier: LGPL-3.0-or-later
 !
-!  =========== DOCUMENTATION ===========
+! \brief General Matrix-Vector Multiplication (GEMV)
 !
-! Online html documentation available at
-!            http://www.netlib.org/lapack/explore-html/
+! This routine performs the operation:
+! y := alpha * A * x + beta * y
 !
-!  Definition:
-!  ===========
-!
-!       SUBROUTINE SGEMV(TRANS,M,N,ALPHA,A,LDA,X,INCX,BETA,Y,INCY)
-!
-!       .. Scalar Arguments ..
-!       REAL ALPHA,BETA
-!       INTEGER INCX,INCY,LDA,M,N
-!       CHARACTER TRANS
-!       ..
-!       .. Array Arguments ..
-!       REAL A(LDA,*),X(*),Y(*)
-!       ..
-!
-!
-!> \par Purpose:
-!  =============
-!>
-!> \verbatim
-!>
-!> SGEMV  performs one of the matrix-vector operations
-!>
-!>    y := alpha*A*x + beta*y,   or   y := alpha*A**T*x + beta*y,
-!>
-!> where alpha and beta are scalars, x and y are vectors and A is an
-!> m by n matrix.
-!> \endverbatim
-!
-!  Arguments:
-!  ==========
-!
-!> \param[in] TRANS
-!> \verbatim
-!>          TRANS is CHARACTER*1
-!>           On entry, TRANS specifies the operation to be performed as
-!>           follows:
-!>
-!>              TRANS = 'N' or 'n'   y := alpha*A*x + beta*y.
-!>
-!>              TRANS = 'T' or 't'   y := alpha*A**T*x + beta*y.
-!>
-!>              TRANS = 'C' or 'c'   y := alpha*A**T*x + beta*y.
-!> \endverbatim
-!>
-!> \param[in] M
-!> \verbatim
-!>          M is INTEGER
-!>           On entry, M specifies the number of rows of the matrix A.
-!>           M must be at least zero.
-!> \endverbatim
-!>
-!> \param[in] N
-!> \verbatim
-!>          N is INTEGER
-!>           On entry, N specifies the number of columns of the matrix A
-!>           N must be at least zero.
-!> \endverbatim
-!>
-!> \param[in] ALPHA
-!> \verbatim
-!>          ALPHA is REAL
-!>           On entry, ALPHA specifies the scalar alpha.
-!> \endverbatim
-!>
-!> \param[in] A
-!> \verbatim
-!>          A is REAL array, dimension ( LDA, N )
-!>           Before entry, the leading m by n part of the array A must
-!>           contain the matrix of coefficients.
-!> \endverbatim
-!>
-!> \param[in] LDA
-!> \verbatim
-!>          LDA is INTEGER
-!>           On entry, LDA specifies the first dimension of A as declare
-!>           in the calling (sub) program. LDA must be at least
-!>           max( 1, m ).
-!> \endverbatim
-!>
-!> \param[in] X
-!> \verbatim
-!>          X is REAL array, dimension at least
-!>           ( 1 + ( n - 1 )*abs( INCX ) ) when TRANS = 'N' or 'n'
-!>           and at least
-!>           ( 1 + ( m - 1 )*abs( INCX ) ) otherwise.
-!>           Before entry, the incremented array X must contain the
-!>           vector x.
-!> \endverbatim
-!>
-!> \param[in] INCX
-!> \verbatim
-!>          INCX is INTEGER
-!>           On entry, INCX specifies the increment for the elements of
-!>           X. INCX must not be zero.
-!> \endverbatim
-!>
-!> \param[in] BETA
-!> \verbatim
-!>          BETA is REAL
-!>           On entry, BETA specifies the scalar beta. When BETA is
-!>           supplied as zero then Y need not be set on input.
-!> \endverbatim
-!>
-!> \param[in,out] Y
-!> \verbatim
-!>          Y is REAL array, dimension at least
-!>           ( 1 + ( m - 1 )*abs( INCY ) ) when TRANS = 'N' or 'n'
-!>           and at least
-!>           ( 1 + ( n - 1 )*abs( INCY ) ) otherwise.
-!>           Before entry with BETA non-zero, the incremented array Y
-!>           must contain the vector y. On exit, Y is overwritten by the
-!>           updated vector y.
-!>           If either m or n is zero, then Y not referenced and the fun
-!>           performs a quick return.
-!> \endverbatim
-!>
-!> \param[in] INCY
-!> \verbatim
-!>          INCY is INTEGER
-!>           On entry, INCY specifies the increment for the elements of
-!>           Y. INCY must not be zero.
-!> \endverbatim
-!
-!  Authors:
-!  ========
-!
-!> \author Univ. of Tennessee
-!> \author Univ. of California Berkeley
-!> \author Univ. of Colorado Denver
-!> \author NAG Ltd.
-!
-!> \ingroup gemv
-!
-!> \par Further Details:
-!  =====================
-!>
-!> \verbatim
-!>
-!>  Level 2 Blas routine.
-!>  The vector and matrix arguments are not referenced when N = 0, or M
-!>
-!>  -- Written on 22-October-1986.
-!>     Jack Dongarra, Argonne National Lab.
-!>     Jeremy Du Croz, Nag Central Office.
-!>     Sven Hammarling, Nag Central Office.
-!>     Richard Hanson, Sandia National Labs.
-!> \endverbatim
-!>
-!  =====================================================================
+! \param[in] trans Character specifying the transpose. 'N' for no transpose, 'T' for transpose.
+! \param[in] m Number of rows of matrix A.
+! \param[in] n Number of columns of matrix A.
+! \param[in] alpha Scalar multiplier for the matrix-vector product.
+! \param[in] a The matrix A, stored in column-major order.
+! \param[in] lda Leading dimension of matrix A.
+! \param[in] x Vector X.
+! \param[in] incx Increment for the elements of x.
+! \param[in] beta Scalar multiplier for vector y.
+! \param[in,out] y Vector Y.
+! \param[in] incy Increment for the elements of y.
+
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_gemv_fp8_e5m2
     use lpf_fp8_e5m2

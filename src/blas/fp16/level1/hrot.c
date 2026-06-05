@@ -21,6 +21,21 @@
 #include <math.h>
 #include <stdint.h>
 
+/**
+ * @brief Float16 Rotations (HROT).
+ *
+ * Performs the operation:
+ * x := cos(theta)*x + sin(theta)*y
+ * y := -sin(theta)*x + cos(theta)*y
+ *
+ * @param[in] n Number of elements in vectors x and y.
+ * @param[in,out] sx Vector X.
+ * @param[in] incx Increment for the elements of x.
+ * @param[in,out] sy Vector Y.
+ * @param[in] incy Increment for the elements of y.
+ * @param[in] c Cosine of theta.
+ * @param[in] s Sine of theta.
+ */
 void LPF_GLOBAL(hrot, HROT)(int64_t* n, lpf_float16_t* sx, int64_t* incx,
                             lpf_float16_t* sy, int64_t* incy,
                             lpf_float16_t* c__, lpf_float16_t* s)

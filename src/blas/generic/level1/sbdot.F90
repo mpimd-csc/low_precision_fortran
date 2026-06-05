@@ -1,3 +1,4 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
 !> \brief \b SDSDOT
 !
 !  =========== DOCUMENTATION ===========
@@ -8,14 +9,14 @@
 !  Definition:
 !  ===========
 !
-!       REAL FUNCTION SDSDOT(N,SB,SX,INCX,SY,INCY)
+!       type(DT) FUNCTION SDSDOT(N,SB,SX,INCX,SY,INCY)
 !
 !       .. Scalar Arguments ..
 !       REAL SB
 !       INTEGER INCX,INCY,N
 !       ..
 !       .. Array Arguments ..
-!       REAL SX(*),SY(*)
+!       type(DT) SX(*),SY(*)
 !       ..
 !
 !
@@ -50,7 +51,7 @@
 !>
 !> \param[in] SX
 !> \verbatim
-!>          SX is REAL array, dimension ( 1 + ( N - 1 )*abs( INCX ) )
+!>          SX is type(DT) array, dimension ( 1 + ( N - 1 )*abs( INCX ) )
 !>          single precision vector with N elements
 !> \endverbatim
 !>
@@ -62,7 +63,7 @@
 !>
 !> \param[in] SY
 !> \verbatim
-!>          SY is REAL array, dimension ( 1 + ( N - 1 )*abs( INCX ) )
+!>          SY is type(DT) array, dimension ( 1 + ( N - 1 )*abs( INCX ) )
 !>          single precision vector with N elements
 !> \endverbatim
 !>
@@ -71,19 +72,6 @@
 !>          INCY is INTEGER
 !>          storage spacing between elements of SY
 !> \endverbatim
-!
-!  Authors:
-!  ========
-!
-!> \author Lawson, C. L., (JPL), Hanson, R. J., (SNLA),
-!> \author Kincaid, D. R., (U. of Texas), Krogh, F. T., (JPL)
-!> \author Univ. of Tennessee
-!> \author Univ. of California Berkeley
-!> \author Univ. of Colorado Denver
-!> \author NAG Ltd.
-!
-!> \ingroup dot
-!
 !> \par Further Details:
 !  =====================
 !>

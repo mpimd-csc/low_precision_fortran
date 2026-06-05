@@ -1,3 +1,4 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
 module lpf_blas_fp16
     use lpf_fp16
     use iso_fortran_env, only : real32, real64

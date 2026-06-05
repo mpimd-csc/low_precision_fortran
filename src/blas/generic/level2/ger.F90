@@ -1,131 +1,20 @@
-!> \brief \b SGER
+! SPDX-License-Identifier: LGPL-3.0-or-later
 !
-!  =========== DOCUMENTATION ===========
+! \brief General Rank-1 Update (GER)
 !
-! Online html documentation available at
-!            http://www.netlib.org/lapack/explore-html/
+! This routine performs the operation:
+! A := alpha * x * y^T + A
 !
-!  Definition:
-!  ===========
-!
-!       SUBROUTINE SGER(M,N,ALPHA,X,INCX,Y,INCY,A,LDA)
-!
-!       .. Scalar Arguments ..
-!       REAL ALPHA
-!       INTEGER INCX,INCY,LDA,M,N
-!       ..
-!       .. Array Arguments ..
-!       REAL A(LDA,*),X(*),Y(*)
-!       ..
-!
-!
-!> \par Purpose:
-!  =============
-!>
-!> \verbatim
-!>
-!> SGER   performs the rank 1 operation
-!>
-!>    A := alpha*x*y**T + A,
-!>
-!> where alpha is a scalar, x is an m element vector, y is an n element
-!> vector and A is an m by n matrix.
-!> \endverbatim
-!
-!  Arguments:
-!  ==========
-!
-!> \param[in] M
-!> \verbatim
-!>          M is INTEGER
-!>           On entry, M specifies the number of rows of the matrix A.
-!>           M must be at least zero.
-!> \endverbatim
-!>
-!> \param[in] N
-!> \verbatim
-!>          N is INTEGER
-!>           On entry, N specifies the number of columns of the matrix A
-!>           N must be at least zero.
-!> \endverbatim
-!>
-!> \param[in] ALPHA
-!> \verbatim
-!>          ALPHA is REAL
-!>           On entry, ALPHA specifies the scalar alpha.
-!> \endverbatim
-!>
-!> \param[in] X
-!> \verbatim
-!>          X is REAL array, dimension at least
-!>           ( 1 + ( m - 1 )*abs( INCX ) ).
-!>           Before entry, the incremented array X must contain the m
-!>           element vector x.
-!> \endverbatim
-!>
-!> \param[in] INCX
-!> \verbatim
-!>          INCX is INTEGER
-!>           On entry, INCX specifies the increment for the elements of
-!>           X. INCX must not be zero.
-!> \endverbatim
-!>
-!> \param[in] Y
-!> \verbatim
-!>          Y is REAL array, dimension at least
-!>           ( 1 + ( n - 1 )*abs( INCY ) ).
-!>           Before entry, the incremented array Y must contain the n
-!>           element vector y.
-!> \endverbatim
-!>
-!> \param[in] INCY
-!> \verbatim
-!>          INCY is INTEGER
-!>           On entry, INCY specifies the increment for the elements of
-!>           Y. INCY must not be zero.
-!> \endverbatim
-!>
-!> \param[in,out] A
-!> \verbatim
-!>          A is REAL array, dimension ( LDA, N )
-!>           Before entry, the leading m by n part of the array A must
-!>           contain the matrix of coefficients. On exit, A is
-!>           overwritten by the updated matrix.
-!> \endverbatim
-!>
-!> \param[in] LDA
-!> \verbatim
-!>          LDA is INTEGER
-!>           On entry, LDA specifies the first dimension of A as declare
-!>           in the calling (sub) program. LDA must be at least
-!>           max( 1, m ).
-!> \endverbatim
-!
-!  Authors:
-!  ========
-!
-!> \author Univ. of Tennessee
-!> \author Univ. of California Berkeley
-!> \author Univ. of Colorado Denver
-!> \author NAG Ltd.
-!
-!> \ingroup ger
-!
-!> \par Further Details:
-!  =====================
-!>
-!> \verbatim
-!>
-!>  Level 2 Blas routine.
-!>
-!>  -- Written on 22-October-1986.
-!>     Jack Dongarra, Argonne National Lab.
-!>     Jeremy Du Croz, Nag Central Office.
-!>     Sven Hammarling, Nag Central Office.
-!>     Richard Hanson, Sandia National Labs.
-!> \endverbatim
-!>
-!  =====================================================================
+! \param[in] m Number of rows of matrix A.
+! \param[in] n Number of columns of matrix A.
+! \param[in] alpha Scalar multiplier.
+! \param[in] x Vector X.
+! \param[in] incx Increment for the elements of x.
+! \param[in] y Vector Y.
+! \param[in] incy Increment for the elements of y.
+! \param[in,out] a The matrix A, stored in column-major order.
+! \param[in] lda Leading dimension of matrix A.
+
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_ger_fp8_e5m2
     use lpf_fp8_e5m2

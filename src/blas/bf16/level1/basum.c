@@ -21,6 +21,16 @@
 #include "lpf_internal.h"
 #include <stdint.h>
 
+/**
+ * @brief Bfloat16 Sum of Absolute Values (BASUM).
+ *
+ * Performs the operation: result := sum(|x|)
+ *
+ * @param[in] n Number of elements in vector x.
+ * @param[in] sx Vector x.
+ * @param[in] incx Increment for the elements of x.
+ * @return The sum of absolute values of vector x.
+ */
 int16_t LPF_GLOBAL(basum, BASUM)(int64_t* n, lpf_bfloat16_t* sx, int64_t* incx)
 {
 

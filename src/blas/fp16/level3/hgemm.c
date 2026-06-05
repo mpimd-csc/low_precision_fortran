@@ -30,6 +30,25 @@
 #include <mkl.h>
 #endif
 
+/**
+ * @brief Half-precision General Matrix-Matrix Multiplication (HGEMM).
+ *
+ * Performs the operation: C := alpha * A * B + beta * C
+ *
+ * @param[in] transa Character specifying the transpose of matrix A: 'N' for no transpose, 'T' for transpose.
+ * @param[in] transb Character specifying the transpose of matrix B: 'N' for no transpose, 'T' for transpose.
+ * @param[in] m Number of rows of matrix A.
+ * @param[in] n Number of columns of matrix B.
+ * @param[in] k Common dimension of matrices A and B.
+ * @param[in] alpha Scalar multiplier.
+ * @param[in] a Matrix A.
+ * @param[in] lda Leading dimension of matrix A.
+ * @param[in] b Matrix B.
+ * @param[in] ldb Leading dimension of matrix B.
+ * @param[in] beta Scalar multiplier for matrix C.
+ * @param[in,out] c Matrix C.
+ * @param[in] ldc Leading dimension of matrix C.
+ */
 void LPF_GLOBAL(hgemm, HGEMM)(char* transa, char* transb, int64_t* m,
                               int64_t* n, int64_t* k, lpf_float16_t* alpha,
                               lpf_float16_t* a, int64_t* lda, lpf_float16_t* b,

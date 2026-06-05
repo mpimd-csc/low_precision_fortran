@@ -23,6 +23,26 @@
 
 #include <string.h>
 
+/**
+ * @brief Half-precision Symmetric Matrix-Matrix Multiplication (HSYMM).
+ *
+ * Performs the operation: C := alpha * A * B + beta * C  (if side == 'L')
+ *                         C := alpha * B * A + beta * C  (if side == 'R')
+ * where A is a symmetric matrix.
+ *
+ * @param[in] side Character specifying the side on which the symmetric matrix A is multiplied: 'L' for left, 'R' for right.
+ * @param[in] uplo Character specifying the triangular part of the symmetric matrix A to be used: 'U' for upper, 'L' for lower.
+ * @param[in] m Number of rows of matrix B.
+ * @param[in] n Number of columns of matrix B.
+ * @param[in] alpha Scalar multiplier.
+ * @param[in] a Symmetric matrix A.
+ * @param[in] lda Leading dimension of matrix A.
+ * @param[in] b Matrix B.
+ * @param[in] ldb Leading dimension of matrix B.
+ * @param[in] beta Scalar multiplier for matrix C.
+ * @param[in,out] c Matrix C.
+ * @param[in] ldc Leading dimension of matrix C.
+ */
 void LPF_GLOBAL(hsymm, HSYMM)(char* side, char* uplo, int64_t* m, int64_t* n,
                               lpf_float16_t* alpha, lpf_float16_t* a,
                               int64_t* lda, lpf_float16_t* b, int64_t* ldb,

@@ -1,185 +1,23 @@
-!> \brief \b SSBMV
+! SPDX-License-Identifier: LGPL-3.0-or-later
 !
-!  =========== DOCUMENTATION ===========
+! \brief Symmetric Banded Matrix-Vector Multiplication (SBMV)
 !
-! Online html documentation available at
-!            http://www.netlib.org/lapack/explore-html/
+! This routine performs the operation:
+! y := alpha * A * x + beta * y
+! where A is a symmetric banded matrix.
 !
-!  Definition:
-!  ===========
-!
-!       SUBROUTINE SSBMV(UPLO,N,K,ALPHA,A,LDA,X,INCX,BETA,Y,INCY)
-!
-!       .. Scalar Arguments ..
-!       REAL ALPHA,BETA
-!       INTEGER INCX,INCY,K,LDA,N
-!       CHARACTER UPLO
-!       ..
-!       .. Array Arguments ..
-!       REAL A(LDA,*),X(*),Y(*)
-!       ..
-!
-!
-!> \par Purpose:
-!  =============
-!>
-!> \verbatim
-!>
-!> SSBMV  performs the matrix-vector  operation
-!>
-!>    y := alpha*A*x + beta*y,
-!>
-!> where alpha and beta are scalars, x and y are n element vectors and
-!> A is an n by n symmetric band matrix, with k super-diagonals.
-!> \endverbatim
-!
-!  Arguments:
-!  ==========
-!
-!> \param[in] UPLO
-!> \verbatim
-!>          UPLO is CHARACTER*1
-!>           On entry, UPLO specifies whether the upper or lower
-!>           triangular part of the band matrix A is being supplied as
-!>           follows:
-!>
-!>              UPLO = 'U' or 'u'   The upper triangular part of A is
-!>                                  being supplied.
-!>
-!>              UPLO = 'L' or 'l'   The lower triangular part of A is
-!>                                  being supplied.
-!> \endverbatim
-!>
-!> \param[in] N
-!> \verbatim
-!>          N is INTEGER
-!>           On entry, N specifies the order of the matrix A.
-!>           N must be at least zero.
-!> \endverbatim
-!>
-!> \param[in] K
-!> \verbatim
-!>          K is INTEGER
-!>           On entry, K specifies the number of super-diagonals of the
-!>           matrix A. K must satisfy  0 .le. K.
-!> \endverbatim
-!>
-!> \param[in] ALPHA
-!> \verbatim
-!>          ALPHA is REAL
-!>           On entry, ALPHA specifies the scalar alpha.
-!> \endverbatim
-!>
-!> \param[in] A
-!> \verbatim
-!>          A is REAL array, dimension ( LDA, N )
-!>           Before entry with UPLO = 'U' or 'u', the leading ( k + 1 )
-!>           by n part of the array A must contain the upper triangular
-!>           band part of the symmetric matrix, supplied column by
-!>           column, with the leading diagonal of the matrix in row
-!>           ( k + 1 ) of the array, the first super-diagonal starting a
-!>           position 2 in row k, and so on. The top left k by k triangl
-!>           of the array A is not referenced.
-!>           The following program segment will transfer the upper
-!>           triangular part of a symmetric band matrix from conventiona
-!>           full matrix storage to band storage:
-!>
-!>                 DO 20, J = 1, N
-!>                    M = K + 1 - J
-!>                    DO 10, I = MAX( 1, J - K ), J
-!>                       A( M + I, J ) = matrix( I, J )
-!>              10    CONTINUE
-!>              20 CONTINUE
-!>
-!>           Before entry with UPLO = 'L' or 'l', the leading ( k + 1 )
-!>           by n part of the array A must contain the lower triangular
-!>           band part of the symmetric matrix, supplied column by
-!>           column, with the leading diagonal of the matrix in row 1 of
-!>           the array, the first sub-diagonal starting at position 1 in
-!>           row 2, and so on. The bottom right k by k triangle of the
-!>           array A is not referenced.
-!>           The following program segment will transfer the lower
-!>           triangular part of a symmetric band matrix from conventiona
-!>           full matrix storage to band storage:
-!>
-!>                 DO 20, J = 1, N
-!>                    M = 1 - J
-!>                    DO 10, I = J, MIN( N, J + K )
-!>                       A( M + I, J ) = matrix( I, J )
-!>              10    CONTINUE
-!>              20 CONTINUE
-!> \endverbatim
-!>
-!> \param[in] LDA
-!> \verbatim
-!>          LDA is INTEGER
-!>           On entry, LDA specifies the first dimension of A as declare
-!>           in the calling (sub) program. LDA must be at least
-!>           ( k + 1 ).
-!> \endverbatim
-!>
-!> \param[in] X
-!> \verbatim
-!>          X is REAL array, dimension at least
-!>           ( 1 + ( n - 1 )*abs( INCX ) ).
-!>           Before entry, the incremented array X must contain the
-!>           vector x.
-!> \endverbatim
-!>
-!> \param[in] INCX
-!> \verbatim
-!>          INCX is INTEGER
-!>           On entry, INCX specifies the increment for the elements of
-!>           X. INCX must not be zero.
-!> \endverbatim
-!>
-!> \param[in] BETA
-!> \verbatim
-!>          BETA is REAL
-!>           On entry, BETA specifies the scalar beta.
-!> \endverbatim
-!>
-!> \param[in,out] Y
-!> \verbatim
-!>          Y is REAL array, dimension at least
-!>           ( 1 + ( n - 1 )*abs( INCY ) ).
-!>           Before entry, the incremented array Y must contain the
-!>           vector y. On exit, Y is overwritten by the updated vector y
-!> \endverbatim
-!>
-!> \param[in] INCY
-!> \verbatim
-!>          INCY is INTEGER
-!>           On entry, INCY specifies the increment for the elements of
-!>           Y. INCY must not be zero.
-!> \endverbatim
-!
-!  Authors:
-!  ========
-!
-!> \author Univ. of Tennessee
-!> \author Univ. of California Berkeley
-!> \author Univ. of Colorado Denver
-!> \author NAG Ltd.
-!
-!> \ingroup hbmv
-!
-!> \par Further Details:
-!  =====================
-!>
-!> \verbatim
-!>
-!>  Level 2 Blas routine.
-!>  The vector and matrix arguments are not referenced when N = 0, or M
-!>
-!>  -- Written on 22-October-1986.
-!>     Jack Dongarra, Argonne National Lab.
-!>     Jeremy Du Croz, Nag Central Office.
-!>     Sven Hammarling, Nag Central Office.
-!>     Richard Hanson, Sandia National Labs.
-!> \endverbatim
-!>
-!  =====================================================================
+! \param[in] uplo Character specifying the part of the matrix A to be used: 'U' for upper, 'L' for lower.
+! \param[in] n Order of matrix A.
+! \param[in] k Number of diagonals.
+! \param[in] alpha Scalar multiplier for the matrix-vector product.
+! \param[in] a The symmetric banded matrix A.
+! \param[in] lda Leading dimension of matrix A.
+! \param[in] x Vector X.
+! \param[in] incx Increment for the elements of x.
+! \param[in] beta Scalar multiplier for vector y.
+! \param[in,out] y Vector Y.
+! \param[in] incy Increment for the elements of y.
+
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_sbmv_fp8_e5m2
     use lpf_fp8_e5m2

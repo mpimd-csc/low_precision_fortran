@@ -23,6 +23,26 @@
 
 #include <string.h>
 
+/**
+ * @brief Half-precision General Matrix-Matrix Multiplication with Triangular Result (HGEMMTR).
+ *
+ * Performs the operation: C := alpha * A * B + beta * C
+ * where C is a triangular matrix.
+ *
+ * @param[in] uplo Character specifying the triangular part of the matrix C to be used: 'U' for upper, 'L' for lower.
+ * @param[in] transa Character specifying the transpose of matrix A: 'N' for no transpose, 'T' for transpose.
+ * @param[in] transb Character specifying the transpose of matrix B: 'N' for no transpose, 'T' for transpose.
+ * @param[in] n Order of matrix C.
+ * @param[in] k Common dimension of matrices A and B.
+ * @param[in] alpha Scalar multiplier.
+ * @param[in] a Matrix A.
+ * @param[in] lda Leading dimension of matrix A.
+ * @param[in] b Matrix B.
+ * @param[in] ldb Leading dimension of matrix B.
+ * @param[in] beta Scalar multiplier for matrix C.
+ * @param[in,out] c Triangular matrix C.
+ * @param[in] ldc Leading dimension of matrix C.
+ */
 void LPF_GLOBAL(hgemmtr, HGEMMTR)(char* uplo, char* transa, char* transb,
                                   int64_t* n, int64_t* k, lpf_float16_t* alpha,
                                   lpf_float16_t* a, int64_t* lda,

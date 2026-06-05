@@ -1,6 +1,7 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
 submodule(lpf_lapack_bf16) lpf_lapack_potrf_bf16
 contains
-    !> \brief \b POTRF
+    !> \brief \b potrf
     !
     !  Definition:
     !  ===========

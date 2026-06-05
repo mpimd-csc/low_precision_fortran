@@ -1,142 +1,20 @@
-!> \brief \b SSPR2
+! SPDX-License-Identifier: LGPL-3.0-or-later
 !
-!  =========== DOCUMENTATION ===========
+! \brief Symmetric Rank-2 Update (SPR2)
 !
-! Online html documentation available at
-!            http://www.netlib.org/lapack/explore-html/
+! This routine performs the operation:
+! A := A + alpha * (x * y^T + y * x^T)
+! where A is a symmetric matrix in packed storage.
 !
-!  Definition:
-!  ===========
-!
-!       SUBROUTINE SSPR2(UPLO,N,ALPHA,X,INCX,Y,INCY,AP)
-!
-!       .. Scalar Arguments ..
-!       REAL ALPHA
-!       INTEGER INCX,INCY,N
-!       CHARACTER UPLO
-!       ..
-!       .. Array Arguments ..
-!       REAL AP(*),X(*),Y(*)
-!       ..
-!
-!
-!> \par Purpose:
-!  =============
-!>
-!> \verbatim
-!>
-!> SSPR2   performs the symmetric rank 2 operation
-!>
-!>    A := alpha*x*y**T + alpha*y*x**T + A,
-!>
-!> where alpha is a real scalar, x and y are n element vectors and A is
-!> an n by n symmetric matrix, supplied in packed form.
-!> \endverbatim
-!
-!  Arguments:
-!  ==========
-!
-!> \param[in] UPLO
-!> \verbatim
-!>          UPLO is CHARACTER*1
-!>           On entry, UPLO specifies whether the upper or lower
-!>           triangular part of the matrix A is supplied in the packed
-!>           array AP as follows:
-!>
-!>              UPLO = 'U' or 'u'   The upper triangular part of A is
-!>                                  supplied in AP.
-!>
-!>              UPLO = 'L' or 'l'   The lower triangular part of A is
-!>                                  supplied in AP.
-!> \endverbatim
-!>
-!> \param[in] N
-!> \verbatim
-!>          N is INTEGER
-!>           On entry, N specifies the order of the matrix A.
-!>           N must be at least zero.
-!> \endverbatim
-!>
-!> \param[in] ALPHA
-!> \verbatim
-!>          ALPHA is REAL
-!>           On entry, ALPHA specifies the scalar alpha.
-!> \endverbatim
-!>
-!> \param[in] X
-!> \verbatim
-!>          X is REAL array, dimension at least
-!>           ( 1 + ( n - 1 )*abs( INCX ) ).
-!>           Before entry, the incremented array X must contain the n
-!>           element vector x.
-!> \endverbatim
-!>
-!> \param[in] INCX
-!> \verbatim
-!>          INCX is INTEGER
-!>           On entry, INCX specifies the increment for the elements of
-!>           X. INCX must not be zero.
-!> \endverbatim
-!>
-!> \param[in] Y
-!> \verbatim
-!>          Y is REAL array, dimension at least
-!>           ( 1 + ( n - 1 )*abs( INCY ) ).
-!>           Before entry, the incremented array Y must contain the n
-!>           element vector y.
-!> \endverbatim
-!>
-!> \param[in] INCY
-!> \verbatim
-!>          INCY is INTEGER
-!>           On entry, INCY specifies the increment for the elements of
-!>           Y. INCY must not be zero.
-!> \endverbatim
-!>
-!> \param[in,out] AP
-!> \verbatim
-!>          AP is REAL array, dimension at least
-!>           ( ( n*( n + 1 ) )/2 ).
-!>           Before entry with  UPLO = 'U' or 'u', the array AP must
-!>           contain the upper triangular part of the symmetric matrix
-!>           packed sequentially, column by column, so that AP( 1 )
-!>           contains a( 1, 1 ), AP( 2 ) and AP( 3 ) contain a( 1, 2 )
-!>           and a( 2, 2 ) respectively, and so on. On exit, the array
-!>           AP is overwritten by the upper triangular part of the
-!>           updated matrix.
-!>           Before entry with UPLO = 'L' or 'l', the array AP must
-!>           contain the lower triangular part of the symmetric matrix
-!>           packed sequentially, column by column, so that and AP( 1 )
-!>           contains a( 1, 1 ), AP( 2 ) and and AP( 3 ) contain a( 2, 1 )
-!>           and a( 3, 1 ) respectively, and so on. On exit, the array
-!>           AP is overwritten by the lower triangular part of the
-!>           updated matrix.
-!> \endverbatim
-!
-!  Authors:
-!  ========
-!
-!> \author Univ. of Tennessee
-!> \author Univ. of California Berkeley
-!> \author Univ. of \author Univ. of Colorado Denver
-!> \author NAG Ltd.
-!
-!> \ingroup hpr
-!
-!> \par Further Details:
-!>
-!> \verbatim
-!>
-!>  Level 2 Blas routine.
-!>
-!>  -- Written on 22-October-1986.
-!>     Jack Dongarra, Argonne National Lab.
-!>     Jeremy Du Croz, Nag Central Office.
-!>     Sven Hammarling, Nag Central Office.
-!>     Richard Hanson, Sandia National Labs.
-!> \endverbatim
-!>
-!>  =====================================================================
+! \param[in] uplo Character specifying the part of the matrix A to be used: 'U' for upper, 'L' for lower.
+! \param[in] n Order of matrix A.
+! \param[in] alpha Scalar multiplier.
+! \param[in] x Vector X.
+! \param[in] incx Increment for the elements of x.
+! \param[in] y Vector Y.
+! \param[in] incy Increment for the elements of y.
+! \param[in,out] ap The symmetric matrix A in packed storage.
+
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_spr2_fp8_e5m2
     use lpf_fp8_e5m2

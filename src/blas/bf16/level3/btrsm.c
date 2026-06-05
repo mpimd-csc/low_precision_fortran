@@ -23,6 +23,23 @@
 
 #include <string.h>
 
+/**
+ * @brief Bfloat16 Triangular Solve (BTRSM).
+ *
+ * Performs the operation: B := alpha * A^-1 * B or B := alpha * B * A^-1
+ *
+ * @param[in] side Character specifying the side of matrix A. 'L' for left, 'R' for right.
+ * @param[in] uplo Character specifying the upper or lower triangle of A.
+ * @param[in] transa Character specifying the transpose of matrix A.
+ * @param[in] diag Character specifying the diagonal of A. 'U' for unit diagonal, 'N' for non-unit diagonal.
+ * @param[in] m Number of rows of matrix B.
+ * @param[in] n Number of columns of matrix B.
+ * @param[in] alpha Scalar multiplier.
+ * @param[in] a Triangular matrix A.
+ * @param[in] lda Leading dimension of matrix A.
+ * @param[in,out] b Matrix B.
+ * @param[in] ldb Leading dimension of matrix B.
+ */
 void LPF_GLOBAL(btrsm, BTRSM)(
     char* side, char* uplo, char* transa, char* diag, int64_t* m, int64_t* n,
     lpf_bfloat16_t* alpha, lpf_bfloat16_t* a, int64_t* lda, lpf_bfloat16_t* b,

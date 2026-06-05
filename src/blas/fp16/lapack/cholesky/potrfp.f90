@@ -1,3 +1,4 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
 submodule(lpf_lapack_fp16) lpf_lapack_potrfp_fp16
 
 contains

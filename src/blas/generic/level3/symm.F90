@@ -1,3 +1,25 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
+!
+! \brief Symmetric Matrix-Matrix Multiplication (SYMM)
+!
+! This routine performs the operation:
+! C := alpha * A * B + beta * C  (if side == 'L')
+! C := alpha * B * A + beta * C  (if side == 'R')
+! where A is a symmetric matrix.
+!
+! \param[in] side Character specifying the side on which the symmetric matrix A is multiplied: 'L' for left, 'R' for right.
+! \param[in] uplo Character specifying the triangular part of the symmetric matrix A to be used: 'U' for upper, 'L' for lower.
+! \param[in] m Number of rows of matrix B.
+! \param[in] n Number of columns of matrix B.
+! \param[in] alpha Scalar multiplier for the matrix product.
+! \param[in] a The symmetric matrix A, stored in column-major order.
+! \param[in] lda Leading dimension of matrix A.
+! \param[in] b The matrix B, stored in column-major order.
+! \param[in] ldb Leading dimension of matrix B.
+! \param[in] beta Scalar multiplier for matrix C.
+! \param[in,out] c The matrix C, stored in column-major order.
+! \param[in] ldc Leading dimension of matrix C.
+
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_symm_fp8_e5m2
     use lpf_fp8_e5m2

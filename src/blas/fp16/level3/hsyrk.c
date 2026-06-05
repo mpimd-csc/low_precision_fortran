@@ -23,6 +23,24 @@
 
 #include <string.h>
 
+/**
+ * @brief Half-precision Symmetric Rank-k Update (HSYRK).
+ *
+ * Performs the operation: C := alpha * A * A^T + beta * C  (if trans == 'N')
+ *                          C := alpha * A^T * A + beta * C  (if trans == 'T')
+ * where C is a symmetric matrix.
+ *
+ * @param[in] uplo Character specifying the triangular part of the matrix C to be used: 'U' for upper, 'L' for lower.
+ * @param[in] trans Character specifying the transpose of matrix A: 'N' for no transpose, 'T' for transpose.
+ * @param[in] n Order of matrix C.
+ * @param[in] k Common dimension of matrix A.
+ * @param[in] alpha Scalar multiplier.
+ * @param[in] a Matrix A.
+ * @param[in] lda Leading dimension of matrix A.
+ * @param[in] beta Scalar multiplier for matrix C.
+ * @param[in,out] c Symmetric matrix C.
+ * @param[in] ldc Leading dimension of matrix C.
+ */
 void LPF_GLOBAL(hsyrk, HSYRK)(char* uplo, char* trans, int64_t* n, int64_t* k,
                               lpf_float16_t* alpha, lpf_float16_t* a,
                               int64_t* lda, lpf_float16_t* beta,

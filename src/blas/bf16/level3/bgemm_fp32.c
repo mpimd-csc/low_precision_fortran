@@ -29,6 +29,25 @@
 #include <mkl.h>
 #endif
 
+/**
+ * @brief Bfloat16 General Matrix-Matrix Multiplication (BGEMM) with fp32 accumulation.
+ *
+ * Performs the operation: C := alpha * A * B + beta * C
+ *
+ * @param[in] transa Character specifying the transpose of matrix A.
+ * @param[in] transb Character specifying the transpose of matrix B.
+ * @param[in] m Number of rows of matrix A (or columns of A^T).
+ * @param[in] n Number of columns of matrix B (or rows of B^T).
+ * @param[in] k Number of columns of matrix A (or rows of A^T) and rows of matrix B (or columns of B^T).
+ * @param[in] alpha Scalar multiplier for the product.
+ * @param[in] a Matrix A.
+ * @param[in] lda Leading dimension of matrix A.
+ * @param[in] b Matrix B.
+ * @param[in] ldb Leading dimension of matrix B.
+ * @param[in] beta Scalar multiplier for matrix C.
+ * @param[in,out] c Matrix C.
+ * @param[in] ldc Leading dimension of matrix C.
+ */
 void LPF_GLOBAL(bgemm_fp32,
                 BGEMM_FP32)(char* transa, char* transb, int64_t* m, int64_t* n,
                             int64_t* k, float * alpha,

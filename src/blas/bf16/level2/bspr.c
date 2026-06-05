@@ -23,6 +23,19 @@
 
 #include <string.h>
 
+/**
+ * @brief Bfloat16 Symmetric Rank-1 Update (BSPR).
+ *
+ * Performs the operation: A := A + alpha * x * x^T
+ * where A is a symmetric matrix in packed storage.
+ *
+ * @param[in] uplo Character specifying the triangular part of the matrix A to be used: 'U' for upper, 'L' for lower.
+ * @param[in] n Order of matrix A.
+ * @param[in] alpha Scalar multiplier.
+ * @param[in] x Vector x.
+ * @param[in] incx Increment for the elements of x.
+ * @param[in,out] ap The symmetric matrix A in packed storage.
+ */
 void LPF_GLOBAL(bspr, BSPR)(char* uplo, int64_t* n, lpf_bfloat16_t* alpha,
                             lpf_bfloat16_t* x, int64_t* incx,
                             lpf_bfloat16_t* ap, lpf_fortran_strlen_t uplo_len)

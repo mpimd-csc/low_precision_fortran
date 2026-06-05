@@ -1,3 +1,4 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
 submodule (lpf_lapack_fp16) lpf_lapack_lange_fp16
     use lpf_fp16
     use lpf_types
@@ -5,14 +6,14 @@ submodule (lpf_lapack_fp16) lpf_lapack_lange_fp16
 
 contains
 
-    !> \brief \b SLANGE returns the value of the 1-norm, Frobenius norm, inf
+    !> \brief \b lange returns the value of the 1-norm, Frobenius norm, inf
     !
     !  =========== DOCUMENTATION ===========
     !
     ! Online html documentation available at
     !            http://www.netlib.org/lapack/explore-html/
     !
-    !> Download SLANGE + dependencies
+    !> Download lange + dependencies
     !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.tgz?format=tgz&fil
     !> [TGZ]</a>
     !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.zip?format=zip&fil
@@ -23,14 +24,14 @@ contains
     !  Definition:
     !  ===========
     !
-    !       REAL             FUNCTION SLANGE( NORM, M, N, A, LDA, WORK )
+    !       type(fp16)             FUNCTION lange( NORM, M, N, A, LDA, WORK )
     !
     !       .. Scalar Arguments ..
     !       CHARACTER          NORM
     !       INTEGER            LDA, M, N
     !       ..
     !       .. Array Arguments ..
-    !       REAL               A( LDA, * ), WORK( * )
+    !       type(fp16)               A( LDA, * ), WORK( * )
     !       ..
     !
     !
@@ -39,15 +40,15 @@ contains
     !>
     !> \verbatim
     !>
-    !> SLANGE  returns the value of the one norm,  or the Frobenius norm, or
+    !> lange  returns the value of the one norm,  or the Frobenius norm, or
     !> the  infinity norm,  or the  element of  largest absolute value  of a
     !> real matrix A.
     !> \endverbatim
     !>
-    !> \return SLANGE
+    !> \return lange
     !> \verbatim
     !>
-    !>    SLANGE = ( max(abs(A(i,j))), NORM = 'M' or 'm'
+    !>    lange = ( max(abs(A(i,j))), NORM = 'M' or 'm'
     !>             (
     !>             ( norm1(A),         NORM = '1', 'O' or 'o'
     !>             (
@@ -67,7 +68,7 @@ contains
     !> \param[in] NORM
     !> \verbatim
     !>          NORM is CHARACTER*1
-    !>          Specifies the value to be returned in SLANGE as described
+    !>          Specifies the value to be returned in lange as described
     !>          above.
     !> \endverbatim
     !>
@@ -75,19 +76,19 @@ contains
     !> \verbatim
     !>          M is INTEGER
     !>          The number of rows of the matrix A.  M >= 0.  When M = 0,
-    !>          SLANGE is set to zero.
+    !>          lange is set to zero.
     !> \endverbatim
     !>
     !> \param[in] N
     !> \verbatim
     !>          N is INTEGER
     !>          The number of columns of the matrix A.  N >= 0.  When N = 0,
-    !>          SLANGE is set to zero.
+    !>          lange is set to zero.
     !> \endverbatim
     !>
     !> \param[in] A
     !> \verbatim
-    !>          A is REAL array, dimension (LDA,N)
+    !>          A is type(fp16) array, dimension (LDA,N)
     !>          The m by n matrix A.
     !> \endverbatim
     !>
@@ -99,21 +100,10 @@ contains
     !>
     !> \param[out] WORK
     !> \verbatim
-    !>          WORK is REAL array, dimension (MAX(1,LWORK)),
+    !>          WORK is type(fp16) array, dimension (MAX(1,LWORK)),
     !>          where LWORK >= M when NORM = 'I'; otherwise, WORK is not
     !>          referenced.
     !> \endverbatim
-    !
-    !  Authors:
-    !  ========
-    !
-    !> \author Univ. of Tennessee
-    !> \author Univ. of California Berkeley
-    !> \author Univ. of Colorado Denver
-    !> \author NAG Ltd.
-    !
-    !> \ingroup lange
-    !
     !  =====================================================================
     module function lange( norm, m, n, a, lda, work ) result(nrm)
         character, intent(in) :: norm
@@ -194,7 +184,7 @@ contains
         return
     end function
 
-    !> \brief \b SLASSQ updates a sum of squares represented in scaled form.
+    !> \brief \b lassq updates a sum of squares represented in scaled form.
     !
     !  =========== DOCUMENTATION ===========
     !
@@ -202,7 +192,7 @@ contains
     !            http://www.netlib.org/lapack/explore-html/
     !
     !> \htmlonly
-    !> Download SLASSQ + dependencies
+    !> Download lassq + dependencies
     !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.tgz?format=tgz&fil
     !> [TGZ]</a>
     !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.zip?format=zip&fil
@@ -214,14 +204,14 @@ contains
     !  Definition:
     !  ===========
     !
-    !       SUBROUTINE SLASSQ( N, X, INCX, SCALE, SUMSQ )
+    !       SUBROUTINE lassq( N, X, INCX, SCALE, SUMSQ )
     !
     !       .. Scalar Arguments ..
     !       INTEGER            INCX, N
     !       REAL               SCALE, SUMSQ
     !       ..
     !       .. Array Arguments ..
-    !       REAL               X( * )
+    !       type(fp16)               X( * )
     !       ..
     !
     !
@@ -230,7 +220,7 @@ contains
     !>
     !> \verbatim
     !>
-    !> SLASSQ  returns the values  scl  and  smsq  such that
+    !> lassq  returns the values  scl  and  smsq  such that
     !>
     !>    ( scl**2 )*smsq = x( 1 )**2 +...+ x( n )**2 + ( scale**2 )*sumsq,
     !>
@@ -256,7 +246,7 @@ contains
     !>
     !> \param[in] X
     !> \verbatim
-    !>          X is REAL array, dimension (N)
+    !>          X is type(fp16) array, dimension (N)
     !>          The vector for which a scaled sum of squares is computed.
     !>             x( i )  = X( 1 + ( i - 1 )*INCX ), 1 <= i <= n.
     !> \endverbatim
@@ -283,20 +273,6 @@ contains
     !>          On exit, SUMSQ is overwritten with  smsq , the basic sum of
     !>          squares from which  scl  has been factored out.
     !> \endverbatim
-    !
-    !  Authors:
-    !  ========
-    !
-    !> \author Univ. of Tennessee
-    !> \author Univ. of California Berkeley
-    !> \author Univ. of Colorado Denver
-    !> \author NAG Ltd.
-    !
-    !> \date September 2012
-    !
-    !> \ingroup auxOTHERauxiliary
-    !
-    !  =====================================================================
     module subroutine lassq( n, x, incx, sca, sumsq )
         integer(lpf_default_int_kind), intent(in) ::   incx, n
         real(real32), intent(inout) :: sca, sumsq

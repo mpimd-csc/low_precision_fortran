@@ -23,6 +23,22 @@
 
 #include <string.h>
 
+/**
+ * @brief Bfloat16 Triangular System Solve (BTRSV).
+ *
+ * Solves a system of linear equations:
+ * A * x = b
+ * where A is a triangular matrix.
+ *
+ * @param[in] uplo Character specifying the triangular part of the matrix A to be used: 'U' for upper, 'L' for lower.
+ * @param[in] trans Character specifying the transpose. 'N' for no transpose, 'T' for transpose.
+ * @param[in] diag Character specifying whether the diagonal of A is unit: 'U' for unit, 'N' for non-unit.
+ * @param[in] n Order of matrix A.
+ * @param[in] a The triangular matrix A.
+ * @param[in] lda Leading dimension of matrix A.
+ * @param[in,out] x Vector X (input `b`, output `x`).
+ * @param[in] incx Increment for the elements of x.
+ */
 void LPF_GLOBAL(btrsv, BTRSV)(char* uplo, char* trans, char* diag, int64_t* n,
                               lpf_bfloat16_t* a, int64_t* lda,
                               lpf_bfloat16_t* x, int64_t* incx,

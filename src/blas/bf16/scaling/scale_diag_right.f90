@@ -1,3 +1,4 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
 submodule (lpf_blas_bf16) lpf_blas_bf16_scale_diag_right
     use lpf_bf16
     use iso_fortran_env, only: real32, real64

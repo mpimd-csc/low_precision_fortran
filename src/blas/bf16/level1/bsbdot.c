@@ -21,6 +21,19 @@
 #include <math.h>
 #include <stdint.h>
 
+/**
+ * @brief Bfloat16 Dot product with accumulator (BSBDOT).
+ *
+ * Performs the operation: result := sb + x^T * y
+ *
+ * @param[in,out] sb The accumulator for the dot product.
+ * @param[in] n Number of elements in vectors x and y.
+ * @param[in] sx Vector x.
+ * @param[in] incx Increment for the elements of x.
+ * @param[in] sy Vector y.
+ * @param[in] incy Increment for the elements of y.
+ * @return The result of the dot product.
+ */
 int16_t LPF_GLOBAL(bsbdot, BSBDOT)(int64_t* n, lpf_bfloat16_t* sb,
                                    lpf_bfloat16_t* sx, int64_t* incx,
                                    lpf_bfloat16_t* sy, int64_t* incy)

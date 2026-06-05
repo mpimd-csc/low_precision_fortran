@@ -23,6 +23,26 @@
 
 #include <string.h>
 
+/**
+ * @brief Half-precision Triangular System Solve (HTRSM).
+ *
+ * Solves the system of linear equations:
+ * A * X = alpha * B  (if side == 'L')
+ * X * A = alpha * B  (if side == 'R')
+ * where A is a triangular matrix.
+ *
+ * @param[in] side Character specifying the side on which the triangular matrix A is multiplied: 'L' for left, 'R' for right.
+ * @param[in] uplo Character specifying the triangular part of the matrix A to be used: 'U' for upper, 'L' for lower.
+ * @param[in] transa Character specifying the transpose of matrix A: 'N' for no transpose, 'T' for transpose.
+ * @param[in] diag Character specifying whether the diagonal of A is unit: 'U' for unit, 'N' for non-unit.
+ * @param[in] m Number of rows of matrix B.
+ * @param[in] n Number of columns of matrix B.
+ * @param[in] alpha Scalar multiplier.
+ * @param[in] a The triangular matrix A.
+ * @param[in] lda Leading dimension of matrix A.
+ * @param[in,out] b The matrix B.
+ * @param[in] ldb Leading dimension of matrix B.
+ */
 void LPF_GLOBAL(htrsm, HTRSM)(char* side, char* uplo, char* transa, char* diag,
                               int64_t* m, int64_t* n, lpf_float16_t* alpha,
                               lpf_float16_t* a, int64_t* lda, lpf_float16_t* b,

@@ -21,6 +21,17 @@
 #include "lpf_internal.h"
 #include <stdint.h>
 
+/**
+ * @brief Bfloat16 Generate Multiple Rotations (B ROTMG).
+ *
+ * Generates a rotation matrix given two values sd1 and sd2.
+ *
+ * @param[in,out] sd1 First input value, updated to the norm.
+ * @param[in,out] sd2 Second input value, updated to a value related to the rotation.
+ * @param[in,out] sx1 First vector element, updated.
+ * @param[in,out] sy1 Second vector element, updated.
+ * @param[out] sparam Parameters defining the rotation matrix.
+ */
 void LPF_GLOBAL(brotmg, BROTMG)(lpf_bfloat16_t* sd1, lpf_bfloat16_t* sd2,
                                 lpf_bfloat16_t* sx1, lpf_bfloat16_t* sy1,
                                 lpf_bfloat16_t* sparam)

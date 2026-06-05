@@ -21,6 +21,17 @@
 #include <math.h>
 #include <stdint.h>
 
+/**
+ * @brief Bfloat16 Copy.
+ *
+ * Copies vector x to vector y.
+ *
+ * @param[in] n Number of elements to copy.
+ * @param[in] sx Source vector x.
+ * @param[in] incx Increment for the elements of x.
+ * @param[out] sy Destination vector y.
+ * @param[in] incy Increment for the elements of y.
+ */
 void LPF_GLOBAL(bcopy, BCOPY)(int64_t* n, lpf_bfloat16_t* sx, int64_t* incx,
                               lpf_bfloat16_t* sy, int64_t* incy)
 {

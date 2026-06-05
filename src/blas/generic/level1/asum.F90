@@ -1,3 +1,4 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
 !> \brief \b SASUM
 !
 !  =========== DOCUMENTATION ===========
@@ -8,13 +9,13 @@
 !  Definition:
 !  ===========
 !
-!       REAL FUNCTION SASUM(N,SX,INCX)
+!       type(DT) FUNCTION SASUM(N,SX,INCX)
 !
 !       .. Scalar Arguments ..
 !       INTEGER INCX,N
 !       ..
 !       .. Array Arguments ..
-!       REAL SX(*)
+!       type(DT) SX(*)
 !       ..
 !
 !
@@ -38,7 +39,7 @@
 !>
 !> \param[in] SX
 !> \verbatim
-!>          SX is REAL array, dimension ( 1 + ( N - 1 )*abs( INCX ) )
+!>          SX is type(DT) array, dimension ( 1 + ( N - 1 )*abs( INCX ) )
 !> \endverbatim
 !>
 !> \param[in] INCX
@@ -46,17 +47,6 @@
 !>          INCX is INTEGER
 !>         storage spacing between elements of SX
 !> \endverbatim
-!
-!  Authors:
-!  ========
-!
-!> \author Univ. of Tennessee
-!> \author Univ. of California Berkeley
-!> \author Univ. of Colorado Denver
-!> \author NAG Ltd.
-!
-!> \ingroup asum
-!
 !> \par Further Details:
 !  =====================
 !>

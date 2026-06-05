@@ -23,6 +23,22 @@
 
 #include <string.h>
 
+/**
+ * @brief Half-precision Symmetric Matrix-Vector Multiplication (HSYMV).
+ *
+ * Performs the operation: y := alpha * A * x + beta * y
+ *
+ * @param[in] uplo Character specifying the triangular part of the symmetric matrix A to be used: 'U' for upper, 'L' for lower.
+ * @param[in] n Order of matrix A.
+ * @param[in] alpha Scalar multiplier.
+ * @param[in] a Symmetric matrix A.
+ * @param[in] lda Leading dimension of matrix A.
+ * @param[in] x Vector x.
+ * @param[in] incx Increment for the elements of x.
+ * @param[in] beta Scalar multiplier for vector y.
+ * @param[in,out] y Vector y.
+ * @param[in] incy Increment for the elements of y.
+ */
 void LPF_GLOBAL(hsymv, HSYMV)(char* uplo, int64_t* n, lpf_float16_t* alpha,
                               lpf_float16_t* a, int64_t* lda, lpf_float16_t* x,
                               int64_t* incx, lpf_float16_t* beta,

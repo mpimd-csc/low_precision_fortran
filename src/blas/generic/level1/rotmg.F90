@@ -1,3 +1,4 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
 !> \brief \b SROTMG
 !
 !  =========== DOCUMENTATION ===========
@@ -14,7 +15,7 @@
 !       REAL SD1,SD2,SX1,SY1
 !       ..
 !       .. Array Arguments ..
-!       REAL SPARAM(5)
+!       type(DT) SPARAM(5)
 !       ..
 !
 !
@@ -70,24 +71,13 @@
 !>
 !> \param[out] SPARAM
 !> \verbatim
-!>          SPARAM is REAL array, dimension (5)
+!>          SPARAM is type(DT) array, dimension (5)
 !>     SPARAM(1)=SFLAG
 !>     SPARAM(2)=SH11
 !>     SPARAM(3)=SH21
 !>     SPARAM(4)=SH12
 !>     SPARAM(5)=SH22
 !> \endverbatim
-!
-!  Authors:
-!  ========
-!
-!> \author Univ. of Tennessee
-!> \author Univ. of California Berkeley
-!> \author Univ. of Colorado Denver
-!> \author NAG Ltd.
-!
-!> \ingroup rotmg
-!
 !  =====================================================================
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_rotmg_fp8_e5m2

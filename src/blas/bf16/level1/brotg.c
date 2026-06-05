@@ -22,6 +22,16 @@
 #include <math.h>
 #include <stdint.h>
 
+/**
+ * @brief Bfloat16 Generate Rotation (B probabilidades).
+ *
+ * Generates a rotation matrix given two values sa and sb.
+ *
+ * @param[in,out] sa First input value, updated to the norm of [sa; sb].
+ * @param[in,out] sb Second input value, updated to a value related to the rotation.
+ * @param[out] c__ Cosine of the rotation angle.
+ * @param[out] s Sine of the rotation angle.
+ */
 void LPF_GLOBAL(brotg, BROTG)(lpf_bfloat16_t* sa, lpf_bfloat16_t* sb,
                               lpf_bfloat16_t* c__, lpf_bfloat16_t* s)
 {

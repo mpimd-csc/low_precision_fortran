@@ -1,3 +1,4 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
 module lpf_lapack_bf16
     use lpf_bf16
     use lpf_blas_bf16

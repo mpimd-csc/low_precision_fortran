@@ -1,3 +1,21 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
+!
+! \brief Symmetric Rank-2 Update (SYR2)
+!
+! This routine performs the operation:
+! A := A + alpha * (x * y^T + y * x^T)
+! where A is a symmetric matrix.
+!
+! \param[in] uplo Character specifying the triangular part of the matrix A to be used: 'U' for upper, 'L' for lower.
+! \param[in] n Order of matrix A.
+! \param[in] alpha Scalar multiplier.
+! \param[in] x Vector X.
+! \param[in] incx Increment for the elements of x.
+! \param[in] y Vector Y.
+! \param[in] incy Increment for the elements of y.
+! \param[in,out] a The symmetric matrix A, stored in column-major order.
+! \param[in] lda Leading dimension of matrix A.
+
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_syr2_fp8_e5m2
     use lpf_fp8_e5m2

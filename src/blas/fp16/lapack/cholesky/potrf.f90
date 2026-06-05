@@ -1,3 +1,4 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
 submodule(lpf_lapack_fp16) lpf_lapack_potrf_fp16
 contains
     !> \brief \b hpoTRF
@@ -91,17 +92,6 @@ contains
     !>                is not positive, and the factorization could not be
     !>                completed.
     !> \endverbatim
-    !
-    !  Authors:
-    !  ========
-    !
-    !> \author Univ. of Tennessee
-    !> \author Univ. of California Berkeley
-    !> \author Univ. of Colorado Denver
-    !> \author NAG Ltd.
-    !
-    !> \ingroup potrf
-    !
     !  =====================================================================
     module subroutine potrf( uplo, n, a, lda, info )
         character, intent(in) ::          uplo

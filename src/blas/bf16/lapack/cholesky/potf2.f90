@@ -1,14 +1,15 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
 submodule(lpf_lapack_bf16) lpf_lapack_potf2_bf16
 
 contains
-    !> \brief \b SPOTF2 computes the Cholesky factorization of a symmetric/B
+    !> \brief \b potf2 computes the Cholesky factorization of a symmetric/B
     !
     !> \par Purpose:
     !  =============
     !>
     !> \verbatim
     !>
-    !> SPOTF2 computes the Cholesky factorization of a real symmetric
+    !> potf2 computes the Cholesky factorization of a real symmetric
     !> positive definite matrix A.
     !>
     !> The factorization has the form

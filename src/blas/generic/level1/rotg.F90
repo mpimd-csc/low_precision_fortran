@@ -1,3 +1,4 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
 !> \brief \b SROTG
 !
 !  =========== DOCUMENTATION ===========
@@ -62,19 +63,10 @@
 !>          S is REAL
 !>          The scalar s.
 !> \endverbatim
-!
-!  Authors:
-!  ========
-!
-!> \author Edward Anderson, Lockheed Martin
-!
 !> \par Contributors:
 !  ==================
 !>
 !> Weslley Pereira, University of Colorado Denver, USA
-!
-!> \ingroup rotg
-!
 !> \par Further Details:
 !  =====================
 !>

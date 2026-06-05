@@ -1,3 +1,4 @@
+! SPDX-License-Identifier: LGPL-3.0-or-later
 !> \brief \b SNRM2
 !
 !  =========== DOCUMENTATION ===========
@@ -8,13 +9,13 @@
 !  Definition:
 !  ===========
 !
-!       REAL FUNCTION SNRM2(N,X,INCX)
+!       type(DT) FUNCTION SNRM2(N,X,INCX)
 !
 !       .. Scalar Arguments ..
 !       INTEGER INCX,N
 !       ..
 !       .. Array Arguments ..
-!       REAL X(*)
+!       type(DT) X(*)
 !       ..
 !
 !
@@ -40,7 +41,7 @@
 !>
 !> \param[in] X
 !> \verbatim
-!>          X is REAL array, dimension ( 1 + ( N - 1 )*abs( INCX ) )
+!>          X is type(DT) array, dimension ( 1 + ( N - 1 )*abs( INCX ) )
 !> \endverbatim
 !>
 !> \param[in] INCX
@@ -52,16 +53,6 @@
 !>          this subroutine.  If you call it anyway, it will count x(1)
 !>          in the vector norm N times.
 !> \endverbatim
-!
-!  Authors:
-!  ========
-!
-!> \author Edward Anderson, Lockheed Martin
-!
-!> \date August 2016
-!
-!> \ingroup nrm2
-!
 !> \par Contributors:
 !  ==================
 !>

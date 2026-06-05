@@ -22,6 +22,18 @@
 #include <stdint.h>
 #include <stdio.h>
 
+/**
+ * @brief Half-precision Dot product.
+ *
+ * Performs the operation: result := x^T * y
+ *
+ * @param[in] n Number of elements in vectors x and y.
+ * @param[in] sx Vector x.
+ * @param[in] incx Increment for the elements of x.
+ * @param[in] sy Vector y.
+ * @param[in] incy Increment for the elements of y.
+ * @return The result of the dot product.
+ */
 int16_t LPF_GLOBAL(hdot, HDOT)(int64_t* n, lpf_float16_t* sx, int64_t* incx,
                                lpf_float16_t* sy, int64_t* incy)
 {
