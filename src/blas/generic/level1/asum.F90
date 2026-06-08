@@ -1,63 +1,23 @@
-! SPDX-License-Identifier: LGPL-3.0-or-later
-!> \brief \b SASUM
+!  SPDX-License-Identifier: LGPL-3.0-or-later
 !
-!  =========== DOCUMENTATION ===========
+!  This file is part of LPF, a Low Precision helper for Fortran
+!  Copyright (C) 2025 Martin Koehler
 !
-! Online html documentation available at
-!            http://www.netlib.org/lapack/explore-html/
+!  This program is free software; you can redistribute it and/or
+!  modify it under the terms of the GNU Lesser General Public
+!  License as published by the Free Software Foundation; either
+!  version 3 of the License, or (at your option) any later version.
 !
-!  Definition:
-!  ===========
+!  This program is distributed in the hope that it will be useful,
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+!  Lesser General Public License for more details.
 !
-!       type(DT) FUNCTION SASUM(N,SX,INCX)
+!  You should have received a copy of the GNU Lesser General Public License
+!  along with this program; if not, write to the Free Software Foundation,
+!  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
-!       .. Scalar Arguments ..
-!       INTEGER INCX,N
-!       ..
-!       .. Array Arguments ..
-!       type(DT) SX(*)
-!       ..
-!
-!
-!> \par Purpose:
-!  =============
-!>
-!> \verbatim
-!>
-!>    SASUM takes the sum of the absolute values.
-!>    uses unrolled loops for increment equal to one.
-!> \endverbatim
-!
-!  Arguments:
-!  ==========
-!
-!> \param[in] N
-!> \verbatim
-!>          N is INTEGER
-!>         number of elements in input vector(s)
-!> \endverbatim
-!>
-!> \param[in] SX
-!> \verbatim
-!>          SX is type(DT) array, dimension ( 1 + ( N - 1 )*abs( INCX ) )
-!> \endverbatim
-!>
-!> \param[in] INCX
-!> \verbatim
-!>          INCX is INTEGER
-!>         storage spacing between elements of SX
-!> \endverbatim
-!> \par Further Details:
-!  =====================
-!>
-!> \verbatim
-!>
-!>     jack dongarra, linpack, 3/11/78.
-!>     modified 3/93 to return if incx .le. 0.
-!>     modified 12/3/93, array(1) declarations changed to array(*)
-!> \endverbatim
-!>
-!  =====================================================================
+
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_asum_fp8_e5m2
     use lpf_fp8_e5m2

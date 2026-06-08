@@ -1,4 +1,4 @@
-!  SPDX-License-Identifier LGPL-3.0-or-later
+!  SPDX-License-Identifier: LGPL-3.0-or-later
 !
 !  This file is part of LPF, a Low Precision helper for Fortran
 !  Copyright (C) 2025 Martin Koehler
@@ -17,7 +17,6 @@
 !  along with this program; if not, write to the Free Software Foundation,
 !  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
-
 
 submodule (lpf_fp8_e4m3) lpf_fp8_e4m3_maxloc
     use iso_c_binding

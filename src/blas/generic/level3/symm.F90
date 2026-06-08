@@ -1,24 +1,22 @@
-! SPDX-License-Identifier: LGPL-3.0-or-later
+!  SPDX-License-Identifier: LGPL-3.0-or-later
 !
-! \brief Symmetric Matrix-Matrix Multiplication (SYMM)
+!  This file is part of LPF, a Low Precision helper for Fortran
+!  Copyright (C) 2025 Martin Koehler
 !
-! This routine performs the operation:
-! C := alpha * A * B + beta * C  (if side == 'L')
-! C := alpha * B * A + beta * C  (if side == 'R')
-! where A is a symmetric matrix.
+!  This program is free software; you can redistribute it and/or
+!  modify it under the terms of the GNU Lesser General Public
+!  License as published by the Free Software Foundation; either
+!  version 3 of the License, or (at your option) any later version.
 !
-! \param[in] side Character specifying the side on which the symmetric matrix A is multiplied: 'L' for left, 'R' for right.
-! \param[in] uplo Character specifying the triangular part of the symmetric matrix A to be used: 'U' for upper, 'L' for lower.
-! \param[in] m Number of rows of matrix B.
-! \param[in] n Number of columns of matrix B.
-! \param[in] alpha Scalar multiplier for the matrix product.
-! \param[in] a The symmetric matrix A, stored in column-major order.
-! \param[in] lda Leading dimension of matrix A.
-! \param[in] b The matrix B, stored in column-major order.
-! \param[in] ldb Leading dimension of matrix B.
-! \param[in] beta Scalar multiplier for matrix C.
-! \param[in,out] c The matrix C, stored in column-major order.
-! \param[in] ldc Leading dimension of matrix C.
+!  This program is distributed in the hope that it will be useful,
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+!  Lesser General Public License for more details.
+!
+!  You should have received a copy of the GNU Lesser General Public License
+!  along with this program; if not, write to the Free Software Foundation,
+!  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+!
 
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_symm_fp8_e5m2

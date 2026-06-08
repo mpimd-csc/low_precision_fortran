@@ -1,85 +1,23 @@
-! SPDX-License-Identifier: LGPL-3.0-or-later
-!> \brief \b SROTG
+!  SPDX-License-Identifier: LGPL-3.0-or-later
 !
-!  =========== DOCUMENTATION ===========
+!  This file is part of LPF, a Low Precision helper for Fortran
+!  Copyright (C) 2025 Martin Koehler
 !
-! Online html documentation available at
-!            http://www.netlib.org/lapack/explore-html/
+!  This program is free software; you can redistribute it and/or
+!  modify it under the terms of the GNU Lesser General Public
+!  License as published by the Free Software Foundation; either
+!  version 3 of the License, or (at your option) any later version.
 !
-!> \par Purpose:
-!  =============
-!>
-!> \verbatim
-!>
-!> SROTG constructs a plane rotation
-!>    [  c  s ] [ a ] = [ r ]
-!>    [ -s  c ] [ b ]   [ 0 ]
-!> satisfying c**2 + s**2 = 1.
-!>
-!> The computation uses the formulas
-!>    sigma = sgn(a)    if |a| >  |b|
-!>          = sgn(b)    if |b| >= |a|
-!>    r = sigma*sqrt( a**2 + b**2 )
-!>    c = 1; s = 0      if r = 0
-!>    c = a/r; s = b/r  if r != 0
-!> The subroutine also computes
-!>    z = s    if |a| > |b|,
-!>      = 1/c  if |b| >= |a| and c != 0
-!>      = 1    if c = 0
-!> This allows c and s to be reconstructed from z as follows:
-!>    If z = 1, set c = 0, s = 1.
-!>    If |z| < 1, set c = sqrt(1 - z**2) and s = z.
-!>    If |z| > 1, set c = 1/z and s = sqrt( 1 - c**2).
-!>
-!> \endverbatim
-!>
-!> @see lartg, @see lartgp
+!  This program is distributed in the hope that it will be useful,
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+!  Lesser General Public License for more details.
 !
-!  Arguments:
-!  ==========
+!  You should have received a copy of the GNU Lesser General Public License
+!  along with this program; if not, write to the Free Software Foundation,
+!  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
-!> \param[in,out] A
-!> \verbatim
-!>          A is REAL
-!>          On entry, the scalar a.
-!>          On exit, the scalar r.
-!> \endverbatim
-!>
-!> \param[in,out] B
-!> \verbatim
-!>          B is REAL
-!>          On entry, the scalar b.
-!>          On exit, the scalar z.
-!> \endverbatim
-!>
-!> \param[out] C
-!> \verbatim
-!>          C is REAL
-!>          The scalar c.
-!> \endverbatim
-!>
-!> \param[out] S
-!> \verbatim
-!>          S is REAL
-!>          The scalar s.
-!> \endverbatim
-!> \par Contributors:
-!  ==================
-!>
-!> Weslley Pereira, University of Colorado Denver, USA
-!> \par Further Details:
-!  =====================
-!>
-!> \verbatim
-!>
-!>  Anderson E. (2017)
-!>  Algorithm 978: Safe Scaling in the Level 1 BLAS
-!>  ACM Trans Math Softw 44:1--28
-!>  https://doi.org/10.1145/3061665
-!>
-!> \endverbatim
-!
-!  =====================================================================
+
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_rotg_fp8_e5m2
     use lpf_fp8_e5m2

@@ -1,23 +1,22 @@
-! SPDX-License-Identifier: LGPL-3.0-or-later
+!  SPDX-License-Identifier: LGPL-3.0-or-later
 !
-! \brief Symmetric Rank-k Update (SYR2K)
+!  This file is part of LPF, a Low Precision helper for Fortran
+!  Copyright (C) 2025 Martin Koehler
 !
-! This routine performs the operation:
-! C := alpha * (A * B^T + B * A^T) + beta * C
-! where C is a symmetric matrix.
+!  This program is free software; you can redistribute it and/or
+!  modify it under the terms of the GNU Lesser General Public
+!  License as published by the Free Software Foundation; either
+!  version 3 of the License, or (at your option) any later version.
 !
-! \param[in] uplo Character specifying the triangular part of the matrix C to be used: 'U' for upper, 'L' for lower.
-! \param[in] trans Character specifying the transpose of matrices A and B: 'N' for no transpose, 'T' for transpose.
-! \param[in] n Order of matrix C.
-! \param[in] k Common dimension of matrices A and B.
-! \param[in] alpha Scalar multiplier for the matrix product.
-! \param[in] a The matrix A, stored in column-major order.
-! \param[in] lda Leading dimension of matrix A.
-! \param[in] b The matrix B, stored in column-major order.
-! \param[in] ldb Leading dimension of matrix B.
-! \param[in] beta Scalar multiplier for matrix C.
-! \param[in,out] c The symmetric matrix C, stored in column-major order.
-! \param[in] ldc Leading dimension of matrix C.
+!  This program is distributed in the hope that it will be useful,
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+!  Lesser General Public License for more details.
+!
+!  You should have received a copy of the GNU Lesser General Public License
+!  along with this program; if not, write to the Free Software Foundation,
+!  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+!
 
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_syr2k_fp8_e5m2

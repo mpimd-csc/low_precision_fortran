@@ -79,7 +79,7 @@ This is necessary to get expressions like ` x + 1.0` working without storing the
 >>>
 
 
-### IO
+### Input / Output Operations
 
 The datatypes only support the formatted output with `WRITE` and `PRINT`
 statements. If used in `FORMAT` statements, the `DT(W,P)` identifier can be
@@ -97,9 +97,15 @@ write(*, '(DT"E"(10,4))') x
 The low precision datatypes support all standard Fortran Math functions.
 - **Core Arithmetic**: Support for `+`, `-`, `*`, `/`, and `**`.
 - **Math Functions**: Comprehensive support for single-argument functions (`abs`, `sin`, `cos`, `exp`, `log`, `sqrt`, etc.), two-argument functions (`atan2`, `hypot`), and specialized trigonometric functions.
-- **Array Reductions**: Support for `maxval`, `minval`, `maxloc`, and `minloc`.
+- **Array Reductions**:
 
-For `fp16` and `bf16`, these functions currently use their `REAL(real32)` counterpart with typecasts and the implementation from libm instead of the ones from the Fortran compilers. FP8 operations are implemented via emulation and lookup tables for efficiency.
+ - `maxval`, `minval`, `maxloc`, `minloc`
+ - `norm2`, 'matmul'
+
+For `fp16` and `bf16`, the basic math functions are implemented using
+their `REAL(real32) counterpart with typecasts and the implementation from libm
+instead of the ones from the Fortran compilers. FP8 operations are implemented
+via emulation and lookup tables for efficiency.
 
 ### ToDo
 
@@ -109,20 +115,34 @@ For `fp16` and `bf16`, these functions currently use their `REAL(real32)` counte
 ### Issue / Missing Functionallity
 
 #### MAXLOC/MAXVAL/MINVAL/MINLOC
+
 The family of `maxloc`, `maxval`, `minval`, and `minloc` only support up to 4D
 arrays. The optional `MASK` argument in `maxval` and `minval` is not yet supported.
 The `maxloc` and `minloc` function does not support the `mask`, `kind`, and
 `back` argument, yet.
 
 #### MIN/MAX
+
 The `min` and `max` function involving fp16 or bf16 datatypes supports up to
 three inputs at the moment.
+
+### NORM2
+
+The norm2 interface allows up to rank 3 objects.
 
 #### AMD AOCC
 
 The AMD AOCC compiler does not support the overloading of the `write` interface
 in a complete private environment and making the function public afterwards.
 For this reason, we do not support the AMD compiler suite.
+
+
+#### LLVM clang/flang
+
+The flang-new compiler complations about ambigous interface nams. Regarging
+§ 7.5.10/Note11 in the Fortran 2023 standard, this warning is a false positive
+and can be safely ignored.
+
 
 ## Installation
 

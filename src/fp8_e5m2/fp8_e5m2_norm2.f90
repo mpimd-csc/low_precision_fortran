@@ -1,4 +1,4 @@
-!  SPDX-License-Identifier LGPL-3.0-or-later
+!  SPDX-License-Identifier: LGPL-3.0-or-later
 !
 !  This file is part of LPF, a Low Precision helper for Fortran
 !  Copyright (C) 2025 Martin Koehler
@@ -15,8 +15,9 @@
 !
 !  You should have received a copy of the GNU Lesser General Public License
 !  along with this program; if not, write to the Free Software Foundation,
-!  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+!  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
+
 submodule (lpf_fp8_e5m2) lpf_fp8_e5m2_math_norm2
     use iso_fortran_env
     implicit none
