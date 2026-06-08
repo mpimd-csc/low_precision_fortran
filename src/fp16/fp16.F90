@@ -95,6 +95,7 @@ MODULE LPF_FP16
     PUBLIC :: minval
     PUBLIC :: minloc
     PUBLIC :: norm2
+    PUBLIC :: matmul
     PUBLIC :: isnan
     PUBLIC :: isinf
     PUBLIC :: min
@@ -803,6 +804,7 @@ MODULE LPF_FP16
     end interface
 
 
+    ! Lin. Alg.
 
     interface norm2
         module pure function fp16_norm2_r1(vec) result(out)
@@ -837,6 +839,27 @@ MODULE LPF_FP16
             integer, intent(in) :: dim
             type(fp16), dimension( size(vec, merge(2, 1, dim == 1)), &
                 & size(vec, merge(2, 3, dim == 3))) :: out
+        end function
+
+    end interface
+
+    interface matmul
+        module pure function fp16_matmul_vm(a, b) result(c)
+            type(fp16), intent(in) :: a(:)
+            type(fp16), intent(in) :: b(:,:)
+            type(fp16) :: c(size(b,2))
+        end function
+
+        module pure function fp16_matmul_mv(a, b) result(c)
+            type(fp16), intent(in) :: a(:,:)
+            type(fp16), intent(in) :: b(:)
+            type(fp16) :: c(size(a, 1))
+        end function
+
+        module pure function fp16_matmul_mm(a, b) result(c)
+            type(fp16), intent(in) :: a(:,:)
+            type(fp16), intent(in) :: b(:,:)
+            type(fp16) :: c(size(a,1),size(b,2))
         end function
 
     end interface

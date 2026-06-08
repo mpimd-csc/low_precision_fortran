@@ -102,6 +102,7 @@ MODULE LPF_FP8_E5M2
     PUBLIC :: real
     PUBLIC :: dble
     PUBLIC :: int
+    PUBLIC :: matmul
 
     TYPE, BIND(C) :: FP8_E5M2
         INTEGER(c_int8_t) :: value
@@ -836,6 +837,27 @@ MODULE LPF_FP8_E5M2
             integer, intent(in) :: dim
             type(fp8_e5m2), dimension( size(vec, merge(2, 1, dim == 1)), &
                 & size(vec, merge(2, 3, dim == 3))) :: out
+        end function
+
+    end interface
+
+    interface matmul
+        module pure function fp8_e5m2_matmul_vm(a, b) result(c)
+            type(fp8_e5m2), intent(in) :: a(:)
+            type(fp8_e5m2), intent(in) :: b(:,:)
+            type(fp8_e5m2) :: c(size(b,2))
+        end function
+
+        module pure function fp8_e5m2_matmul_mv(a, b) result(c)
+            type(fp8_e5m2), intent(in) :: a(:,:)
+            type(fp8_e5m2), intent(in) :: b(:)
+            type(fp8_e5m2) :: c(size(a, 1))
+        end function
+
+        module pure function fp8_e5m2_matmul_mm(a, b) result(c)
+            type(fp8_e5m2), intent(in) :: a(:,:)
+            type(fp8_e5m2), intent(in) :: b(:,:)
+            type(fp8_e5m2) :: c(size(a,1),size(b,2))
         end function
 
     end interface

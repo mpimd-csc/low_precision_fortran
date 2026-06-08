@@ -104,6 +104,8 @@ MODULE LPF_BF16
 
     ! Lin Alg Functions
     PUBLIC :: norm2
+    PUBLIC :: matmul
+
 
     TYPE, BIND(C) :: BF16
         INTEGER(c_int16_t) :: value
@@ -835,6 +837,27 @@ MODULE LPF_BF16
             integer, intent(in) :: dim
             type(bf16), dimension( size(vec, merge(2, 1, dim == 1)), &
                 & size(vec, merge(2, 3, dim == 3))) :: out
+        end function
+
+    end interface
+
+    interface matmul
+        module pure function bf16_matmul_vm(a, b) result(c)
+            type(bf16), intent(in) :: a(:)
+            type(bf16), intent(in) :: b(:,:)
+            type(bf16) :: c(size(b,2))
+        end function
+
+        module pure function bf16_matmul_mv(a, b) result(c)
+            type(bf16), intent(in) :: a(:,:)
+            type(bf16), intent(in) :: b(:)
+            type(bf16) :: c(size(a, 1))
+        end function
+
+        module pure function bf16_matmul_mm(a, b) result(c)
+            type(bf16), intent(in) :: a(:,:)
+            type(bf16), intent(in) :: b(:,:)
+            type(bf16) :: c(size(a,1),size(b,2))
         end function
 
     end interface

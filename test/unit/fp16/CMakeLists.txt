@@ -26,6 +26,7 @@ SET(FP16_UNIT_TESTS
     test_fp16_minmax
     test_fp16_reductions
     test_fp16_io
+    test_fp16_matmul
 )
 
 FOREACH(test_name IN LISTS FP16_UNIT_TESTS)

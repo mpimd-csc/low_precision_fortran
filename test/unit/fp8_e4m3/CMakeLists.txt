@@ -26,6 +26,7 @@ SET(FP8_E4M3_UNIT_TESTS
     test_fp8_e4m3_minmax
     test_fp8_e4m3_reductions
     test_fp8_e4m3_io
+    test_fp8_e4m3_matmul
 )
 
 FOREACH(test_name IN LISTS FP8_E4M3_UNIT_TESTS)
