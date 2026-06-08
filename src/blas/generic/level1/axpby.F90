@@ -1,79 +1,23 @@
-! SPDX-License-Identifier: LGPL-3.0-or-later
-!> \brief \b SAXPBY
+!  SPDX-License-Identifier: LGPL-3.0-or-later
 !
-!  =========== DOCUMENTATION ===========
+!  This file is part of LPF, a Low Precision helper for Fortran
+!  Copyright (C) 2025 Martin Koehler
 !
-! Online html documentation available at
-!            http://www.netlib.org/lapack/explore-html/
+!  This program is free software; you can redistribute it and/or
+!  modify it under the terms of the GNU Lesser General Public
+!  License as published by the Free Software Foundation; either
+!  version 3 of the License, or (at your option) any later version.
 !
-!  Definition:
-!  ===========
+!  This program is distributed in the hope that it will be useful,
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+!  Lesser General Public License for more details.
 !
-!       SUBROUTINE SAXPBY(N,SA,SX,INCX,SB,SY,INCY)
+!  You should have received a copy of the GNU Lesser General Public License
+!  along with this program; if not, write to the Free Software Foundation,
+!  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
-!       .. Scalar Arguments ..
-!       REAL SA,SB
-!       INTEGER INCX,INCY,N
-!       ..
-!       .. Array Arguments ..
-!       type(DT) SX(*),SY(*)
-!       ..
-!
-!
-!> \par Purpose:
-!  =============
-!>
-!> \verbatim
-!>
-!>    SAXPBY constant times a vector plus constant times a vector.
-!>
-!>    Y = ALPHA * X + BETA * Y
-!>
-!> \endverbatim
-!
-!  Arguments:
-!  ==========
-!
-!> \param[in] N
-!> \verbatim
-!>          N is INTEGER
-!>          number of elements in input vector(s)
-!> \endverbatim
-!>
-!> \param[in] SA
-!> \verbatim
-!>           SA is REAL
-!>           On entry, SA specifies the scalar alpha.
-!> \endverbatim
-!>
-!> \param[in] SX
-!> \verbatim
-!>          SX is type(DT) array, dimension ( 1 + ( N - 1 )*abs( INCX ) )
-!> \endverbatim
-!>
-!> \param[in] INCX
-!> \verbatim
-!>          INCX is INTEGER
-!>          storage spacing between elements of SX
-!> \endverbatim
-!>
-!> \param[in] SB
-!> \verbatim
-!>           SB is REAL
-!>           On entry, SB specifies the scalar beta.
-!> \endverbatim
-!>
-!> \param[in,out] SY
-!> \verbatim
-!>          SY is type(DT) array, dimension ( 1 + ( N - 1 )*abs( INCY ) )
-!> \endverbatim
-!>
-!> \param[in] INCY
-!> \verbatim
-!>          INCY is INTEGER
-!>         storage spacing between elements of SY
-!> \endverbatim
-!  =====================================================================
+
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_axpby_fp8_e5m2
     use lpf_fp8_e5m2

@@ -1,23 +1,22 @@
-! SPDX-License-Identifier: LGPL-3.0-or-later
+!  SPDX-License-Identifier: LGPL-3.0-or-later
 !
-! \brief Triangular Matrix-Matrix Multiplication (TRMM)
+!  This file is part of LPF, a Low Precision helper for Fortran
+!  Copyright (C) 2025 Martin Koehler
 !
-! This routine performs the operation:
-! B := alpha * A * B  (if side == 'L')
-! B := alpha * B * A  (if side == 'R')
-! where A is a triangular matrix.
+!  This program is free software; you can redistribute it and/or
+!  modify it under the terms of the GNU Lesser General Public
+!  License as published by the Free Software Foundation; either
+!  version 3 of the License, or (at your option) any later version.
 !
-! \param[in] side Character specifying the side on which the triangular matrix A is multiplied: 'L' for left, 'R' for right.
-! \param[in] uplo Character specifying the triangular part of the matrix A to be used: 'U' for upper, 'L' for lower.
-! \param[in] transa Character specifying the transpose of matrix A: 'N' for no transpose, 'T' for transpose.
-! \param[in] diag Character specifying whether the diagonal of A is unit: 'U' for unit, 'N' for non-unit.
-! \param[in] m Number of rows of matrix B.
-! \param[in] n Number of columns of matrix B.
-! \param[in] alpha Scalar multiplier.
-! \param[in] a The triangular matrix A, stored in column-major order.
-! \param[in] lda Leading dimension of matrix A.
-! \param[in,out] b The matrix B, stored in column-major order.
-! \param[in] ldb Leading dimension of matrix B.
+!  This program is distributed in the hope that it will be useful,
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+!  Lesser General Public License for more details.
+!
+!  You should have received a copy of the GNU Lesser General Public License
+!  along with this program; if not, write to the Free Software Foundation,
+!  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+!
 
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_trmm_fp8_e5m2

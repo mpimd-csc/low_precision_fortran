@@ -1,4 +1,4 @@
-!  SPDX-License-Identifier LGPL-3.0-or-later
+!  SPDX-License-Identifier: LGPL-3.0-or-later
 !
 !  This file is part of LPF, a Low Precision helper for Fortran
 !  Copyright (C) 2025 Martin Koehler

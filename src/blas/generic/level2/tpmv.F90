@@ -1,18 +1,22 @@
-! SPDX-License-Identifier: LGPL-3.0-or-later
+!  SPDX-License-Identifier: LGPL-3.0-or-later
 !
-! \brief Triangular Packed Matrix-Vector Multiplication (TPMV)
+!  This file is part of LPF, a Low Precision helper for Fortran
+!  Copyright (C) 2025 Martin Koehler
 !
-! This routine performs the operation:
-! x := A * x
-! where A is a triangular packed matrix.
+!  This program is free software; you can redistribute it and/or
+!  modify it under the terms of the GNU Lesser General Public
+!  License as published by the Free Software Foundation; either
+!  version 3 of the License, or (at your option) any later version.
 !
-! \param[in] uplo Character specifying the triangular part of the matrix A to be used: 'U' for upper, 'L' for lower.
-! \param[in] trans Character specifying the transpose. 'N' for no transpose, 'T' for transpose.
-! \param[in] diag Character specifying whether the diagonal of A is unit: 'U' for unit, 'N' for non-unit.
-! \param[in] n Order of matrix A.
-! \param[in] ap The triangular packed matrix A.
-! \param[in,out] x Vector X.
-! \param[in] incx Increment for the elements of x.
+!  This program is distributed in the hope that it will be useful,
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+!  Lesser General Public License for more details.
+!
+!  You should have received a copy of the GNU Lesser General Public License
+!  along with this program; if not, write to the Free Software Foundation,
+!  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+!
 
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_tpmv_fp8_e5m2

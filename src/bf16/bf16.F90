@@ -1,4 +1,4 @@
-!  SPDX-License-Identifier LGPL-3.0-or-later
+!  SPDX-License-Identifier: LGPL-3.0-or-later
 !
 !  This file is part of LPF, a Low Precision helper for Fortran
 !  Copyright (C) 2025 Martin Koehler
@@ -17,6 +17,7 @@
 !  along with this program; if not, write to the Free Software Foundation,
 !  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
+
 MODULE LPF_BF16
     USE iso_c_binding
     USE iso_fortran_env, only: real32, real64

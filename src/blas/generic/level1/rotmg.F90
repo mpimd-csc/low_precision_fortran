@@ -1,84 +1,23 @@
-! SPDX-License-Identifier: LGPL-3.0-or-later
-!> \brief \b SROTMG
+!  SPDX-License-Identifier: LGPL-3.0-or-later
 !
-!  =========== DOCUMENTATION ===========
+!  This file is part of LPF, a Low Precision helper for Fortran
+!  Copyright (C) 2025 Martin Koehler
 !
-! Online html documentation available at
-!            http://www.netlib.org/lapack/explore-html/
+!  This program is free software; you can redistribute it and/or
+!  modify it under the terms of the GNU Lesser General Public
+!  License as published by the Free Software Foundation; either
+!  version 3 of the License, or (at your option) any later version.
 !
-!  Definition:
-!  ===========
+!  This program is distributed in the hope that it will be useful,
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+!  Lesser General Public License for more details.
 !
-!       SUBROUTINE SROTMG(SD1,SD2,SX1,SY1,SPARAM)
+!  You should have received a copy of the GNU Lesser General Public License
+!  along with this program; if not, write to the Free Software Foundation,
+!  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
-!       .. Scalar Arguments ..
-!       REAL SD1,SD2,SX1,SY1
-!       ..
-!       .. Array Arguments ..
-!       type(DT) SPARAM(5)
-!       ..
-!
-!
-!> \par Purpose:
-!  =============
-!>
-!> \verbatim
-!>
-!>    CONSTRUCT THE MODIFIED GIVENS TRANSFORMATION MATRIX H WHICH ZEROS
-!>    THE SECOND COMPONENT OF THE 2-VECTOR
-!>         (SQRT(SD1)*SX1,SQRT(SD2)*SY2)**T
-!>    WITH SPARAM(1)=SFLAG.
-!>
-!>    H HAS ONE OF THE FOLLOWING FORMS:
-!>
-!>      SFLAG=-1.E0     SFLAG=0.E0      SFLAG=1.E0      SFLAG=-2.E0
-!>
-!>      (SH11  SH12)    (1.E0  SH12)    (SH11  1.E0)    (1.E0  0.E0)
-!>    H=(          )    (          )    (          )    (          )
-!>      (SH21  SH22),   (SH21  1.E0),   (-1.E0 SH22),   (0.E0  1.E0).
-!>
-!>    LOCATIONS 2-4 OF SPARAM CONTAIN SH11, SH21, SH12, AND SH22
-!>    RESPECTIVELY. (VALUES OF 1.E0, -1.E0, OR 0.E0 IMPLIED BY THE
-!>    VALUE OF SPARAM(1) ARE NOT STORED IN SPARAM.)
-!>
-!>    THE VALUES OF GAMSQ AND RGAMSQ SET IN THE DATA STATEMENT MAY BE
-!>    INEXACT.  THIS IS OK AS THEY ARE ONLY USED FOR TESTING THE SIZE
-!>    OF SD1 AND SD2.  ALL ACTUAL SCALING OF DATA IS DONE USING GAM.
-!> \endverbatim
-!
-!  Arguments:
-!  ==========
-!
-!> \param[in,out] SD1
-!> \verbatim
-!>          SD1 is REAL
-!> \endverbatim
-!>
-!> \param[in,out] SD2
-!> \verbatim
-!>          SD2 is REAL
-!> \endverbatim
-!>
-!> \param[in,out] SX1
-!> \verbatim
-!>          SX1 is REAL
-!> \endverbatim
-!>
-!> \param[in] SY1
-!> \verbatim
-!>          SY1 is REAL
-!> \endverbatim
-!>
-!> \param[out] SPARAM
-!> \verbatim
-!>          SPARAM is type(DT) array, dimension (5)
-!>     SPARAM(1)=SFLAG
-!>     SPARAM(2)=SH11
-!>     SPARAM(3)=SH21
-!>     SPARAM(4)=SH12
-!>     SPARAM(5)=SH22
-!> \endverbatim
-!  =====================================================================
+
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_rotmg_fp8_e5m2
     use lpf_fp8_e5m2

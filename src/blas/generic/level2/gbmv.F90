@@ -1,24 +1,22 @@
-! SPDX-License-Identifier: LGPL-3.0-or-later
+!  SPDX-License-Identifier: LGPL-3.0-or-later
 !
-! \brief General Banded Matrix-Vector Multiplication (GBMV)
+!  This file is part of LPF, a Low Precision helper for Fortran
+!  Copyright (C) 2025 Martin Koehler
 !
-! This routine performs the operation:
-! y := alpha * A * x + beta * y
-! where A is a general banded matrix.
+!  This program is free software; you can redistribute it and/or
+!  modify it under the terms of the GNU Lesser General Public
+!  License as published by the Free Software Foundation; either
+!  version 3 of the License, or (at your option) any later version.
 !
-! \param[in] trans Character specifying the transpose. 'N' for no transpose, 'T' for transpose.
-! \param[in] m Number of rows of matrix A.
-! \param[in] n Number of columns of matrix A.
-! \param[in] kl Number of lower diagonals.
-! \param[in] ku Number of upper diagonals.
-! \param[in] alpha Scalar multiplier for the matrix-vector product.
-! \param[in] a The banded matrix A, stored in column-major order.
-! \param[in] lda Leading dimension of matrix A.
-! \param[in] x Vector X.
-! \param[in] incx Increment for the elements of x.
-! \param[in] beta Scalar multiplier for vector y.
-! \param[in,out] y Vector Y.
-! \param[in] incy Increment for the elements of y.
+!  This program is distributed in the hope that it will be useful,
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+!  Lesser General Public License for more details.
+!
+!  You should have received a copy of the GNU Lesser General Public License
+!  along with this program; if not, write to the Free Software Foundation,
+!  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+!
 
 #ifdef LPF_FP8_E5M2
 submodule (lpf_blas_fp8_e5m2) lpf_blas_gbmv_fp8_e5m2
