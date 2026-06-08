@@ -26,6 +26,8 @@ SET(BF16_UNIT_TESTS
     test_bf16_minmax
     test_bf16_reductions
     test_bf16_io
+    test_bf16_matmul
+    test_bf16_simple
 )
 
 FOREACH(test_name IN LISTS BF16_UNIT_TESTS)

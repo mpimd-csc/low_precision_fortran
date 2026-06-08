@@ -13,6 +13,7 @@ SET(FP16_SRC
     fp16/fp16_minloc.f90
     fp16/fp16_minval.f90
     fp16/fp16_norm2.f90
+    fp16/fp16_matmul.f90
     fp16/fp16_helper.c
     fp16/fp16_math_one_arg.c
     fp16/fp16_math_two_args.c
@@ -31,6 +32,7 @@ SET (BF16_SRC
     bf16/bf16_minloc.f90
     bf16/bf16_minval.f90
     bf16/bf16_norm2.f90
+    bf16/bf16_matmul.f90
     bf16/bf16_helper.c
     bf16/bf16_math_one_arg.c
     bf16/bf16_math_two_args.c
@@ -47,6 +49,7 @@ SET(FP8_E4M3_SRC
     fp8_e4m3/emu/fp8_e4m3_abs.c
     fp8_e4m3/fp8_e4m3.F90
     fp8_e4m3/fp8_e4m3_norm2.f90
+    fp8_e4m3/fp8_e4m3_matmul.f90
     fp8_e4m3/fp8_e4m3_generic.c
     fp8_e4m3/fp8_e4m3_helper.c
     fp8_e4m3/fp8_e4m3_math_generic.f90
@@ -71,6 +74,7 @@ SET(FP8_E5M2_SRC
     fp8_e5m2/emu/fp8_e5m2_math_lut.c
     fp8_e5m2/fp8_e5m2.F90
     fp8_e5m2/fp8_e5m2_norm2.f90
+    fp8_e5m2/fp8_e5m2_matmul.f90
     fp8_e5m2/fp8_e5m2_generic.c
     fp8_e5m2/fp8_e5m2_helper.c
     fp8_e5m2/fp8_e5m2_math_generic.f90

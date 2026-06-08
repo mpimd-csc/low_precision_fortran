@@ -102,6 +102,8 @@ MODULE LPF_FP8_E4M3
     PUBLIC :: dble
     PUBLIC :: int
     PUBLIC :: norm2
+    PUBLIC :: matmul
+
 
     TYPE, BIND(C) :: FP8_E4M3
         INTEGER(c_int8_t) :: value
@@ -838,6 +840,28 @@ MODULE LPF_FP8_E4M3
         end function
 
     end interface
+
+    interface matmul
+        module pure function fp8_e4m3_matmul_vm(a, b) result(c)
+            type(fp8_e4m3), intent(in) :: a(:)
+            type(fp8_e4m3), intent(in) :: b(:,:)
+            type(fp8_e4m3) :: c(size(b,2))
+        end function
+
+        module pure function fp8_e4m3_matmul_mv(a, b) result(c)
+            type(fp8_e4m3), intent(in) :: a(:,:)
+            type(fp8_e4m3), intent(in) :: b(:)
+            type(fp8_e4m3) :: c(size(a, 1))
+        end function
+
+        module pure function fp8_e4m3_matmul_mm(a, b) result(c)
+            type(fp8_e4m3), intent(in) :: a(:,:)
+            type(fp8_e4m3), intent(in) :: b(:,:)
+            type(fp8_e4m3) :: c(size(a,1),size(b,2))
+        end function
+
+    end interface
+
 
 
     ! C Interfaces

@@ -28,6 +28,7 @@ MODULE lpf_bf16_test_utils
     PUBLIC :: check_integer
     PUBLIC :: check_bf16_known_bug
     PUBLIC :: test_summary
+    PUBLIC :: integer_to_char
     PUBLIC :: BF16_TOL
     PUBLIC :: BF16_TOL_TIGHT
     PUBLIC :: BF16_TOL_LOOSE
