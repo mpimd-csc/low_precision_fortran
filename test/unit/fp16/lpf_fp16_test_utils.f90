@@ -28,6 +28,7 @@ MODULE lpf_fp16_test_utils
     PUBLIC :: check_integer
     PUBLIC :: check_fp16_known_bug
     PUBLIC :: test_summary
+    PUBLIC :: integer_to_char
     PUBLIC :: FP16_TOL
     PUBLIC :: FP16_TOL_TIGHT
     PUBLIC :: FP16_TOL_LOOSE
