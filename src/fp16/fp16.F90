@@ -97,6 +97,7 @@ MODULE LPF_FP16
     PUBLIC :: minloc
     PUBLIC :: norm2
     PUBLIC :: matmul
+    PUBLIC :: dot_product
     PUBLIC :: isnan
     PUBLIC :: isinf
     PUBLIC :: min
@@ -863,6 +864,14 @@ MODULE LPF_FP16
             type(fp16) :: c(size(a,1),size(b,2))
         end function
 
+    end interface
+
+    interface dot_product
+        module pure function fp16_dot_product(a, b) result(c)
+            type(fp16), intent(in) :: a(:)
+            type(fp16), intent(in) :: b(:)
+            type(fp16) :: c
+        end function
     end interface
 
     ! C Interfaces

@@ -104,6 +104,7 @@ MODULE LPF_FP8_E4M3
     PUBLIC :: int
     PUBLIC :: norm2
     PUBLIC :: matmul
+    PUBLIC :: dot_product
 
 
     TYPE, BIND(C) :: FP8_E4M3
@@ -862,6 +863,15 @@ MODULE LPF_FP8_E4M3
         end function
 
     end interface
+
+    interface dot_product
+        module pure function fp8_e4m3_dot_product(a, b) result(c)
+            type(fp8_e4m3), intent(in) :: a(:)
+            type(fp8_e4m3), intent(in) :: b(:)
+            type(fp8_e4m3) :: c
+        end function
+    end interface
+
 
 
 

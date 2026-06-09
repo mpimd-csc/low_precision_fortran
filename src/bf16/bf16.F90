@@ -106,6 +106,7 @@ MODULE LPF_BF16
     ! Lin Alg Functions
     PUBLIC :: norm2
     PUBLIC :: matmul
+    PUBLIC :: dot_product
 
 
     TYPE, BIND(C) :: BF16
@@ -863,6 +864,13 @@ MODULE LPF_BF16
 
     end interface
 
+    interface dot_product
+        module pure function bf16_dot_product(a, b) result(c)
+            type(bf16), intent(in) :: a(:)
+            type(bf16), intent(in) :: b(:)
+            type(bf16) :: c
+        end function
+    end interface
 
     ! C Interfaces
     INTERFACE
