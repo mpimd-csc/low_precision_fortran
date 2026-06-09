@@ -296,6 +296,22 @@ ADD_LIBRARY(lpf_blas
 
     ${SRC}
 )
+
+
+#
+# Fix strange optimization behavior
+#
+IF ( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
+    MESSAGE(STATUS "Remove too strong optimization from nrm2_fp32 computation on x86_64.")
+
+    set_source_files_properties(fp16/level1/hnrm2_fp32.c PROPERTIES COMPILE_OPTIONS "-mno-avx512fp16;-mno-avx512bf16")
+    set_source_files_properties(bf16/level1/bnrm2_fp32.c PROPERTIES COMPILE_OPTIONS "-mno-avx512fp16;-mno-avx512bf16")
+ENDIF()
+
+
+
+
+
 add_coverage(lpf_blas)
 
 TARGET_LINK_LIBRARIES(lpf_blas
