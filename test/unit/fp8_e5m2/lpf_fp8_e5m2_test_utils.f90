@@ -30,6 +30,7 @@ MODULE lpf_fp8_e5m2_test_utils
     PUBLIC :: check_integer_known_bug
     PUBLIC :: check_logical_known_bug
     PUBLIC :: test_summary
+    PUBLIC :: integer_to_char
     PUBLIC :: FP8_E5M2_TOL
     PUBLIC :: FP8_E5M2_TOL_TIGHT
     PUBLIC :: FP8_E5M2_TOL_LOOSE
