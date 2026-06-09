@@ -162,6 +162,8 @@ The build process is controlled via the following CMake options:
 | `LPF_BLAS` | `ON` | Enable BLAS and LAPACK |
 | `LPF_FP8_E4M3` | `ON` | Support for FP8_E4M3 |
 | `LPF_FP8_E5M2` | `ON` | Support for FP8_E5M2 |
+| `LPF_AVX512_FP16` | `OFF` | Enable AVX512-FP16 Instructions |
+| `LPF_AVX512_BF16` | `OFF` | Enable AVX512-BF16 Instructions |
 | `LPF_EXAMPLES_TLAPACK` | `OFF` | Build TLAPACK examples |
 | `LPF_TESTING` | `ON` | Build the LPF example programs and tests |
 | `CMAKE_BUILD_TYPE` | `Release` | Choose the type of build (e.g., Debug, Release) |
@@ -186,10 +188,13 @@ checked using
 lscpu | grep -o -E '(axv512_fp16|avx512_bf16)'
 ```
 Depending on which features are available, the corresponding compiler switches
-can be added;
+can be added. Either by specifying the C flags
 ```shell
 -DCMAKE_C_FLAGS="-mavx512fp16 -mavx512bf16"
 ```
+or enabling the `LPF_AVX512_FP16` and/or `LPF_AVX512_BF16` option as listed
+above.
+
 ### AArch64 and Apple Silicon
 In case of an fp16 or bf16 aware AArch64 CPU, the compiler flags will be
 ```shell
