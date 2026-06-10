@@ -155,7 +155,8 @@ CONTAINS
     function integer_to_char(n) result(str)
         integer, intent(in) :: n
         character(len=20) :: str
-        write(str, '(I0)') n
+        write(str, *) n
+        str = trim(ADJUSTL(str))
     end function
 
 END MODULE lpf_bf16_test_utils

@@ -105,6 +105,8 @@ MODULE LPF_FP16
     PUBLIC :: real
     PUBLIC :: dble
     PUBLIC :: int
+    PUBLIC :: product
+    PUBLIC :: sum
 
     TYPE, BIND(C) :: FP16
         INTEGER(c_int16_t) :: value
@@ -803,6 +805,92 @@ MODULE LPF_FP16
                 & size(array, merge(3, 2, dim < 3)), &
                 & size(array, merge(4, 3, dim == 4))) :: min_loc
         end function
+    end interface
+
+    interface product
+        module pure function fp16_product_r1(vec, mask) result(out)
+            type(fp16), intent(in) :: vec(:)
+            logical, intent(in), optional :: mask(..)
+            type(fp16) :: out
+        end function
+
+        module pure function fp16_product_r2(vec, mask) result(out)
+            type(fp16), intent(in) :: vec(:,:)
+            logical, intent(in), optional :: mask(..)
+            type(fp16) :: out
+        end function
+
+        module pure function fp16_product_r3(vec, mask) result(out)
+            type(fp16), intent(in) :: vec(:,:,:)
+            logical, intent(in), optional :: mask(..)
+            type(fp16) :: out
+        end function
+
+        module pure function fp16_product_r1_dim(vec, dim, mask) result(out)
+            type(fp16), intent(in) :: vec(:)
+            integer, intent(in) :: dim
+            logical, intent(in), optional :: mask(..)
+            type(fp16) :: out
+        end function
+
+        module pure function fp16_product_r2_dim(vec, dim, mask) result(out)
+            type(fp16), intent(in) :: vec(:, :)
+            integer, intent(in) :: dim
+            logical, intent(in), optional :: mask(..)
+            type(fp16), dimension(size(vec,merge(2, 1, dim == 1))) :: out
+        end function
+
+        module pure function fp16_product_r3_dim(vec, dim, mask) result(out)
+            type(fp16), intent(in) :: vec(:, :, :)
+            integer, intent(in) :: dim
+            logical, intent(in), optional :: mask(..)
+            type(fp16), dimension( size(vec, merge(2, 1, dim == 1)), &
+                & size(vec, merge(2, 3, dim == 3))) :: out
+        end function
+
+    end interface
+
+    interface sum
+        module pure function fp16_sum_r1(vec, mask) result(out)
+            type(fp16), intent(in) :: vec(:)
+            logical, intent(in), optional :: mask(..)
+            type(fp16) :: out
+        end function
+
+        module pure function fp16_sum_r2(vec, mask) result(out)
+            type(fp16), intent(in) :: vec(:,:)
+            logical, intent(in), optional :: mask(..)
+            type(fp16) :: out
+        end function
+
+        module pure function fp16_sum_r3(vec, mask) result(out)
+            type(fp16), intent(in) :: vec(:,:,:)
+            logical, intent(in), optional :: mask(..)
+            type(fp16) :: out
+        end function
+
+        module pure function fp16_sum_r1_dim(vec, dim, mask) result(out)
+            type(fp16), intent(in) :: vec(:)
+            integer, intent(in) :: dim
+            logical, intent(in), optional :: mask(..)
+            type(fp16) :: out
+        end function
+
+        module pure function fp16_sum_r2_dim(vec, dim, mask) result(out)
+            type(fp16), intent(in) :: vec(:, :)
+            integer, intent(in) :: dim
+            logical, intent(in), optional :: mask(..)
+            type(fp16), dimension(size(vec,merge(2, 1, dim == 1))) :: out
+        end function
+
+        module pure function fp16_sum_r3_dim(vec, dim, mask) result(out)
+            type(fp16), intent(in) :: vec(:, :, :)
+            integer, intent(in) :: dim
+            logical, intent(in), optional :: mask(..)
+            type(fp16), dimension( size(vec, merge(2, 1, dim == 1)), &
+                & size(vec, merge(2, 3, dim == 3))) :: out
+        end function
+
     end interface
 
 

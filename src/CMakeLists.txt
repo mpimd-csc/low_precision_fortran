@@ -14,6 +14,8 @@ SET(FP16_SRC
     fp16/fp16_minval.f90
     fp16/fp16_norm2.f90
     fp16/fp16_matmul.f90
+    fp16/fp16_product.f90
+    fp16/fp16_sum.f90
     fp16/fp16_dotproduct.f90
     fp16/fp16_helper.c
     fp16/fp16_math_one_arg.c
@@ -35,6 +37,8 @@ SET (BF16_SRC
     bf16/bf16_norm2.f90
     bf16/bf16_matmul.f90
     bf16/bf16_dotproduct.f90
+    bf16/bf16_product.f90
+    bf16/bf16_sum.f90
     bf16/bf16_helper.c
     bf16/bf16_math_one_arg.c
     bf16/bf16_math_two_args.c
@@ -53,6 +57,8 @@ SET(FP8_E4M3_SRC
     fp8_e4m3/fp8_e4m3_norm2.f90
     fp8_e4m3/fp8_e4m3_matmul.f90
     fp8_e4m3/fp8_e4m3_dotproduct.f90
+    fp8_e4m3/fp8_e4m3_product.f90
+    fp8_e4m3/fp8_e4m3_sum.f90
     fp8_e4m3/fp8_e4m3_generic.c
     fp8_e4m3/fp8_e4m3_helper.c
     fp8_e4m3/fp8_e4m3_math_generic.f90
@@ -79,6 +85,8 @@ SET(FP8_E5M2_SRC
     fp8_e5m2/fp8_e5m2_norm2.f90
     fp8_e5m2/fp8_e5m2_matmul.f90
     fp8_e5m2/fp8_e5m2_dotproduct.f90
+    fp8_e5m2/fp8_e5m2_product.f90
+    fp8_e5m2/fp8_e5m2_sum.f90
     fp8_e5m2/fp8_e5m2_generic.c
     fp8_e5m2/fp8_e5m2_helper.c
     fp8_e5m2/fp8_e5m2_math_generic.f90
