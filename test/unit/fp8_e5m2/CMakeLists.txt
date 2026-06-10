@@ -28,6 +28,8 @@ SET(FP8_E5M2_UNIT_TESTS
     test_fp8_e5m2_io
     test_fp8_e5m2_matmul
     test_fp8_e5m2_dot_product
+    test_fp8_e5m2_product
+    test_fp8_e5m2_sum
 )
 
 FOREACH(test_name IN LISTS FP8_E5M2_UNIT_TESTS)

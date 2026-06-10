@@ -28,6 +28,8 @@ SET(FP16_UNIT_TESTS
     test_fp16_io
     test_fp16_matmul
     test_fp16_dot_product
+    test_fp16_product
+    test_fp16_sum
 )
 
 FOREACH(test_name IN LISTS FP16_UNIT_TESTS)

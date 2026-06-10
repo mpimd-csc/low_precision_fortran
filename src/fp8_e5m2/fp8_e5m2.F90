@@ -105,6 +105,8 @@ MODULE LPF_FP8_E5M2
     PUBLIC :: int
     PUBLIC :: matmul
     PUBLIC :: dot_product
+    PUBLIC :: product
+    PUBLIC :: sum
 
     TYPE, BIND(C) :: FP8_E5M2
         INTEGER(c_int8_t) :: value
@@ -804,7 +806,94 @@ MODULE LPF_FP8_E5M2
         end function
     end interface
 
+    interface product
+        module pure function fp8_e5m2_product_r1(vec, mask) result(out)
+            type(fp8_e5m2), intent(in) :: vec(:)
+            logical, intent(in), optional :: mask(..)
+            type(fp8_e5m2) :: out
+        end function
 
+        module pure function fp8_e5m2_product_r2(vec, mask) result(out)
+            type(fp8_e5m2), intent(in) :: vec(:,:)
+            logical, intent(in), optional :: mask(..)
+            type(fp8_e5m2) :: out
+        end function
+
+        module pure function fp8_e5m2_product_r3(vec, mask) result(out)
+            type(fp8_e5m2), intent(in) :: vec(:,:,:)
+            logical, intent(in), optional :: mask(..)
+            type(fp8_e5m2) :: out
+        end function
+
+        module pure function fp8_e5m2_product_r1_dim(vec, dim, mask) result(out)
+            type(fp8_e5m2), intent(in) :: vec(:)
+            integer, intent(in) :: dim
+            logical, intent(in), optional :: mask(..)
+            type(fp8_e5m2) :: out
+        end function
+
+        module pure function fp8_e5m2_product_r2_dim(vec, dim, mask) result(out)
+            type(fp8_e5m2), intent(in) :: vec(:, :)
+            integer, intent(in) :: dim
+            logical, intent(in), optional :: mask(..)
+            type(fp8_e5m2), dimension(size(vec,merge(2, 1, dim == 1))) :: out
+        end function
+
+        module pure function fp8_e5m2_product_r3_dim(vec, dim, mask) result(out)
+            type(fp8_e5m2), intent(in) :: vec(:, :, :)
+            integer, intent(in) :: dim
+            logical, intent(in), optional :: mask(..)
+            type(fp8_e5m2), dimension( size(vec, merge(2, 1, dim == 1)), &
+                & size(vec, merge(2, 3, dim == 3))) :: out
+        end function
+
+    end interface
+
+    interface sum
+        module pure function fp8_e5m2_sum_r1(vec, mask) result(out)
+            type(fp8_e5m2), intent(in) :: vec(:)
+            logical, intent(in), optional :: mask(..)
+            type(fp8_e5m2) :: out
+        end function
+
+        module pure function fp8_e5m2_sum_r2(vec, mask) result(out)
+            type(fp8_e5m2), intent(in) :: vec(:,:)
+            logical, intent(in), optional :: mask(..)
+            type(fp8_e5m2) :: out
+        end function
+
+        module pure function fp8_e5m2_sum_r3(vec, mask) result(out)
+            type(fp8_e5m2), intent(in) :: vec(:,:,:)
+            logical, intent(in), optional :: mask(..)
+            type(fp8_e5m2) :: out
+        end function
+
+        module pure function fp8_e5m2_sum_r1_dim(vec, dim, mask) result(out)
+            type(fp8_e5m2), intent(in) :: vec(:)
+            integer, intent(in) :: dim
+            logical, intent(in), optional :: mask(..)
+            type(fp8_e5m2) :: out
+        end function
+
+        module pure function fp8_e5m2_sum_r2_dim(vec, dim, mask) result(out)
+            type(fp8_e5m2), intent(in) :: vec(:, :)
+            integer, intent(in) :: dim
+            logical, intent(in), optional :: mask(..)
+            type(fp8_e5m2), dimension(size(vec,merge(2, 1, dim == 1))) :: out
+        end function
+
+        module pure function fp8_e5m2_sum_r3_dim(vec, dim, mask) result(out)
+            type(fp8_e5m2), intent(in) :: vec(:, :, :)
+            integer, intent(in) :: dim
+            logical, intent(in), optional :: mask(..)
+            type(fp8_e5m2), dimension( size(vec, merge(2, 1, dim == 1)), &
+                & size(vec, merge(2, 3, dim == 3))) :: out
+        end function
+
+    end interface
+
+
+    ! Lin. Alg. Routines
 
     interface norm2
         module pure function fp8_e5m2_norm2_r1(vec) result(out)

@@ -28,6 +28,8 @@ SET(BF16_UNIT_TESTS
     test_bf16_io
     test_bf16_matmul
     test_bf16_dot_product
+    test_bf16_product
+    test_bf16_sum
     test_bf16_simple
 )
 
