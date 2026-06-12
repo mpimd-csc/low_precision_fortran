@@ -100,7 +100,7 @@
 !  =====================================================================
       PROGRAM HBLAT2
         USE LPF_FP16
-        USE LPF_TYPES, dik => lpf_default_int_kind
+        USE LPF_TYPES, dik => int32
         USE LPF_XERBLA
         USE LPF_BLAS_FP16
         IMPLICIT NONE
@@ -114,20 +114,20 @@
 !  =====================================================================
 !
 !     .. Parameters ..
-      INTEGER(lpf_default_int_kind)            NIN
+      INTEGER(int32)            NIN
       PARAMETER          ( NIN = 5 )
-      INTEGER(lpf_default_int_kind)            NSUBS
+      INTEGER(int32)            NSUBS
       PARAMETER          ( NSUBS = 16 )
       TYPE(FP16)         ZERO, ONE
-      INTEGER(lpf_default_int_kind)            NMAX, INCMAX
+      INTEGER(int32)            NMAX, INCMAX
       PARAMETER          ( NMAX = 32, INCMAX = 2 )
-      INTEGER(lpf_default_int_kind)            NINMAX, NIDMAX, NKBMAX, NALMAX, NBEMAX
+      INTEGER(int32)            NINMAX, NIDMAX, NKBMAX, NALMAX, NBEMAX
       PARAMETER          ( NINMAX = 7, NIDMAX = 9, NKBMAX = 7,          &
      &                   NALMAX = 7, NBEMAX = 7 )
 !     .. Local Scalars ..
       TYPE(FP16)               EPS, ERR, THRESH
       REAL               THRESHR
-      INTEGER(lpf_default_int_kind)            I, ISNUM, J, N, NALF, NBET, NIDIM, NINC, NKB,  &
+      INTEGER(int32)            I, ISNUM, J, N, NALF, NBET, NIDIM, NINC, NKB,  &
      &                   NOUT, NTRA
       LOGICAL            FATAL, LTESTT, REWI, SAME, SFATAL, TRACE,      &
      &                   TSTERR
@@ -141,7 +141,7 @@
      &                   XX( NMAX*INCMAX ), Y( NMAX ),                  &
      &                   YS( NMAX*INCMAX ), YT( NMAX ),                 &
      &                   YY( NMAX*INCMAX ), Z( 2*NMAX )
-      INTEGER(lpf_default_int_kind)            IDIM( NIDMAX ), INC( NINMAX ), KB( NKBMAX )
+      INTEGER(int32)            IDIM( NIDMAX ), INC( NINMAX ), KB( NKBMAX )
       LOGICAL            LTEST( NSUBS )
       CHARACTER*6        SNAMES( NSUBS )
 !     .. External Functions ..
@@ -153,7 +153,7 @@
      &                   HCHKE, HMVCH
       EXTERNAL           LOCAL_XERBLA
 !     .. Scalars in Common ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
+      INTEGER(int32)            INFOT, NOUTC
       LOGICAL            LERR, OK
       CHARACTER*6        SRNAMT
 !     .. Common blocks ..
@@ -442,7 +442,7 @@
      &                  BET, NINC, INC, NMAX, INCMAX, A, AA, AS, X, XX, &
      &                  XS, Y, YY, YS, YT, G )
         USE LPF_FP16
-        USE LPF_TYPES, dik => lpf_default_int_kind
+        USE LPF_TYPES, dik => int32
         USE LPF_BLAS_FP16
 
  !
@@ -458,7 +458,7 @@
       TYPE(FP16)  ::     ZERO, HALF
 !     .. Scalar Arguments ..
       TYPE(FP16) ::      EPS, THRESH
-      INTEGER(lpf_default_int_kind)            INCMAX, NALF, NBET, NIDIM, NINC, NKB, NMAX,    &
+      INTEGER(int32)            INCMAX, NALF, NBET, NIDIM, NINC, NKB, NMAX,    &
      &                   NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*6        SNAME
@@ -469,10 +469,10 @@
      &                   XX( NMAX*INCMAX ), Y( NMAX ),                  &
      &                   YS( NMAX*INCMAX ), YT( NMAX ),                 &
      &                   YY( NMAX*INCMAX )
-      INTEGER(lpf_default_int_kind)            IDIM( NIDIM ), INC( NINC ), KB( NKB )
+      INTEGER(int32)            IDIM( NIDIM ), INC( NINC ), KB( NKB )
 !     .. Local Scalars ..
       TYPE(FP16) ::      ALPHA, ALS, BETA, BLS, ERR, ERRMAX, TRANSL
-      INTEGER(lpf_default_int_kind)            I, IA, IB, IC, IKU, IM, IN, INCX, INCXS, INCY, &
+      INTEGER(int32)            I, IA, IB, IC, IKU, IM, IN, INCX, INCXS, INCY, &
      &                   INCYS, IX, IY, KL, KLS, KU, KUS, LAA, LDA,     &
      &                   LDAS, LX, LY, M, ML, MS, N, NARGS, NC, ND, NK, &
      &                   NL, NS
@@ -487,7 +487,7 @@
 !     .. External Subroutines ..
       EXTERNAL           HMAKE, HMVCH, SREGR1
 !     .. Scalars in Common ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
+      INTEGER(int32)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -816,7 +816,7 @@
      &                  BET, NINC, INC, NMAX, INCMAX, A, AA, AS, X, XX, &
      &                  XS, Y, YY, YS, YT, G )
         USE LPF_FP16
-        USE LPF_TYPES, dik => lpf_default_int_kind
+        USE LPF_TYPES, dik => int32
         USE LPF_BLAS_FP16
 
 !
@@ -832,7 +832,7 @@
       TYPE(FP16)         ZERO, HALF
 !     .. Scalar Arguments ..
       TYPE(FP16)               EPS, THRESH
-      INTEGER(lpf_default_int_kind)            INCMAX, NALF, NBET, NIDIM, NINC, NKB, NMAX,    &
+      INTEGER(int32)            INCMAX, NALF, NBET, NIDIM, NINC, NKB, NMAX,    &
      &                   NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*6        SNAME
@@ -843,10 +843,10 @@
      &                   XX( NMAX*INCMAX ), Y( NMAX ),                  &
      &                   YS( NMAX*INCMAX ), YT( NMAX ),                 &
      &                   YY( NMAX*INCMAX )
-      INTEGER(lpf_default_int_kind)            IDIM( NIDIM ), INC( NINC ), KB( NKB )
+      INTEGER(int32)            IDIM( NIDIM ), INC( NINC ), KB( NKB )
 !     .. Local Scalars ..
       TYPE(FP16)         ALPHA, ALS, BETA, BLS, ERR, ERRMAX, TRANSL
-      INTEGER(lpf_default_int_kind)            I, IA, IB, IC, IK, IN, INCX, INCXS, INCY,      &
+      INTEGER(int32)            I, IA, IB, IC, IK, IN, INCX, INCXS, INCY,      &
      &                   INCYS, IX, IY, K, KS, LAA, LDA, LDAS, LX, LY,  &
      &                   N, NARGS, NC, NK, NS
       LOGICAL            BANDED, FULL, NULL, PACKED, RESET, SAME
@@ -860,7 +860,7 @@
 !     .. External Subroutines ..
       EXTERNAL           HMAKE, HMVCH
 !     .. Scalars in Common ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
+      INTEGER(int32)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -1162,7 +1162,7 @@
      &                  FATAL, NIDIM, IDIM, NKB, KB, NINC, INC, NMAX,   &
      &                  INCMAX, A, AA, AS, X, XX, XS, XT, G, Z )
         USE LPF_FP16
-        USE LPF_TYPES, dik => lpf_default_int_kind
+        USE LPF_TYPES, dik => int32
         USE LPF_BLAS_FP16
 
 !
@@ -1178,7 +1178,7 @@
       TYPE(FP16)               ZERO, HALF, ONE
 !     .. Scalar Arguments ..
       TYPE(FP16)               EPS, THRESH
-      INTEGER(lpf_default_int_kind)            INCMAX, NIDIM, NINC, NKB, NMAX, NOUT, NTRA
+      INTEGER(int32)            INCMAX, NIDIM, NINC, NKB, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*6        SNAME
 !     .. Array Arguments ..
@@ -1186,10 +1186,10 @@
      &                   AS( NMAX*NMAX ), G( NMAX ), X( NMAX ),         &
      &                   XS( NMAX*INCMAX ), XT( NMAX ),                 &
      &                   XX( NMAX*INCMAX ), Z( NMAX )
-      INTEGER(lpf_default_int_kind)            IDIM( NIDIM ), INC( NINC ), KB( NKB )
+      INTEGER(int32)            IDIM( NIDIM ), INC( NINC ), KB( NKB )
 !     .. Local Scalars ..
       TYPE(FP16)               ERR, ERRMAX, TRANSL
-      INTEGER(lpf_default_int_kind)            I, ICD, ICT, ICU, IK, IN, INCX, INCXS, IX, K,  &
+      INTEGER(int32)            I, ICD, ICT, ICU, IK, IN, INCX, INCXS, IX, K,  &
      &                   KS, LAA, LDA, LDAS, LX, N, NARGS, NC, NK, NS
       LOGICAL            BANDED, FULL, NULL, PACKED, RESET, SAME
       CHARACTER*1        DIAG, DIAGS, TRANS, TRANSS, UPLO, UPLOS
@@ -1203,7 +1203,7 @@
 !     .. External Subroutines ..
       EXTERNAL           HMAKE, HMVCH
 !     .. Scalars in Common ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
+      INTEGER(int32)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -1525,7 +1525,7 @@
      &                  INCMAX, A, AA, AS, X, XX, XS, Y, YY, YS, YT, G, &
      &                  Z )
         USE LPF_FP16
-        USE LPF_TYPES, dik => lpf_default_int_kind
+        USE LPF_TYPES, dik => int32
         USE LPF_BLAS_FP16
 
 !
@@ -1541,7 +1541,7 @@
       TYPE(FP16)         ZERO, HALF, ONE
 !     .. Scalar Arguments ..
       TYPE(FP16)         EPS, THRESH
-      INTEGER(lpf_default_int_kind)            INCMAX, NALF, NIDIM, NINC, NMAX, NOUT, NTRA
+      INTEGER(int32)            INCMAX, NALF, NIDIM, NINC, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*6        SNAME
 !     .. Array Arguments ..
@@ -1550,10 +1550,10 @@
      &                   XS( NMAX*INCMAX ), XX( NMAX*INCMAX ),          &
      &                   Y( NMAX ), YS( NMAX*INCMAX ), YT( NMAX ),      &
      &                   YY( NMAX*INCMAX ), Z( NMAX )
-      INTEGER(lpf_default_int_kind)            IDIM( NIDIM ), INC( NINC )
+      INTEGER(int32)            IDIM( NIDIM ), INC( NINC )
 !     .. Local Scalars ..
       TYPE(FP16)         ALPHA, ALS, ERR, ERRMAX, TRANSL
-      INTEGER(lpf_default_int_kind)            I, IA, IM, IN, INCX, INCXS, INCY, INCYS, IX,   &
+      INTEGER(int32)            I, IA, IM, IN, INCX, INCXS, INCY, INCYS, IX,   &
      &                   IY, J, LAA, LDA, LDAS, LX, LY, M, MS, N, NARGS,&
      &                   NC, ND, NS
       LOGICAL            NULL, RESET, SAME
@@ -1566,7 +1566,7 @@
 !     .. External Subroutines ..
       EXTERNAL           HMAKE, HMVCH
 !     .. Scalars in Common ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
+      INTEGER(int32)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -1792,7 +1792,7 @@
      &                  INCMAX, A, AA, AS, X, XX, XS, Y, YY, YS, YT, G, &
      &                  Z )
         USE LPF_FP16
-        USE LPF_TYPES, dik => lpf_default_int_kind
+        USE LPF_TYPES, dik => int32
         USE LPF_BLAS_FP16
 
 !
@@ -1808,7 +1808,7 @@
       TYPE(FP16)         ZERO, HALF, ONE
 !     .. Scalar Arguments ..
       TYPE(FP16)         EPS, THRESH
-      INTEGER(lpf_default_int_kind)            INCMAX, NALF, NIDIM, NINC, NMAX, NOUT, NTRA
+      INTEGER(int32)            INCMAX, NALF, NIDIM, NINC, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*6        SNAME
 !     .. Array Arguments ..
@@ -1817,10 +1817,10 @@
      &                   XS( NMAX*INCMAX ), XX( NMAX*INCMAX ),          &
      &                   Y( NMAX ), YS( NMAX*INCMAX ), YT( NMAX ),      &
      &                   YY( NMAX*INCMAX ), Z( NMAX )
-      INTEGER(lpf_default_int_kind)            IDIM( NIDIM ), INC( NINC )
+      INTEGER(int32)            IDIM( NIDIM ), INC( NINC )
 !     .. Local Scalars ..
       TYPE(FP16)         ALPHA, ALS, ERR, ERRMAX, TRANSL
-      INTEGER(lpf_default_int_kind)            I, IA, IC, IN, INCX, INCXS, IX, J, JA, JJ, LAA,&
+      INTEGER(int32)            I, IA, IC, IN, INCX, INCXS, IX, J, JA, JJ, LAA,&
      &                   LDA, LDAS, LJ, LX, N, NARGS, NC, NS
       LOGICAL            FULL, NULL, PACKED, RESET, SAME, UPPER
       CHARACTER*1        UPLO, UPLOS
@@ -1834,7 +1834,7 @@
 !     .. External Subroutines ..
       EXTERNAL           HMAKE, HMVCH
 !     .. Scalars in Common ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
+      INTEGER(int32)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -2076,7 +2076,7 @@
      &                  INCMAX, A, AA, AS, X, XX, XS, Y, YY, YS, YT, G, &
      &                  Z )
         USE LPF_FP16
-        USE LPF_TYPES, dik => lpf_default_int_kind
+        USE LPF_TYPES, dik => int32
         USE LPF_BLAS_FP16
 
 !
@@ -2092,7 +2092,7 @@
       TYPE(FP16)         ZERO, HALF, ONE
 !     .. Scalar Arguments ..
       TYPE(FP16)               EPS, THRESH
-      INTEGER(lpf_default_int_kind)            INCMAX, NALF, NIDIM, NINC, NMAX, NOUT, NTRA
+      INTEGER(int32)            INCMAX, NALF, NIDIM, NINC, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*6        SNAME
 !     .. Array Arguments ..
@@ -2101,10 +2101,10 @@
      &                   XS( NMAX*INCMAX ), XX( NMAX*INCMAX ),          &
      &                   Y( NMAX ), YS( NMAX*INCMAX ), YT( NMAX ),      &
      &                   YY( NMAX*INCMAX ), Z( NMAX, 2 )
-      INTEGER(lpf_default_int_kind)            IDIM( NIDIM ), INC( NINC )
+      INTEGER(int32)            IDIM( NIDIM ), INC( NINC )
 !     .. Local Scalars ..
       TYPE(FP16)               ALPHA, ALS, ERR, ERRMAX, TRANSL
-      INTEGER(lpf_default_int_kind)            I, IA, IC, IN, INCX, INCXS, INCY, INCYS, IX,   &
+      INTEGER(int32)            I, IA, IC, IN, INCX, INCXS, INCY, INCYS, IX,   &
      &                   IY, J, JA, JJ, LAA, LDA, LDAS, LJ, LX, LY, N,  &
      &                   NARGS, NC, NS
       LOGICAL            FULL, NULL, PACKED, RESET, SAME, UPPER
@@ -2119,7 +2119,7 @@
 !     .. External Subroutines ..
       EXTERNAL           HMAKE, HMVCH
 !     .. Scalars in Common ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
+      INTEGER(int32)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -2394,7 +2394,7 @@
       END
       SUBROUTINE HCHKE( ISNUM, SRNAMT, NOUT )
         USE LPF_FP16
-        USE LPF_TYPES, dik => lpf_default_int_kind
+        USE LPF_TYPES, dik => int32
         USE LPF_BLAS_FP16
 
           !
@@ -2409,10 +2409,10 @@
 !     Jeremy Du Croz, NAG Central Office.
 !
 !     .. Scalar Arguments ..
-      INTEGER(lpf_default_int_kind)            ISNUM, NOUT
+      INTEGER(int32)            ISNUM, NOUT
       CHARACTER*6        SRNAMT
 !     .. Scalars in Common ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
+      INTEGER(int32)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Local Scalars ..
       TYPE(FP16) ::      ALPHA, BETA
@@ -2745,14 +2745,14 @@
       TYPE(FP16)               ROGUE
 !     .. Scalar Arguments ..
       TYPE(FP16)               TRANSL
-      INTEGER(lpf_default_int_kind)            KL, KU, LDA, M, N, NMAX
+      INTEGER(int32)            KL, KU, LDA, M, N, NMAX
       LOGICAL            RESET
       CHARACTER*1        DIAG, UPLO
       CHARACTER*2        TYPE
 !     .. Array Arguments ..
       TYPE(FP16)               A( NMAX, * ), AA( * )
 !     .. Local Scalars ..
-      INTEGER(lpf_default_int_kind)            I, I1, I2, I3, IBEG, IEND, IOFF, J, KK
+      INTEGER(int32)            I, I1, I2, I3, IBEG, IEND, IOFF, J, KK
       LOGICAL            GEN, LOWER, SYM, TRI, UNIT, UPPER
 !     .. External Functions ..
       TYPE(FP16)               SBEG
@@ -2920,7 +2920,7 @@
       TYPE(FP16)         ZERO, ONE
 !     .. Scalar Arguments ..
       TYPE(FP16)               ALPHA, BETA, EPS, ERR
-      INTEGER(lpf_default_int_kind)            INCX, INCY, M, N, NMAX, NOUT
+      INTEGER(int32)            INCX, INCY, M, N, NMAX, NOUT
       LOGICAL            FATAL, MV
       CHARACTER*1        TRANS
 !     .. Array Arguments ..
@@ -2928,7 +2928,7 @@
      &                   YY( * )
 !     .. Local Scalars ..
       TYPE(FP16)               ERRI
-      INTEGER(lpf_default_int_kind)            I, INCXL, INCYL, IY, J, JX, KX, KY, ML, NL
+      INTEGER(int32)            I, INCXL, INCYL, IY, J, JX, KX, KY, ML, NL
       LOGICAL            TRAN
 !     .. Executable Statements ..
 
@@ -3036,11 +3036,11 @@
 !     Jeremy Du Croz, NAG Central Office.
 !
 !     .. Scalar Arguments ..
-      INTEGER(lpf_default_int_kind)            LR
+      INTEGER(int32)            LR
 !     .. Array Arguments ..
       TYPE(FP16)         RI( * ), RJ( * )
 !     .. Local Scalars ..
-      INTEGER(lpf_default_int_kind)            I
+      INTEGER(int32)            I
 !     .. Executable Statements ..
       DO 10 I = 1, LR
          IF( RI( I ).NE.RJ( I ) )                                       &
@@ -3071,13 +3071,13 @@
 !     Jeremy Du Croz, NAG Central Office.
 !
 !     .. Scalar Arguments ..
-      INTEGER(lpf_default_int_kind)            LDA, M, N
+      INTEGER(int32)            LDA, M, N
       CHARACTER*1        UPLO
       CHARACTER*2        TYPE
 !     .. Array Arguments ..
       TYPE(FP16)         AA( LDA, * ), AS( LDA, * )
 !     .. Local Scalars ..
-      INTEGER(lpf_default_int_kind)            I, IBEG, IEND, J
+      INTEGER(int32)            I, IBEG, IEND, J
       LOGICAL            UPPER
 !     .. Executable Statements ..
       UPPER = UPLO.EQ.'U'
@@ -3133,7 +3133,7 @@
 !     .. Scalar Arguments ..
       LOGICAL            RESET
 !     .. Local Scalars ..
-      INTEGER(lpf_default_int_kind)            I, IC, MI
+      INTEGER(int32)            I, IC, MI
 !     .. Save statement ..
       SAVE               I, IC, MI
 !     .. Intrinsic Functions ..
@@ -3196,7 +3196,7 @@
 !     Jeremy Du Croz, NAG Central Office.
 !
 !     .. Scalar Arguments ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUT
+      INTEGER(int32)            INFOT, NOUT
       LOGICAL            LERR, OK
       CHARACTER*6        SRNAMT
 !     .. Executable Statements ..
@@ -3223,12 +3223,12 @@
 !
 !     .. Scalar Arguments ..
       CHARACTER*1        TRANS
-      INTEGER(lpf_default_int_kind)            LY, M, N, KL, KU, LDA, INCX, INCY
+      INTEGER(int32)            LY, M, N, KL, KU, LDA, INCX, INCY
       TYPE(FP16)         ALPHA, BETA
 !     .. Array Arguments ..
       TYPE(FP16)         A(LDA,*), X(*), Y(*), YS(*)
 !     .. Local Scalars ..
-      INTEGER(lpf_default_int_kind)            I
+      INTEGER(int32)            I
 !     .. Executable Statements ..
       TRANS = 'T'
       M = 0
@@ -3251,7 +3251,7 @@
         USE LPF_TYPES
           implicit none
         CHARACTER*6 :: SRNAME
-        integer(lpf_default_int_kind), intent(in) :: info
+        integer(int32), intent(in) :: info
 
 
           !
@@ -3272,7 +3272,7 @@
 !
 !     .. Scalar Arguments ..
 !     .. Scalars in Common ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUT
+      INTEGER(int32)            INFOT, NOUT
       LOGICAL            LERR, OK
       CHARACTER*6        SRNAMT
 !     .. Common blocks ..

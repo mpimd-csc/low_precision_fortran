@@ -18,33 +18,91 @@
 !  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
 
+#ifdef LPF_FP8_E4M3
+#define DT fp8_e4m3
+#define MODNAME lpf_lapack_fp8_e4m3
+#define MODNAME_BLAS lpf_blas_fp8_e4m3
+#define TYPEMOD lpf_fp8_e4m3
+#endif
+
+#ifdef LPF_FP8_E5M2
+#define DT fp8_e5m2
+#define MODNAME lpf_lapack_fp8_e5m2
+#define MODNAME_BLAS lpf_blas_fp8_e5m2
+#define TYPEMOD lpf_fp8_e5m2
+#endif
+
+#ifdef LPF_FP16
+#define DT fp16
+#define MODNAME lpf_lapack_fp16
+#define MODNAME_BLAS lpf_blas_fp16
+#define TYPEMOD lpf_fp16
+#endif
+
+#ifdef LPF_BF16
+#define DT bf16
+#define MODNAME lpf_lapack_bf16
+#define MODNAME_BLAS lpf_blas_bf16
+#define TYPEMOD lpf_bf16
+#endif
+
+
+!
+! We cannot use MODNAME here, since CMake (with GNU Make) does not detect
+! the correct module names here. Either we have to enforce the user to switch
+! ninja or we have to use be workaround from below.
+!
+#ifdef LPF_FP8_E4M3
+module lpf_lapack_fp8_e4m3
+#endif
+#ifdef LPF_FP8_E5M2
+module lpf_lapack_fp8_e5m2
+#endif
+#ifdef LPF_FP16
 module lpf_lapack_fp16
-    use lpf_fp16
-    use lpf_blas_fp16
-    use iso_fortran_env, only : real32, real64
+#endif
+#ifdef LPF_BF16
+module lpf_lapack_bf16
+#endif
+    use TYPEMOD
+    use MODNAME_BLAS
+    use iso_fortran_env, only: real32, real64, int32, int64
     use iso_c_binding
     use lpf_types
     implicit none
 
-
     !
     ! Norms
     !
-    interface
-        module function lange( norm, m, n, a, lda, work ) result(nrm)
+    interface lange
+        module function lange_64( norm, m, n, xa, lda, xwork ) result(nrm)
             character, intent(in) :: norm
-            integer(lpf_default_int_kind), intent(in)   :: lda, m, n
-            type(fp16), intent(in)      :: a( lda, * )
-            type(fp16), intent(inout)   :: work( * )
-            type(fp16) :: nrm
+            integer(int64), intent(in)   :: lda, m, n
+            type(DT), target, intent(in)      :: xa(..)
+            type(DT), target, intent(inout)   :: xwork(..)
+            type(DT) :: nrm
+        end function
+
+        module function lange_32( norm, m, n, xa, lda, xwork ) result(nrm)
+            character, intent(in) :: norm
+            integer(int32), intent(in)   :: lda, m, n
+            type(DT), target, intent(in)      :: xa(..)
+            type(DT), target, intent(inout)   :: xwork(..)
+            type(DT) :: nrm
         end function
     end interface
 
-    interface
-        module subroutine lassq( n, x, incx, sca, sumsq )
-            integer(lpf_default_int_kind), intent(in) ::   incx, n
+    interface lassq
+        module subroutine lassq_64( n, xx, incx, sca, sumsq )
+            integer(int64), intent(in) ::   incx, n
             real(real32), intent(inout) :: sca, sumsq
-            type(fp16), intent(in)  :: x( * )
+            type(DT), target, intent(in)  :: xx(..)
+        end subroutine
+
+        module subroutine lassq_32( n, xx, incx, sca, sumsq )
+            integer(int32), intent(in) ::   incx, n
+            real(real32), intent(inout) :: sca, sumsq
+            type(DT), target, intent(in)  :: xx(..)
         end subroutine
     end interface
 
@@ -52,40 +110,65 @@ module lpf_lapack_fp16
     !
     ! Cholesky Decompostion
     !
-    interface
-        module subroutine potf2( uplo, n, a, lda, info )
+    interface potf2
+        module subroutine potf2_64( uplo, n, a_, lda, info )
             character, intent(in) :: uplo
-            integer(lpf_default_int_kind), intent(in)   :: lda, n
-            integer(lpf_default_int_kind), intent(inout) :: info
-            type(fp16), intent(inout) :: a( lda, * )
+            integer(int64), intent(in)   :: lda, n
+            integer(int64), intent(inout) :: info
+            type(DT), target, intent(inout) :: a_(..)
+        end subroutine
+        module subroutine potf2_32( uplo, n, a_, lda, info )
+            character, intent(in) :: uplo
+            integer(int32), intent(in)   :: lda, n
+            integer(int32), intent(inout) :: info
+            type(DT), target, intent(inout) :: a_(..)
         end subroutine
     end interface
 
-    interface
-        module subroutine potrf( uplo, n, a, lda, info )
+    interface potrf
+        module subroutine potrf_32( uplo, n, a_, lda, info )
          character, intent(in) ::          uplo
-         integer(lpf_default_int_kind), intent(in) :: lda, n
-         integer(lpf_default_int_kind), intent(inout) :: info
-         type(fp16), intent(inout) ::  a( lda, * )
+         integer(int32), intent(in) :: lda, n
+         integer(int32), intent(inout) :: info
+         type(DT), target, intent(inout) ::  a_(..)
+        end subroutine
+        module subroutine potrf_64( uplo, n, a_, lda, info )
+         character, intent(in) ::          uplo
+         integer(int64), intent(in) :: lda, n
+         integer(int64), intent(inout) :: info
+         type(DT), target, intent(inout) ::  a_(..)
         end subroutine
     end interface
 
-    interface
-        module recursive subroutine potrf2( uplo, n, a, lda, info )
+    interface potrf2
+        module subroutine potrf2_32( uplo, n, a_, lda, info )
             character, intent(in) ::          uplo
-            integer(lpf_default_int_kind), intent(in) ::  lda, n
-            integer(lpf_default_int_kind), intent(inout) :: info
-            type(fp16), intent(inout) ::               a( lda, * )
+            integer(int32), intent(in) ::  lda, n
+            integer(int32), intent(inout) :: info
+            type(DT), target, intent(inout) ::    a_(..)
+        end subroutine
+        module recursive subroutine potrf2_64( uplo, n, a_, lda, info )
+            character, intent(in) ::          uplo
+            integer(int64), intent(in) ::  lda, n
+            integer(int64), intent(inout) :: info
+            type(DT), target, intent(inout) ::    a_(..)
         end subroutine
     end interface
 
-    interface
-        module subroutine potrfp(uplo, n, a, lda, ipiv, info)
+    interface potrfp
+        module subroutine potrfp_32(uplo, n, a_, lda, ipiv_, info)
             character, intent(in) :: uplo
-            integer(lpf_default_int_kind), intent(in) :: n, lda
-            integer(lpf_default_int_kind), intent(inout) :: info
-            integer(lpf_default_int_kind), intent(inout) :: ipiv(*)
-            type(fp16), intent(inout) :: a(lda, *)
+            integer(int32), intent(in) :: n, lda
+            integer(int32), intent(inout) :: info
+            integer(int32), target, intent(inout) :: ipiv_(..)
+            type(DT), target, intent(inout) :: a_(..)
+        end subroutine
+        module subroutine potrfp_64(uplo, n, a_, lda, ipiv_, info)
+            character, intent(in) :: uplo
+            integer(int64), intent(in) :: n, lda
+            integer(int64), intent(inout) :: info
+            integer(int64), target, intent(inout) :: ipiv_(..)
+            type(DT), target, intent(inout) :: a_(..)
         end subroutine
     end interface
 
@@ -119,13 +202,13 @@ module lpf_lapack_fp16
         out = inta .eq. intb
     end function
 
-    integer(lpf_default_int_kind) function last_column( m, n, a, lda )
-        integer(lpf_default_int_kind), intent(in) ::  m, n, lda
-        type(fp16), intent(in) :: a( lda, * )
+    integer(int32) function last_column( m, n, a, lda )
+        integer(int32), intent(in) ::  m, n, lda
+        type(DT), intent(in) :: a( lda, * )
 
 
-        type(fp16) ::  zero
-        integer(lpf_default_int_kind) :: i, ilaslc
+        type(DT) ::  zero
+        integer(int32) :: i, ilaslc
 
         zero = 0.0
 
@@ -144,12 +227,12 @@ module lpf_lapack_fp16
         return
     end function
 
-    integer(lpf_default_int_kind) function last_row( m, n, a, lda )
-        integer(lpf_default_int_kind), intent(in)  ::  m, n, lda
-        type(fp16), intent(in) :: a( lda, * )
+    integer(int32) function last_row( m, n, a, lda )
+        integer(int32), intent(in)  ::  m, n, lda
+        type(DT), intent(in) :: a( lda, * )
 
-        type(fp16) :: zero
-        integer(lpf_default_int_kind) :: i, j, ilaslr
+        type(DT) :: zero
+        integer(int32) :: i, j, ilaslr
 
         zero = 0.0
 
@@ -174,21 +257,21 @@ module lpf_lapack_fp16
 
     function lamch(cmach) result(out)
         character, intent(in) :: cmach
-        type(fp16) :: out
+        type(DT) :: out
         ! ..
         !
         ! =====================================================================
         !
-        ! .. parameters ..
-        type(fp16) :: one, zero
+        !..parameters ..
+        type(DT) :: one, zero
 
         ! ..
-        ! .. local scalars ..
-        type(fp16) :: rnd, eps, sfmin, small, rmach
+        !..local scalars ..
+        type(DT) :: rnd, eps, sfmin, small, rmach
         integer :: d
         ! ..
         ! ..
-        ! .. intrinsic functions ..
+        !..intrinsic functions ..
         intrinsic          digits, epsilon, huge, maxexponent, &
             minexponent, radix, tiny
 
@@ -219,10 +302,10 @@ module lpf_lapack_fp16
         else if( lsame( cmach, 'b' ) ) then
             rmach = radix(zero)
         else if( lsame( cmach, 'p' ) ) then
-            rmach = eps * fp16(radix(zero))
+            rmach = eps * DT(radix(zero))
         else if( lsame( cmach, 'n' ) ) then
             d = digits(zero)
-            rmach = fp16(d)
+            rmach = DT(d)
         else if( lsame( cmach, 'r' ) ) then
             rmach = rnd
         else if( lsame( cmach, 'm' ) ) then
@@ -242,19 +325,19 @@ module lpf_lapack_fp16
     end function
 
     function lapy2( x, y ) result(out)
-        type(fp16), intent(in) :: x, y
-        type(fp16) :: out
+        type(DT), intent(in) :: x, y
+        type(DT) :: out
 
         ! local parameters
-        type(fp16) :: zero
-        type(fp16) :: one
+        type(DT) :: zero
+        type(DT) :: one
         ! ..
-        ! .. local scalars ..
-        type(fp16) :: w, xabs, yabs, z, hugeval
+        !..local scalars ..
+        type(DT) :: w, xabs, yabs, z, hugeval
         logical :: x_is_nan, y_is_nan
 
         ! ..
-        ! .. executable statements ..
+        !..executable statements ..
         !
         zero = 0.0
         one = 1.0
@@ -281,29 +364,29 @@ module lpf_lapack_fp16
     end function
 
     function lapy2_fp32( x, y ) result(out)
-        type(fp16), intent(in) :: x, y
-        type(fp16) :: out
+        type(DT), intent(in) :: x, y
+        type(DT) :: out
 
         ! local parameters
         real(real32), parameter :: zero = 0.0
         real(real32), parameter :: one  = 1.0
 
         ! ..
-        ! .. local scalars ..
+        !..local scalars ..
         real(real32) :: w, xabs, yabs, z, hugeval
         logical :: x_is_nan, y_is_nan
         real(real32) :: x32, y32
 
         ! ..
-        ! .. executable statements ..
+        !..executable statements ..
         !
         x32 = real(x)
         y32 = real(y)
 
         x_is_nan = isnan( x32 )
         y_is_nan = isnan( y32 )
-        if ( x_is_nan ) out = fp16(x32)
-        if ( y_is_nan ) out = fp16(y32)
+        if ( x_is_nan ) out = DT(x32)
+        if ( y_is_nan ) out = DT(y32)
         hugeval = huge(x)
         !
         if ( .not.( x_is_nan.or.y_is_nan ) ) then
@@ -312,9 +395,9 @@ module lpf_lapack_fp16
            w = max( xabs, yabs )
            z = min( xabs, yabs )
            if( z.eq.zero .or. w.gt.hugeval ) then
-              out = fp16(w)
+              out = DT(w)
            else
-              out = fp16(w*sqrt( one+( z / w )**2 ))
+              out = DT(w*sqrt( one+( z / w )**2 ))
            end if
         end if
         return
@@ -324,10 +407,10 @@ module lpf_lapack_fp16
 
 
     function lapy3( x, y, z ) result(out)
-        type(fp16), intent(in) :: x, y, z
-        type(fp16) :: out
-        type(fp16) :: zero
-        type(fp16) :: w, xabs, yabs, zabs, hugeval
+        type(DT), intent(in) :: x, y, z
+        type(DT) :: out
+        type(DT) :: zero
+        type(DT) :: w, xabs, yabs, zabs, hugeval
 
         zero = 0.0
 
@@ -348,7 +431,7 @@ module lpf_lapack_fp16
         end if
         return
         !
-        ! end of hlapy3
+        ! end of blapy3
         !
     end function lapy3
 

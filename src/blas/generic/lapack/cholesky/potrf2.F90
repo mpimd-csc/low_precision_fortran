@@ -17,8 +17,27 @@
 !  along with this program; if not, write to the Free Software Foundation,
 !  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
-
+#ifdef LPF_FP8_E4M3
+#define TYPEMOD lpf_fp8_e4m3
+submodule(lpf_lapack_fp8_e4m3) lpf_lapack_potrf2_fp8_e4m3
+#endif
+#ifdef LPF_FP8_E5M2
+#define TYPEMOD lpf_blas_fp8_e5m2
+submodule(lpf_lapack_fp8_e5m2) lpf_lapack_potrf2_fp8_e5m2
+#endif
+#ifdef LPF_FP16
+#define TYPEMOD lpf_fp16
+submodule(lpf_lapack_fp16) lpf_lapack_potrf2_fp16
+#endif
+#ifdef LPF_BF16
+#define TYPEMOD lpf_bf16
 submodule(lpf_lapack_bf16) lpf_lapack_potrf2_bf16
+#endif
+    use TYPEMOD
+    use iso_c_binding
+    implicit none
+
+
 contains
     !> \brief \b POTRF2
     !
@@ -27,12 +46,12 @@ contains
     !
     !       RECURSIVE SUBROUTINE bpoTRF2( UPLO, N, A, LDA, INFO )
     !
-    !       .. Scalar Arguments ..
+    !      ..Scalar Arguments ..
     !       CHARACTER          UPLO
     !       INTEGER            INFO, LDA, N
     !       ..
-    !       .. Array Arguments ..
-    !       REAL               A( LDA, * )
+    !      ..Array Arguments ..
+    !       type(DT)               A( LDA, * )
     !       ..
     !
     !
@@ -79,7 +98,7 @@ contains
     !>
     !> \param[in,out] A
     !> \verbatim
-    !>          A is REAL array, dimension (LDA,N)
+    !>          A is type(DT) array, dimension (LDA,N)
     !>          On entry, the symmetric matrix A.  If UPLO = 'U', the leadin
     !>          N-by-N upper triangular part of A contains the upper
     !>          triangular part of the matrix A, and the strictly lower
@@ -108,31 +127,26 @@ contains
     !>                completed.
     !> \endverbatim
     !
-    module recursive subroutine potrf2( uplo, n, a, lda, info )
-        !     .. scalar arguments ..
+    module recursive subroutine potrf2_64( uplo, n, a_, lda, info )
         character, intent(in) ::          uplo
-        integer(lpf_default_int_kind), intent(in) ::  lda, n
-        integer(lpf_default_int_kind), intent(inout) :: info
-        !     ..
-        !     .. array arguments ..
-        type(bf16), intent(inout) ::               a( lda, * )
-        !     ..
-        !
-        !  =====================================================================
-        !
-        !     .. parameters ..
-        type(bf16)   ::            one, zero
-        !     ..
-        !     .. local scalars ..
-        logical ::           upper
-        integer(lpf_default_int_kind) ::           n1, n2, iinfo
-        !     ..
-        !     test the input parameters
-        !
+        integer(int64), intent(in) ::  lda, n
+        integer(int64), intent(inout) :: info
+        type(DT), target, intent(inout) ::  a_(..)
+
+        type(DT), pointer :: a(:,:)
+        type(c_ptr) :: ptr
+        type(DT)     ::           one, zero
+        logical        ::           upper
+        integer(int64) ::           n1, n2, iinfo
 
         one = 1.0
         zero = 0.0
         info = 0
+
+        ptr = c_loc(a_)
+        call c_f_pointer(ptr, a, [lda, n])
+
+
         upper = lsame( uplo, 'u' )
         if( .not.upper .and. .not.lsame( uplo, 'l' ) ) then
             info = -1
@@ -158,7 +172,7 @@ contains
             !
             !        test for non-positive-definiteness
             !
-            if( a( 1, 1 ).le.zero.or.isnan( a( 1, 1 ) ) ) then
+            if( a( 1,1 ).le.zero.or.isnan( a( 1, 1 ) ) ) then
                 info = 1
                 return
             end if
@@ -175,7 +189,7 @@ contains
             !
             !        factor a11
             !
-            call potrf2( uplo, n1, a( 1, 1 ), lda, iinfo )
+            call potrf2_64( uplo, n1, a( 1, 1 ), lda, iinfo )
             if ( iinfo.ne.0 ) then
                 info = iinfo
                 return
@@ -191,8 +205,8 @@ contains
                 !
                 !           update and factor a22
                 !
-                call syrk( uplo, 't', n2, n1, -one, a( 1, n1+1 ), lda, one, a( n1+1, n1+1 ), lda )
-                call potrf2( uplo, n2, a( n1+1, n1+1 ), lda, iinfo )
+                call syrk( uplo, 't', n2, n1, -one, a( 1, n1+1 ), lda, one, a( n1 + 1, n1 + 1), lda )
+                call potrf2_64( uplo, n2, a( n1+1, n1+1 ), lda, iinfo )
                 if ( iinfo.ne.0 ) then
                     info = iinfo + n1
                     return
@@ -209,7 +223,7 @@ contains
                 !           update and factor a22
                 !
                 call syrk( uplo, 'n', n2, n1, -one, a( n1+1, 1 ), lda, one, a( n1+1, n1+1 ), lda )
-                call potrf2( uplo, n2, a( n1+1, n1+1 ), lda, iinfo )
+                call potrf2_64( uplo, n2, a( n1+1, n1+1 ), lda, iinfo )
                 if ( iinfo.ne.0 ) then
                     info = iinfo + n1
                     return
@@ -218,7 +232,19 @@ contains
         end if
         return
         !
-        !     end of bpotrf2
+        !     end of potrf2
         !
     end subroutine
+
+    module subroutine potrf2_32( uplo, n, a_, lda, info )
+        character, intent(in) ::          uplo
+        integer(int32), intent(in) ::  lda, n
+        integer(int32), intent(inout) :: info
+        type(DT), target, intent(inout) ::  a_(..)
+
+        integer(int64) :: iinfo
+        call potrf2_64(uplo, int(n, int64), a_, int(lda, int64), iinfo)
+        info = int(iinfo, int32)
+    end subroutine
+
 end submodule

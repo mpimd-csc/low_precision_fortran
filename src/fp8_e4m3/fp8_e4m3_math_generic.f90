@@ -307,7 +307,7 @@ contains
         end if
 
         call helper_precision_fp8_e4m3(outt)
-        out = INT(outt, kind = lpf_default_int_kind)
+        out = INT(outt)
     end function precision_fp8_e4m3
 
     module elemental function range_fp8_e4m3(x) result(out)
@@ -325,7 +325,7 @@ contains
 
     module elemental function scale_fp8_e4m3_32(x, s) result(out)
         type(FP8_E4M3), intent(in) :: x
-        integer(lpf_int32_kind), intent(in) :: s
+        integer(int32), intent(in) :: s
         type(FP8_E4M3) :: out
         integer(c_int) :: tmp
         tmp  = int(s, kind = c_int )
@@ -334,7 +334,7 @@ contains
 
     module elemental function scale_fp8_e4m3_64(x, s) result(out)
         type(FP8_E4M3), intent(in) :: x
-        integer(lpf_int64_kind), intent(in) :: s
+        integer(int64), intent(in) :: s
         type(FP8_E4M3) :: out
         integer(c_int) :: tmp
         tmp  = int(s, kind = c_int )

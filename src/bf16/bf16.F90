@@ -344,12 +344,12 @@ MODULE LPF_BF16
     interface scale
         module elemental function scale_bf16_32(x, s) result(out)
             type(BF16), intent(in) :: x
-            integer(lpf_int32_kind), intent(in) :: s
+            integer(int32), intent(in) :: s
             type(BF16) :: out
         end function scale_bf16_32
         module elemental function scale_bf16_64(x, s) result(out)
             type(BF16), intent(in) :: x
-            integer(lpf_int64_kind), intent(in) :: s
+            integer(int64), intent(in) :: s
             type(BF16) :: out
         end function scale_bf16_64
 
@@ -1146,7 +1146,7 @@ CONTAINS
     end function
 
     elemental function construct_int32(in) result(r)
-        integer(lpf_int32_kind), intent(in) :: in
+        integer(int32), intent(in) :: in
         type(bf16) :: r
         integer(c_int) :: tmp
         tmp = int(in, kind = c_int )
@@ -1154,7 +1154,7 @@ CONTAINS
     end function
 
     elemental function construct_int64(in) result(r)
-        integer(lpf_int64_kind), intent(in) :: in
+        integer(int64), intent(in) :: in
         type(bf16) :: r
         integer(c_int) :: tmp
         tmp = int(in, kind = c_int )
@@ -1168,7 +1168,7 @@ CONTAINS
     !
     elemental subroutine assign_int32(this, that)
         type(bf16), intent(out) :: this
-        integer(lpf_int32_kind), intent(in) :: that
+        integer(int32), intent(in) :: that
         integer(c_int) :: tmp
         tmp = int(that, kind=c_int)
         call set_bf16_from_int(this%value, tmp)
@@ -1176,7 +1176,7 @@ CONTAINS
 
     elemental subroutine assign_int64(this, that)
         type(bf16), intent(out) :: this
-        integer(lpf_int64_kind), intent(in) :: that
+        integer(int64), intent(in) :: that
         integer(c_int) :: tmp
         tmp = int(that, kind=c_int)
         call set_bf16_from_int(this%value, tmp)

@@ -29,7 +29,7 @@ contains
     module pure function maxval_bf16_1d(array) result(max_value)
         type(bf16), dimension(:), intent(in) :: array
         type(bf16) :: max_value
-        integer(lpf_default_int_kind) :: i
+        integer(int64) :: i
         type(bf16) :: hval;
 
 
@@ -52,7 +52,7 @@ contains
     module pure function maxval_bf16_2d(array) result(max_value)
         type(bf16), dimension(:,:), intent(in) :: array
         type(bf16) :: max_value
-        integer(lpf_default_int_kind) :: i, j
+        integer(int64) :: i, j
 
         max_value = array(1, 1)
 
@@ -69,7 +69,7 @@ contains
     module pure function maxval_bf16_3d(array) result(max_value)
         type(bf16), dimension(:,:,:), intent(in) :: array
         type(bf16) :: max_value
-        integer(lpf_default_int_kind) :: i, j, k
+        integer(int64) :: i, j, k
 
         max_value = array(1, 1, 1)
 
@@ -88,7 +88,7 @@ contains
     module pure function maxval_bf16_4d(array) result(max_value)
         type(bf16), dimension(:,:,:,:), intent(in) :: array
         type(bf16) :: max_value
-        integer(lpf_default_int_kind) :: i, j, k, l
+        integer(int64) :: i, j, k, l
 
         max_value = array(1, 1, 1,1)
 
@@ -124,7 +124,7 @@ contains
         type(bf16), dimension(:,:), intent(in) :: array
         integer, intent(in) :: dim
         type(bf16), dimension(size(array, merge(2, 1, dim == 1))) :: max_value
-        integer(lpf_default_int_kind) :: i, j
+        integer(int64) :: i, j
 
         if (dim < 1 .or. dim > 2) then
             error stop 'Invalid dimension for 2D array'
@@ -164,7 +164,7 @@ contains
         !
         type(bf16), dimension( size(array, merge(2, 1, dim == 1)), &
             & size(array, merge(2, 3, dim == 3))) :: max_value
-        integer(lpf_default_int_kind) :: i, j, k
+        integer(int64) :: i, j, k
 
         if (dim < 1 .or. dim > 3) then
             error stop 'Invalid dimension for 3D array'
@@ -224,7 +224,7 @@ contains
         type(bf16), dimension( size(array, merge(2, 1, dim == 1)), &
             & size(array, merge(3, 2, dim < 3)), &
             & size(array, merge(4, 3, dim == 4))) :: max_value
-        integer(lpf_default_int_kind) :: i, j, k, l
+        integer(int64) :: i, j, k, l
 
         if (dim < 1 .or. dim > 4) then
             error stop 'Invalid dimension for 3D array'

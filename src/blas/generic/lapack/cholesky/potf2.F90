@@ -17,8 +17,25 @@
 !  along with this program; if not, write to the Free Software Foundation,
 !  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
-
+#ifdef LPF_FP8_E4M3
+#define TYPEMOD lpf_fp8_e4m3
+submodule(lpf_lapack_fp8_e4m3) lpf_lapack_potf2_fp8_e4m3
+#endif
+#ifdef LPF_FP8_E5M2
+#define TYPEMOD lpf_blas_fp8_e5m2
+submodule(lpf_lapack_fp8_e5m2) lpf_lapack_potf2_fp8_e5m2
+#endif
+#ifdef LPF_FP16
+#define TYPEMOD lpf_fp16
+submodule(lpf_lapack_fp16) lpf_lapack_potf2_fp16
+#endif
+#ifdef LPF_BF16
+#define TYPEMOD lpf_bf16
 submodule(lpf_lapack_bf16) lpf_lapack_potf2_bf16
+#endif
+
+    use TYPEMOD
+    implicit none
 
 contains
     !> \brief \b potf2 computes the Cholesky factorization of a symmetric/B
@@ -59,7 +76,7 @@ contains
     !>
     !> \param[in,out] A
     !> \verbatim
-    !>          A is REAL array, dimension (LDA,N)
+    !>          A is type(DT) array, dimension (LDA,N)
     !>          On entry, the symmetric matrix A.  If UPLO = 'U', the leadin
     !>          n by n upper triangular part of A contains the upper
     !>          triangular part of the matrix A, and the strictly lower
@@ -88,34 +105,28 @@ contains
     !>               completed.
     !> \endverbatim
     !
-    module subroutine potf2( uplo, n, a, lda, info )
+    module subroutine potf2_64( uplo, n, a_, lda, info )
         implicit none
 
         character, intent(in) :: uplo
-        integer(lpf_default_int_kind), intent(in)   :: lda, n
-        integer(lpf_default_int_kind), intent(inout) :: info
-        !     ..
-        !     .. array arguments ..
-        type(bf16), intent(inout) :: a( lda, * )
-        !     ..
-        !
-        !  =====================================================================
-        !
-        !     .. parameters ..
-        type(bf16)               :: one, zero
-        !     ..
-        !     .. local scalars ..
+        integer(int64), intent(in)   :: lda, n
+        integer(int64), intent(inout) :: info
+        type(DT), target, intent(inout) :: a_(..)
+
+        type(DT), pointer :: a(:,:)
+        type(c_ptr) :: ptr
+        type(DT)               :: one, zero
         logical            :: upper
-        integer(lpf_default_int_kind)            :: j
-        type(bf16)         :: ajj
-        !     ..
-        !
-        !     test the input parameters.
-        !
+        integer(int64)            :: j
+        type(DT)         :: ajj
 
         one = 1.0
         zero = 0.0
         info = 0
+
+        ptr = c_loc(a_)
+        call c_f_pointer(ptr, a, [lda, n])
+
         upper = lsame( uplo, 'u' )
         if( .not.upper .and. .not.lsame( uplo, 'l' ) ) then
             info = -1
@@ -143,7 +154,7 @@ contains
                 !
                 !           compute u(j,j) and test for non-positive-definiteness.
                 !
-                ajj = a( j, j ) - dot( j-1, a( 1, j ), 1_lpf_default_int_kind, a( 1, j ), 1_lpf_default_int_kind )
+                ajj = a( j, j ) - dot( j-1, a( 1, j ), 1_int64, a( 1, j ), 1_int64 )
                 if( ajj.le.zero.or.isnan( ajj ) ) then
                     a( j, j ) = ajj
                     info = j
@@ -155,7 +166,7 @@ contains
                 !           compute elements j+1:n of row j.
                 !
                 if( j.lt.n ) then
-                    call gemv( 'transpose', j-1, n-j, -one, a( 1, j+1 ), lda, a( 1, j ), 1_lpf_default_int_kind, &
+                    call gemv( 'transpose', j-1, n-j, -one, a( 1, j+1 ), lda, a( 1, j ), 1_int64, &
                         & one, a( j, j+1 ), lda )
                     call scal( n-j, one / ajj, a( j, j+1 ), lda )
                 end if
@@ -181,15 +192,26 @@ contains
                 !
                 if( j.lt.n ) then
                     call gemv( 'no transpose', n-j, j-1, -one, a( j+1, 1 ), lda, a( j, 1 ), lda, one, a( j+1, j ), &
-                        & 1_lpf_default_int_kind )
-                    call scal( n-j, one / ajj, a( j+1, j ), 1_lpf_default_int_kind )
+                        & 1_int64 )
+                    call scal( n-j, one / ajj, a( j+1, j ), 1_int64 )
                 end if
             end do
         end if
         !
         return
-        !
-        !     end of bpotf2
-        !
     end subroutine
+
+    module subroutine potf2_32( uplo, n, a_, lda, info )
+        implicit none
+
+        character, intent(in) :: uplo
+        integer(int32), intent(in)   :: lda, n
+        integer(int32), intent(inout) :: info
+        type(DT), target, intent(inout) :: a_(..)
+
+        integer(int64) :: iinfo
+        call potf2_64(uplo, int(n, int64), a_, int(lda, int64), iinfo)
+        info = int(iinfo, int32)
+    end subroutine
+
 end submodule

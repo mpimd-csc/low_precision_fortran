@@ -26,15 +26,16 @@ submodule (lpf_blas_bf16) lpf_blas_bf16_scale_diag
 
 contains
 
-    module subroutine scale_diag_bf16(m, n, a, lda, dl, dr, info)
-        integer(lpf_default_int_kind), intent(in) :: m, n, lda
-        integer(lpf_default_int_kind), intent(inout) :: info
+    module subroutine scale_diag_bf16_64(m, n, a, lda, dl, dr, info)
+        integer(int64), intent(in) :: m, n, lda
+        integer(int64), intent(inout) :: info
         type(bf16), intent(inout), dimension(lda, *) :: a
         type(bf16), intent(out), dimension(*) :: dl, dr
 
-        integer(lpf_default_int_kind) :: k,l
+        integer(int64) :: k,l
         type(bf16) :: value, max_value
         external :: lpf_blas_xerbla
+        integer(int32) :: iinfo
 
         ! Check arguments
         info = 0
@@ -47,7 +48,8 @@ contains
         end if
 
         if ( info .ne. 0) then
-            call lpf_blas_xerbla("scale_diag / scale_diag_bf16", info)
+            iinfo = int(info, int32)
+            call lpf_blas_xerbla("scale_diag / scale_diag_bf16", iinfo)
             return
         end if
 
@@ -81,5 +83,17 @@ contains
         end do
     end subroutine
 
+    module subroutine scale_diag_bf16_32(m, n, a, lda, dl, dr, info)
+        integer(int32), intent(in) :: m, n, lda
+        integer(int32), intent(inout) :: info
+        type(bf16), intent(inout), dimension(lda, *) :: a
+        type(bf16), intent(out), dimension(*) :: dl, dr
+
+        integer(int64) :: iinfo
+
+        call scale_diag_bf16_64(int(m, int64), int(n, int64), a, int(lda, int64), dl, dr, iinfo)
+
+        info = int(iinfo, int32)
+    end subroutine
 end submodule
 

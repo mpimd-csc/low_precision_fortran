@@ -31,7 +31,7 @@ contains
         integer :: max_loc
 
         type(fp8_e4m3):: max_value
-        integer(lpf_default_int_kind) :: i
+        integer(int64) :: i
 
         max_value = array(1)
         max_loc = 1
@@ -39,7 +39,7 @@ contains
         do i = 2, size(array)
             if (array(i) .gt. max_value) then
                 max_value = array(i)
-                max_loc = i
+                max_loc = int(i)
             end if
         end do
     end function maxloc_fp8_e4m3_1d
@@ -59,8 +59,8 @@ contains
             do j = 1, size(array, 2)
                 if (array(i, j) .gt. max_value) then
                     max_value = array(i, j)
-                    max_loc(1) = i
-                    max_loc(2) = j
+                    max_loc(1) = int(i)
+                    max_loc(2) = int(j)
                 end if
             end do
         end do
@@ -71,7 +71,7 @@ contains
         type(fp8_e4m3), dimension(:,:,:), intent(in) :: array
         integer, dimension(3) :: max_loc
         type(fp8_e4m3) :: max_value
-        integer(lpf_default_int_kind) :: i, j, k
+        integer(int64) :: i, j, k
 
         max_value = array(1, 1, 1)
         max_loc = [ 1, 1, 1]
@@ -81,9 +81,9 @@ contains
                 do k = 1, size(array, 3)
                     if (array(i, j, k) .gt. max_value) then
                         max_value = array(i, j, k)
-                        max_loc(1) = i
-                        max_loc(2) = j
-                        max_loc(3) = k
+                        max_loc(1) = int(i)
+                        max_loc(2) = int(j)
+                        max_loc(3) = int(k)
                     end if
                 end do
             end do
@@ -95,7 +95,7 @@ contains
         type(fp8_e4m3), dimension(:,:,:,:), intent(in) :: array
         integer, dimension(4) :: max_loc
         type(fp8_e4m3) :: max_value
-        integer(lpf_default_int_kind) :: i, j, k, l
+        integer(int64) :: i, j, k, l
 
         max_value = array(1, 1, 1,1)
         max_loc = [1,1,1,1]
@@ -106,10 +106,10 @@ contains
                     do l = 1, size(array, 4)
                         if (array(i, j, k,l) .gt. max_value) then
                             max_value = array(i, j, k, l)
-                            max_loc(1) = i
-                            max_loc(2) = j
-                            max_loc(3) = k
-                            max_loc(4) = l
+                            max_loc(1) = int(i)
+                            max_loc(2) = int(j)
+                            max_loc(3) = int(k)
+                            max_loc(4) = int(l)
                         end if
                     end do
                 end do
@@ -137,7 +137,7 @@ contains
         integer, intent(in) :: dim
         integer, dimension(size(array, merge(2, 1, dim == 1))) :: max_loc
         type(fp8_e4m3), dimension(size(array, merge(2, 1, dim == 1))) :: max_value
-        integer(lpf_default_int_kind) :: i, j
+        integer(int64) :: i, j
 
         if (dim < 1 .or. dim > 2) then
             error stop 'Invalid dimension for 2D array'
@@ -151,7 +151,7 @@ contains
                 do i = 2, size(array, 1)
                     if (array(i, j) .gt. max_value(j)) then
                         max_value(j) = array(i, j)
-                        max_loc(j) = i
+                        max_loc(j) = int(i)
                     end if
                 end do
             end do
@@ -162,7 +162,7 @@ contains
                 do j = 2, size(array, 2)
                     if (array(i, j) .gt. max_value(i)) then
                         max_value(i) = array(i, j)
-                        max_loc(i) = j
+                        max_loc(i) = int(j)
                     end if
                 end do
             end do
@@ -183,7 +183,7 @@ contains
             & size(array, merge(2, 3, dim == 3))) :: max_loc
         type(fp8_e4m3), dimension( size(array, merge(2, 1, dim == 1)), &
             & size(array, merge(2, 3, dim == 3))) :: max_value
-        integer(lpf_default_int_kind) :: i, j, k
+        integer(int64) :: i, j, k
 
         if (dim < 1 .or. dim > 3) then
             error stop 'Invalid dimension for 3D array'
@@ -198,7 +198,7 @@ contains
                     do i = 2, size(array, 1)
                         if (array(i, j, k) .gt. max_value(j,k)) then
                             max_value(j,k) = array(i, j, k)
-                            max_loc(j,k) = i
+                            max_loc(j,k) = int(i)
                         end if
                     end do
                 end do
@@ -212,7 +212,7 @@ contains
                     do j = 2, size(array, 2)
                         if (array(i, j, k) .gt. max_value(i,k)) then
                             max_value(i,k) = array(i, j, k)
-                            max_loc(i,k) = j
+                            max_loc(i,k) = int(j)
                         end if
                     end do
                 end do
@@ -226,7 +226,7 @@ contains
                     do k = 2, size(array, 3)
                         if (array(i, j, k) .gt. max_value(i,j)) then
                             max_value(i,j) = array(i, j, k)
-                            max_loc(i,j) = k
+                            max_loc(i,j) = int(k)
                         end if
                     end do
                 end do
@@ -253,7 +253,7 @@ contains
         type(fp8_e4m3), dimension( size(array, merge(2, 1, dim == 1)), &
             & size(array, merge(3, 2, dim < 3)), &
             & size(array, merge(4, 3, dim == 4))) :: max_value
-        integer(lpf_default_int_kind) :: i, j, k, l
+        integer(int64) :: i, j, k, l
 
         if (dim < 1 .or. dim > 4) then
             error stop 'Invalid dimension for 3D array'
@@ -269,7 +269,7 @@ contains
                         do i = 2, size(array, 1)
                             if (array(i, j, k, l) .gt. max_value(j,k,l)) then
                                 max_value(j,k,l) = array(i, j, k,l)
-                                max_loc(j,k,l) = i
+                                max_loc(j,k,l) = int(i)
                             end if
                         end do
                     end do
@@ -285,7 +285,7 @@ contains
                         do j = 2, size(array, 2)
                             if (array(i, j, k,l) .gt. max_value(i,k,l)) then
                                 max_value(i,k, l) = array(i, j, k, l)
-                                max_loc(i,k,l) = j
+                                max_loc(i,k,l) = int(j)
                             end if
                         end do
                     end do
@@ -301,7 +301,7 @@ contains
                         do k = 2, size(array, 3)
                             if (array(i, j, k, l) .gt. max_value(i,j, l)) then
                                 max_value(i,j,l) = array(i, j, k, l)
-                                max_loc(i,j,l) = k
+                                max_loc(i,j,l) = int(k)
                             end if
                         end do
                     end do
@@ -317,7 +317,7 @@ contains
                         do l = 1, size(array, 4)
                             if (array(i, j, k, l) .gt. max_value(i,j, k)) then
                                 max_value(i,j,k) = array(i, j, k, l)
-                                max_loc(i, j, k) = l
+                                max_loc(i, j, k) = int(l)
                             end if
                         end do
                     end do

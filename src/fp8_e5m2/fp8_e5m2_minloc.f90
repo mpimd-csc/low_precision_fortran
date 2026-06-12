@@ -31,7 +31,7 @@ contains
         integer :: min_loc
 
         type(fp8_e5m2):: min_value
-        integer(lpf_default_int_kind) :: i
+        integer(int64) :: i
 
         min_value = array(1)
         min_loc = 1
@@ -39,7 +39,7 @@ contains
         do i = 2, size(array)
             if (array(i) .lt. min_value) then
                 min_value = array(i)
-                min_loc = i
+                min_loc = int(i)
             end if
         end do
     end function minloc_fp8_e5m2_1d
@@ -50,7 +50,7 @@ contains
         integer, dimension(2) :: min_loc
 
         type(fp8_e5m2) :: min_value
-        integer(lpf_default_int_kind) :: i, j
+        integer(int64) :: i, j
 
         min_value = array(1, 1)
         min_loc = [ 1, 1 ]
@@ -59,8 +59,8 @@ contains
             do j = 1, size(array, 2)
                 if (array(i, j) .lt. min_value) then
                     min_value = array(i, j)
-                    min_loc(1) = i
-                    min_loc(2) = j
+                    min_loc(1) = int(i)
+                    min_loc(2) = int(j)
                 end if
             end do
         end do
@@ -71,7 +71,7 @@ contains
         type(fp8_e5m2), dimension(:,:,:), intent(in) :: array
         integer, dimension(3) :: min_loc
         type(fp8_e5m2) :: min_value
-        integer(lpf_default_int_kind) :: i, j, k
+        integer(int64) :: i, j, k
 
         min_value = array(1, 1, 1)
         min_loc = [ 1, 1, 1]
@@ -81,9 +81,9 @@ contains
                 do k = 1, size(array, 3)
                     if (array(i, j, k) .lt. min_value) then
                         min_value = array(i, j, k)
-                        min_loc(1) = i
-                        min_loc(2) = j
-                        min_loc(3) = k
+                        min_loc(1) = int(i)
+                        min_loc(2) = int(j)
+                        min_loc(3) = int(k)
                     end if
                 end do
             end do
@@ -95,7 +95,7 @@ contains
         type(fp8_e5m2), dimension(:,:,:,:), intent(in) :: array
         integer, dimension(4) :: min_loc
         type(fp8_e5m2) :: min_value
-        integer(lpf_default_int_kind) :: i, j, k, l
+        integer(int64) :: i, j, k, l
 
         min_value = array(1, 1, 1,1)
         min_loc = [1,1,1,1]
@@ -106,10 +106,10 @@ contains
                     do l = 1, size(array, 4)
                         if (array(i, j, k,l) .lt. min_value) then
                             min_value = array(i, j, k, l)
-                            min_loc(1) = i
-                            min_loc(2) = j
-                            min_loc(3) = k
-                            min_loc(4) = l
+                            min_loc(1) = int(i)
+                            min_loc(2) = int(j)
+                            min_loc(3) = int(k)
+                            min_loc(4) = int(l)
                         end if
                     end do
                 end do
@@ -137,7 +137,7 @@ contains
         integer, intent(in) :: dim
         integer, dimension(size(array, merge(2, 1, dim == 1))) :: min_loc
         type(fp8_e5m2), dimension(size(array, merge(2, 1, dim == 1))) :: min_value
-        integer(lpf_default_int_kind) :: i, j
+        integer(int64) :: i, j
 
         if (dim < 1 .or. dim > 2) then
             error stop 'Invalid dimension for 2D array'
@@ -151,7 +151,7 @@ contains
                 do i = 2, size(array, 1)
                     if (array(i, j) .lt. min_value(j)) then
                         min_value(j) = array(i, j)
-                        min_loc(j) = i
+                        min_loc(j) = int(i)
                     end if
                 end do
             end do
@@ -162,7 +162,7 @@ contains
                 do j = 2, size(array, 2)
                     if (array(i, j) .lt. min_value(i)) then
                         min_value(i) = array(i, j)
-                        min_loc(i) = j
+                        min_loc(i) = int(j)
                     end if
                 end do
             end do
@@ -183,7 +183,7 @@ contains
             & size(array, merge(2, 3, dim == 3))) :: min_loc
         type(fp8_e5m2), dimension( size(array, merge(2, 1, dim == 1)), &
             & size(array, merge(2, 3, dim == 3))) :: min_value
-        integer(lpf_default_int_kind) :: i, j, k
+        integer(int64) :: i, j, k
 
         if (dim < 1 .or. dim > 3) then
             error stop 'Invalid dimension for 3D array'
@@ -198,7 +198,7 @@ contains
                     do i = 2, size(array, 1)
                         if (array(i, j, k) .lt. min_value(j,k)) then
                             min_value(j,k) = array(i, j, k)
-                            min_loc(j,k) = i
+                            min_loc(j,k) = int(i)
                         end if
                     end do
                 end do
@@ -212,7 +212,7 @@ contains
                     do j = 2, size(array, 2)
                         if (array(i, j, k) .lt. min_value(i,k)) then
                             min_value(i,k) = array(i, j, k)
-                            min_loc(i,k) = j
+                            min_loc(i,k) = int(j)
                         end if
                     end do
                 end do
@@ -226,7 +226,7 @@ contains
                     do k = 2, size(array, 3)
                         if (array(i, j, k) .lt. min_value(i,j)) then
                             min_value(i,j) = array(i, j, k)
-                            min_loc(i,j) = k
+                            min_loc(i,j) = int(k)
                         end if
                     end do
                 end do
@@ -253,7 +253,7 @@ contains
         type(fp8_e5m2), dimension( size(array, merge(2, 1, dim == 1)), &
             & size(array, merge(3, 2, dim < 3)), &
             & size(array, merge(4, 3, dim == 4))) :: min_value
-        integer(lpf_default_int_kind) :: i, j, k, l
+        integer(int64) :: i, j, k, l
 
         if (dim < 1 .or. dim > 4) then
             error stop 'Invalid dimension for 3D array'
@@ -269,7 +269,7 @@ contains
                         do i = 2, size(array, 1)
                             if (array(i, j, k, l) .lt. min_value(j,k,l)) then
                                 min_value(j,k,l) = array(i, j, k,l)
-                                min_loc(j,k,l) = i
+                                min_loc(j,k,l) = int(i)
                             end if
                         end do
                     end do
@@ -285,7 +285,7 @@ contains
                         do j = 2, size(array, 2)
                             if (array(i, j, k,l) .lt. min_value(i,k,l)) then
                                 min_value(i,k, l) = array(i, j, k, l)
-                                min_loc(i,k,l) = j
+                                min_loc(i,k,l) = int(j)
                             end if
                         end do
                     end do
@@ -301,7 +301,7 @@ contains
                         do k = 2, size(array, 3)
                             if (array(i, j, k, l) .lt. min_value(i,j, l)) then
                                 min_value(i,j,l) = array(i, j, k, l)
-                                min_loc(i,j,l) = k
+                                min_loc(i,j,l) = int(k)
                             end if
                         end do
                     end do
@@ -317,7 +317,7 @@ contains
                         do l = 1, size(array, 4)
                             if (array(i, j, k, l) .lt. min_value(i,j, k)) then
                                 min_value(i,j,k) = array(i, j, k, l)
-                                min_loc(i, j, k) = l
+                                min_loc(i, j, k) = int(l)
                             end if
                         end do
                     end do

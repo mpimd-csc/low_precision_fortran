@@ -120,16 +120,6 @@ if (LPF_HAVE_FP16)
         fp16/scaling/scale_diag_twoside.f90
         fp16/scaling/scale_diag_right.f90
         fp16/lpf_blas_fp16.F90
-
-        fp16/lapack/cholesky/potf2.f90
-        fp16/lapack/cholesky/potrf.f90
-        fp16/lapack/cholesky/potrf2.f90
-        fp16/lapack/cholesky/potrfp.f90
-
-       fp16/lapack/lange.f90
-       fp16/lpf_lapack_fp16.F90
-
-
     )
 endif()
 
@@ -188,22 +178,9 @@ if (LPF_HAVE_BF16)
         bf16/scaling/scale_diag_twoside.f90
         bf16/scaling/scale_diag_right.f90
         bf16/lpf_blas_bf16.F90
-
-        bf16/lapack/cholesky/potf2.f90
-        bf16/lapack/cholesky/potrf.f90
-        bf16/lapack/cholesky/potrf2.f90
-        bf16/lapack/cholesky/potrfp.f90
-
-        bf16/lapack/lange.f90
-        bf16/lpf_lapack_bf16.F90
     )
 endif()
 
-
-SET(SRC ${SRC}
-    highprecision/scale_diag_twoside.f90
-    highprecision/scale_diag_right.f90
-)
 
 SET(SRC_GENERIC
     generic/lpf_blas_generic.F90
@@ -229,6 +206,7 @@ SET(SRC_GENERIC
     generic/level2/sbmv.F90
     generic/level2/spmv.F90
     generic/level2/spr.F90
+    generic/level2/syr.F90
     generic/level2/spr2.F90
     generic/level2/symv.F90
     generic/level2/tbmv.F90
@@ -250,6 +228,20 @@ SET(SRC_GENERIC
 
 )
 
+SET(SRC_GENERIC_LAPACK
+    generic/lpf_lapack_generic.F90
+    generic/lapack/aux/lange.F90
+    generic/lapack/cholesky/potf2.F90
+    generic/lapack/cholesky/potrf.F90
+    generic/lapack/cholesky/potrf2.F90
+    generic/lapack/cholesky/potrfp.F90
+)
+
+ADD_LIBRARY(lpf_blas_objects
+    ${SRC}
+)
+
+
 if (LPF_FP8_E5M2)
 
     ADD_LIBRARY(lpf_blas_fp8_e5m2
@@ -268,6 +260,22 @@ if (LPF_FP8_E5M2)
     set_target_properties(lpf_blas_fp8_e5m2 PROPERTIES Fortran_MODULE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fortran-modules")
     add_coverage(lpf_blas_fp8_e5m2)
 
+    ADD_LIBRARY(lpf_lapack_fp8_e5m2
+        OBJECT
+        ${SRC_GENERIC_LAPACK}
+    )
+    target_compile_definitions(lpf_lapack_fp8_e5m2 PRIVATE
+        LPF_FP8_E5M2
+        DT=fp8_e5m2
+    )
+    set_target_properties(lpf_lapack_fp8_e5m2 PROPERTIES  Fortran_PREPROCESS  ON )
+    target_link_libraries(lpf_lapack_fp8_e5m2 PRIVATE lpf)
+    set_target_properties(lpf_lapack_fp8_e5m2 PROPERTIES Fortran_MODULE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fortran-modules")
+    add_coverage(lpf_lapack_fp8_e5m2)
+
+    add_dependencies(lpf_blas_fp8_e5m2 lpf)
+    add_dependencies(lpf_lapack_fp8_e5m2 lpf_blas_fp8_e5m2 lpf)
+
 endif()
 
 if (LPF_FP8_E4M3)
@@ -285,7 +293,56 @@ if (LPF_FP8_E4M3)
     target_link_libraries(lpf_blas_fp8_e4m3 PRIVATE lpf)
     set_target_properties(lpf_blas_fp8_e4m3 PROPERTIES Fortran_MODULE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fortran-modules")
     add_coverage(lpf_blas_fp8_e4m3)
+
+
+    ADD_LIBRARY(lpf_lapack_fp8_e4m3 OBJECT
+        ${SRC_GENERIC_LAPACK}
+    )
+    target_compile_definitions(lpf_lapack_fp8_e4m3 PRIVATE
+        LPF_FP8_E4M3
+        DT=fp8_e4m3
+    )
+    set_target_properties(lpf_lapack_fp8_e4m3 PROPERTIES  Fortran_PREPROCESS  ON )
+    target_link_libraries(lpf_lapack_fp8_e4m3 PRIVATE lpf)
+    set_target_properties(lpf_lapack_fp8_e4m3 PROPERTIES Fortran_MODULE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fortran-modules")
+    add_coverage(lpf_lapack_fp8_e4m3)
+
+    add_dependencies(lpf_blas_fp8_e4m3 lpf)
+    add_dependencies(lpf_lapack_fp8_e4m3 lpf_blas_fp8_e4m3 lpf)
 endif()
+
+if (LPF_HAVE_FP16)
+    ADD_LIBRARY(lpf_lapack_fp16 OBJECT
+        ${SRC_GENERIC_LAPACK}
+    )
+    target_compile_definitions(lpf_lapack_fp16 PRIVATE
+        LPF_FP16
+        DT=fp16
+    )
+    set_target_properties(lpf_lapack_fp16 PROPERTIES  Fortran_PREPROCESS  ON )
+    target_link_libraries(lpf_lapack_fp16 PRIVATE lpf lpf_blas_objects)
+    set_target_properties(lpf_lapack_fp16 PROPERTIES Fortran_MODULE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fortran-modules")
+    add_coverage(lpf_lapack_fp16)
+    add_dependencies(lpf_lapack_fp16 lpf_blas_objects lpf)
+endif()
+
+if (LPF_HAVE_BF16)
+    ADD_LIBRARY(lpf_lapack_bf16 OBJECT
+        ${SRC_GENERIC_LAPACK}
+    )
+    target_compile_definitions(lpf_lapack_bf16 PRIVATE
+        LPF_BF16
+        DT=bf16
+    )
+    set_target_properties(lpf_lapack_bf16 PROPERTIES  Fortran_PREPROCESS  ON )
+    target_link_libraries(lpf_lapack_bf16 PRIVATE lpf lpf_blas_objects)
+    set_target_properties(lpf_lapack_bf16 PROPERTIES Fortran_MODULE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fortran-modules")
+
+    add_dependencies(lpf_lapack_bf16 lpf_blas_objects lpf)
+    add_coverage(lpf_lapack_bf16)
+endif()
+
+
 
 
 
@@ -293,8 +350,14 @@ endif()
 ADD_LIBRARY(lpf_blas
     $<$<BOOL:${LPF_FP8_E5M2}>:$<TARGET_OBJECTS:lpf_blas_fp8_e5m2>>
     $<$<BOOL:${LPF_FP8_E4M3}>:$<TARGET_OBJECTS:lpf_blas_fp8_e4m3>>
+    $<$<BOOL:${LPF_FP8_E5M2}>:$<TARGET_OBJECTS:lpf_lapack_fp8_e5m2>>
+    $<$<BOOL:${LPF_FP8_E4M3}>:$<TARGET_OBJECTS:lpf_lapack_fp8_e4m3>>
+    $<$<BOOL:${LPF_HAVE_FP16}>:$<TARGET_OBJECTS:lpf_lapack_fp16>>
+    $<$<BOOL:${LPF_HAVE_BF16}>:$<TARGET_OBJECTS:lpf_lapack_bf16>>
+    $<TARGET_OBJECTS:lpf_blas_objects>
 
-    ${SRC}
+    highprecision/scale_diag_twoside.f90
+    highprecision/scale_diag_right.f90
 )
 
 
@@ -313,6 +376,7 @@ ENDIF()
 
 
 add_coverage(lpf_blas)
+add_coverage(lpf_blas_objects)
 
 TARGET_LINK_LIBRARIES(lpf_blas
     PRIVATE
@@ -321,6 +385,28 @@ TARGET_LINK_LIBRARIES(lpf_blas
     LPF::lpf
     $<$<BOOL:${BLAS_FOUND}>:BLAS::BLAS>
     $<$<BOOL:${LAPACK_FOUND}>:LAPACK::LAPACK>
+)
+
+TARGET_LINK_LIBRARIES(lpf_blas_objects
+    PRIVATE
+    $<$<BOOL:NEED_LINKING_AGAINST_LIBM>:${LIBM_NAME}>
+    PUBLIC
+    LPF::lpf
+    $<$<BOOL:${BLAS_FOUND}>:BLAS::BLAS>
+    $<$<BOOL:${LAPACK_FOUND}>:LAPACK::LAPACK>
+)
+
+
+TARGET_INCLUDE_DIRECTORIES(lpf_blas_objects
+    PRIVATE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/>
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/fp16>
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/bf16>
+    PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/fortran-modules>
+    $<INSTALL_INTERFACE:include/lpf>
 )
 
 TARGET_INCLUDE_DIRECTORIES(lpf_blas

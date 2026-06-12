@@ -30,6 +30,19 @@
 #define TYPEMOD lpf_fp8_e5m2
 #endif
 
+#ifdef LPF_FP16
+#define DT fp16
+#define MODNAME lpf_blas_fp16
+#define TYPEMOD lpf_fp16
+#endif
+
+#ifdef LPF_BF16
+#define DT bf16
+#define MODNAME lpf_blas_bf16
+#define TYPEMOD lpf_bf16
+#endif
+
+
 !
 ! We cannot use MODNAME here, since CMake (with GNU Make) does not detect
 ! the correct module names here. Either we have to enforce the user to switch

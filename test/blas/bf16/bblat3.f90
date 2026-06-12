@@ -81,7 +81,7 @@
 !  =====================================================================
       PROGRAM SBLAT3
         USE LPF_BF16
-        USE LPF_TYPES, dik => lpf_default_int_kind
+        USE LPF_TYPES, dik => int32
         USE LPF_XERBLA
         USE LPF_BLAS_BF16
         IMPLICIT NONE
@@ -93,18 +93,18 @@
 !  =====================================================================
 !
 !     .. Parameters ..
-      INTEGER(lpf_default_int_kind)            NIN
+      INTEGER(int32)            NIN
       PARAMETER          ( NIN = 5 )
-      INTEGER(lpf_default_int_kind)            NSUBS
+      INTEGER(int32)            NSUBS
       PARAMETER          ( NSUBS = 7 )
       TYPE(BF16)               ZERO, ONE
-      INTEGER(lpf_default_int_kind)            NMAX
+      INTEGER(int32)            NMAX
       PARAMETER          ( NMAX = 65 )
-      INTEGER(lpf_default_int_kind)            NIDMAX, NALMAX, NBEMAX
+      INTEGER(int32)            NIDMAX, NALMAX, NBEMAX
       PARAMETER          ( NIDMAX = 9, NALMAX = 7, NBEMAX = 7 )
 !     .. Local Scalars ..
       TYPE(BF16)               EPS, ERR, THRESH
-      INTEGER(lpf_default_int_kind)            I, ISNUM, J, N, NALF, NBET, NIDIM, NOUT, NTRA
+      INTEGER(int32)            I, ISNUM, J, N, NALF, NBET, NIDIM, NOUT, NTRA
       LOGICAL            FATAL, LTESTT, REWI, SAME, SFATAL, TRACE,      &
      &                   TSTERR
       CHARACTER*1        TRANSA, TRANSB
@@ -117,7 +117,7 @@
      &                   BS( NMAX*NMAX ), C( NMAX, NMAX ),              &
      &                   CC( NMAX*NMAX ), CS( NMAX*NMAX ), CT( NMAX ),  &
      &                   G( NMAX ), W( 2*NMAX )
-      INTEGER(lpf_default_int_kind)            IDIM( NIDMAX )
+      INTEGER(int32)            IDIM( NIDMAX )
       LOGICAL            LTEST( NSUBS )
       CHARACTER*7        SNAMES( NSUBS )
 !     .. External Functions ..
@@ -128,7 +128,7 @@
 !     .. External Subroutines ..
       EXTERNAL           SCHK1, SCHK2, SCHK3, SCHK4, SCHK5, SCHKE, SMMCH
 !     .. Scalars in Common ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
+      INTEGER(int32)            INFOT, NOUTC
       LOGICAL            LERR, OK
       CHARACTER*7        SRNAMT
 !     .. Common blocks ..
@@ -425,7 +425,7 @@
       TYPE(BF16)               ZERO
 !     .. Scalar Arguments ..
       TYPE(BF16)               EPS, THRESH
-      INTEGER(lpf_default_int_kind)            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
+      INTEGER(int32)            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*7        SNAME
 !     .. Array Arguments ..
@@ -434,10 +434,10 @@
      &                   BB( NMAX*NMAX ), BET( NBET ), BS( NMAX*NMAX ), &
      &                   C( NMAX, NMAX ), CC( NMAX*NMAX ),              &
      &                   CS( NMAX*NMAX ), CT( NMAX ), G( NMAX )
-      INTEGER(lpf_default_int_kind)            IDIM( NIDIM )
+      INTEGER(int32)            IDIM( NIDIM )
 !     .. Local Scalars ..
       TYPE(BF16)               ALPHA, ALS, BETA, BLS, ERR, ERRMAX
-      INTEGER(lpf_default_int_kind)            I, IA, IB, ICA, ICB, IK, IM, IN, K, KS, LAA,   &
+      INTEGER(int32)            I, IA, IB, ICA, ICB, IK, IM, IN, K, KS, LAA,   &
      &                   LBB, LCC, LDA, LDAS, LDB, LDBS, LDC, LDCS, M,  &
      &                   MA, MB, MS, N, NA, NARGS, NB, NC, NS
       LOGICAL            NULL, RESET, SAME, TRANA, TRANB
@@ -451,7 +451,7 @@
 !     .. External Subroutines ..
       EXTERNAL           SMAKE, SMMCH
 !     .. Scalars in Common ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
+      INTEGER(int32)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -708,7 +708,7 @@
       TYPE(BF16)               ZERO
 !     .. Scalar Arguments ..
       TYPE(BF16)               EPS, THRESH
-      INTEGER(lpf_default_int_kind)            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
+      INTEGER(int32)            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*7        SNAME
 !     .. Array Arguments ..
@@ -717,10 +717,10 @@
      &                   BB( NMAX*NMAX ), BET( NBET ), BS( NMAX*NMAX ), &
      &                   C( NMAX, NMAX ), CC( NMAX*NMAX ),              &
      &                   CS( NMAX*NMAX ), CT( NMAX ), G( NMAX )
-      INTEGER(lpf_default_int_kind)            IDIM( NIDIM )
+      INTEGER(int32)            IDIM( NIDIM )
 !     .. Local Scalars ..
       TYPE(BF16)               ALPHA, ALS, BETA, BLS, ERR, ERRMAX
-      INTEGER(lpf_default_int_kind)            I, IA, IB, ICS, ICU, IM, IN, LAA, LBB, LCC,    &
+      INTEGER(int32)            I, IA, IB, ICS, ICU, IM, IN, LAA, LBB, LCC,    &
      &                   LDA, LDAS, LDB, LDBS, LDC, LDCS, M, MS, N, NA, &
      &                   NARGS, NC, NS
       LOGICAL            LEFT, NULL, RESET, SAME
@@ -734,7 +734,7 @@
 !     .. External Subroutines ..
       EXTERNAL           SMAKE, SMMCH
 !     .. Scalars in Common ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
+      INTEGER(int32)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -981,7 +981,7 @@
       TYPE(BF16)               ZERO, ONE
 !     .. Scalar Arguments ..
       TYPE(BF16)               EPS, THRESH
-      INTEGER(lpf_default_int_kind)            NALF, NIDIM, NMAX, NOUT, NTRA
+      INTEGER(int32)            NALF, NIDIM, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*7        SNAME
 !     .. Array Arguments ..
@@ -989,10 +989,10 @@
      &                   AS( NMAX*NMAX ), B( NMAX, NMAX ),              &
      &                   BB( NMAX*NMAX ), BS( NMAX*NMAX ),              &
      &                   C( NMAX, NMAX ), CT( NMAX ), G( NMAX )
-      INTEGER(lpf_default_int_kind)            IDIM( NIDIM )
+      INTEGER(int32)            IDIM( NIDIM )
 !     .. Local Scalars ..
       TYPE(BF16)               ALPHA, ALS, ERR, ERRMAX
-      INTEGER(lpf_default_int_kind)            I, IA, ICD, ICS, ICT, ICU, IM, IN, J, LAA, LBB,&
+      INTEGER(int32)            I, IA, ICD, ICS, ICT, ICU, IM, IN, J, LAA, LBB,&
      &                   LDA, LDAS, LDB, LDBS, M, MS, N, NA, NARGS, NC, &
      &                   NS
       LOGICAL            LEFT, NULL, RESET, SAME
@@ -1008,7 +1008,7 @@
 !     .. External Subroutines ..
       EXTERNAL           SMAKE, SMMCH
 !     .. Scalars in Common ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
+      INTEGER(int32)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -1272,7 +1272,7 @@
      &                  FATAL, NIDIM, IDIM, NALF, ALF, NBET, BET, NMAX, &
      &                  A, AA, AS, B, BB, BS, C, CC, CS, CT, G )
         USE LPF_BF16
-        USE LPF_TYPES, dik => lpf_default_int_kind
+        USE LPF_TYPES, dik => int32
         USE LPF_BLAS_BF16
         IMPLICIT NONE
  !
@@ -1290,7 +1290,7 @@
       TYPE(BF16)               ZERO
 !     .. Scalar Arguments ..
       TYPE(BF16)               EPS, THRESH
-      INTEGER(lpf_default_int_kind)            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
+      INTEGER(int32)            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*7        SNAME
 !     .. Array Arguments ..
@@ -1299,10 +1299,10 @@
      &                   BB( NMAX*NMAX ), BET( NBET ), BS( NMAX*NMAX ), &
      &                   C( NMAX, NMAX ), CC( NMAX*NMAX ),              &
      &                   CS( NMAX*NMAX ), CT( NMAX ), G( NMAX )
-      INTEGER(lpf_default_int_kind)            IDIM( NIDIM )
+      INTEGER(int32)            IDIM( NIDIM )
 !     .. Local Scalars ..
       TYPE(BF16)               ALPHA, ALS, BETA, BETS, ERR, ERRMAX
-      INTEGER(lpf_default_int_kind)            I, IA, IB, ICT, ICU, IK, IN, J, JC, JJ, K, KS, &
+      INTEGER(int32)            I, IA, IB, ICT, ICU, IK, IN, J, JC, JJ, K, KS, &
      &                   LAA, LCC, LDA, LDAS, LDC, LDCS, LJ, MA, N, NA, &
      &                   NARGS, NC, NS
       LOGICAL            NULL, RESET, SAME, TRAN, UPPER
@@ -1317,7 +1317,7 @@
 !     .. External Subroutines ..
       EXTERNAL           SMAKE, SMMCH
 !     .. Scalars in Common ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
+      INTEGER(int32)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -1550,7 +1550,7 @@
      &                  FATAL, NIDIM, IDIM, NALF, ALF, NBET, BET, NMAX, &
      &                  AB, AA, AS, BB, BS, C, CC, CS, CT, G, W )
         USE LPF_BF16
-        USE LPF_TYPES, dik => lpf_default_int_kind
+        USE LPF_TYPES, dik => int32
         USE LPF_BLAS_BF16
         IMPLICIT NONE
  !
@@ -1568,7 +1568,7 @@
       TYPE(BF16)               ZERO
 !     .. Scalar Arguments ..
       TYPE(BF16)               EPS, THRESH
-      INTEGER(lpf_default_int_kind)            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
+      INTEGER(int32)            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*7        SNAME
 !     .. Array Arguments ..
@@ -1577,10 +1577,10 @@
      &                   BET( NBET ), BS( NMAX*NMAX ), C( NMAX, NMAX ), &
      &                   CC( NMAX*NMAX ), CS( NMAX*NMAX ), CT( NMAX ),  &
      &                   G( NMAX ), W( 2*NMAX )
-      INTEGER(lpf_default_int_kind)            IDIM( NIDIM )
+      INTEGER(int32)            IDIM( NIDIM )
 !     .. Local Scalars ..
       TYPE(BF16)               ALPHA, ALS, BETA, BETS, ERR, ERRMAX
-      INTEGER(lpf_default_int_kind)            I, IA, IB, ICT, ICU, IK, IN, J, JC, JJ, JJAB,  &
+      INTEGER(int32)            I, IA, IB, ICT, ICU, IK, IN, J, JC, JJ, JJAB,  &
      &                   K, KS, LAA, LBB, LCC, LDA, LDAS, LDB, LDBS,    &
      &                   LDC, LDCS, LJ, MA, N, NA, NARGS, NC, NS
       LOGICAL            NULL, RESET, SAME, TRAN, UPPER
@@ -1595,7 +1595,7 @@
 !     .. External Subroutines ..
       EXTERNAL           SMAKE, SMMCH
 !     .. Scalars in Common ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
+      INTEGER(int32)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -1865,7 +1865,7 @@
       END
       SUBROUTINE SCHKE( ISNUM, SRNAMT, NOUT )
         USE LPF_BF16
-        USE LPF_TYPES, dik => lpf_default_int_kind
+        USE LPF_TYPES, dik => int32
         USE LPF_BLAS_BF16
         IMPLICIT NONE
           !
@@ -1885,10 +1885,10 @@
 !  3-19-92:  Fix argument 12 in calls to BSYMM with INFOT = 9  (eca)
 !
 !     .. Scalar Arguments ..
-      INTEGER(lpf_default_int_kind)            ISNUM, NOUT
+      INTEGER(int32)            ISNUM, NOUT
       CHARACTER*7        SRNAMT
 !     .. Scalars in Common ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
+      INTEGER(int32)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Parameters ..
       TYPE(BF16)               ONE, TWO
@@ -2528,14 +2528,14 @@
       TYPE(BF16)               ROGUE
 !     .. Scalar Arguments ..
       TYPE(BF16)               TRANSL
-      INTEGER(lpf_default_int_kind)            LDA, M, N, NMAX
+      INTEGER(int32)            LDA, M, N, NMAX
       LOGICAL            RESET
       CHARACTER*1        DIAG, UPLO
       CHARACTER*2        TYPE
 !     .. Array Arguments ..
       TYPE(BF16)               A( NMAX, * ), AA( * )
 !     .. Local Scalars ..
-      INTEGER(lpf_default_int_kind)            I, IBEG, IEND, J
+      INTEGER(int32)            I, IBEG, IEND, J
       LOGICAL            GEN, LOWER, SYM, TRI, UNIT, UPPER
 !     .. External Functions ..
       TYPE(BF16)               SBEG
@@ -2643,7 +2643,7 @@
       TYPE(BF16)               ZERO, ONE
 !     .. Scalar Arguments ..
       TYPE(BF16)               ALPHA, BETA, EPS, ERR
-      INTEGER(lpf_default_int_kind)            KK, LDA, LDB, LDC, LDCC, M, N, NOUT
+      INTEGER(int32)            KK, LDA, LDB, LDC, LDCC, M, N, NOUT
       LOGICAL            FATAL, MV
       CHARACTER*1        TRANSA, TRANSB
 !     .. Array Arguments ..
@@ -2651,7 +2651,7 @@
      &                   CC( LDCC, * ), CT( * ), G( * )
 !     .. Local Scalars ..
       TYPE(BF16)               ERRI
-      INTEGER(lpf_default_int_kind)            I, J, K
+      INTEGER(int32)            I, J, K
       LOGICAL            TRANA, TRANB
 !     .. Executable Statements ..
 
@@ -2764,11 +2764,11 @@
 !     Sven Hammarling, Numerical Algorithms Group Ltd.
 !
 !     .. Scalar Arguments ..
-      INTEGER(lpf_default_int_kind)            LR
+      INTEGER(int32)            LR
 !     .. Array Arguments ..
       TYPE(BF16)               RI( * ), RJ( * )
 !     .. Local Scalars ..
-      INTEGER(lpf_default_int_kind)            I
+      INTEGER(int32)            I
 !     .. Executable Statements ..
       DO 10 I = 1, LR
          IF( RI( I ).NE.RJ( I ) )                                       &
@@ -2803,13 +2803,13 @@
 !     Sven Hammarling, Numerical Algorithms Group Ltd.
 !
 !     .. Scalar Arguments ..
-      INTEGER(lpf_default_int_kind)            LDA, M, N
+      INTEGER(int32)            LDA, M, N
       CHARACTER*1        UPLO
       CHARACTER*2        TYPE
 !     .. Array Arguments ..
       TYPE(BF16)               AA( LDA, * ), AS( LDA, * )
 !     .. Local Scalars ..
-      INTEGER(lpf_default_int_kind)            I, IBEG, IEND, J
+      INTEGER(int32)            I, IBEG, IEND, J
       LOGICAL            UPPER
 !     .. Executable Statements ..
       UPPER = UPLO.EQ.'U'
@@ -2869,7 +2869,7 @@
 !     .. Scalar Arguments ..
       LOGICAL            RESET
 !     .. Local Scalars ..
-      INTEGER(lpf_default_int_kind)            I, IC, MI
+      INTEGER(int32)            I, IC, MI
 !     .. Save statement ..
       SAVE               I, IC, MI
 !     .. Executable Statements ..
@@ -2941,7 +2941,7 @@
 !     Sven Hammarling, Numerical Algorithms Group Ltd.
 !
 !     .. Scalar Arguments ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUT
+      INTEGER(int32)            INFOT, NOUT
       LOGICAL            LERR, OK
       CHARACTER*7        SRNAMT
 !     .. Executable Statements ..
@@ -2982,10 +2982,10 @@
 !     Sven Hammarling, Numerical Algorithms Group Ltd.
 !
 !     .. Scalar Arguments ..
-      INTEGER(lpf_default_int_kind)            INFO
+      INTEGER(int32)            INFO
       CHARACTER*(*)      SRNAME
 !     .. Scalars in Common ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUT
+      INTEGER(int32)            INFOT, NOUT
       LOGICAL            LERR, OK
       CHARACTER*7        SRNAMT
 !     .. Common blocks ..
@@ -3038,7 +3038,7 @@
       TYPE(BF16)               ZERO
 !     .. Scalar Arguments ..
       TYPE(BF16)               EPS, THRESH
-      INTEGER(lpf_default_int_kind)            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
+      INTEGER(int32)            NALF, NBET, NIDIM, NMAX, NOUT, NTRA
       LOGICAL            FATAL, REWI, TRACE
       CHARACTER*7        SNAME
 !     .. Array Arguments ..
@@ -3047,10 +3047,10 @@
      &                   BB( NMAX*NMAX ), BET( NBET ), BS( NMAX*NMAX ), &
      &                   C( NMAX, NMAX ), CC( NMAX*NMAX ),              &
      &                   CS( NMAX*NMAX ), CT( NMAX ), G( NMAX )
-      INTEGER(lpf_default_int_kind)            IDIM( NIDIM )
+      INTEGER(int32)            IDIM( NIDIM )
 !     .. Local Scalars ..
       TYPE(BF16)               ALPHA, ALS, BETA, BLS, ERR, ERRMAX
-      INTEGER(lpf_default_int_kind)            I, IA, IB, ICA, ICB, IK, IN, K, KS, LAA,       &
+      INTEGER(int32)            I, IA, IB, ICA, ICB, IK, IN, K, KS, LAA,       &
      &                   LBB, LCC, LDA, LDAS, LDB, LDBS, LDC, LDCS,     &
      &                   MA, MB, N, NA, NARGS, NB, NC, NS, IS
       LOGICAL            NULL, RESET, SAME, TRANA, TRANB
@@ -3065,7 +3065,7 @@
 !     .. External Subroutines ..
       EXTERNAL           SMAKE, SMMTCH
 !     .. Scalars in Common ..
-      INTEGER(lpf_default_int_kind)            INFOT, NOUTC
+      INTEGER(int32)            INFOT, NOUTC
       LOGICAL            LERR, OK
 !     .. Common blocks ..
       COMMON             /INFOC/INFOT, NOUTC, OK, LERR
@@ -3327,7 +3327,7 @@
       TYPE(BF16)               ZERO, ONE
 !     .. Scalar Arguments ..
       TYPE(BF16)               ALPHA, BETA, EPS, ERR
-      INTEGER(lpf_default_int_kind)            KK, LDA, LDB, LDC, LDCC, N, NOUT
+      INTEGER(int32)            KK, LDA, LDB, LDC, LDCC, N, NOUT
       LOGICAL            FATAL, MV
       CHARACTER*1        UPLO, TRANSA, TRANSB
 !     .. Array Arguments ..
@@ -3335,7 +3335,7 @@
      &                   CC( LDCC, * ), CT( * ), G( * )
 !     .. Local Scalars ..
       TYPE(BF16)               ERRI
-      INTEGER(lpf_default_int_kind)            I, J, K, ISTART, ISTOP
+      INTEGER(int32)            I, J, K, ISTART, ISTOP
       LOGICAL            TRANA, TRANB, UPPER
 !     .. Executable Statements ..
 
