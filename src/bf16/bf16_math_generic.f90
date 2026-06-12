@@ -307,7 +307,7 @@ contains
         end if
 
         call helper_precision_bf16(outt)
-        out = INT(outt, kind = lpf_default_int_kind)
+        out = INT(outt)
     end function precision_bf16
 
     module elemental function range_bf16(x) result(out)
@@ -325,7 +325,7 @@ contains
 
     module elemental function scale_bf16_32(x, s) result(out)
         type(BF16), intent(in) :: x
-        integer(lpf_int32_kind), intent(in) :: s
+        integer(int32), intent(in) :: s
         type(BF16) :: out
         integer(c_int) :: tmp
         tmp  = int(s, kind = c_int )
@@ -334,7 +334,7 @@ contains
 
     module elemental function scale_bf16_64(x, s) result(out)
         type(BF16), intent(in) :: x
-        integer(lpf_int64_kind), intent(in) :: s
+        integer(int64), intent(in) :: s
         type(BF16) :: out
         integer(c_int) :: tmp
         tmp  = int(s, kind = c_int )

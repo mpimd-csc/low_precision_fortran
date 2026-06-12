@@ -17,35 +17,37 @@
 !  along with this program; if not, write to the Free Software Foundation,
 !  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
-
+#ifdef LPF_FP8_E4M3
+#define TYPEMOD lpf_fp8_e4m3
+submodule(lpf_lapack_fp8_e4m3) lpf_lapack_potrf_fp8_e4m3
+#endif
+#ifdef LPF_FP8_E5M2
+#define TYPEMOD lpf_blas_fp8_e5m2
+submodule(lpf_lapack_fp8_e5m2) lpf_lapack_potrf_fp8_e5m2
+#endif
+#ifdef LPF_FP16
+#define TYPEMOD lpf_fp16
 submodule(lpf_lapack_fp16) lpf_lapack_potrf_fp16
+#endif
+#ifdef LPF_BF16
+#define TYPEMOD lpf_bf16
+submodule(lpf_lapack_bf16) lpf_lapack_potrf_bf16
+#endif
+
 contains
-    !> \brief \b hpoTRF
-    !
-    !  =========== DOCUMENTATION ===========
-    !
-    ! Online html documentation available at
-    !            http://www.netlib.org/lapack/explore-html/
-    !
-    !> Download hpoTRF + dependencies
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.tgz?format=tgz&fil
-    !> [TGZ]</a>
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.zip?format=zip&fil
-    !> [ZIP]</a>
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.txt?format=txt&fil
-    !> [TXT]</a>
+    !> \brief \b potrf
     !
     !  Definition:
     !  ===========
     !
-    !       SUBROUTINE hpoTRF( UPLO, N, A, LDA, INFO )
+    !       SUBROUTINE bpoTRF( UPLO, N, A, LDA, INFO )
     !
-    !       .. Scalar Arguments ..
+    !      ..Scalar Arguments ..
     !       CHARACTER          UPLO
     !       INTEGER            INFO, LDA, N
     !       ..
-    !       .. Array Arguments ..
-    !       REAL               A( LDA, * )
+    !      ..Array Arguments ..
+    !       type(DT)               A( LDA, * )
     !       ..
     !
     !
@@ -54,7 +56,7 @@ contains
     !>
     !> \verbatim
     !>
-    !> hpoTRF computes the Cholesky factorization of a real symmetric
+    !> bpoTRF computes the Cholesky factorization of a real symmetric
     !> positive definite matrix A.
     !>
     !> The factorization has the form
@@ -83,7 +85,7 @@ contains
     !>
     !> \param[in,out] A
     !> \verbatim
-    !>          A is REAL array, dimension (LDA,N)
+    !>          A is type(DT) array, dimension (LDA,N)
     !>          On entry, the symmetric matrix A.  If UPLO = 'U', the leadin
     !>          N-by-N upper triangular part of A contains the upper
     !>          triangular part of the matrix A, and the strictly lower
@@ -111,32 +113,27 @@ contains
     !>                is not positive, and the factorization could not be
     !>                completed.
     !> \endverbatim
+    !
     !  =====================================================================
-    module subroutine potrf( uplo, n, a, lda, info )
+    module subroutine potrf_64( uplo, n, a_, lda, info )
         character, intent(in) ::          uplo
-        integer(lpf_default_int_kind), intent(in) :: lda, n
-        integer(lpf_default_int_kind), intent(inout) :: info
-        !     ..
-        !     .. array arguments ..
-        type(fp16), intent(inout) ::  a( lda, * )
-        !     ..
-        !
-        !  =====================================================================
-        !
-        !     .. parameters ..
-        type(fp16)  ::              one
-        !     ..
-        !     .. local scalars ..
+        integer(int64), intent(in) :: lda, n
+        integer(int64), intent(inout) :: info
+        type(DT), target, intent(inout) ::  a_(..)
+
+        type(DT), pointer :: a(:,:)
+        type(c_ptr) :: ptr
+        type(DT)  ::              one
         logical  ::          upper
-        integer(lpf_default_int_kind)  ::          j, jb, nb
-        !     ..
-        !     ..
-        !
-        !     test the input parameters.
-        !
+        integer(int64)  ::          j, jb, nb
 
         one = 1.0
         info = 0
+
+        ptr = c_loc(a_)
+        call c_f_pointer(ptr, a, [lda, n])
+
+
         upper = lsame( uplo, 'u' )
         if( .not.upper .and. .not.lsame( uplo, 'l' ) ) then
             info = -1
@@ -157,15 +154,16 @@ contains
         !
         !     determine the block size for this environment.
         !
-        ! nb = ilaenv( 1, 'hpotrf', uplo, n, -1, -1, -1 )
         ! @todo Better block size handling
+        ! Lapack would use something like:
+        ! nb = ilaenv( 1, 'potrf', uplo, n, -1, -1, -1 )
         nb = 192
 
         if( nb.le.1 .or. nb.ge.n ) then
             !
             !        use unblocked code.
             !
-            call potrf2( uplo, n, a, lda, info )
+            call potrf2( uplo, n, a(1, 1), lda, info )
         else
             !
             !        use blocked code.
@@ -240,7 +238,19 @@ contains
 
         return
         !
-        !     end of hpotrf
+        !     end of potrf
         !
     end subroutine
+
+    module subroutine potrf_32( uplo, n, a_, lda, info )
+        character, intent(in) ::          uplo
+        integer(int32), intent(in) :: lda, n
+        integer(int32), intent(inout) :: info
+        type(DT), target, intent(inout) ::  a_(..)
+
+        integer(int64) :: iinfo
+        call potrf_64(uplo, int(n, int64), a_, int(lda, int64), iinfo)
+        info = int(iinfo , int32)
+    end subroutine
+
 end submodule

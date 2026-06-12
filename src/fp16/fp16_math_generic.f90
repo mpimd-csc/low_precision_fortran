@@ -325,7 +325,7 @@ contains
 
     module elemental function scale_fp16_32(x, s) result(out)
         type(FP16), intent(in) :: x
-        integer(lpf_int32_kind), intent(in) :: s
+        integer(int32), intent(in) :: s
         type(FP16) :: out
         integer(c_int) :: tmp
         tmp  = int(s, kind = c_int )
@@ -334,7 +334,7 @@ contains
 
     module elemental function scale_fp16_64(x, s) result(out)
         type(FP16), intent(in) :: x
-        integer(lpf_int64_kind), intent(in) :: s
+        integer(int64), intent(in) :: s
         type(FP16) :: out
         integer(c_int) :: tmp
         tmp  = int(s, kind = c_int )

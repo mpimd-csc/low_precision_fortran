@@ -29,7 +29,7 @@ contains
     module pure function minval_fp8_e5m2_1d(array) result(min_value)
         type(fp8_e5m2), dimension(:), intent(in) :: array
         type(fp8_e5m2) :: min_value
-        integer(lpf_default_int_kind) :: i
+        integer(int64) :: i
         type(fp8_e5m2) :: hval;
 
 
@@ -52,7 +52,7 @@ contains
     module pure function minval_fp8_e5m2_2d(array) result(min_value)
         type(fp8_e5m2), dimension(:,:), intent(in) :: array
         type(fp8_e5m2) :: min_value
-        integer(lpf_default_int_kind) :: i, j
+        integer(int64) :: i, j
 
         min_value = array(1, 1)
 
@@ -69,7 +69,7 @@ contains
     module pure function minval_fp8_e5m2_3d(array) result(min_value)
         type(fp8_e5m2), dimension(:,:,:), intent(in) :: array
         type(fp8_e5m2) :: min_value
-        integer(lpf_default_int_kind) :: i, j, k
+        integer(int64) :: i, j, k
 
         min_value = array(1, 1, 1)
 
@@ -88,7 +88,7 @@ contains
     module pure function minval_fp8_e5m2_4d(array) result(min_value)
         type(fp8_e5m2), dimension(:,:,:,:), intent(in) :: array
         type(fp8_e5m2) :: min_value
-        integer(lpf_default_int_kind) :: i, j, k, l
+        integer(int64) :: i, j, k, l
 
         min_value = array(1, 1, 1,1)
 
@@ -124,7 +124,7 @@ contains
         type(fp8_e5m2), dimension(:,:), intent(in) :: array
         integer, intent(in) :: dim
         type(fp8_e5m2), dimension(size(array, merge(2, 1, dim == 1))) :: min_value
-        integer(lpf_default_int_kind) :: i, j
+        integer(int64) :: i, j
 
         if (dim < 1 .or. dim > 2) then
             error stop 'Invalid dimension for 2D array'
@@ -164,7 +164,7 @@ contains
         !
         type(fp8_e5m2), dimension( size(array, merge(2, 1, dim == 1)), &
             & size(array, merge(2, 3, dim == 3))) :: min_value
-        integer(lpf_default_int_kind) :: i, j, k
+        integer(int64) :: i, j, k
 
         if (dim < 1 .or. dim > 3) then
             error stop 'Invalid dimension for 3D array'
@@ -224,7 +224,7 @@ contains
         type(fp8_e5m2), dimension( size(array, merge(2, 1, dim == 1)), &
             & size(array, merge(3, 2, dim < 3)), &
             & size(array, merge(4, 3, dim == 4))) :: min_value
-        integer(lpf_default_int_kind) :: i, j, k, l
+        integer(int64) :: i, j, k, l
 
         if (dim < 1 .or. dim > 4) then
             error stop 'Invalid dimension for 3D array'

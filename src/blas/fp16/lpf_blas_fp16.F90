@@ -1166,18 +1166,31 @@ module lpf_blas_fp16
     ! Submodules
     !
     interface scale_diag
-        module subroutine scale_diag_fp16(m, n, a, lda, dl, dr, info)
-            integer(lpf_default_int_kind), intent(in) :: m, n, lda
-            integer(lpf_default_int_kind), intent(inout) :: info
+        module subroutine scale_diag_fp16_32(m, n, a, lda, dl, dr, info)
+            integer(int32), intent(in) :: m, n, lda
+            integer(int32), intent(inout) :: info
+            type(fp16), intent(inout), dimension(lda, *) :: a
+            type(fp16), intent(out), dimension(*) :: dl, dr
+        end subroutine
+
+        module subroutine scale_diag_fp16_64(m, n, a, lda, dl, dr, info)
+            integer(int64), intent(in) :: m, n, lda
+            integer(int64), intent(inout) :: info
             type(fp16), intent(inout), dimension(lda, *) :: a
             type(fp16), intent(out), dimension(*) :: dl, dr
         end subroutine
     end interface scale_diag
 
     interface scale_diag_right
-        module subroutine scale_diag_right_fp16(m, n, a, lda, dr, info)
-            integer(lpf_default_int_kind), intent(in) :: m, n, lda
-            integer(lpf_default_int_kind), intent(inout) :: info
+        module subroutine scale_diag_right_fp16_32(m, n, a, lda, dr, info)
+            integer(int32), intent(in) :: m, n, lda
+            integer(int32), intent(inout) :: info
+            type(fp16), intent(inout), dimension(lda, *) :: a
+            type(fp16), intent(out), dimension(*) :: dr
+        end subroutine
+        module subroutine scale_diag_right_fp16_64(m, n, a, lda, dr, info)
+            integer(int64), intent(in) :: m, n, lda
+            integer(int64), intent(inout) :: info
             type(fp16), intent(inout), dimension(lda, *) :: a
             type(fp16), intent(out), dimension(*) :: dr
         end subroutine

@@ -17,40 +17,42 @@
 !  along with this program; if not, write to the Free Software Foundation,
 !  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
+#ifdef LPF_FP8_E4M3
+#define TYPEMOD lpf_fp8_e4m3
+submodule(lpf_lapack_fp8_e4m3) lpf_lapack_lange_fp8_e4m3
+#endif
+#ifdef LPF_FP8_E5M2
+#define TYPEMOD lpf_blas_fp8_e5m2
+submodule(lpf_lapack_fp8_e5m2) lpf_lapack_lange_fp8_e5m2
+#endif
+#ifdef LPF_FP16
+#define TYPEMOD lpf_fp16
+submodule(lpf_lapack_fp16) lpf_lapack_lange_fp16
+#endif
+#ifdef LPF_BF16
+#define TYPEMOD lpf_bf16
+submodule(lpf_lapack_bf16) lpf_lapack_lange_bf16
+#endif
 
-submodule (lpf_lapack_fp16) lpf_lapack_lange_fp16
-    use lpf_fp16
-    use lpf_types
+    use TYPEMOD
     implicit none
 
 contains
 
     !> \brief \b lange returns the value of the 1-norm, Frobenius norm, inf
     !
-    !  =========== DOCUMENTATION ===========
-    !
-    ! Online html documentation available at
-    !            http://www.netlib.org/lapack/explore-html/
-    !
-    !> Download lange + dependencies
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.tgz?format=tgz&fil
-    !> [TGZ]</a>
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.zip?format=zip&fil
-    !> [ZIP]</a>
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.txt?format=txt&fil
-    !> [TXT]</a>
     !
     !  Definition:
     !  ===========
     !
-    !       type(fp16)             FUNCTION lange( NORM, M, N, A, LDA, WORK )
+    !       type(DT)             FUNCTION lange( NORM, M, N, A, LDA, WORK )
     !
-    !       .. Scalar Arguments ..
+    !      ..Scalar Arguments ..
     !       CHARACTER          NORM
     !       INTEGER            LDA, M, N
     !       ..
-    !       .. Array Arguments ..
-    !       type(fp16)               A( LDA, * ), WORK( * )
+    !      ..Array Arguments ..
+    !       type(DT)               A( LDA, * ), WORK( * )
     !       ..
     !
     !
@@ -77,7 +79,7 @@ contains
     !>
     !> where  norm1  denotes the  one norm of a matrix (maximum column sum),
     !> normI  denotes the  infinity norm  of a matrix  (maximum row sum) and
-    !> normF  denotes the  Frobenius norm of a matrix (square root of sum of
+    !> normF  denotes the Frobenius norm of a matrix (square root of sum of
     !> squares).  Note that  max(abs(A(i,j)))  is not a consistent matrix no
     !> \endverbatim
     !
@@ -107,7 +109,7 @@ contains
     !>
     !> \param[in] A
     !> \verbatim
-    !>          A is type(fp16) array, dimension (LDA,N)
+    !>          A is type(DT) array, dimension (LDA,N)
     !>          The m by n matrix A.
     !> \endverbatim
     !>
@@ -119,28 +121,38 @@ contains
     !>
     !> \param[out] WORK
     !> \verbatim
-    !>          WORK is type(fp16) array, dimension (MAX(1,LWORK)),
+    !>          WORK is type(DT) array, dimension (MAX(1,LWORK)),
     !>          where LWORK >= M when NORM = 'I'; otherwise, WORK is not
     !>          referenced.
     !> \endverbatim
-    !  =====================================================================
-    module function lange( norm, m, n, a, lda, work ) result(nrm)
+    !
+    module function lange_64( norm, m, n, xa, lda, xwork ) result(nrm)
         character, intent(in) :: norm
-        integer(lpf_default_int_kind), intent(in)   :: lda, m, n
-        type(fp16), intent(in)      :: a( lda, * )
-        type(fp16), intent(inout)   :: work( * )
-        type(fp16) :: nrm
+        integer(int64), intent(in)   :: lda, m, n
+        type(DT), target, intent(in)      :: xa(..)
+        type(DT), target, intent(inout)   :: xwork(..)
+        type(DT) :: nrm
+
+        type(DT), pointer :: a(:,:)
+        type(DT), pointer :: work(:)
+        type(c_ptr) :: ptr
+
         !     ..
         !
-        !     .. parameters ..
-        type(fp16) ::            one, zero
-        !     .. local scalars ..
-        integer(lpf_default_int_kind)            :: i, j
-        integer(lpf_default_int_kind), parameter :: ione = 1
+        !    ..parameters ..
+        type(DT) ::            one, zero
+        !    ..local scalars ..
+        integer(int64)            :: i, j
+        integer(int64), parameter :: ione = 1
 
         real(real32) :: sca, sum
-        type(fp16) :: value, temp
+        type(DT) :: value, temp
         !     ..
+
+        ptr = c_loc(xa)
+        call c_f_pointer(ptr, a, [lda, n])
+        ptr = c_loc(xwork)
+        call c_f_pointer(ptr, work, [m])
 
         one  = 1.0e+0
         zero = 0.0e+0
@@ -194,43 +206,39 @@ contains
             sca = 0.0
             sum = 1.0
             do  j = 1, n
-                call lassq( m, a( 1, j ), ione, sca, sum )
+                call lassq_64( m, a( 1, j ), ione, sca, sum )
             end do
-            value = fp16(sca*sqrt( sum ))
+            value = DT(sca*sqrt( sum ))
         end if
         !
         nrm = value
         return
     end function
 
+    module function lange_32( norm, m, n, xa, lda, xwork ) result(nrm)
+        character, intent(in) :: norm
+        integer(int32), intent(in)   :: lda, m, n
+        type(DT), target, intent(in)      :: xa(..)
+        type(DT), target, intent(inout)   :: xwork(..)
+        type(DT) :: nrm
+
+        nrm = lange_64(norm, int(m, int64), int(n, int64), xa, int(lda, int64), xwork)
+    end function
+
     !> \brief \b lassq updates a sum of squares represented in scaled form.
     !
-    !  =========== DOCUMENTATION ===========
-    !
-    ! Online html documentation available at
-    !            http://www.netlib.org/lapack/explore-html/
-    !
-    !> \htmlonly
-    !> Download lassq + dependencies
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.tgz?format=tgz&fil
-    !> [TGZ]</a>
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.zip?format=zip&fil
-    !> [ZIP]</a>
-    !> <a href="http://www.netlib.org/cgi-bin/netlibfiles.txt?format=txt&fil
-    !> [TXT]</a>
-    !> \endhtmlonly
     !
     !  Definition:
     !  ===========
     !
     !       SUBROUTINE lassq( N, X, INCX, SCALE, SUMSQ )
     !
-    !       .. Scalar Arguments ..
+    !      ..Scalar Arguments ..
     !       INTEGER            INCX, N
     !       REAL               SCALE, SUMSQ
     !       ..
-    !       .. Array Arguments ..
-    !       type(fp16)               X( * )
+    !      ..Array Arguments ..
+    !       type(DT)               X( * )
     !       ..
     !
     !
@@ -265,7 +273,7 @@ contains
     !>
     !> \param[in] X
     !> \verbatim
-    !>          X is type(fp16) array, dimension (N)
+    !>          X is type(DT) array, dimension (N)
     !>          The vector for which a scaled sum of squares is computed.
     !>             x( i )  = X( 1 + ( i - 1 )*INCX ), 1 <= i <= n.
     !> \endverbatim
@@ -292,23 +300,20 @@ contains
     !>          On exit, SUMSQ is overwritten with  smsq , the basic sum of
     !>          squares from which  scl  has been factored out.
     !> \endverbatim
-    module subroutine lassq( n, x, incx, sca, sumsq )
-        integer(lpf_default_int_kind), intent(in) ::   incx, n
+    !
+    module subroutine lassq_64( n, xx, incx, sca, sumsq )
+        integer(int64), intent(in) ::   incx, n
         real(real32), intent(inout) :: sca, sumsq
-        !     ..
-        !     .. array arguments ..
-        type(fp16), intent(in)  :: x( * )
-        !     ..
-        !
-        ! =====================================================================
-        !
-        !     .. parameters ..
+        type(DT), target, intent(in)  :: xx(..)
+
+        type(DT), pointer :: x(:)
+        type(c_ptr) :: ptr
         real(real32) ::    zero
-        !     ..
-        !     .. local scalars ..
-        integer(lpf_default_int_kind) :: ix
+        integer(int64) :: ix
         real(real32) :: absxi
-        !     ..
+
+        ptr = c_loc(xx)
+        call c_f_pointer(ptr, x, [ 1 + (n-1)*abs(incx)] )
 
         zero = 0.0
         if( n.gt.0 ) then
@@ -324,7 +329,15 @@ contains
                 end if
             end do
         end if
+        return
+    end subroutine
 
+    module subroutine lassq_32( n, xx, incx, sca, sumsq )
+        integer(int32), intent(in) ::   incx, n
+        real(real32), intent(inout) :: sca, sumsq
+        type(DT), target, intent(in)  :: xx(..)
+
+        call lassq_64(int(n, int64), xx, int(incx, int64), sca, sumsq)
         return
     end subroutine
 

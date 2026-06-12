@@ -20,8 +20,7 @@
 
 submodule (lpf_bf16) lpf_bf16_minval
     use iso_c_binding
-    use iso_fortran_env, only: real32, real64
-    use lpf_types
+    use iso_fortran_env, only: real32, real64, int64
     implicit none
 
 contains
@@ -29,7 +28,7 @@ contains
     module pure function minval_bf16_1d(array) result(min_value)
         type(bf16), dimension(:), intent(in) :: array
         type(bf16) :: min_value
-        integer(lpf_default_int_kind) :: i
+        integer(int64) :: i
         type(bf16) :: hval;
 
 
@@ -52,7 +51,7 @@ contains
     module pure function minval_bf16_2d(array) result(min_value)
         type(bf16), dimension(:,:), intent(in) :: array
         type(bf16) :: min_value
-        integer(lpf_default_int_kind) :: i, j
+        integer(int64) :: i, j
 
         min_value = array(1, 1)
 
@@ -69,7 +68,7 @@ contains
     module pure function minval_bf16_3d(array) result(min_value)
         type(bf16), dimension(:,:,:), intent(in) :: array
         type(bf16) :: min_value
-        integer(lpf_default_int_kind) :: i, j, k
+        integer(int64) :: i, j, k
 
         min_value = array(1, 1, 1)
 
@@ -88,7 +87,7 @@ contains
     module pure function minval_bf16_4d(array) result(min_value)
         type(bf16), dimension(:,:,:,:), intent(in) :: array
         type(bf16) :: min_value
-        integer(lpf_default_int_kind) :: i, j, k, l
+        integer(int64) :: i, j, k, l
 
         min_value = array(1, 1, 1,1)
 
@@ -124,7 +123,7 @@ contains
         type(bf16), dimension(:,:), intent(in) :: array
         integer, intent(in) :: dim
         type(bf16), dimension(size(array, merge(2, 1, dim == 1))) :: min_value
-        integer(lpf_default_int_kind) :: i, j
+        integer(int64) :: i, j
 
         if (dim < 1 .or. dim > 2) then
             error stop 'Invalid dimension for 2D array'
@@ -164,7 +163,7 @@ contains
         !
         type(bf16), dimension( size(array, merge(2, 1, dim == 1)), &
             & size(array, merge(2, 3, dim == 3))) :: min_value
-        integer(lpf_default_int_kind) :: i, j, k
+        integer(int64) :: i, j, k
 
         if (dim < 1 .or. dim > 3) then
             error stop 'Invalid dimension for 3D array'
@@ -224,7 +223,7 @@ contains
         type(bf16), dimension( size(array, merge(2, 1, dim == 1)), &
             & size(array, merge(3, 2, dim < 3)), &
             & size(array, merge(4, 3, dim == 4))) :: min_value
-        integer(lpf_default_int_kind) :: i, j, k, l
+        integer(int64) :: i, j, k, l
 
         if (dim < 1 .or. dim > 4) then
             error stop 'Invalid dimension for 3D array'

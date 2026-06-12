@@ -18,31 +18,54 @@
 !  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
 
+#ifdef LPF_FP8_E4M3
+#define TYPEMOD lpf_fp8_e4m3
+submodule(lpf_lapack_fp8_e4m3) lpf_lapack_potrfp_fp8_e4m3
+#endif
+#ifdef LPF_FP8_E5M2
+#define TYPEMOD lpf_blas_fp8_e5m2
+submodule(lpf_lapack_fp8_e5m2) lpf_lapack_potrfp_fp8_e5m2
+#endif
+#ifdef LPF_FP16
+#define TYPEMOD lpf_fp16
 submodule(lpf_lapack_fp16) lpf_lapack_potrfp_fp16
+#endif
+#ifdef LPF_BF16
+#define TYPEMOD lpf_bf16
+submodule(lpf_lapack_bf16) lpf_lapack_potrfp_bf16
+#endif
+    use TYPEMOD
+    use iso_c_binding
+    implicit none
+
 
 contains
-    module subroutine potrfp(uplo, n, a, lda, ipiv, info)
+    module subroutine potrfp_64(uplo, n, a_, lda, ipiv_, info)
         character, intent(in) :: uplo
-        integer(lpf_default_int_kind), intent(in) :: n, lda
-        integer(lpf_default_int_kind), intent(inout) :: info
-        integer(lpf_default_int_kind), intent(inout) :: ipiv(*)
-        type(fp16), intent(inout) :: a(lda, *)
+        integer(int64), intent(in) :: n, lda
+        integer(int64), intent(inout) :: info
+        integer(int64), target, intent(inout) :: ipiv_(..)
+        type(DT), target, intent(inout) :: a_(..)
 
         ! locals
-        type(fp16) :: one, mone
+        type(DT), pointer :: a(:,:)
+        integer(int64), pointer :: ipiv(:)
+        type(c_ptr) :: ptr
+        type(DT) :: one, mone
         logical  ::          upper
-        integer(lpf_default_int_kind)  ::          maxj, k, j
-        type(fp16) :: max_val, tmp
-
-        !     ..
-        !     ..
-        !
-        !     test the input parameters.
-        !
+        integer(int64)  ::          maxj, k, j
+        type(DT) :: max_val, tmp
 
         one = 1.0
         mone = -1.0
         info = 0
+
+        ptr = c_loc(a_)
+        call c_f_pointer(ptr, a, [lda, n])
+        ptr = c_loc(ipiv_)
+        call c_f_pointer(ptr, ipiv, [n])
+
+
         upper = lsame( uplo, 'u' )
         if( .not.upper .and. .not.lsame( uplo, 'l' ) ) then
             info = -1
@@ -71,7 +94,7 @@ contains
                     end if
                 end do
 
-                if ( max_val .le. fp16(0.0)) then
+                if ( max_val .le. DT(0.0)) then
                     info = k
                     return
                 end if
@@ -79,8 +102,8 @@ contains
                 ! Swap if necessary
                 ipiv(k) = maxj;
                 if ( k .ne. maxj) then
-                    call swap(k-1, a(1,k), 1_lpf_default_int_kind, a(1, maxj), 1_lpf_default_int_kind)
-                    call swap(maxj-k-1, a(k,k+1), lda, a(k+1, maxj), 1_lpf_default_int_kind)
+                    call swap(k-1, a(1,k), 1_int64, a(1, maxj), 1_int64)
+                    call swap(maxj-k-1, a(k,k+1), lda, a(k+1, maxj), 1_int64)
                     if (maxj.lt.n) call swap(n - maxj, a(k,maxj+1), lda, a(maxj,maxj+1), lda)
                     a(maxj, maxj) = a(k,k)
                     a(k,k) = max_val
@@ -105,7 +128,7 @@ contains
                     end if
                 end do
 
-                if ( max_val .le. fp16(0.0)) then
+                if ( max_val .le. DT(0.0)) then
                     info = k
                     return
                 end if
@@ -114,9 +137,9 @@ contains
                 ipiv(k) = maxj;
                 if ( k .ne. maxj) then
                     call swap(k-1, a(k,1), lda, a(maxj, 1), lda)
-                    call swap(maxj-k-1, a(k+1,k), 1_lpf_default_int_kind, a(maxj, k+1), lda)
-                    if (maxj .lt. n) call swap(n - maxj, a(maxj+1,k), 1_lpf_default_int_kind, a(maxj+1,maxj), &
-                        & 1_lpf_default_int_kind)
+                    call swap(maxj-k-1, a(k+1,k), 1_int64, a(maxj, k+1), lda)
+                    if (maxj .lt. n) call swap(n - maxj, a(maxj+1,k), 1_int64, a(maxj+1,maxj), &
+                        & 1_int64)
                     a(maxj, maxj) = a(k,k)
                     a(k,k) = max_val
                 end if
@@ -124,12 +147,33 @@ contains
                 a (k,k) = sqrt(a(k,k))
 
                 if (k .lt. n) then
-                    call scal(n-k, one/a(k,k), a(k+1,k), 1_lpf_default_int_kind)
-                    call syr("l", n-k, mone, a(k+1,k), 1_lpf_default_int_kind, a(k+1, k+1), lda)
+                    call scal(n-k, one/a(k,k), a(k+1,k), 1_int64)
+                    call syr("l", n-k, mone, a(k+1,k), 1_int64, a(k+1, k+1), lda)
                 end if
             end do
 
         end if
     end subroutine
 
+    module subroutine potrfp_32(uplo, n, a_, lda, ipiv_, info)
+        character, intent(in) :: uplo
+        integer(int32), intent(in) :: n, lda
+        integer(int32), intent(inout) :: info
+        integer(int32), target, intent(inout) :: ipiv_(..)
+        type(DT), target, intent(inout) :: a_(..)
+
+        integer(int64) :: iinfo
+        integer(int64), dimension(n) :: ipiv64
+        type(c_ptr) :: ptr
+        integer(int32), pointer :: ipiv(:)
+
+        ptr = c_loc(ipiv_)
+        call c_f_pointer(ptr, ipiv, [n])
+
+        call potrfp_64(uplo, int(n, int64), a_, int(lda, int64), ipiv64, iinfo)
+        info = int(iinfo, int32)
+
+        ipiv ( 1:n ) = int(ipiv64(1:n), int32)
+
+    end subroutine
 end submodule

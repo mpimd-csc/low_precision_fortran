@@ -19,7 +19,7 @@
 !
 
 module lpf_blas_scale_diag
-    use iso_fortran_env, only: real32, real64
+    use iso_fortran_env, only: real32, real64, int32, int64
     use lpf_types
     implicit none
 
@@ -28,20 +28,22 @@ module lpf_blas_scale_diag
     public :: scale_diag
 
     interface scale_diag
-        procedure :: scale_diag_fp32
-        procedure :: scale_diag_fp64
+        procedure :: scale_diag_fp32_32
+        procedure :: scale_diag_fp32_64
+        procedure :: scale_diag_fp64_32
+        procedure :: scale_diag_fp64_64
     end interface
 
 contains
 
-    subroutine scale_diag_fp32(m, n, a, lda, dl, dr, info)
-        use lpf_xerbla
-        integer(lpf_default_int_kind), intent(in) :: m, n, lda
-        integer(lpf_default_int_kind), intent(inout) :: info
+    subroutine scale_diag_fp32_64(m, n, a, lda, dl, dr, info)
+        integer(int64), intent(in) :: m, n, lda
+        integer(int64), intent(inout) :: info
         real(real32), intent(inout), dimension(lda, *) :: a
         real(real32), intent(out), dimension(*) :: dl, dr
 
-        integer(lpf_default_int_kind) :: k
+        integer(int64) :: k
+        integer(int32) :: iinfo
 
         external :: lpf_blas_xerbla
 
@@ -56,7 +58,8 @@ contains
         end if
 
         if ( info .ne. 0) then
-            call lpf_blas_xerbla("scale_diag / scale_diag_fp32", info)
+            iinfo = int(info, int32)
+            call lpf_blas_xerbla("scale_diag / scale_diag_fp32", iinfo)
             return
         end if
 
@@ -77,13 +80,26 @@ contains
 
     end subroutine
 
-    subroutine scale_diag_fp64(m, n, a, lda, dl, dr, info)
-        integer(lpf_default_int_kind), intent(in) :: m, n, lda
-        integer(lpf_default_int_kind), intent(inout) :: info
+    subroutine scale_diag_fp32_32(m, n, a, lda, dl, dr, info)
+        integer(int32), intent(in) :: m, n, lda
+        integer(int32), intent(inout) :: info
+        real(real32), intent(inout), dimension(lda, *) :: a
+        real(real32), intent(out), dimension(*) :: dl, dr
+
+        integer(int64) :: iinfo
+
+        call scale_diag_fp32_64(int(m, int64), int(n, int64), a, int(lda, int64), dl, dr, iinfo)
+        info = int(iinfo, int32)
+    end subroutine
+
+    subroutine scale_diag_fp64_64(m, n, a, lda, dl, dr, info)
+        integer(int64), intent(in) :: m, n, lda
+        integer(int64), intent(inout) :: info
         real(real64), intent(inout), dimension(lda, *) :: a
         real(real64), intent(out), dimension(*) :: dl, dr
 
-        integer(lpf_default_int_kind) :: k
+        integer(int64) :: k
+        integer(int32) :: iinfo
 
         external :: lpf_blas_xerbla
 
@@ -98,7 +114,8 @@ contains
         end if
 
         if ( info .ne. 0) then
-            call lpf_blas_xerbla("scale_diag / scale_diag_fp64", info)
+            iinfo = int(info, int32)
+            call lpf_blas_xerbla("scale_diag / scale_diag_fp64", iinfo)
             return
         end if
 
@@ -120,4 +137,15 @@ contains
 
     end subroutine
 
+    subroutine scale_diag_fp64_32(m, n, a, lda, dl, dr, info)
+        integer(int32), intent(in) :: m, n, lda
+        integer(int32), intent(inout) :: info
+        real(real64), intent(inout), dimension(lda, *) :: a
+        real(real64), intent(out), dimension(*) :: dl, dr
+
+        integer(int64) :: iinfo
+
+        call scale_diag_fp64_64(int(m, int64), int(n, int64), a, int(lda, int64), dl, dr, iinfo)
+        info = int(iinfo, int32)
+    end subroutine
 end module
