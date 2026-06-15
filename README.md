@@ -72,9 +72,9 @@ other programming languages:
 **Every operation, where at least one operand is of a low precision type, is
 performed in the low precision.**
 
-This is necessary to get expressions like ` x + 1.0` working without storing the
+This is necessary to get expressions like `x + 1.0` working without storing the
 `1.0` in a variable before. If you want this operation to be performed in
-`real32`, one have to use `real(x) + 1.0`.
+`real32`, you have to use `real(x) + 1.0`.
 
 >>>
 
@@ -98,9 +98,9 @@ The low precision datatypes support all standard Fortran Math functions.
 - **Core Arithmetic**: Support for `+`, `-`, `*`, `/`, and `**`.
 - **Math Functions**: Comprehensive support for single-argument functions (`abs`, `sin`, `cos`, `exp`, `log`, `sqrt`, etc.), two-argument functions (`atan2`, `hypot`), and specialized trigonometric functions.
 - **Array Reductions**:
-
- - `maxval`, `minval`, `maxloc`, `minloc`
- - `norm2`, 'matmul'
+  - `maxval`, `minval`, `maxloc`, `minloc`
+  - `norm2`, `'matmul`
+  - `dot_product`, `sum`, `product`
 
 For `fp16` and `bf16`, the basic math functions are implemented using
 their `REAL(real32) counterpart with typecasts and the implementation from libm
