@@ -15,10 +15,6 @@ These standalone Fortran files provide a quick way to verify the basic functiona
 
 - **Conjugate Gradient (`blas_cg.f90`)**: This example implements the Conjugate Gradient (CG) iterative solver. It demonstrates how to use LPF's BLAS-like operations (`gemv`, `dot`, `axpy`, `nrm2`) to solve linear systems across multiple precisions (`BF16`, `FP16`, `FP8_E4M3`, and `FP8_E5M2`).
 
-## Performance Benchmarking
-
-The `benchmark/` directory contains micro-benchmarks to evaluate the performance of low-precision operations. It uses a C++ driver with the `nanobench` library to measure the execution time and performance counters of Fortran routines (e.g., `linspace.f90`).
-
 ## <T>LAPACK Integration
 
 The `tlapack/` directory demonstrates how LPF types can be integrated with the $\langle T \rangle$LAPACK library for high-level linear algebra operations. For example, `example_lu.cpp` and `lu_call.f90` show how to compute the inverse of a matrix via LU decomposition using `FP16`, `BF16`, and `FP8` precisions.
