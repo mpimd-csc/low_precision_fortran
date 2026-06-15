@@ -55,6 +55,8 @@ IF (LPF_BLAS_IS_MKL)
         "${MKLROOT}/include"
         "$ENV{MKL_ROOT}/include"
         "${MKL_ROOT}/include"
+        /usr/include/mkl
+        /usr/include
     )
     if (NOT MKL_INCLUDE_DIR)
         message(FATAL_ERROR "Inte (one)MKL detected but mkl.h not found.")
