@@ -1,3 +1,24 @@
+!  SPDX-License-Identifier: LGPL-3.0-or-later
+!
+!  This file is part of LPF, a Low Precision helper for Fortran
+!  Copyright (C) 2025 Martin Koehler
+!
+!  This program is free software; you can redistribute it and/or
+!  modify it under the terms of the GNU Lesser General Public
+!  License as published by the Free Software Foundation; either
+!  version 3 of the License, or (at your option) any later version.
+!
+!  This program is distributed in the hope that it will be useful,
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+!  Lesser General Public License for more details.
+!
+!  You should have received a copy of the GNU Lesser General Public License
+!  along with this program; if not, write to the Free Software Foundation,
+!  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+!
+
+
 #ifdef LPF_FP8_E4M3
 #define DT fp8_e4m3
 #define BLASMOD lpf_blas_fp8_e4m3
@@ -37,7 +58,7 @@ contains
         type(DT) :: alpha
         type(DT), allocatable :: a(:,:), b(:,:)
         real(real32), allocatable :: a32(:,:), b32(:,:)
-        real(real32) :: alpha32 
+        real(real32) :: alpha32
         character(len=1) :: side, uplo, transa, diag
         character(len=1) :: s_opts(2), u_opts(2), t_opts(2), d_opts(2)
         integer(int64) :: i, l_idx, t_idx, k_idx, j_idx, m_idx
@@ -85,20 +106,20 @@ contains
                                 b(i,k_idx) = dble(i * k_idx)
                             end do
                         end do
-            
-                        a32 = a 
+
+                        a32 = a
                         b32 = b
-                        alpha32 =  alpha 
+                        alpha32 =  alpha
                         call trmm(side, uplo, transa, diag, m, n, alpha, a, lda, b, ldb)
                         call strmm(side, uplo, transa, diag, m, n, alpha32, a32, lda, b32, ldb)
 
                         do i = 1, ldb
-                            do k_idx = 1, n 
-                                call check_dt_real64("trmm_combinations_" // side // uplo // transa // diag, & 
+                            do k_idx = 1, n
+                                call check_dt_real64("trmm_combinations_" // side // uplo // transa // diag, &
                                     int(i*100 + k_idx, int64), b(i,k_idx), real(b32(i,k_idx), real64) , GENERIC_TOL)
-                            end do 
-                        end do 
-                        
+                            end do
+                        end do
+
                         deallocate(a, b)
                         deallocate(a32, b32)
                         end do

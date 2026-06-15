@@ -1,14 +1,33 @@
 !  SPDX-License-Identifier: LGPL-3.0-or-later
+!
+!  This file is part of LPF, a Low Precision helper for Fortran
+!  Copyright (C) 2025 Martin Koehler
+!
+!  This program is free software; you can redistribute it and/or
+!  modify it under the terms of the GNU Lesser General Public
+!  License as published by the Free Software Foundation; either
+!  version 3 of the License, or (at your option) any later version.
+!
+!  This program is distributed in the hope that it will be useful,
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+!  Lesser General Public License for more details.
+!
+!  You should have received a copy of the GNU Lesser General Public License
+!  along with this program; if not, write to the Free Software Foundation,
+!  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+!
+
 PROGRAM check_hrot
     USE iso_fortran_env, only: real32, real64, int64
     USE LPF_FP16
     USE lpf_blas_fp16
     IMPLICIT NONE
 
-    LOGICAL :: ok 
+    LOGICAL :: ok
     INTEGER :: i
 
-    ok = .TRUE. 
+    ok = .TRUE.
     CALL run_tests(ok)
 
     IF (.NOT. ok) THEN
@@ -30,7 +49,7 @@ CONTAINS
         TYPE(FP16), dimension(10, NTEST) :: yresult
         TYPE(FP16), dimension(10) :: xtemp, ytemp
         INTEGER :: k
-        LOGICAL :: lok 
+        LOGICAL :: lok
 
         sc = FP16(0.8_real32)
         ss = FP16(0.6_real32)
