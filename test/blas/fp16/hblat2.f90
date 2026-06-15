@@ -1,18 +1,25 @@
-!> \brief \b HBLAT2
+!  SPDX-License-Identifier: LGPL-3.0-or-later
 !
-!  =========== DOCUMENTATION ===========
+!  This file is part of LPF, a Low Precision helper for Fortran
+!  Copyright (C) 2025 Martin Koehler
 !
-! Online html documentation available at
-!            http://www.netlib.org/lapack/explore-html/
+!  This program is free software; you can redistribute it and/or
+!  modify it under the terms of the GNU Lesser General Public
+!  License as published by the Free Software Foundation; either
+!  version 3 of the License, or (at your option) any later version.
 !
-!  Definition:
-!  ===========
+!  This program is distributed in the hope that it will be useful,
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+!  Lesser General Public License for more details.
 !
-!       PROGRAM HBLAT2
+!  You should have received a copy of the GNU Lesser General Public License
+!  along with this program; if not, write to the Free Software Foundation,
+!  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
-!
-!> \par Purpose:
-!  =============
+
+
+
 !>
 !> \verbatim
 !>
@@ -57,47 +64,7 @@
 !> HSPR   T PUT F FOR NO TEST. SAME COLUMNS.
 !> HSYR2  T PUT F FOR NO TEST. SAME COLUMNS.
 !> HSPR2  T PUT F FOR NO TEST. SAME COLUMNS.
-!>
-!> Further Details
-!> ===============
-!>
-!>    See:
-!>
-!>       Dongarra J. J., Du Croz J. J., Hammarling S.  and Hanson R. J..
-!>       An  extended  set of Fortran  Basic Linear Algebra Subprograms.
-!>
-!>       Technical  Memoranda  Nos. 41 (revision 3) and 81,  Mathematics
-!>       and  Computer Science  Division,  Argonne  National Laboratory,
-!>       9700 South Cass Avenue, Argonne, Illinois 60439, US.
-!>
-!>       Or
-!>
-!>       NAG  Technical Reports TR3/87 and TR4/87,  Numerical Algorithms
-!>       Group  Ltd.,  NAG  Central  Office,  256  Banbury  Road, Oxford
-!>       OX2 7DE, UK,  and  Numerical Algorithms Group Inc.,  1101  31st
-!>       Street,  Suite 100,  Downers Grove,  Illinois 60515-1263,  USA.
-!>
-!>
-!> -- Written on 10-August-1987.
-!>    Richard Hanson, Sandia National Labs.
-!>    Jeremy Du Croz, NAG Central Office.
-!>
-!>    10-9-00:  Change STATUS='NEW' to 'UNKNOWN' so that the testers
-!>              can be run multiple times without deleting generated
-!>              output files (susan)
 !> \endverbatim
-!
-!  Authors:
-!  ========
-!
-!> \author Univ. of Tennessee
-!> \author Univ. of California Berkeley
-!> \author Univ. of Colorado Denver
-!> \author NAG Ltd.
-!
-!> \ingroup single_blas_testing
-!
-!  =====================================================================
       PROGRAM HBLAT2
         USE LPF_FP16
         USE LPF_TYPES, dik => int32
@@ -106,13 +73,6 @@
         IMPLICIT NONE
 
 
-!
-!  -- Reference BLAS test routine --
-!  -- Reference BLAS is a software package provided by Univ. of Tennesse
-!  -- Univ. of California Berkeley, Univ. of Colorado Denver and NAG Ltd
-!
-!  =====================================================================
-!
 !     .. Parameters ..
       INTEGER(int32)            NIN
       PARAMETER          ( NIN = 5 )
@@ -449,10 +409,6 @@
 !  Tests HGEMV and HGBMV.
 !
 !  Auxiliary routine for test program for Level 2 Blas.
-!
-!  -- Written on 10-August-1987.
-!     Richard Hanson, Sandia National Labs.
-!     Jeremy Du Croz, NAG Central Office.
 !
 !     .. Parameters ..
       TYPE(FP16)  ::     ZERO, HALF
@@ -822,11 +778,6 @@
 !
 !  Tests HSYMV, HSBMV and HSPMV.
 !
-!  Auxiliary routine for test program for Level 2 Blas.
-!
-!  -- Written on 10-August-1987.
-!     Richard Hanson, Sandia National Labs.
-!     Jeremy Du Croz, NAG Central Office.
 !
 !     .. Parameters ..
       TYPE(FP16)         ZERO, HALF
@@ -1169,10 +1120,6 @@
 !  Tests HTRMV, HTBMV, HTPMV, HTRSV, HTBSV and HTPSV.
 !
 !  Auxiliary routine for test program for Level 2 Blas.
-!
-!  -- Written on 10-August-1987.
-!     Richard Hanson, Sandia National Labs.
-!     Jeremy Du Croz, NAG Central Office.
 !
 !     .. Parameters ..
       TYPE(FP16)               ZERO, HALF, ONE
@@ -1533,10 +1480,6 @@
 !
 !  Auxiliary routine for test program for Level 2 Blas.
 !
-!  -- Written on 10-August-1987.
-!     Richard Hanson, Sandia National Labs.
-!     Jeremy Du Croz, NAG Central Office.
-!
 !     .. Parameters ..
       TYPE(FP16)         ZERO, HALF, ONE
 !     .. Scalar Arguments ..
@@ -1799,10 +1742,6 @@
 !  Tests HSYR and HSPR.
 !
 !  Auxiliary routine for test program for Level 2 Blas.
-!
-!  -- Written on 10-August-1987.
-!     Richard Hanson, Sandia National Labs.
-!     Jeremy Du Croz, NAG Central Office.
 !
 !     .. Parameters ..
       TYPE(FP16)         ZERO, HALF, ONE
@@ -2083,10 +2022,6 @@
 !  Tests HSYR2 and HSPR2.
 !
 !  Auxiliary routine for test program for Level 2 Blas.
-!
-!  -- Written on 10-August-1987.
-!     Richard Hanson, Sandia National Labs.
-!     Jeremy Du Croz, NAG Central Office.
 !
 !     .. Parameters ..
       TYPE(FP16)         ZERO, HALF, ONE
@@ -2403,10 +2338,6 @@
 !  ALPHA, BETA, A, X and Y should not need to be defined.
 !
 !  Auxiliary routine for test program for Level 2 Blas.
-!
-!  -- Written on 10-August-1987.
-!     Richard Hanson, Sandia National Labs.
-!     Jeremy Du Croz, NAG Central Office.
 !
 !     .. Scalar Arguments ..
       INTEGER(int32)            ISNUM, NOUT
@@ -2736,10 +2667,6 @@
 !
 !  Auxiliary routine for test program for Level 2 Blas.
 !
-!  -- Written on 10-August-1987.
-!     Richard Hanson, Sandia National Labs.
-!     Jeremy Du Croz, NAG Central Office.
-!
 !     .. Parameters ..
       TYPE(FP16)          ZERO, ONE
       TYPE(FP16)               ROGUE
@@ -2912,10 +2839,6 @@
 !
 !  Auxiliary routine for test program for Level 2 Blas.
 !
-!  -- Written on 10-August-1987.
-!     Richard Hanson, Sandia National Labs.
-!     Jeremy Du Croz, NAG Central Office.
-!
 !     .. Parameters ..
       TYPE(FP16)         ZERO, ONE
 !     .. Scalar Arguments ..
@@ -3031,10 +2954,6 @@
 !
 !  Auxiliary routine for test program for Level 2 Blas.
 !
-!  -- Written on 10-August-1987.
-!     Richard Hanson, Sandia National Labs.
-!     Jeremy Du Croz, NAG Central Office.
-!
 !     .. Scalar Arguments ..
       INTEGER(int32)            LR
 !     .. Array Arguments ..
@@ -3065,10 +2984,6 @@
 !  TYPE is 'GE', 'SY' or 'SP'.
 !
 !  Auxiliary routine for test program for Level 2 Blas.
-!
-!  -- Written on 10-August-1987.
-!     Richard Hanson, Sandia National Labs.
-!     Jeremy Du Croz, NAG Central Office.
 !
 !     .. Scalar Arguments ..
       INTEGER(int32)            LDA, M, N
@@ -3126,9 +3041,6 @@
 !
 !  Auxiliary routine for test program for Level 2 Blas.
 !
-!  -- Written on 10-August-1987.
-!     Richard Hanson, Sandia National Labs.
-!     Jeremy Du Croz, NAG Central Office.
 !
 !     .. Scalar Arguments ..
       LOGICAL            RESET
@@ -3172,8 +3084,6 @@
 !
 !  Auxiliary routine for test program for Level 2 Blas.
 !
-!  -- Written on 10-August-1987.
-!     Richard Hanson, Sandia National Labs.
 !
 !     .. Scalar Arguments ..
       TYPE(FP16)          X, Y
@@ -3191,9 +3101,6 @@
 !
 !  Auxiliary routine for test program for Level 2 Blas.
 !
-!  -- Written on 10-August-1987.
-!     Richard Hanson, Sandia National Labs.
-!     Jeremy Du Croz, NAG Central Office.
 !
 !     .. Scalar Arguments ..
       INTEGER(int32)            INFOT, NOUT
@@ -3266,9 +3173,6 @@
 !
 !  Auxiliary routine for test program for Level 2 Blas.
 !
-!  -- Written on 10-August-1987.
-!     Richard Hanson, Sandia National Labs.
-!     Jeremy Du Croz, NAG Central Office.
 !
 !     .. Scalar Arguments ..
 !     .. Scalars in Common ..

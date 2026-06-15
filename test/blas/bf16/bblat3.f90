@@ -1,19 +1,23 @@
-!> \brief \b SBLAT3
+!  SPDX-License-Identifier: LGPL-3.0-or-later
 !
-!  =========== DOCUMENTATION ===========
+!  This file is part of LPF, a Low Precision helper for Fortran
+!  Copyright (C) 2025 Martin Koehler
 !
-! Online html documentation available at
-!            http://www.netlib.org/lapack/explore-html/
+!  This program is free software; you can redistribute it and/or
+!  modify it under the terms of the GNU Lesser General Public
+!  License as published by the Free Software Foundation; either
+!  version 3 of the License, or (at your option) any later version.
 !
-!  Definition:
-!  ===========
+!  This program is distributed in the hope that it will be useful,
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+!  Lesser General Public License for more details.
 !
-!       PROGRAM SBLAT3
+!  You should have received a copy of the GNU Lesser General Public License
+!  along with this program; if not, write to the Free Software Foundation,
+!  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 !
-!
-!> \par Purpose:
-!  =============
-!>
+
 !> \verbatim
 !>
 !> Test program for the TYPE(BF16)             Level 3 Blas.
@@ -45,38 +49,7 @@
 !> BSYR2K T PUT F FOR NO TEST. SAME COLUMNS.
 !> BGEMMTR T PUT F FOR NO TEST. SAME COLUMNS.
 !>
-!> Further Details
-!> ===============
-!>
-!> See:
-!>
-!>    Dongarra J. J., Du Croz J. J., Duff I. S. and Hammarling S.
-!>    A Set of Level 3 Basic Linear Algebra Subprograms.
-!>
-!>    Technical Memorandum No.88 (Revision 1), Mathematics and
-!>    Computer Science Division, Argonne National Laboratory, 9700
-!>    South Cass Avenue, Argonne, Illinois 60439, US.
-!>
-!> -- Written on 8-February-1989.
-!>    Jack Dongarra, Argonne National Laboratory.
-!>    Iain Duff, AERE Harwell.
-!>    Jeremy Du Croz, Numerical Algorithms Group Ltd.
-!>    Sven Hammarling, Numerical Algorithms Group Ltd.
-!>
-!>    10-9-00:  Change STATUS='NEW' to 'UNKNOWN' so that the testers
-!>              can be run multiple times without deleting generated
-!>              output files (susan)
 !> \endverbatim
-!
-!  Authors:
-!  ========
-!
-!> \author Univ. of Tennessee
-!> \author Univ. of California Berkeley
-!> \author Univ. of Colorado Denver
-!> \author NAG Ltd.
-!
-!> \ingroup single_blas_testing
 !
 !  =====================================================================
       PROGRAM SBLAT3
@@ -86,11 +59,6 @@
         USE LPF_BLAS_BF16
         IMPLICIT NONE
           !
-!  -- Reference BLAS test routine --
-!  -- Reference BLAS is a software package provided by Univ. of Tennesse
-!  -- Univ. of California Berkeley, Univ. of Colorado Denver and NAG Ltd
-!
-!  =====================================================================
 !
 !     .. Parameters ..
       INTEGER(int32)            NIN
@@ -414,13 +382,6 @@
 !  Tests BGEMM.
 !
 !  Auxiliary routine for test program for Level 3 Blas.
-!
-!  -- Written on 8-February-1989.
-!     Jack Dongarra, Argonne National Laboratory.
-!     Iain Duff, AERE Harwell.
-!     Jeremy Du Croz, Numerical Algorithms Group Ltd.
-!     Sven Hammarling, Numerical Algorithms Group Ltd.
-!
 !     .. Parameters ..
       TYPE(BF16)               ZERO
 !     .. Scalar Arguments ..
@@ -696,14 +657,6 @@
  !
 !  Tests BSYMM.
 !
-!  Auxiliary routine for test program for Level 3 Blas.
-!
-!  -- Written on 8-February-1989.
-!     Jack Dongarra, Argonne National Laboratory.
-!     Iain Duff, AERE Harwell.
-!     Jeremy Du Croz, Numerical Algorithms Group Ltd.
-!     Sven Hammarling, Numerical Algorithms Group Ltd.
-!
 !     .. Parameters ..
       TYPE(BF16)               ZERO
 !     .. Scalar Arguments ..
@@ -970,12 +923,6 @@
 !  Tests BTRMM and BTRSM.
 !
 !  Auxiliary routine for test program for Level 3 Blas.
-!
-!  -- Written on 8-February-1989.
-!     Jack Dongarra, Argonne National Laboratory.
-!     Iain Duff, AERE Harwell.
-!     Jeremy Du Croz, Numerical Algorithms Group Ltd.
-!     Sven Hammarling, Numerical Algorithms Group Ltd.
 !
 !     .. Parameters ..
       TYPE(BF16)               ZERO, ONE
@@ -1280,12 +1227,6 @@
 !
 !  Auxiliary routine for test program for Level 3 Blas.
 !
-!  -- Written on 8-February-1989.
-!     Jack Dongarra, Argonne National Laboratory.
-!     Iain Duff, AERE Harwell.
-!     Jeremy Du Croz, Numerical Algorithms Group Ltd.
-!     Sven Hammarling, Numerical Algorithms Group Ltd.
-!
 !     .. Parameters ..
       TYPE(BF16)               ZERO
 !     .. Scalar Arguments ..
@@ -1557,12 +1498,6 @@
 !  Tests BSYR2K.
 !
 !  Auxiliary routine for test program for Level 3 Blas.
-!
-!  -- Written on 8-February-1989.
-!     Jack Dongarra, Argonne National Laboratory.
-!     Iain Duff, AERE Harwell.
-!     Jeremy Du Croz, Numerical Algorithms Group Ltd.
-!     Sven Hammarling, Numerical Algorithms Group Ltd.
 !
 !     .. Parameters ..
       TYPE(BF16)               ZERO
@@ -1874,15 +1809,6 @@
 !  A, B and C should not need to be defined.
 !
 !  Auxiliary routine for test program for Level 3 Blas.
-!
-!  -- Written on 8-February-1989.
-!     Jack Dongarra, Argonne National Laboratory.
-!     Iain Duff, AERE Harwell.
-!     Jeremy Du Croz, Numerical Algorithms Group Ltd.
-!     Sven Hammarling, Numerical Algorithms Group Ltd.
-!
-!  3-19-92:  Initialize ALPHA and BETA  (eca)
-!  3-19-92:  Fix argument 12 in calls to BSYMM with INFOT = 9  (eca)
 !
 !     .. Scalar Arguments ..
       INTEGER(int32)            ISNUM, NOUT
@@ -2515,14 +2441,6 @@
 !
 !  TYPE is 'GE', 'SY' or 'TR'.
 !
-!  Auxiliary routine for test program for Level 3 Blas.
-!
-!  -- Written on 8-February-1989.
-!     Jack Dongarra, Argonne National Laboratory.
-!     Iain Duff, AERE Harwell.
-!     Jeremy Du Croz, Numerical Algorithms Group Ltd.
-!     Sven Hammarling, Numerical Algorithms Group Ltd.
-!
 !     .. Parameters ..
       TYPE(BF16)               ZERO, ONE
       TYPE(BF16)               ROGUE
@@ -2632,12 +2550,6 @@
 !  Checks the results of the computational tests.
 !
 !  Auxiliary routine for test program for Level 3 Blas.
-!
-!  -- Written on 8-February-1989.
-!     Jack Dongarra, Argonne National Laboratory.
-!     Iain Duff, AERE Harwell.
-!     Jeremy Du Croz, Numerical Algorithms Group Ltd.
-!     Sven Hammarling, Numerical Algorithms Group Ltd.
 !
 !     .. Parameters ..
       TYPE(BF16)               ZERO, ONE
@@ -2757,11 +2669,6 @@
 !
 !  Auxiliary routine for test program for Level 3 Blas.
 !
-!  -- Written on 8-February-1989.
-!     Jack Dongarra, Argonne National Laboratory.
-!     Iain Duff, AERE Harwell.
-!     Jeremy Du Croz, Numerical Algorithms Group Ltd.
-!     Sven Hammarling, Numerical Algorithms Group Ltd.
 !
 !     .. Scalar Arguments ..
       INTEGER(int32)            LR
@@ -2796,11 +2703,6 @@
 !
 !  Auxiliary routine for test program for Level 3 Blas.
 !
-!  -- Written on 8-February-1989.
-!     Jack Dongarra, Argonne National Laboratory.
-!     Iain Duff, AERE Harwell.
-!     Jeremy Du Croz, Numerical Algorithms Group Ltd.
-!     Sven Hammarling, Numerical Algorithms Group Ltd.
 !
 !     .. Scalar Arguments ..
       INTEGER(int32)            LDA, M, N
@@ -2860,11 +2762,6 @@
 !
 !  Auxiliary routine for test program for Level 3 Blas.
 !
-!  -- Written on 8-February-1989.
-!     Jack Dongarra, Argonne National Laboratory.
-!     Iain Duff, AERE Harwell.
-!     Jeremy Du Croz, Numerical Algorithms Group Ltd.
-!     Sven Hammarling, Numerical Algorithms Group Ltd.
 !
 !     .. Scalar Arguments ..
       LOGICAL            RESET
@@ -2909,11 +2806,6 @@
 !
 !  Auxiliary routine for test program for Level 3 Blas.
 !
-!  -- Written on 8-February-1989.
-!     Jack Dongarra, Argonne National Laboratory.
-!     Iain Duff, AERE Harwell.
-!     Jeremy Du Croz, Numerical Algorithms Group Ltd.
-!     Sven Hammarling, Numerical Algorithms Group Ltd.
 !
 !     .. Scalar Arguments ..
       TYPE(BF16)               X, Y
@@ -2933,12 +2825,6 @@
 !  Tests whether XERBLA has detected an error when it should.
 !
 !  Auxiliary routine for test program for Level 3 Blas.
-!
-!  -- Written on 8-February-1989.
-!     Jack Dongarra, Argonne National Laboratory.
-!     Iain Duff, AERE Harwell.
-!     Jeremy Du Croz, Numerical Algorithms Group Ltd.
-!     Sven Hammarling, Numerical Algorithms Group Ltd.
 !
 !     .. Scalar Arguments ..
       INTEGER(int32)            INFOT, NOUT
@@ -2975,11 +2861,6 @@
 !
 !  Auxiliary routine for test program for Level 3 Blas.
 !
-!  -- Written on 8-February-1989.
-!     Jack Dongarra, Argonne National Laboratory.
-!     Iain Duff, AERE Harwell.
-!     Jeremy Du Croz, Numerical Algorithms Group Ltd.
-!     Sven Hammarling, Numerical Algorithms Group Ltd.
 !
 !     .. Scalar Arguments ..
       INTEGER(int32)            INFO
@@ -3030,9 +2911,6 @@
 !  Tests BGEMMTR.
 !
 !  Auxiliary routine for test program for Level 3 Blas.
-!
-!  -- Written on 19-July-2023.
-!     Martin Koehler, MPI Magdeburg
 !
 !     .. Parameters ..
       TYPE(BF16)               ZERO
@@ -3320,8 +3198,6 @@
 !
 !  Auxiliary routine for test program for Level 3 Blas. (BGEMMTR)
 !
-!  -- Written on 19-July-2023.
-!     Martin Koehler, MPI Magdeburg
 !
 !     .. Parameters ..
       TYPE(BF16)               ZERO, ONE
