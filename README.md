@@ -136,6 +136,12 @@ The AMD AOCC compiler does not support the overloading of the `write` interface
 in a complete private environment and making the function public afterwards.
 For this reason, we do not support the AMD compiler suite.
 
+#### Intel oneAPI Fortran
+
+The Intel oneAPI Fortran Compiler previous to the 2026 series may crash with a
+segmentation fault while compiling. We suggest to update the compiler to the
+2026 release.
+
 
 #### LLVM clang/flang
 
