@@ -32,7 +32,7 @@ PROGRAM FP16_DEMO
 
     WRITE(*,*) "Default Output X1 = ", X1
     WRITE(*,*) "Default Output X2 = ", X2
-    WRITE(*,*) "Default Output X2 = ", X3
+    WRITE(*,*) "Default Output X3 = ", X3
     WRITE(*,*) "x2 + x3", X4
     WRITE(*,*) "ABS(X2)", ABS(X2), ABS(-4.0)
     WRITE(*,*) "Exponent ", X1, " = ", exponent(X1)
