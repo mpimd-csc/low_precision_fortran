@@ -4,66 +4,66 @@ FIND_PACKAGE(LAPACK)
 # Search for special in routines in BLAS
 IF (BLAS_FOUND AND LAPACK_FOUND)
     SET(_CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES})
-SET(CMAKE_REQUIRED_LIBRARIES LAPACK::LAPACK BLAS::BLAS)
-include(CheckCSourceRuns)
+    SET(CMAKE_REQUIRED_LIBRARIES LAPACK::LAPACK BLAS::BLAS)
+    include(CheckCSourceRuns)
 
-# Store the current linker status for the test
-set(CMAKE_REQUIRED_LIBRARIES ${BLAS_LIBRARIES})
+    # Store the current linker status for the test
+    set(CMAKE_REQUIRED_LIBRARIES ${BLAS_LIBRARIES})
 
-# Test source code: Passes 64-bit integer via pointer to BLAS
-check_c_source_runs("
+    # Test source code: Passes 64-bit integer via pointer to BLAS
+    check_c_source_runs("
 #include <stdint.h>
 #include <stdio.h>
 double ddot_(const int64_t* n, const double* dx, const int64_t* incx,  const double* dy, const int64_t* incy  );
 
 int main() {
-    int32_t nx[3] = { 1, 1, 1 };
-    double x[1] = {1.0};
-    double y[1] = {1.0};
-    int64_t incx = 0;
-    int64_t incy = 0;
+int32_t nx[3] = { 1, 1, 1 };
+double x[1] = {1.0};
+double y[1] = {1.0};
+int64_t incx = 0;
+int64_t incy = 0;
 
-    double d = ddot_((int64_t *)&nx[1], x, &incx, y, &incy);
-    printf(\"d = %lg\", d);
-    if ( d <= 1.0) {
-        return 1;
-    }
+double d = ddot_((int64_t *)&nx[1], x, &incx, y, &incy);
+printf(\"d = %lg\", d);
+if ( d <= 1.0) {
+    return 1;
+}
     return 0;
 }
 " BLAS_IS_ILP64)
 
-if(BLAS_IS_ILP64)
-    message(STATUS "BLAS Integer Model: ILP64.")
-else()
-    message(STATUS "BLAS Integer Model: LP64.")
-endif()
-
-check_function_exists(cblas_hgemm LPF_BLAS_USE_HGEMM)
-check_function_exists(cblas_gemm_f16f16f32 LPF_BLAS_USE_GEMM_F16F16F32)
-check_function_exists(cblas_gemm_bf16bf16f32 LPF_BLAS_USE_GEMM_BF16BF16F32)
-check_function_exists(cblas_gemm_e5m2e5m2f32 LPF_BLAS_USE_GEMM_E5M2_F32)
-check_function_exists(cblas_gemm_e4m3e4m3f32 LPF_BLAS_USE_GEMM_E4M3_F32)
-check_function_exists(aocl_gemm_bf16bf16f32of32 LPF_BLAS_USE_AMD_GEMM_BF16BF16F32)
-check_function_exists(mkl_get_version LPF_BLAS_IS_MKL)
-check_function_exists(AOCL_BLIS_set_progress LPF_BLAS_IS_AOCL)
-SET(CMAKE_REQUIRED_LIBRARIES ${_CMAKE_REQUIRED_LIBRARIES})
-
-IF (LPF_BLAS_IS_MKL)
-    FIND_PATH(MKL_INCLUDE_DIR mkl.h
-        HINTS
-        "$ENV{MKLROOT}/include"
-        "${MKLROOT}/include"
-        "$ENV{MKL_ROOT}/include"
-        "${MKL_ROOT}/include"
-        /usr/include/mkl
-        /usr/include
-    )
-    if (NOT MKL_INCLUDE_DIR)
-        message(FATAL_ERROR "Inte (one)MKL detected but mkl.h not found.")
+    if(BLAS_IS_ILP64)
+        message(STATUS "BLAS Integer Model: ILP64.")
+    else()
+        message(STATUS "BLAS Integer Model: LP64.")
     endif()
-    message(STATUS "MKL include directory: ${MKL_INCLUDE_DIR}")
-    set_property(TARGET BLAS::BLAS PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${MKL_INCLUDE_DIR}")
-ENDIF()
+
+    check_function_exists(cblas_hgemm LPF_BLAS_USE_HGEMM)
+    check_function_exists(cblas_gemm_f16f16f32 LPF_BLAS_USE_GEMM_F16F16F32)
+    check_function_exists(cblas_gemm_bf16bf16f32 LPF_BLAS_USE_GEMM_BF16BF16F32)
+    check_function_exists(cblas_gemm_e5m2e5m2f32 LPF_BLAS_USE_GEMM_E5M2_F32)
+    check_function_exists(cblas_gemm_e4m3e4m3f32 LPF_BLAS_USE_GEMM_E4M3_F32)
+    check_function_exists(aocl_gemm_bf16bf16f32of32 LPF_BLAS_USE_AMD_GEMM_BF16BF16F32)
+    check_function_exists(mkl_get_version LPF_BLAS_IS_MKL)
+    check_function_exists(AOCL_BLIS_set_progress LPF_BLAS_IS_AOCL)
+    SET(CMAKE_REQUIRED_LIBRARIES ${_CMAKE_REQUIRED_LIBRARIES})
+
+    IF (LPF_BLAS_IS_MKL)
+        FIND_PATH(MKL_INCLUDE_DIR mkl.h
+            HINTS
+            "$ENV{MKLROOT}/include"
+            "${MKLROOT}/include"
+            "$ENV{MKL_ROOT}/include"
+            "${MKL_ROOT}/include"
+            /usr/include/mkl
+            /usr/include
+        )
+        if (NOT MKL_INCLUDE_DIR)
+            message(FATAL_ERROR "Inte (one)MKL detected but mkl.h not found.")
+        endif()
+        message(STATUS "MKL include directory: ${MKL_INCLUDE_DIR}")
+        set_property(TARGET BLAS::BLAS PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${MKL_INCLUDE_DIR}")
+    ENDIF()
 ENDIF()
 
 SET (SRC )
@@ -242,6 +242,7 @@ SET(SRC_GENERIC_LAPACK
 ADD_LIBRARY(lpf_blas_objects
     ${SRC}
 )
+set_target_properties(lpf_blas_objects PROPERTIES Fortran_MODULE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fortran-modules")
 
 
 if (LPF_FP8_E5M2)
@@ -383,19 +384,19 @@ add_coverage(lpf_blas_objects)
 TARGET_LINK_LIBRARIES(lpf_blas
     PRIVATE
     $<$<BOOL:NEED_LINKING_AGAINST_LIBM>:${LIBM_NAME}>
-    PUBLIC
-    LPF::lpf
     $<$<BOOL:${BLAS_FOUND}>:BLAS::BLAS>
     $<$<BOOL:${LAPACK_FOUND}>:LAPACK::LAPACK>
+    PUBLIC
+        LPF::lpf
 )
 
 TARGET_LINK_LIBRARIES(lpf_blas_objects
     PRIVATE
     $<$<BOOL:NEED_LINKING_AGAINST_LIBM>:${LIBM_NAME}>
-    PUBLIC
-    LPF::lpf
     $<$<BOOL:${BLAS_FOUND}>:BLAS::BLAS>
     $<$<BOOL:${LAPACK_FOUND}>:LAPACK::LAPACK>
+    PUBLIC
+    LPF::lpf
 )
 
 

@@ -58,7 +58,7 @@ linux-intel:
     - haswell
   parallel:
     matrix:
-      - INTEL_VERSION: [ "2025" ]
+      - INTEL_VERSION: [ "2026" ]
         BLA_VENDOR: [ "Generic", "Intel10_64lp", "Intel10_64ilp"]
   script:
     - CC=icx FC=ifx cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=RelWithDebInfo
@@ -83,4 +83,24 @@ coverage:
     - gcovr -r ..
   coverage: '/^TOTAL.*\s+(\d+\%)$/'
 
+
+install-test-gcc:
+  stage: build
+  image: ${CI_REGISTRY_IMAGE}/${OS}:${OSVERSION}
+  needs: []
+  tags:
+    - haswell
+  parallel:
+    matrix:
+      - OS: [ "ubuntu" ]
+        OSVERSION: [ 'noble', 'resolute' ]
+        BLAS: ['BLAS_ON']
+  script:
+    - export BLAS=${BLAS##BLAS_}
+    - cmake -S . -B build-dir -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLPF_BLAS=${BLAS}
+    - cmake --build build-dir 2>&1 | tee build.log
+    - cmake --build build-dir --target install
+    - cd examples/cmake-example
+    - cmake -S . -B build-example
+    - cmake --build build-example
 
