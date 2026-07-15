@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 cmake_policy(SET CMP0048 NEW)
 
-PROJECT(LowPrecisionFortran VERSION 0.1.0 LANGUAGES C Fortran)
+PROJECT(LowPrecisionFortran VERSION 0.1.1 LANGUAGES C Fortran)
 
 # Add addtional CMAKE Paths.
 LIST(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
