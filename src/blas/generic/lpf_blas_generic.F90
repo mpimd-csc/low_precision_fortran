@@ -662,87 +662,87 @@ module lpf_blas_fp8_e5m2
         module subroutine lacpy_32(uplo, m, n, a, lda, b, ldb)
             character(c_char), intent(in) :: uplo
             integer(int32), intent(in) :: m, n, lda, ldb
-            type(DT), intent(in) :: a(..)
-            type(DT), intent(inout) :: b(..)
+            type(DT), target, intent(in) :: a(..)
+            type(DT), target, intent(inout) :: b(..)
         end subroutine
         module subroutine lacpy_64(uplo, m, n, a, lda, b, ldb)
             character(c_char), intent(in) :: uplo
             integer(int64), intent(in) :: m, n, lda, ldb
-            type(DT), intent(in) :: a(..)
-            type(DT), intent(inout) :: b(..)
+            type(DT), target, intent(in) :: a(..)
+            type(DT), target, intent(inout) :: b(..)
         end subroutine
     end interface
 
-    interface laset
-        module subroutine laset_32(uplo, m, n, alpha, beta, a, lda)
-            character(c_char), intent(in) :: uplo
-            integer(int32), intent(in) :: m, n, lda
-            type(DT), intent(in) :: alpha, beta
-            type(DT), intent(inout) :: a(..)
-        end subroutine
-        module subroutine laset_64(uplo, m, n, alpha, beta, a, lda)
-            character(c_char), intent(in) :: uplo
-            integer(int64), intent(in) :: m, n, lda
-            type(DT), intent(in) :: alpha, beta
-            type(DT), intent(inout) :: a(..)
-        end subroutine
-    end interface
-
-    interface lacpy
-        module subroutine dt2slacpy_32(uplo, m, n, a, lda, b, ldb)
-            character(c_char), intent(in) :: uplo
-            integer(int32), intent(in) :: m, n, lda, ldb
-            type(DT), intent(in) :: a(..)
-            real(real32), intent(in) :: b(..)
-        end subroutine
-        module subroutine dt2slacpy_64(uplo, m, n, a, lda, b, ldb)
-            character(c_char), intent(in) :: uplo
-            integer(int64), intent(in) :: m, n, lda, ldb
-            type(DT), intent(in) :: a(..)
-            real(real32), intent(in) :: b(..)
-        end subroutine
-    end interface
-
-    interface lacpy
-        module subroutine s2dtlacpy_32(uplo, m, n, a, lda, b, ldb)
-            character(c_char), intent(in) :: uplo
-            integer(int32), intent(in) :: m, n, lda, ldb
-            real(real32), intent(in) :: a(..)
-            type(DT), intent(in) :: b(..)
-        end subroutine
-        module subroutine s2dtlacpy_64(uplo, m, n, a, lda, b, ldb)
-            character(c_char), intent(in) :: uplo
-            integer(int64), intent(in) :: m, n, lda, ldb
-            real(real32), intent(in) :: a(..)
-            type(DT), intent(in) :: b(..)
-        end subroutine
-    end interface
-
-    interface copy
-        module subroutine dt2scopy_32(n, x, incx, y, incy)
-            integer(int32), intent(in) :: n, incx, incy
-            type(DT), intent(in) :: x(..)
-            real(real32), intent(in) :: y(..)
-        end subroutine
-        module subroutine dt2scopy_64(n, x, incx, y, incy)
-            integer(int64), intent(in) :: n, incx, incy
-            type(DT), intent(in) :: x(..)
-            real(real32), intent(in) :: y(..)
-        end subroutine
-    end interface
-
-    interface copy
-        module subroutine s2dtcopy_32(n, x, incx, y, incy)
-            integer(int32), intent(in) :: n, incx, incy
-            real(real32), intent(in) :: x(..)
-            type(DT), intent(in) :: y(..)
-        end subroutine
-        module subroutine s2dtcopy_64(n, x, incx, y, incy)
-            integer(int64), intent(in) :: n, incx, incy
-            real(real32), intent(in) :: x(..)
-            type(DT), intent(in) :: y(..)
-        end subroutine
-    end interface
+!     interface laset
+!         module subroutine laset_32(uplo, m, n, alpha, beta, a, lda)
+!             character(c_char), intent(in) :: uplo
+!             integer(int32), intent(in) :: m, n, lda
+!             type(DT), intent(in) :: alpha, beta
+!             type(DT), intent(inout) :: a(..)
+!         end subroutine
+!         module subroutine laset_64(uplo, m, n, alpha, beta, a, lda)
+!             character(c_char), intent(in) :: uplo
+!             integer(int64), intent(in) :: m, n, lda
+!             type(DT), intent(in) :: alpha, beta
+!             type(DT), intent(inout) :: a(..)
+!         end subroutine
+!     end interface
+!
+!     interface lacpy
+!         module subroutine dt2slacpy_32(uplo, m, n, a, lda, b, ldb)
+!             character(c_char), intent(in) :: uplo
+!             integer(int32), intent(in) :: m, n, lda, ldb
+!             type(DT), intent(in) :: a(..)
+!             real(real32), intent(in) :: b(..)
+!         end subroutine
+!         module subroutine dt2slacpy_64(uplo, m, n, a, lda, b, ldb)
+!             character(c_char), intent(in) :: uplo
+!             integer(int64), intent(in) :: m, n, lda, ldb
+!             type(DT), intent(in) :: a(..)
+!             real(real32), intent(in) :: b(..)
+!         end subroutine
+!     end interface
+!
+!     interface lacpy
+!         module subroutine s2dtlacpy_32(uplo, m, n, a, lda, b, ldb)
+!             character(c_char), intent(in) :: uplo
+!             integer(int32), intent(in) :: m, n, lda, ldb
+!             real(real32), intent(in) :: a(..)
+!             type(DT), intent(in) :: b(..)
+!         end subroutine
+!         module subroutine s2dtlacpy_64(uplo, m, n, a, lda, b, ldb)
+!             character(c_char), intent(in) :: uplo
+!             integer(int64), intent(in) :: m, n, lda, ldb
+!             real(real32), intent(in) :: a(..)
+!             type(DT), intent(in) :: b(..)
+!         end subroutine
+!     end interface
+!
+!     interface copy
+!         module subroutine dt2scopy_32(n, x, incx, y, incy)
+!             integer(int32), intent(in) :: n, incx, incy
+!             type(DT), intent(in) :: x(..)
+!             real(real32), intent(in) :: y(..)
+!         end subroutine
+!         module subroutine dt2scopy_64(n, x, incx, y, incy)
+!             integer(int64), intent(in) :: n, incx, incy
+!             type(DT), intent(in) :: x(..)
+!             real(real32), intent(in) :: y(..)
+!         end subroutine
+!     end interface
+!
+!     interface copy
+!         module subroutine s2dtcopy_32(n, x, incx, y, incy)
+!             integer(int32), intent(in) :: n, incx, incy
+!             real(real32), intent(in) :: x(..)
+!             type(DT), intent(in) :: y(..)
+!         end subroutine
+!         module subroutine s2dtcopy_64(n, x, incx, y, incy)
+!             integer(int64), intent(in) :: n, incx, incy
+!             real(real32), intent(in) :: x(..)
+!             type(DT), intent(in) :: y(..)
+!         end subroutine
+!     end interface
 
     !
     ! Submodules

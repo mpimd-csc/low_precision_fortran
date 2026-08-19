@@ -1,5 +1,9 @@
 # Changelog
 
+## Next
+
+* New: lacpy for FP8
+
 ## Version 0.1.1 (2026-07-15)
 
 * Fix: Installation of lpf_blas_* modules
