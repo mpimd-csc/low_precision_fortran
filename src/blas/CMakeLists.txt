@@ -228,6 +228,8 @@ SET(SRC_GENERIC
     generic/level3/trmm.F90
     generic/level3/trsm.F90
 
+    generic/aux/lacpy.F90
+
 )
 
 SET(SRC_GENERIC_LAPACK
