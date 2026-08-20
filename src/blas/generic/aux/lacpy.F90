@@ -136,7 +136,7 @@ contains
 !> \ingroup OTHERauxiliary
 !
 !  =====================================================================
-    module subroutine lacpy_impl( uplo, m, n, a, b )
+    subroutine lacpy_impl( uplo, m, n, a, b )
         character, intent(in)      ::   uplo
         integer(int64), intent(in) ::   m, n
         type(DT), intent(in)       ::   a( :, : )
