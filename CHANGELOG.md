@@ -3,6 +3,9 @@
 ## Next
 
 * New: lacpy for FP8
+* New: lacpy for FP8 <-> Single precision
+* New: copy for FP8 <-> Single precision
+* New: laset for FP8
 
 ## Version 0.1.1 (2026-07-15)
 
