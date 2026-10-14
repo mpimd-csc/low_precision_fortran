@@ -35,21 +35,6 @@ contains
 
 !> \brief \b LACPY copies all or part of one two-dimensional array to another.
 !
-!  =========== DOCUMENTATION ===========
-!
-! Online html documentation available at
-!            http://www.netlib.org/lapack/explore-html/
-!
-!> \htmlonly
-!> Download LACPY + dependencies
-!> <a href="http://www.netlib.org/cgi-bin/netlibfiles.tgz?format=tgz&filename=/lapack/lapack_routine/slacpy.f">
-!> [TGZ]</a>
-!> <a href="http://www.netlib.org/cgi-bin/netlibfiles.zip?format=zip&filename=/lapack/lapack_routine/slacpy.f">
-!> [ZIP]</a>
-!> <a href="http://www.netlib.org/cgi-bin/netlibfiles.txt?format=txt&filename=/lapack/lapack_routine/slacpy.f">
-!> [TXT]</a>
-!> \endhtmlonly
-!
 !  Definition:
 !  ===========
 !
@@ -122,16 +107,6 @@ contains
 !>          LDB is INTEGER
 !>          The leading dimension of the array B.  LDB >= max(1,M).
 !> \endverbatim
-!
-!  Authors:
-!  ========
-!
-!> \author Univ. of Tennessee
-!> \author Univ. of California Berkeley
-!> \author Univ. of Colorado Denver
-!> \author NAG Ltd.
-!
-!> \date December 2016
 !
 !> \ingroup OTHERauxiliary
 !

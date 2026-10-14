@@ -228,7 +228,12 @@ SET(SRC_GENERIC
     generic/level3/trmm.F90
     generic/level3/trsm.F90
 
+    generic/aux/copy_from_single.F90
+    generic/aux/copy_to_single.F90
+    generic/aux/laset.F90
     generic/aux/lacpy.F90
+    generic/aux/lacpy_from_single.F90
+    generic/aux/lacpy_to_single.F90
 
 )
 
@@ -241,7 +246,7 @@ SET(SRC_GENERIC_LAPACK
     generic/lapack/cholesky/potrfp.F90
 )
 
-ADD_LIBRARY(lpf_blas_objects
+ADD_LIBRARY(lpf_blas_objects OBJECT
     ${SRC}
 )
 set_target_properties(lpf_blas_objects PROPERTIES Fortran_MODULE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/fortran-modules")
